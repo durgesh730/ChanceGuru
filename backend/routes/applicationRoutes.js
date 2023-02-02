@@ -3,6 +3,8 @@ const jwtAuth = require("../lib/jwtAuth");
 const JobApplicant = require("../db/JobApplication");
 const router = express.Router();
 
+
+//To generate application
 router.post("/", jwtAuth , (req, res) => {
     const data = req.body;
     const user = req.user ;
@@ -26,6 +28,8 @@ router.post("/", jwtAuth , (req, res) => {
 
 })
 
+
+//To update status of the application
 router.put("/updateStatus", (req, res) => {
     const data = req.body;
     Application.findOneAndUpdate(

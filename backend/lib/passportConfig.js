@@ -6,7 +6,6 @@ const JWTStrategy = passportJWT.Strategy;
 const ExtractJWT = passportJWT.ExtractJwt;
 
 const User = require("../db/User");
-const Admin = require("../db/Admin");
 const authKeys = require("./authKeys");
 
 const filterJson = (obj, unwantedKeys) => {
@@ -26,20 +25,6 @@ passport.use(
       passReqToCallback: true,
     },
     (req, email, password, done, res) => {
-      if(req.route.path == "/adminlogin"){
-        console.log("first")
-          Admin.findOne({ email: email }, (err, user) => {
-          if (err) {
-            return done(err);
-          }
-          if (!user) {
-            return done(null, false, {
-              message: "User does not exist",
-            });
-          }
-          return done(null, user);
-        });
-      }else{
         User.findOne({ email: email }, (err, user) => {
           if (err) {
             return done(err);
@@ -70,7 +55,6 @@ passport.use(
             });
         });
       }      
-    }
   )
 );
 

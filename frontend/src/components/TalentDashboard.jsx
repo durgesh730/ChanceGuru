@@ -8,9 +8,9 @@ const TalentDashboard = () => {
     const [cards, setcards] = useState([])
     const getProjects = () => {
         axios
-            .get("http://localhost:5000/projects")
+            .get("http://localhost:5000/project/allProjects")
             .then((res) => {
-                setcards(res.data.data)
+                setcards(res.data)
             })
             .catch((err) => {
                 console.log(err);

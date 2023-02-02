@@ -27,10 +27,10 @@ const Login = () => {
                             </div>
                             <div className="web1-tagline">One Place for Both Talent and Talent Seeker</div>
                             <div className="web1-buttons d-flex flex-column">
-                                <Link to="/signup">
+                                <Link to="/signup" state={{talent : true}} >
                                     <button className="btn btn-talents">Sign up as Talents</button>
                                 </Link>
-                                <Link to="/signup">
+                                <Link to="/signup" state={{talent:false}}>
                                     <button className="btn btn-seekers">Sign up as Seekers</button>
                                 </Link>
                             </div>

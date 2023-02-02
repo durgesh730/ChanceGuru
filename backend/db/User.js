@@ -4,6 +4,10 @@ require("mongoose-type-email");
 
 let schema = new mongoose.Schema(
   {
+    username : {
+      type : String ,
+      required : true ,
+    },
     phone: {
       type: String,
       validate: {

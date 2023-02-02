@@ -4,7 +4,7 @@ import { useAuthValue } from "./AuthContext";
 import { useState, useEffect } from "react";
 import { authentication } from "./firebase-config";
 import { sendEmailVerification } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate , Link } from "react-router-dom";
 
 import backimg from "../assets/images/kamal.jpeg";
 import logo from "../assets/images/logo1.svg";
@@ -97,6 +97,9 @@ const VerifyEmail = () => {
                             <div className="text-center mt-4 email-text3">
                                 Click on the link in your email to activate your account
                             </div>
+                        </div>
+                        <div className="card1">
+                            Verified but not redirected ? <Link to="/login">Click Here</Link>
                         </div>
                         <div className="alternate-option my-5 text-center">
                             Didn’t recived the link yet?{" "}

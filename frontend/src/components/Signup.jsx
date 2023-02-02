@@ -8,9 +8,8 @@ import {
     updateProfile,
 } from "firebase/auth";
 import PhoneInput from "react-phone-number-input";
-import { async } from "@firebase/util";
 import { useAuthValue } from "./AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate , useLocation } from "react-router-dom";
 
 import "react-phone-number-input/style.css";
 import "./style.css";
@@ -20,6 +19,7 @@ import axios from "axios";
 
 const Login = () => {
     const navigate = useNavigate();
+    const location = useLocation();
     const { setTimeActive } = useAuthValue();
     const [errorMsg, setErrorMsg] = useState("");
     const [phone, setPhone] = useState("+911234567890");
@@ -96,41 +96,23 @@ const Login = () => {
             signInWithPhoneNumber(authentication, phone, appVerifier)
                 .then((confirmationResult) => {
                     window.confirmationResult = confirmationResult;
-                    navigate("/verification");
+                    axios.post("http://localhost:5000/auth/signup",{
+                        username: username,
+                        email: email,
+                        pass: pass,
+                        phone: phone,
+                        type: location.state.talent ? "user" : "seeker"
+                    }).then(() => {
+                        alert(`Welcome ${location.state.talent ? "Talent" : "Seeker"} User. Your sign up data has been saved! Please verify your email.`);
+                        navigate("/verification");
+                    }).catch((err) => {
+                        console.log(err);
+                    });
                 })
                 .catch((error) => {
                     console.log(error);
                 });
         }
-
-        if(uTypeValue == "Talent") {
-            console.log("Its a talent user");
-            const data = values;
-            axios.post("http://localhost:5000/register/talentSignUp",{
-                username: username,
-        email: email,
-        pass: pass,
-        phone: phone,
-        uType: uType
-            }).then(() => {
-                alert("Welcome Talent User. Your sign up data has been saved!")
-            });
-            console.log(data);
-        } else {
-            console.log("Its a seeker user");
-            const data = values;
-            axios.post("http://localhost:5000/register/seekerSignUp",{
-                username: username,
-        email: email,
-        pass: pass,
-        phone: phone,
-        uType: uType
-            }).then(() => {
-                alert("Welcome Seeker User. Your sign up data has been saved!")
-            });
-            console.log(data);
-        }
-
     };
 
     return (
@@ -138,7 +120,7 @@ const Login = () => {
             <div className="login-container row">
                 <div className="left-side col-5">
                     <div className="top-left d-flex align-items-center">
-                        <i className="bi bi-arrow-left"></i>
+                        <i onClick={()=>{ navigate("/");}} className="bi bi-arrow-left"></i>
                         <p className="px-3 m-0">Signup</p>
                     </div>
                     <img className="login-img" src={backimg} alt="" />
@@ -203,11 +185,9 @@ const Login = () => {
                             defaultCountry=""
                         />
                         <div style={{ position: "relative", display: "flex" }}>
-                            <select className="form-control my-2" onChange={(event) => {
-                                setValues((prev) => ({ ...prev, uType: event.target.value }));
-                            }}>
-                                <option selected>Talent</option>
-                                <option >Seeker</option>
+                            <select defaultValue={location.state.talent ? "user" : "seeker"} className="form-control my-2" disabled={true} > 
+                                <option value="user" >Talent</option>
+                                <option value="seeker">Seeker</option>
                             </select>
                             <div
                                 style={{

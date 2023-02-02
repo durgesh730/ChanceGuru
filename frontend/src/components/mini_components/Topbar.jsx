@@ -49,7 +49,7 @@ const Topbar = (props) => {
                         <span className="topbar-icons-container">
                             <img className="topbar-icons topbar-profile" src={profile} alt="" />
                         </span>
-                        <span className="top-profile-name">{user.name}</span>
+                        <span className="top-profile-name">{user.username}</span>
                     </span>
                 </Link>
             </div>

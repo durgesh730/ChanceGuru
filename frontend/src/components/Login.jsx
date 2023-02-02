@@ -4,7 +4,7 @@ import React , { useState , useEffect } from "react";
 import "./style.css";
 import backimg from "../assets/images/godfather.png";
 import logo from "../assets/images/logo1.svg";
-import { useNavigate } from "react-router-dom";
+import { useNavigate , Link } from "react-router-dom";
 import { useAuthValue } from "./AuthContext";
 import axios from 'axios';
 
@@ -23,27 +23,31 @@ const Login = () => {
         e.preventDefault();
         setErrorMsg("");
         axios
-            .get("http://localhost:5000/getuser", { email: values.email })
+            .post("http://localhost:5000/auth/login", { email: values.email , password : values.pass})
             .then((res) => {
-                if (res.status == 201) {
+                if (res.status == 200) {
                     signInWithEmailAndPassword(authentication, values.email, values.pass)
                         .then(() => {
                             if (!authentication.currentUser.emailVerified) {
-                                //     sendEmailVerification(authentication.currentUser)
-                                //     .then(() => {
-                                //       setTimeActive(true)
-                                //       navigate('/verify-email')
-                                //     })
-                                //   .catch(err => alert(err.message))
                                 alert("Email not verified");
-                                // navigate('/emailverify')
                             } else {
-                                navigate("/talentdashboard");
+                                localStorage.setItem("token" , res.data.token );
+                                localStorage.setItem("type", res.data.type);
+                                axios
+                                    .get("http://localhost:5000/auth/" , {
+                                        headers: {
+                                            Authorization: `Bearer ${res.data.token}`,
+                                        },
+                                    })
+                                    .then((data) => {
+                                        localStorage.setItem("login" , JSON.stringify(data.data))
+                                        navigate("/talentdashboard");
+                                    })
+                                    .catch((err) => {console.log(err)});
                             }
                         })
                         .catch((err) => setErrorMsg(err.message));
 
-                    localStorage.setItem("login" , JSON.stringify(res.data[0]))
                 }
             })
             .catch((err) => {
@@ -63,7 +67,7 @@ const Login = () => {
             <div className="login-container row">
                 <div className="left-side col-5">
                     <div className="top-left d-flex align-items-center">
-                        <i className="bi bi-arrow-left"></i>
+                        <i onClick={()=>{navigate("/")}} className="bi bi-arrow-left"></i>
                         <p className="px-3 m-0">Login</p>
                     </div>
                     <img className="login-img" src={backimg} alt="" />
@@ -110,11 +114,14 @@ const Login = () => {
                         </button>
                         <div className="alternate-option text-center">
                             Don’t have an account{" "}
-                            <a href="/signup">
-                                <b>
-                                    <u>Signup</u>
-                                </b>
-                            </a>
+                            <div className="web1-buttons d-flex flex-column mt-3">
+                                <Link to="/signup" state={{talent : true}} >
+                                    <button className="btn btn-talents">Sign up as Talents</button>
+                                </Link>
+                                <Link to="/signup" state={{talent:false}}>
+                                    <button className="btn btn-seekers">Sign up as Seekers</button>
+                                </Link>
+                            </div>
                         </div>
                     </form>
                 </div>

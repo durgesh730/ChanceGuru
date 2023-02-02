@@ -37,7 +37,7 @@ let schema = new mongoose.Schema(
                     type: String,
                 },
                 instagram: {
-                    type: Sring
+                    type: String
                 }
             }
         ],

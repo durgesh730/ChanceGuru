@@ -3,7 +3,6 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const passportConfig = require("./lib/passportConfig");
 const cors = require("cors");
-const fs = require("fs");
 const dotenv = require("dotenv");
 
 dotenv.config();
