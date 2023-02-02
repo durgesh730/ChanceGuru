@@ -1,5 +1,5 @@
-import React  from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 import "./minicomp.css";
 import home from "../../assets/icons/144-home copy.svg";
@@ -12,6 +12,24 @@ import profile from "../../assets/icons/profile1.svg";
 import mask from "../../assets/icons/Group 110.svg"
 
 const Topbar = (props) => {
+    const [profileHeight, setProfileHeight] = useState(0);
+    const navigate = useNavigate();
+    function toggleProfileOptions() {
+        if (profileHeight == 0) {
+            setProfileHeight(192)
+            document.getElementById('profileOption').style.height = "192px"
+        }
+        else {
+            setProfileHeight(0)
+            document.getElementById('profileOption').style.height = "0px"
+        }
+    }
+    function handleLogout() {
+        localStorage.clear()
+        navigate("/login")
+        console.log("Logout succesfull")
+        
+    }
     const user = JSON.parse(localStorage.getItem("login"));
     return (
         <div className="topbar">
@@ -44,15 +62,31 @@ const Topbar = (props) => {
                         <img className="topbar-icons" src={notification} alt="" />
                     </span>
                 </Link>
-                <Link to="/profiledetails">
-                    <span className="d-flex align-items-center cursor-pointer">
-                        <span className="topbar-icons-container">
-                            <img className="topbar-icons topbar-profile" src={profile} alt="" />
-                        </span>
-                        <span className="top-profile-name">{user.username}</span>
+                {/* <Link to="/profiledetails"> */}
+                <span className="d-flex align-items-center cursor-pointer"
+                    onClick={toggleProfileOptions} >
+                    <span className="topbar-icons-container">
+                        <img className="topbar-icons topbar-profile" src={profile} alt="" />
                     </span>
-                </Link>
+                    <span className="top-profile-name">{user.username}</span>
+                    <div className="profile-options" id="profileOption">
+                        <ul>
+                            <li>
+                                <Link to="/profiledetails">
+                                    My Profile
+                                </Link>
+                            </li>
+                            <li>Account Settings</li>
+                            <li>FAQ's & Help</li>
+                            <li onClick={handleLogout}>Logout</li>
+                        </ul>
+                    </div>
+                </span>
+
+                {/* </Link> */}
             </div>
+
+
         </div>
     );
 };
