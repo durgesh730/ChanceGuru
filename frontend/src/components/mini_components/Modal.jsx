@@ -3,6 +3,7 @@ import axios from "axios";
 
 const Modal = ({ setModel, info , roles }) => {
     const userId = JSON.parse(localStorage.getItem("login")).id;
+    console.log(info , roles)
     const seekerId = info.seekerId ; 
     const roleApply = (item) => {
         axios
@@ -26,14 +27,14 @@ const Modal = ({ setModel, info , roles }) => {
             <div className="modal-container">
                 <div className="modal-header">Your profile is weak to apply for this role.</div>
                 <div className="modal-body">
-                    <div className="modal-name">‘{info.name}’</div>
+                    <div className="modal-name">‘{info.basicInfo.name}’</div>
                     <div className="secondary-text">Roles</div>
                     <div className="modal-roles">
                         {roles.map((item ,index) => {
                             return(
                                 <>
                                     <div key={index}>
-                                        <div className="role-name">{item.name}</div>
+                                        <div className="role-name">{item.role}</div>
                                         <div className="total-roles">
                                             <button onClick={()=>{roleApply(item)}} className="apply-btn">Apply</button>
                                         </div>

@@ -25,7 +25,7 @@ passport.use(
       passReqToCallback: true,
     },
     (req, email, password, done, res) => {
-        User.findOne({ email: email }, (err, user) => {
+      User.findOne({ email: email }, (err, user) => {
           if (err) {
             return done(err);
           }
@@ -66,7 +66,7 @@ passport.use(
     },
     (jwt_payload, done) => {
       User.findById(jwt_payload._id)
-        .then((user) => {
+      .then((user) => {
           console.log(Object.keys(jwt_payload));
           if (!user) {
             return done(null, false, {

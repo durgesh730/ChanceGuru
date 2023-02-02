@@ -1,9 +1,11 @@
 import React from "react";
-
+import axios from 'axios';
 import magnifyingIcon from "../../../assets/icons/find-my-friend.svg";
 import maskIcon from "../../../assets/icons/mask.svg";
 
-const ProjectSummaryForm = ({ display }) => {
+const ProjectSummaryForm = ({ display  , values }) => {
+    const basicInfo = values.basicInfo;
+    const roles = values.formFields;
     let show = {};
     if (display) {
         show = { display: "block" };
@@ -11,12 +13,27 @@ const ProjectSummaryForm = ({ display }) => {
         show = { display: "none" };
     }
 
+    const publishProject = () => {
+        axios
+            .post("http://localhost:5000/project" , {basicInfo : basicInfo , roles : roles} ,  {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                }
+            })
+            .then((res) => {
+                alert("Project Published Successfully");
+                console.log(res)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
     return (
         <div className="form-body" style={show}>
             <div className="form-container">
-                <div className="form-head">Shakespeare's Macbeth</div>
+                <div className="form-head">{basicInfo.name}</div>
                 <div className="form-summary">
-                    Casting "Macbeth" by William Shakespeare. Set in 11th century Scotland.
+                    {basicInfo.desc}
                 </div>
                 <hr />
                 <div className="summary">
@@ -28,26 +45,26 @@ const ProjectSummaryForm = ({ display }) => {
                         <table className="table table-borderless">
                             <tbody>
                                 <tr>
-                                    <td className="summary-name">Company</td>
+                                    <td className="summary-name">{basicInfo.company}</td>
                                     <td className="summary-desc">
-                                        Nuance Theatre Co.,23, Park Broadway, New York, United States
+                                        {basicInfo.address}, {basicInfo.city}, {basicInfo.state}
                                     </td>
                                 </tr>
                                 <tr>
                                     <td className="summary-name">Contact</td>
-                                    <td className="summary-desc">(022) 678 897</td>
+                                    <td className="summary-desc">{basicInfo.contact}</td>
                                 </tr>
                                 <tr>
                                     <td className="summary-name">Email</td>
-                                    <td className="summary-desc">nuancetheatreco@tesmail.com</td>
+                                    <td className="summary-desc">{basicInfo.email}</td>
                                 </tr>
                                 <tr>
                                     <td className="summary-name">Facebook</td>
-                                    <td className="summary-desc">www.facebook.com/NuanceTheatreCo</td>
+                                    <td className="summary-desc">{basicInfo.facebook}</td>
                                 </tr>
                                 <tr>
                                     <td className="summary-name">Instagram</td>
-                                    <td className="summary-desc">Nuance Casting (@nuance_co)</td>
+                                    <td className="summary-desc">{basicInfo.instagram}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -77,10 +94,11 @@ const ProjectSummaryForm = ({ display }) => {
                     <label className="label-desc">Chorus/ Ensemble (01)</label>
                     <input type="text" className="form-control" placeholder="Thanes : Male, 20-30" />
                     <div className="row">
-                        <input type="submit" className="col-4 cancel-btn btn btn-lg btn-block my-2" value="Cancel" />
+                        <input type="button" className="col-4 cancel-btn btn btn-lg btn-block my-2" value="Cancel" />
                         <p className="col-1"></p>
                         <input
-                            type="submit"
+                            onClick={()=>{publishProject()}}
+                            type="button"
                             className="col-7 save-btn btn btn-lg btn-block my-2"
                             value="Save and Publish"
                         />
