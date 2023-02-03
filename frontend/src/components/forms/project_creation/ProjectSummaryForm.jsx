@@ -2,8 +2,10 @@ import React from "react";
 import axios from 'axios';
 import magnifyingIcon from "../../../assets/icons/find-my-friend.svg";
 import maskIcon from "../../../assets/icons/mask.svg";
+import {useNavigate} from 'react-router-dom';
 
 const ProjectSummaryForm = ({ display  , values }) => {
+    const navigate = useNavigate();
     const basicInfo = values.basicInfo;
     const roles = values.formFields;
     let show = {};
@@ -21,8 +23,13 @@ const ProjectSummaryForm = ({ display  , values }) => {
                 }
             })
             .then((res) => {
-                alert("Project Published Successfully");
-                console.log(res)
+                if(res.status == 203){
+                    alert(res.data)
+                }else{
+                    alert("Project Published Successfully");
+                    navigate("seekerdashboard");
+                    console.log(res)
+                }
             })
             .catch((err) => {
                 console.log(err)

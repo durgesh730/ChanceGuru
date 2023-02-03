@@ -26,7 +26,7 @@ const Sidebar2 = () => {
         instagram: "",
     });
 
-    const [formFields, setformFields] = useState([{ role: "" , characters : [] }]);
+    const [formFields, setformFields] = useState([{ role: "", characters: [] }]);
     const setFalse = () => {
         setDetails(false);
         setLabels(false);
@@ -34,25 +34,25 @@ const Sidebar2 = () => {
         setSummary(false);
     };
 
-    const [active, setactive] = useState({1:true , 2:false , 3:false , 4:false})
+    const [active, setactive] = useState({ 1: true, 2: false, 3: false, 4: false })
     const toggleForm = (form_name) => {
         setFalse();
         switch (form_name) {
             case "details":
                 setDetails(true);
-                setactive({1:true , 2:false , 3:false , 4:false});
+                setactive({ 1: true, 2: false, 3: false, 4: false });
                 break;
             case "labels":
                 setLabels(true);
-                setactive({1:false , 2:true , 3:false , 4:false});
+                setactive({ 1: false, 2: true, 3: false, 4: false });
                 break;
             case "description":
                 setBio(true);
-                setactive({1:false , 2:false , 3:true , 4:false});
+                setactive({ 1: false, 2: false, 3: true, 4: false });
                 break;
             case "summary":
                 setSummary(true);
-                setactive({1:false , 2:false , 3:false , 4:true});
+                setactive({ 1: false, 2: false, 3: false, 4: true });
                 break;
         }
     };
@@ -74,30 +74,30 @@ const Sidebar2 = () => {
         instagram: projectDetails.instagram,
     }
 
-   
+
     return (
         <>
             <div className="sidebar">
                 <div className="sidebar-components">
                     <h3>Design a Project</h3>
-                    <p className={`sidebar-items ${active[1] ? "active" : ""}`}>
+                    <p className={`sidebar-items ${active[1] ? "active" : ""}`} onClick={() => {setDetails(true); setactive({ 1: true, 2: false, 3: false, 4: false }); }} >
                         Project Details <span></span>
                     </p>
-                    <p className={`sidebar-items ${active[2] ? "active" : "" }`} onClick={() => alert("Save project details you will be directed to Role Labels")}>
+                    <p className={`sidebar-items ${active[2] ? "active" : ""}`} onClick={() => alert("Save project details you will be directed to Role Labels")}>
                         Role Labels <span></span>
                     </p>
                     <p className={`sidebar-items ${active[3] ? "active" : ""}`} onClick={() => alert("Save Role Labels you will be directed to Role Description")}>
                         Role Description <span></span>
                     </p>
-                    <p className={`sidebar-items ${active[4] ? "active" : "" }`} onClick={() => alert("Save Role Description you will be directed to Summary")}>
+                    <p className={`sidebar-items ${active[4] ? "active" : ""}`} onClick={() => alert("Save Role Description you will be directed to Summary")}>
                         Project Summary <span></span>
                     </p>
                 </div>
             </div>
-            <ProjectDetailsForm display={details} functions={{projectDetails , setProjectDetails , toggleForm}} />
-            <RoleLabelForm display={labels} functions={{formFields , setformFields , toggleForm}} />
-            <RoleDescForm display={description} functions={{formFields , setformFields , toggleForm}} />
-            <ProjectSummaryForm display={summary} values={{basicInfo ,formFields}} />
+            <ProjectDetailsForm display={details} functions={{ projectDetails, setProjectDetails, toggleForm }} />
+            <RoleLabelForm display={labels} functions={{ formFields, setformFields, toggleForm }} />
+            <RoleDescForm display={description} functions={{ formFields, setformFields, toggleForm }} />
+            <ProjectSummaryForm display={summary} values={{ basicInfo, formFields }} />
         </>
     );
 };

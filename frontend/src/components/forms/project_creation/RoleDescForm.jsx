@@ -1,6 +1,7 @@
 import React, { useState , useEffect } from "react";
 
 const RoleDescForm = ({ display , functions }) => {
+    const formFields = functions.formFields;
     const setformFields = functions.setformFields ;
     const roleData = functions.formFields;
     const [active, setactive] = useState(functions.formFields[0].role);
@@ -11,7 +12,7 @@ const RoleDescForm = ({ display , functions }) => {
         details: "",
         age: ""
     })
-    const [character, setcharacter] = useState(functions.formFields);
+    console.log(formFields);
     let show = {};
     if (display) {
         show = { display: "block" };
@@ -21,7 +22,7 @@ const RoleDescForm = ({ display , functions }) => {
 
     const updateChar = (id) => {
         let bool = false;
-        character.forEach(item => {
+        formFields.forEach(item => {
             if (item.role === id) {
                 setshowchar(item.characters);
                 bool = true;
@@ -38,7 +39,7 @@ const RoleDescForm = ({ display , functions }) => {
             return;
         }
 
-        character.forEach(item => {
+        formFields.forEach(item => {
             if (item.role === active) {
                 const data = item.characters;
                 const newData = [...data, charData];
@@ -51,23 +52,23 @@ const RoleDescForm = ({ display , functions }) => {
 
     const handleDesc = () => {
         let bool = false ;
-        character.forEach((item)  =>{
+        formFields.forEach((item)  =>{
             if(item.characters.length === 0){
                 bool = true ;
                 return ;
             }
         })
         if(bool){
-            alert("There should be atleat one character for each role");
+            alert("There should be atleat one formFields for each role");
         }else{
-            setformFields(character);
+            setformFields(formFields);
             functions.toggleForm("summary");    
         }
     }
 
     useEffect(() => {
       setactive(functions.formFields[0].role)
-      setcharacter(functions.formFields)
+      setformFields(functions.formFields)
     }, [])
     
     return (
@@ -83,7 +84,7 @@ const RoleDescForm = ({ display , functions }) => {
                                 return (
                                     <>
                                         <div
-                                            className={`toggle-option ${active === item.role && "active-toggle"}`}
+                                            className={`toggle-option ${active === item.role && "active-toggle" }`}
                                             onClick={() => { setactive(item.role); updateChar(item.role); }}
                                         >
                                             {item.role}
@@ -94,7 +95,7 @@ const RoleDescForm = ({ display , functions }) => {
                         </div>
 
                         <div>
-                            <table className="charTable" style={{display : `${showchar.length == 0 ? "none" : ""}`}} >
+                            <table className="charTable" style={{display : `${showchar?.length == 0 ? "none" : ""}`}} >
                                 <tr>
                                     <th>Name</th>
                                     <th>Gender</th>
@@ -119,8 +120,8 @@ const RoleDescForm = ({ display , functions }) => {
                         </div>
                         <div>
 
-                            <input type="button" className="full-width-btn" value="Add Another Character" />
-                            <input type="text" onChange={(e) => { setcharData({ ...charData, name: e.target.value }) }} className="form-control" placeholder="Character Name" />
+                            <input type="button" className="full-width-btn" value="Add Another formFields" />
+                            <input type="text" onChange={(e) => { setcharData({ ...charData, name: e.target.value }) }} className="form-control" placeholder="formFields Name" />
                             <select onChange={(e) => { setcharData({ ...charData, gender: e.target.value }) }} className="form-control form-select">
                                 <option value="" disabled selected>
                                     Gender

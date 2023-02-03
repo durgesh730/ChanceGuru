@@ -253,6 +253,8 @@
     padding: 30px;
     font-weight: bold;
     font-size: 20px;
+    overflow: auto;
+    height: 90vh;
 }
 
 .modal-header {
@@ -278,6 +280,10 @@
     width: 200px;
 }
 
+.char-name{
+    color: var(--color_p2);
+    font-weight: bold;
+}
 .modal-name {
     margin: 15px 0;
 }
@@ -290,7 +296,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 20px;
+    border-bottom: 3px solid ;
+    margin-bottom: 10px;
 }
 
 .apply-btn,

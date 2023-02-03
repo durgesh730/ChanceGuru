@@ -42,6 +42,10 @@ router.get("/getProject/:id", (req, res) => {
 router.post("/", jwtAuth, (req, res) => {
     const user = req.user;
     const data = req.body;
+    if(user.type === "user"){
+        res.status(203).send("User can't add project , you should register as seeker")
+        return;
+    };
     const project = new Project({
         seekerId: user._id,
         basicInfo: data.basicInfo,
