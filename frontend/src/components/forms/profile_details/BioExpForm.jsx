@@ -30,8 +30,8 @@ const BioExpForm = ({ display }) => {
     }
 
     const [bioData, setBioData] = useState({
-        bioText: "",
-        userId1:"1",
+        bio: "",
+        userId1: "1",
     });
 
     const [expData, setExpData] = useState({
@@ -40,12 +40,14 @@ const BioExpForm = ({ display }) => {
         startDate: "",
         endDate: "",
         aboutWork: "",
-       userId2:"1"
+        userId2: "1"
     })
+
     const {
-        bioText,
+        bio,
         userId1,
     } = bioData;
+
     const {
         workedIn,
         workedAs,
@@ -54,25 +56,34 @@ const BioExpForm = ({ display }) => {
         aboutWork,
         userId2
     } = expData;
+
     const handleBioInputChange = (e) => {
         setBioData({ ...bioData, [e.target.name]: e.target.value });
     };
+
     const handleExpInputChange = (e) => {
         setExpData({ ...expData, [e.target.name]: e.target.value });
     };
 
     const handleBioSubmit = (e) => {
+        console.log('hii')
         e.preventDefault();
         const data = bioData;
-        axios.post('http://localhost:5000/profiles/bioDetails', {
-            bioText: bioText,
-            userId1
-        }).then(() => {
+        axios.put('http://localhost:5000/profile/portfolio', {bio:bio},  {
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("token")}`
+            }
+        },
+         
+        
+        ).then((res) => {
             alert("Bio Details data saved!")
             console.log("data added");
+            console.log(res)
         })
         console.log(data);
     }
+
 
     const handleExpSubmit = (e) => {
         e.preventDefault();
@@ -91,7 +102,7 @@ const BioExpForm = ({ display }) => {
         console.log(data);
     }
 
-    
+
     return (
         <>
             {
@@ -119,10 +130,10 @@ const BioExpForm = ({ display }) => {
                                 Experience
                             </div>
                         </div>
-                        <form id="bio-form" onSubmit={handleBioSubmit} >
+                        <form id="bio-form" onSubmit={(e)=>{handleBioSubmit(e)}} >
                             <textarea
-                                name="bioText"
-                                value={bioData.bioText}
+                                name="bio"
+                                value={bioData.bio}
                                 onChange={handleBioInputChange}
                                 id="bio"
                                 className="form-control text-area"
@@ -135,7 +146,7 @@ const BioExpForm = ({ display }) => {
                             </label>
                             <div className="row">
                                 <input
-                                    type="submit"
+                                    type="button"
                                     className="col-4 cancel-btn btn btn-lg btn-block my-2"
                                     value="Cancel"
                                 />
@@ -149,16 +160,16 @@ const BioExpForm = ({ display }) => {
                         </form>
                         <form id="exp-form" style={{ display: "none" }} onSubmit={handleExpSubmit}>
                             <input type="submit" className="full-width-btn" value="Add Experience" />
-                            <input  name="workedIn"
+                            <input name="workedIn"
                                 value={bioData.workedIn}
                                 onChange={handleExpInputChange} type="text" className="form-control" placeholder="Worked in" />
-                            <input  name="workedAs"
+                            <input name="workedAs"
                                 value={bioData.workedAs}
                                 onChange={handleExpInputChange} type="text" className="form-control" placeholder="Worked as" />
-                            <input  name="startDate"
+                            <input name="startDate"
                                 value={bioData.startDate}
                                 onChange={handleExpInputChange} type="text" className="form-control" placeholder="Start date" />
-                                <input  name="endDate"
+                            <input name="endDate"
                                 value={bioData.endDate}
                                 onChange={handleExpInputChange} type="text" className="form-control" placeholder="End date" />
                             <textarea

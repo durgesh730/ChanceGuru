@@ -12,66 +12,52 @@ const TalentDetailsForm = ({ display }) => {
     }
 
     const [talentDetails, setTalentDetails] = useState({
-        tType: "",
-        ht: "",
-        wt:"",
+        type: "",
+        height: "",
+        weight: "",
         bodyType: "",
         skinTone: "",
-        eyeColor: "",
-        hairColor: "",
+        eyeColour: "",
+        hairColour: "",
         hairStyle: "",
         beardStyle: "",
-        languages: "",
+        language: "",
         boldScenes: "",
         allowances: "",
-        traveling: "",
+        travelling: "",
         userId: "1",
     });
-
-    const {
-        tType,
-        ht,
-        wt,
-        bodyType,
-        skinTone,
-        eyeColor,
-        hairColor,
-        hairStyle,
-        beardStyle,
-        languages,
-        boldScenes,
-        allowances,
-        traveling,
-        userId
-    } = talentDetails;
-
+    
     const handleInputChange = (e) => {
         setTalentDetails({ ...talentDetails, [e.target.name]: e.target.value });
     };
-    const handleSubmit = (e) => {
+
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const data = talentDetails;
-        axios.post('http://localhost:5000/profiles/talentDetails', {
-            tType:tType,
-        ht: ht,
-        wt:wt,
-        bodyType: bodyType,
-        skinTone: skinTone,
-        eyeColor: eyeColor,
-        hairColor: hairColor,
-        hairStyle: hairStyle,
-        beardStyle: beardStyle,
-        languages: languages,
-        boldScenes: boldScenes,
-        allowances:allowances,
-        traveling: traveling,
-        userId: userId
-        }).then(() => {
-            alert("Talent Details data saved!")
-            console.log("data added")
-        })
-        console.log(data);
-    };
+    
+        const { type, height, weight, bodyType, skinTone, eyeColour, hairColour,
+            hairStyle, beardStyle, language, boldScenes, allowances, travelling, userId
+        } = talentDetails;
+
+        const res = await fetch("http://localhost:5000/profile/talent", {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem("token")}`,
+            },
+            body: JSON.stringify({
+                type, height, weight, bodyType, skinTone,
+                eyeColour, hairColour, hairStyle, beardStyle,
+                language, boldScenes, allowances, travelling,
+                userId
+            })
+        });
+        const ok = await res.json();
+        console.log(ok);
+    }
+
+
     return (
         <>
             {
@@ -82,9 +68,9 @@ const TalentDetailsForm = ({ display }) => {
                         <form onSubmit={handleSubmit}>
                             <div style={{ position: "relative", display: "flex" }}>
                                 <select
-                                    name="tType"
+                                    name="type"
                                     onChange={handleInputChange}
-                                    value={talentDetails.tType}
+                                    value={talentDetails.type}
                                     className="form-control form-select"
                                 >
                                     <option value="" disabled selected>
@@ -95,16 +81,16 @@ const TalentDetailsForm = ({ display }) => {
                                 </select>
                             </div>
                             <input
-                                name="ht"
-                                value={talentDetails.ht}
+                                name="height"
+                                value={talentDetails.height}
                                 onChange={handleInputChange}
                                 type="text"
                                 className="form-control"
                                 placeholder="Height"
                             />
-                             <input
-                                name="wt"
-                                value={talentDetails.wt}
+                            <input
+                                name="weight"
+                                value={talentDetails.weight}
                                 onChange={handleInputChange}
                                 type="text"
                                 className="form-control"
@@ -135,9 +121,9 @@ const TalentDetailsForm = ({ display }) => {
                                 <option>skin2</option>
                             </select>
                             <select
-                                name="eyeColor"
+                                name="eyeColour"
                                 onChange={handleInputChange}
-                                value={talentDetails.eyeColor}
+                                value={talentDetails.eyeColour}
                                 className="form-control form-select"
                             >
                                 <option value="" disabled selected>
@@ -148,9 +134,9 @@ const TalentDetailsForm = ({ display }) => {
                                 <option>Green</option>
                             </select>
                             <select
-                                name="hairColor"
+                                name="hairColour"
                                 onChange={handleInputChange}
-                                value={talentDetails.hairColor}
+                                value={talentDetails.hairColour}
                                 className="form-control form-select"
                             >
                                 <option value="" disabled selected>
@@ -187,9 +173,9 @@ const TalentDetailsForm = ({ display }) => {
                                 <option>None</option>
                             </select>
                             <select
-                                name="languages"
+                                name="language"
                                 onChange={handleInputChange}
-                                value={talentDetails.languages}
+                                value={talentDetails.language}
                                 className="form-control form-select"
                             >
                                 <option value="" disabled selected>
@@ -224,9 +210,9 @@ const TalentDetailsForm = ({ display }) => {
                                 <option value="false">No</option>
                             </select>
                             <select
-                                name="traveling"
+                                name="travelling"
                                 onChange={handleInputChange}
-                                value={talentDetails.traveling}
+                                value={talentDetails.travelling}
                                 className="form-control form-select"
                             >
                                 <option value="" disabled selected>

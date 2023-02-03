@@ -5,9 +5,12 @@ import { toast, ToastContainer } from "react-toastify";
 
 import "../forms.css";
 import { useState } from "react";
+import { useEffect } from "react";
 
 const ProfileDetailsForm = ({ display }) => {
+
     const user = JSON.parse(localStorage.getItem("login"));
+
     let show = {};
     if (display) {
         show = { display: "block" };
@@ -16,54 +19,63 @@ const ProfileDetailsForm = ({ display }) => {
     }
 
     const [profileDetails, setProfileDetails] = useState({
-        full_name: "",
+        fullname: "",
         gender: "",
         email: "",
         password: "",
         DOB: "",
         city: "",
-        State: "",
+        state: "",
         country: "",
         address: "",
         linkedin: "",
         facebook: "",
         instagram: "",
-        userId:"1"
+        userId: "1",
     });
-    const { full_name, gender, email, password, DOB, city, State, country, address, linkedin, facebook, instagram, userId } =
-        profileDetails;
-
-    // const history = useNavigate();
 
     const handleInputChange = (e) => {
-        // console.log(profileDetails);
         setProfileDetails({ ...profileDetails, [e.target.name]: e.target.value });
     };
-    const handleSubmit = (e) => {
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const data = profileDetails;
-        axios
-            .post("http://localhost:5000/profiles", {
-                full_name: full_name,
-                gender: gender,
-                email: email,
-                password: password,
-                DOB: DOB,
-                city: city,
-                State: State,
-                country: country,
-                address: address,
-                linkedin: linkedin,
-                facebook: facebook,
-                instagram: instagram,
-                userId:userId
+        const { fullname, gender, email, password, DOB, city, state,
+            country, address, linkedin, facebook, instagram, userId } =
+            profileDetails;
+
+        const res = await fetch("http://localhost:5000/profile/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem("token")}`,
+            },
+            body: JSON.stringify({
+                fullname, gender, email, password, DOB, city, state,
+                country, address, linkedin, facebook, instagram, userId
             })
-            .then(() => {
-                alert("Profile data saved!");
-                console.log("data added");
+        });
+        const ok = await res.json();
+    }
+
+    const handleShow = async () => {
+        axios
+            .get(`http://localhost:5000/profile/`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+            })
+            .then((response) => {
+                setProfileDetails(response.data);
+            })
+            .catch((err) => {
+                console.log(err.response);
             });
-        console.log(data);
-    };
+    }
+
+    useEffect(() => {
+        handleShow()
+    }, [])
 
     return (
         <>
@@ -77,9 +89,9 @@ const ProfileDetailsForm = ({ display }) => {
                             <input
                                 type="text"
                                 className="form-control"
-                                placeholder="Full Name"
-                                name="full_name"
-                                value={profileDetails.full_name}
+                                placeholder='Name'
+                                name="fullname"
+                                value={profileDetails.fullname}
                                 onChange={handleInputChange}
                             />
                             <div style={{ position: "relative", display: "flex" }}>
@@ -135,9 +147,9 @@ const ProfileDetailsForm = ({ display }) => {
                                 </select>
                                 <p className="mx-2"></p>
                                 <select
-                                    name="State"
+                                    name="state"
                                     onChange={handleInputChange}
-                                    value={profileDetails.State}
+                                    value={profileDetails.state}
                                     className="form-control form-select"
                                 >
                                     <option value="" disabled selected>
@@ -150,7 +162,7 @@ const ProfileDetailsForm = ({ display }) => {
                             <select
                                 name="country"
                                 onChange={handleInputChange}
-                                value={country}
+                                value={profileDetails.country}
                                 className="form-control form-select"
                             >
                                 <option value="" disabled selected>

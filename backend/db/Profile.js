@@ -6,87 +6,87 @@ let schema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             required: true,
         },
-        basicInfo: [
-            {
-                fullname: {
-                    type: String,
-                },
-                gender: {
-                    type: String,
-                },
-                dob: {
-                    type: Number,
-                    max: new Date().getFullYear(),
-                },
-                city: {
-                    type: String,
-                },
-                state: {
-                    type: String,
-                },
-                country: {
-                    type: String,
-                },
-                address: {
-                    type: String,
-                },
-                linkedin: {
-                    type: String,
-                },
-                facebook: {
-                    type: String,
-                },
-                instagram: {
-                    type: String
-                }
+        basicInfo:
+        {
+            fullname: {
+                type: String,
+            },
+            gender: {
+                type: String,
+            },
+            DOB: {
+                type: String,
+                max: new Date().getFullYear(),
+            },
+            city: {
+                type: String,
+            },
+            state: {
+                type: String,
+            },
+            country: {
+                type: String,
+            },
+            address: {
+                type: String,
+            },
+            linkedin: {
+                type: String,
+            },
+            facebook: {
+                type: String,
+            },
+            instagram: {
+                type: String
             }
-        ],
-        talent: [
-            {
-                type: {
-                    type: String,
-                },
-                height: {
-                    type: Number,
-                },
-                wieght: {
-                    type: Number,
-                },
-                bodyType: {
-                    type: String,
-                },
-                skinTone: {
-                    type: String,
-                },
-                eyeColour: {
-                    type: String,
-                },
-                hairColour: {
-                    type: String,
-                },
-                hairStyle: {
-                    type: String,
-                },
-                beard: {
-                    type: String,
-                },
-                beardStyle: {
-                    type: String,
-                },
-                language: {
-                    type: String,
-                },
-                boldScene: {
-                    type: Boolean,
-                },
-                allowances: {
-                    type: Boolean,
-                },
-                travelling: {
-                    type: Boolean,
-                },
-            }
-        ],
+        },
+
+        talent:
+        {
+            type: {
+                type: String,
+            },
+            height: {
+                type: Number,
+            },
+            weight: {
+                type: Number,
+            },
+            bodyType: {
+                type: String,
+            },
+            skinTone: {
+                type: String,
+            },
+            eyeColour: {
+                type: String,
+            },
+            hairColour: {
+                type: String,
+            },
+            hairStyle: {
+                type: String,
+            },
+            beard: {
+                type: String,
+            },
+            beardStyle: {
+                type: String,
+            },
+            language: {
+                type: String,
+            },
+            boldScenes: {
+                type: Boolean,
+            },
+            allowances: {
+                type: Boolean,
+            },
+            travelling: {
+                type: Boolean,
+            },
+        },
+
         portfolio: {
             bio: {
                 type: String
@@ -157,8 +157,8 @@ let schema = new mongoose.Schema(
                 }
             }
         ],
-        updatedAt : {
-            type : mongoose.Schema.Types.ObjectId ,
+        updatedAt: {
+            type: mongoose.Schema.Types.ObjectId,
         }
     },
     { collation: { locale: "en" } }
