@@ -57,7 +57,6 @@ const TalentDetailsForm = ({ display }) => {
         console.log(ok);
     }
 
-
     return (
         <>
             {

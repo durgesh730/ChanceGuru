@@ -69,13 +69,11 @@ const BioExpForm = ({ display }) => {
         console.log('hii')
         e.preventDefault();
         const data = bioData;
-        axios.put('http://localhost:5000/profile/portfolio', {bio:bio},  {
+        axios.put('http://localhost:5000/profile/portfolio', { bio: bio }, {
             headers: {
                 "Authorization": `Bearer ${localStorage.getItem("token")}`
             }
         },
-         
-        
         ).then((res) => {
             alert("Bio Details data saved!")
             console.log("data added");
@@ -88,16 +86,25 @@ const BioExpForm = ({ display }) => {
     const handleExpSubmit = (e) => {
         e.preventDefault();
         const data = expData;
-        axios.post('http://localhost:5000/profiles/expDetails', {
+        axios.put('http://localhost:5000/profile/portfolio/exp', {
             workedIn,
             workedAs,
             startDate,
             endDate,
             aboutWork,
             userId2
-        }).then(() => {
+        },
+
+            {
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                }
+            }
+
+        ).then((res) => {
             alert("Experience Details data saved!")
             console.log("data added");
+            console.log(res)
         })
         console.log(data);
     }
@@ -130,7 +137,7 @@ const BioExpForm = ({ display }) => {
                                 Experience
                             </div>
                         </div>
-                        <form id="bio-form" onSubmit={(e)=>{handleBioSubmit(e)}} >
+                        <form id="bio-form" onSubmit={(e) => { handleBioSubmit(e) }} >
                             <textarea
                                 name="bio"
                                 value={bioData.bio}

@@ -40,7 +40,6 @@ router.post("/", jwtAuth, (req, res) => {
         },
         // updatedAt : ISODate(),
     })
-
     profile
         .save()
         .then((response) => {
@@ -52,6 +51,7 @@ router.post("/", jwtAuth, (req, res) => {
 })
 
 //To change the basicinfo of user
+
 router.put("/basicinfo", jwtAuth, (req, res) => {
     const data = req.body;
     const user = req.user;
@@ -73,8 +73,9 @@ router.put("/basicinfo", jwtAuth, (req, res) => {
 //to set talent of user  or change
 
 router.put("/talent", jwtAuth, async (req, res) => {
-    const { type, height, weight, bodyType, skinTone, eyeColour, hairColour,
-        hairStyle, beardStyle, language, boldScenes, allowances, travelling, } = req.body;
+    const { type, height, weight, bodyType, skinTone, eyeColour,
+        hairColour, hairStyle, beardStyle, language, boldScenes,
+        allowances, travelling, } = req.body;
     const user = req.user;
     try {
         const newData = {};
@@ -96,7 +97,7 @@ router.put("/talent", jwtAuth, async (req, res) => {
             { $set: { talent: newData } }, { new: true })
 
         res.json({ userData });
-        console.log(userData);
+        // console.log(userData);
 
     } catch (error) {
         console.error(error.message);
@@ -110,7 +111,7 @@ router.put("/portfolio", jwtAuth, (req, res) => {
     const data = req.body;
     const user = req.user;
     console.log(req.body);
-   const d = {bio:data.bio}
+    const d = { bio: data.bio }
 
     Profile.findOneAndUpdate({ userId: user._id }, {
         $set: {
@@ -120,7 +121,7 @@ router.put("/portfolio", jwtAuth, (req, res) => {
     })
         .then((response) => {
             res.json(response);
-            console.log(response)
+            // console.log(response)
         })
         .catch((err) => {
             res.status(400).json(err);
@@ -128,16 +129,18 @@ router.put("/portfolio", jwtAuth, (req, res) => {
 })
 
 
-router.put("/portfolio", jwtAuth, (req, res) => {
+router.put("/portfolio/exp", jwtAuth, (req, res) => {
     const data = req.body;
     const user = req.user;
-//     console.log(req.body);
-//    const d = {bio:data.bio}
-   const b = [...bio, {experience:data} ]
+    console.log(req.body);
+    // const bio = {bio:data.bio}
+    //    const d = {experience:data.experience}
+    //    const bio = Profile.findOne({userId: user._id})
+    //    const b = 
 
     Profile.findOneAndUpdate({ userId: user._id }, {
         $set: {
-            portfolio: b,
+            portfolio: ([...bio, { experience: data }]),
             // updatedAt: ISODate(),
         },
     })
@@ -150,18 +153,19 @@ router.put("/portfolio", jwtAuth, (req, res) => {
         })
 })
 
-
 //to set photo and video links of user or change
 
-router.put("/photovideo", jwtAuth, (req, res) => {
+router.put("/photo", jwtAuth, (req, res) => {
     const data = req.body;
     const user = req.user;
+    const p = { link: data.photo1 }
+    console.log(data)
+    console.log(p)
 
     Profile.findOneAndUpdate({ userId: user._id }, {
         $set: {
-            photos: data.photos,
-            videos: data.videos,
-            updatedAt: ISODate(),
+            photos: p,
+            // updatedAt: ISODate(),
         },
     })
         .then((response) => {
@@ -172,16 +176,16 @@ router.put("/photovideo", jwtAuth, (req, res) => {
         })
 })
 
-//to set education of user or change
 
-router.put("/education", jwtAuth, (req, res) => {
+router.put("/video", jwtAuth, (req, res) => {
     const data = req.body;
     const user = req.user;
-
+    const p = { link: data.youtube }
+    console.log(req.body)
     Profile.findOneAndUpdate({ userId: user._id }, {
         $set: {
-            education: data.education,
-            updatedAt: ISODate(),
+            videos: p,
+            // updatedAt: ISODate(),
         },
     })
         .then((response) => {
@@ -190,6 +194,33 @@ router.put("/education", jwtAuth, (req, res) => {
         .catch((err) => {
             res.status(400).json(err);
         })
+})
+
+
+//to set education of user or change
+
+router.put("/education", jwtAuth, async (req, res) => {
+    const { college, schoolYear, collegeYear, course } = req.body;
+    console.log(req.body)
+    const user = req.user;
+    try {
+        const newData = {};
+        if (college) { newData.college = college };
+        if (schoolYear) { newData.startYear = schoolYear };
+        if (collegeYear) { newData.endYear = collegeYear };
+        if (course) { newData.degree = course };
+        console.log(newData)
+
+        const userData = await Profile.findOneAndUpdate({ userId: user._id },
+            { $set: { education: newData } }, { new: true })
+
+        res.json({ userData });
+        console.log(userData);
+
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Some error occured")
+    }
 })
 
 //to set skills of user or change
@@ -197,11 +228,12 @@ router.put("/education", jwtAuth, (req, res) => {
 router.put("/skills", jwtAuth, (req, res) => {
     const data = req.body;
     const user = req.user;
+    const p = { skill: data.addSkills }
 
     Profile.findOneAndUpdate({ userId: user._id }, {
         $set: {
-            skills: data.skills,
-            updatedAt: ISODate(),
+            skills: p,
+            // updatedAt: ISODate(),
         },
     })
         .then((response) => {
@@ -214,18 +246,22 @@ router.put("/skills", jwtAuth, (req, res) => {
 
 //to set role preferences  of user or change
 
-router.put('/rolePref', (req, res) => {
+router.put('/rolePref', jwtAuth, (req, res) => {
     const data = req.body;
     const user = req.user;
+    console.log(data)
+    const p = { role: data.roles }
+    console.log(p)
 
     Profile.findOneAndUpdate({ userId: user._id }, {
         $set: {
-            rolePref: data.rolePref,
-            updatedAt: ISODate(),
+            rolePref: p,
+            // updatedAt: ISODate(),
         },
     })
         .then((response) => {
             res.json(response);
+
         })
         .catch((err) => {
             res.status(400).json(err);
