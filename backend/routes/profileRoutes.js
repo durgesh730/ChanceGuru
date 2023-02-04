@@ -30,6 +30,8 @@ router.get("/:id", (req, res) => {
 router.post("/", jwtAuth, (req, res) => {
     const { fullname, gender, email, password, DOB, city, state,
         country, address, linkedin, facebook, instagram, userId } = req.body;
+     
+        console.log(req.body)
 
     const user = req.user;
     const profile = new Profile({
@@ -52,22 +54,60 @@ router.post("/", jwtAuth, (req, res) => {
 
 //To change the basicinfo of user
 
-router.put("/basicinfo", jwtAuth, (req, res) => {
-    const data = req.body;
-    const user = req.user;
-    Profile.findOneAndUpdate({ userId: user._id }, {
-        $set: {
-            basicInfo: data.basicInfo,
-            updatedAt: ISODate(),
-        },
-    })
-        .then((response) => {
-            res.json(response);
-        })
-        .catch((err) => {
-            res.status(400).json(err);
-        })
-})
+// router.put("/basicinfo", jwtAuth, (req, res) => {
+//     const data = req.body;
+//     const user = req.user;
+
+//     Profile.findOneAndUpdate({ userId: user._id }, {
+//         $set: {
+//             basicInfo: p,
+//             // updatedAt: ISODate(),
+//         },
+//     })
+//         .then((response) => {
+//             res.json(response);
+//             console.log(response)
+//         })
+//         .catch((err) => {
+//             res.status(400).json(err);
+//         })
+// })
+
+// router.put("/basicinfo", jwtAuth, async (req, res) => {
+//     const { fullname, gender, email, password, DOB, city, state,
+//         country, address, linkedin, facebook, instagram, userId } = req.body;
+//         console.log(req.body);  
+//     const user = req.user;
+//     console.log(user)
+
+
+    // try {
+    //     const newData = {};
+    //     if (fullname) { newData.fullname = fullname };
+    //     if (gender) { newData.gender = gender };
+    //     if (email) { newData.email = email };
+    //     if (password) { newData.password = password };
+    //     if (DOB) { newData.DOB = DOB }
+    //     if (city) { newData.city = city }
+    //     if (state) { newData.state = state }
+    //     if (country) { newData.country = country }
+    //     if (address) { newData.address = address }
+    //     if (linkedin) { newData.linkedin = linkedin }
+    //     if (facebook) { newData.facebook = facebook }
+    //     if (instagram) { newData.instagram = instagram }
+    //     if (userId) { newData.userId = userId }
+
+    //     const userData = await Profile.findOneAndUpdate({ userId: user._id },
+    //         { $set: { basicInfo: newData } }, { new: true })
+
+    //     res.json({ userData });
+    //     console.log(userData);
+
+    // } catch (error) {
+    //     console.error(error.message);
+    //     res.status(500).send("Some error occured")
+    // }
+// })
 
 
 //to set talent of user  or change
@@ -133,24 +173,30 @@ router.put("/portfolio/exp", jwtAuth, (req, res) => {
     const data = req.body;
     const user = req.user;
     console.log(req.body);
-    // const bio = {bio:data.bio}
-    //    const d = {experience:data.experience}
-    //    const bio = Profile.findOne({userId: user._id})
-    //    const b = 
 
-    Profile.findOneAndUpdate({ userId: user._id }, {
-        $set: {
-            portfolio: ([...bio, { experience: data }]),
-            // updatedAt: ISODate(),
-        },
-    })
-        .then((response) => {
-            res.json(response);
-            console.log(response)
+    const d = {}
+    Profile.findOne({ userId: user._id })
+        .then((r) => {
+            // console.log(r.portfolio.bio);
+            d.bio = r.portfolio.bio;
+            d.experience = data;
+
+            Profile.findOneAndUpdate({ userId: user._id }, {
+                $set: {
+                    portfolio: d,
+                    // updatedAt: ISODate(),
+                },
+            })
+                .then((response) => {
+                    res.json(response);
+                    console.log(response)
+                })
+                .catch((err) => {
+                    res.status(400).json(err);
+                })
+
         })
-        .catch((err) => {
-            res.status(400).json(err);
-        })
+
 })
 
 //to set photo and video links of user or change

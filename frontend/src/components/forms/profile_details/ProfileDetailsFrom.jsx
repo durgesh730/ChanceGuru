@@ -34,12 +34,15 @@ const ProfileDetailsForm = ({ display }) => {
         userId: "1",
     });
 
+    // console.log(profileDetails)
+
     const handleInputChange = (e) => {
         setProfileDetails({ ...profileDetails, [e.target.name]: e.target.value });
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
         const { fullname, gender, email, password, DOB, city, state,
             country, address, linkedin, facebook, instagram, userId } =
             profileDetails;
@@ -56,6 +59,7 @@ const ProfileDetailsForm = ({ display }) => {
             })
         });
         const ok = await res.json();
+        console.log(ok)
     }
 
     const handleShow = async () => {
@@ -67,7 +71,7 @@ const ProfileDetailsForm = ({ display }) => {
             })
             .then((response) => {
                 setProfileDetails(response.data);
-                console.log(response)
+                // console.log(response)
             })
             .catch((err) => {
                 console.log(err.response);
@@ -76,7 +80,7 @@ const ProfileDetailsForm = ({ display }) => {
 
     useEffect(() => {
         handleShow()
-    }, [])
+    }, [setProfileDetails])
 
     return (
         <>
@@ -223,6 +227,6 @@ const ProfileDetailsForm = ({ display }) => {
             }
         </>
     );
-};
+}
 
 export default ProfileDetailsForm;
