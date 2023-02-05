@@ -27,6 +27,7 @@ function App() {
         let user = JSON.parse(localStorage.getItem("login"));
         if(user){
             setCurrentUser(user);
+            console.log(user)
         }
     }, []);
 
