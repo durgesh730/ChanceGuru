@@ -1,12 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Topbar from './mini_components/Topbar'
 import promotion from "../assets/icons/promotion.svg";
 import list from "../assets/icons/list-button.svg";
 import time from "../assets/icons/time-left.svg";
 import reject from "../assets/icons/round-delete-button.svg";
 import ApplicantRowCard from './mini_components/ApplicantRowCard';
-
-
+import { useLocation } from 'react-router-dom';
 
 const ApplicantDetails = () => {
     const [projectDetails, setProjectDetails] = useState({
@@ -17,6 +16,29 @@ const ApplicantDetails = () => {
         roleCount: "03",
         charCount: "06",
     });
+
+    const location = useLocation();
+    // console.log(location.state) 
+
+    const [Data, setData] = useState();
+    // console.log(Data)
+
+    const fetchData = async () => {
+        const data = await fetch(`http://localhost:5000/project/Seekers/${location.state}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+        const json = await data.json();
+        setData(json)
+        // console.log(json);
+    }
+
+    useEffect(() => {
+        fetchData();
+    }, [setData])
+
     return (
         <>
             <Topbar />
@@ -58,18 +80,18 @@ const ApplicantDetails = () => {
                     <div className="statusContainer">
                         <div highlighted="true" className='shortlisted'>
                             <img src={list} alt="" />
-                            <span number = "10" >Short-listed</span>
-                            
+                            <span number="10" >Short-listed</span>
+
                         </div>
-                        <div  className='rejected'>
+                        <div className='rejected'>
                             <img src={time} alt="" />
-                            <span number = "01" >Waiting List</span>
-                            
+                            <span number="01" >Waiting List</span>
+
                         </div>
-                        <div  className='waiting'>
+                        <div className='waiting'>
                             <img src={reject} alt="" />
                             <span number="12" >Rejected</span>
-                            
+
                         </div>
                     </div>
                     <div className="applicantList">
@@ -80,13 +102,15 @@ const ApplicantDetails = () => {
                         </div>
                         <hr />
                         <div className="listItems">
-                            <ApplicantRowCard/>
-                            <ApplicantRowCard/>
-                            <ApplicantRowCard/>
-                            <ApplicantRowCard/>
-                            <ApplicantRowCard/>
-                            <ApplicantRowCard/>
-                            
+                            {Data?.map((Data) =>( 
+                                // console.log(item)
+                                <ApplicantRowCard  Data = {Data} />
+                            ))}{" "}
+                            {/* <ApplicantRowCard />
+                            <ApplicantRowCard />
+                            <ApplicantRowCard />
+                            <ApplicantRowCard />
+                            <ApplicantRowCard /> */}
                         </div>
                     </div>
                 </div>

@@ -1,50 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Topbar from "./mini_components/Topbar";
 import Searchbar from "./mini_components/Searchbar";
 import Card2 from "./mini_components/Card2";
 import { useNavigate } from "react-router-dom";
 import "./style.css";
 
-
 const SeekerDashboard = () => {
-    const cards = [
-        {
-            id: 1,
-            title: "‘Disney on Broadway’",
-            description: "Casting dancers for touring productions of Disney’s Aladdin...",
-            author: "Muthukumar",
-            roles: "5",
-            deadline: "1 day ago",
-        },
-        {
-            id: 2,
-            title: "‘The High Cost of Loving’",
-            description: "Casting dancers for touring productions of Disney’s Aladdin...",
-            author: "Muthukumar",
-            roles: "5",
-            deadline: "1 day ago",
-        },
-        {
-            id: 3,
-            title: "‘Fall in Love’",
-            description: "Casting dancers for touring productions of Disney’s Aladdin...",
-            author: "Muthukumar",
-            roles: "5",
-            deadline: "1 day ago",
-        },
-        {
-            id: 4,
-            title: "‘Actress Needed for a Short Film’",
-            description: "Casting dancers for touring productions of Disney’s Aladdin...",
-            author: "Muthukumar",
-            roles: "5",
-            deadline: "1 day ago",
-        },
-    ];
-    let navigate = useNavigate(); 
-    const routeChange = () =>{ 
-      let path = `/projectcreation`; 
-      navigate(path);
+
+    const [card, setcard] = useState([]);
+
+    const getProjects = async () => {
+        const res = await fetch("http://localhost:5000/project/allProjectsSeekers", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem("token")}`,
+            }
+        });
+        const ok = await res.json();
+        // console.log(ok);'
+        setcard(ok)
+    }
+
+    useEffect(() => {
+        getProjects();
+    }, [])
+
+    let navigate = useNavigate();
+    const routeChange = () => {
+        let path = `/projectcreation`;
+        navigate(path);
     }
     return (
         <>
@@ -53,7 +38,7 @@ const SeekerDashboard = () => {
                 <div className="row">
                     <div className="col-lg-8"><Searchbar /></div>
                     <div className="col-lg-4">
-                        <button className="btn btn-primary create-btn"  onClick={routeChange}>Create New Project</button>
+                        <button className="btn btn-primary create-btn" onClick={routeChange}>Create New Project</button>
                     </div>
 
                 </div>
@@ -63,7 +48,8 @@ const SeekerDashboard = () => {
                 </div>
                 <div className="main-container">
                     <ul className="grid-wrapper">
-                        {cards.map((card) => (
+                        {card?.map((card) => (
+                            // console.log(card.name)
                             <Card2 card={card} />
                         ))}{" "}
                     </ul>

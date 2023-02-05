@@ -315,4 +315,17 @@ router.put('/rolePref', jwtAuth, (req, res) => {
 })
 
 
+//seeker API 
+router.get("/seaker", jwtAuth, (req, res) => {
+    // const user = req.user;
+    Profile.find(req.params.id)
+        .then((response) => {
+            res.json(response);
+        })
+        .catch((err) => {
+            res.status(400).json(err);
+        })
+})
+
+
 module.exports = router;
