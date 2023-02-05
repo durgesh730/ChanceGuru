@@ -1,63 +1,22 @@
-import React , {useContext} from "react";
-import { useState } from "react";
-import axios from "axios";
-import PhoneInput from "react-phone-number-input";
-import AuthContext from "../../AuthContext";
+import React from "react";
 
-const ProjectDetailsForm = ({ display }) => {
-    const auth = useContext(AuthContext);
+const ProjectDetailsForm = ({ display , functions }) => {
+    const projectDetails = functions.projectDetails ;
+    const setProjectDetails = functions.setProjectDetails ;
     let show = {};
     if (display) {
         show = { display: "block" };
     } else {
         show = { display: "none" };
     }
-    const [value, setValue] = useState();
-
-    const [projectDetails, setProjectDetails] = useState({
-        name: "",
-        description: "",
-        company_name: "",
-        company_address: "",
-        city: "",
-        state: "",
-        country: "",
-        email: "",
-        number: "",
-        facebook: "",
-        seekerId:"1",
-        roleId_List:"[4,5,6]",
-        instagram: "",
-    });
 
     const handleInputChange = (e) => {
         setProjectDetails({ ...projectDetails, [e.target.name]: e.target.value });
     };
 
     const handleSubmit = (e) => {
-        console.log(projectDetails);
         e.preventDefault();
-        axios
-            .post("http://localhost:5000/projects", {
-                name: projectDetails.name,
-                description: projectDetails.description,
-                company_name: projectDetails.company_name,
-                company_address: projectDetails.company_address,
-                city: projectDetails.city,
-                state: projectDetails.state,
-                country: projectDetails.country,
-                email: projectDetails.email,
-                number: projectDetails.number,
-                facebook: projectDetails.facebook,
-                seekerId:projectDetails.seekerId,
-                roleId_list:projectDetails.roleId_List,
-                instagram: projectDetails.instagram,
-            })
-            .then((res) => {
-                localStorage.setItem("pojectId" , res.data.data.insertId)
-                alert("Project data saved!");
-                console.log("data added");
-            });
+        functions.toggleForm("labels");
     };
 
     return (
@@ -76,6 +35,7 @@ const ProjectDetailsForm = ({ display }) => {
                         name="name"
                         value={projectDetails.name}
                         onChange={handleInputChange}
+                        required
                     />
                     <textarea
                         id="bio"
@@ -86,6 +46,7 @@ const ProjectDetailsForm = ({ display }) => {
                         name="description"
                         value={projectDetails.description}
                         onChange={handleInputChange}
+                        required
                     ></textarea>
                     <input
                         type="text"
@@ -94,6 +55,7 @@ const ProjectDetailsForm = ({ display }) => {
                         name="company_name"
                         value={projectDetails.company_name}
                         onChange={handleInputChange}
+                        required
                     />
                     <input
                         type="text"
@@ -102,6 +64,7 @@ const ProjectDetailsForm = ({ display }) => {
                         name="company_address"
                         value={projectDetails.company_address}
                         onChange={handleInputChange}
+                        required
                     />
                     <div style={{ position: "relative", display: "flex" }}>
                         <select
@@ -109,6 +72,7 @@ const ProjectDetailsForm = ({ display }) => {
                             name="city"
                             value={projectDetails.city}
                             onChange={handleInputChange}
+                            required
                         >
                             <option value="" disabled selected>
                                 City
@@ -122,6 +86,7 @@ const ProjectDetailsForm = ({ display }) => {
                             name="state"
                             value={projectDetails.state}
                             onChange={handleInputChange}
+                            required
                         >
                             <option value="" disabled selected>
                                 State
@@ -135,6 +100,7 @@ const ProjectDetailsForm = ({ display }) => {
                         name="country"
                         value={projectDetails.country}
                         onChange={handleInputChange}
+                        required
                     >
                         <option value="" disabled selected>
                             Country
@@ -149,6 +115,7 @@ const ProjectDetailsForm = ({ display }) => {
                         name="email"
                         value={projectDetails.email}
                         onChange={handleInputChange}
+                        required
                     />
                     <input
                         type="nummber"
@@ -157,6 +124,7 @@ const ProjectDetailsForm = ({ display }) => {
                         name="number"
                         value={projectDetails.number}
                         onChange={handleInputChange}
+                        required
                     />
                     <input
                         type="text"
@@ -165,6 +133,7 @@ const ProjectDetailsForm = ({ display }) => {
                         name="facebook"
                         value={projectDetails.facebook}
                         onChange={handleInputChange}
+                        required
                     />
                     <input
                         type="text"
@@ -173,9 +142,10 @@ const ProjectDetailsForm = ({ display }) => {
                         name="instagram"
                         value={projectDetails.instagram}
                         onChange={handleInputChange}
+                        required
                     />
                     <div className="row">
-                        <input type="submit" className="col-4 cancel-btn btn btn-lg btn-block my-2" value="Cancel" />
+                        <input type="button" className="col-4 cancel-btn btn btn-lg btn-block my-2" value="Reset" />
                         <p className="col-1"></p>
                         <input type="submit" className="col-7 save-btn btn btn-lg btn-block my-2" value="Save" />
                     </div>
