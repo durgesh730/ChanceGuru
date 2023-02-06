@@ -21,6 +21,7 @@ const Login = () => {
 
     const handleSubmission = (e) => {
         e.preventDefault();
+        console.log(values.email , values.pass)
         setErrorMsg("");
         axios
             .post("http://localhost:5000/auth/login", { email: values.email, password: values.pass })

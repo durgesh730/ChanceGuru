@@ -5,7 +5,8 @@ import Card from "./mini_components/Card";
 import axios from "axios";
 
 const TalentDashboard = () => {
-    const [cards, setcards] = useState([])
+    const [cards, setcards] = useState([]);
+    console.log(cards);
     const getProjects = () => {
         axios
             .get("http://localhost:5000/project/allProjects")
@@ -31,7 +32,7 @@ const TalentDashboard = () => {
                 </div>
                 <div className="main-container">
                     <ul className="grid-wrapper">
-                        {cards.map((card) => (
+                        {cards?.map((card) => (
                             <Card card={card} />
                         ))}{" "}
                     </ul>
