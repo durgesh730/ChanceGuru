@@ -141,7 +141,7 @@ const Roles = ({ display }) => {
                 </div>
               </div>
 
-          
+
               <div className="form-container ">
 
                 <form id="roles-form">
@@ -202,45 +202,45 @@ const Roles = ({ display }) => {
                   </div>
                 </form>
                 <form id="char-form" style={{ display: "none" }}>
-    <div className="charList row">
-             
-                <div
-                  className="col-lg-3  btn btn-sm btn-block my-2"
-                  onClick={() => {
-                    toggle("");
-                  }}
-                  id=""
-                >
-                  Lead Negative Role
-                </div>
-                <div
-                  className="col-lg-3  btn btn-sm btn-block my-2 "
-                  onClick={() => {
-                    toggle("");
-                  }}
-                  id=""
-                >
-                  Lead
-                </div>
-                <div
-                  className="col-lg-3  btn btn-sm btn-block my-2"
-                  onClick={() => {
-                    toggle("");
-                  }}
-                  id=""
-                >
-                  Supporting Actor
-                </div>
-                <div
-                  className="col-lg-3  btn btn-sm btn-block my-2"
-                  onClick={() => {
-                    toggle("");
-                  }}
-                  id=""
-                >
-                  Chorus/Ensemble
-                </div>
-              </div>
+                  <div className="charList row">
+
+                    <div
+                      className="col-lg-3  btn btn-sm btn-block my-2"
+                      onClick={() => {
+                        toggle("");
+                      }}
+                      id=""
+                    >
+                      Lead Negative Role
+                    </div>
+                    <div
+                      className="col-lg-3  btn btn-sm btn-block my-2 "
+                      onClick={() => {
+                        toggle("");
+                      }}
+                      id=""
+                    >
+                      Lead
+                    </div>
+                    <div
+                      className="col-lg-3  btn btn-sm btn-block my-2"
+                      onClick={() => {
+                        toggle("");
+                      }}
+                      id=""
+                    >
+                      Supporting Actor
+                    </div>
+                    <div
+                      className="col-lg-3  btn btn-sm btn-block my-2"
+                      onClick={() => {
+                        toggle("");
+                      }}
+                      id=""
+                    >
+                      Chorus/Ensemble
+                    </div>
+                  </div>
                   <div className="d-flex">
                     <p className="mx-1"></p>
                     <input

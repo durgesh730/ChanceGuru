@@ -2,6 +2,8 @@ const express = require("express");
 const jwtAuth = require("../lib/jwtAuth");
 const router = express.Router();
 const Project = require("../db/Project");
+const JobApplication = require('../db/JobApplication')
+const User = require('../db/User')
 
 //TO get all the projects 
 router.get("/allProjects", (req, res) => {
@@ -13,6 +15,53 @@ router.get("/allProjects", (req, res) => {
             res.status(400).json(err);
         })
 })
+
+router.get("/allProjectsSeekers",jwtAuth,(req, res) => {
+    const user = req.user;
+    Project.find({ seekerId: user._id })
+        .then((response) => {
+            res.json(response);
+        })
+        .catch((err) => {
+            res.status(400).json(err);
+        })
+})
+
+router.get("/projectDetails/:_id",(req, res) => {
+    Project.find({_id: req.params._id})
+        .then((response) => {
+            res.json(response);
+            // console.log(response)
+        })
+        .catch((err) => {
+            res.status(400).json(err);
+        })
+})
+
+
+router.get("/Seekers/:pId",(req, res) => {
+    JobApplication.find({pId: req.params.pId})
+        .then((response) => {
+            res.json(response);
+            // console.log(response)
+        })
+        .catch((err) => {
+            res.status(400).json(err);
+        })
+})
+
+
+router.get("/UserId/:id",(req, res) => {
+    User.find({_id:req.params.id})
+        .then((response) => {
+            res.json(response);
+            // console.log(response)
+        })
+        .catch((err) => {
+            res.status(400).json(err);
+        })
+})
+
 
 //To get project for particular seeker 
 router.get("/myProjects", jwtAuth, (req, res) => {
