@@ -18,10 +18,8 @@ const ApplicantDetails = () => {
     });
 
     const location = useLocation();
-    // console.log(location.state) 
 
     const [Data, setData] = useState();
-    // console.log(Data)
 
     const fetchData = async () => {
         const data = await fetch(`http://localhost:5000/project/Seekers/${location.state}`, {
@@ -32,7 +30,6 @@ const ApplicantDetails = () => {
         })
         const json = await data.json();
         setData(json)
-        // console.log(json);
     }
 
     useEffect(() => {
@@ -102,10 +99,10 @@ const ApplicantDetails = () => {
                         </div>
                         <hr />
                         <div className="listItems">
-                            {Data?.map((Data) =>( 
+                            {Data?.map((item) => {
                                 // console.log(item)
-                                <ApplicantRowCard  Data = {Data} />
-                            ))}{" "}
+                                <ApplicantRowCard  Data = {item} />
+                            })}{''}
                             {/* <ApplicantRowCard />
                             <ApplicantRowCard />
                             <ApplicantRowCard />
