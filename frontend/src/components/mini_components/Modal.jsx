@@ -1,17 +1,18 @@
 import React from "react";
 import axios from "axios";
 
-const Modal = ({ setModel, info , roles }) => {
-    const userId = JSON.parse(localStorage.getItem("login")).id;
-    const seekerId = info.seekerId ; 
-    const roleApply = (item) => {
+const Modal = ({ setModel, info, roles }) => {
+    const roleApply = (chrId , rId ) => {
         axios
-            .post("http://localhost:5000/jobApplication" , {
-                userId : userId ,
-                projectId : item.pId ,
-                seekerId : seekerId ,
-                rid : item.id 
-            })
+            .post("http://localhost:5000/application", {
+                pId: info._id,
+                roleId: rId,
+                charId: chrId,
+                status : "applied",
+            },{ headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },}
+            )
             .then((res) => {
                 console.log(res);
                 setModel(false);
@@ -26,22 +27,33 @@ const Modal = ({ setModel, info , roles }) => {
             <div className="modal-container">
                 <div className="modal-header">Your profile is weak to apply for this role.</div>
                 <div className="modal-body">
-                    <div className="modal-name">‘{info.name}’</div>
+                    <div className="modal-name">‘{info.basicInfo.name}’</div>
                     <div className="secondary-text">Roles</div>
-                    <div className="modal-roles">
-                        {roles.map((item ,index) => {
-                            return(
-                                <>
-                                    <div key={index}>
-                                        <div className="role-name">{item.name}</div>
-                                        <div className="total-roles">
-                                            <button onClick={()=>{roleApply(item)}} className="apply-btn">Apply</button>
-                                        </div>
+                    {roles.map((item, index) => {
+                        console.log(item)
+                        return (
+                            <>
+                                <div key={index}>
+                                    <div className="modal-roles" >
+                                        <div className="role-name">{item.role}{"  "}{`(${item.characters.length})`}</div>
+                                        <div></div>
+                                        {item.characters.map((e, i) => {
+                                            return (
+                                                <>
+                                                    <div key={i}>
+                                                        <div className="char-name">{e.name}</div>
+                                                        <div className="total-roles">
+                                                            <button onClick={() => { roleApply(e._id , item._id) }} className="apply-btn">Apply</button>
+                                                        </div>
+                                                    </div>
+                                                </>
+                                            )
+                                        })}
                                     </div>
-                                </>
-                            )
-                        })}
-                    </div>
+                                </div>
+                            </>
+                        )
+                    })}
                 </div>
                 <div className="modal-footer">
                     <button
