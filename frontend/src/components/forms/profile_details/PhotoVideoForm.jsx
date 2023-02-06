@@ -36,17 +36,17 @@ const PhotoVideoForm = ({ display }) => {
     const [file, setFile] = useState();
     const [photoURL, setphotoURL] = useState({
         photo1: "",
-        photo2:"",
-        userId1:"1",
+        photo2: "",
+        userId1: "1",
     });
-    const { photo1,photo2, userId1 } = photoURL;
+    const { photo1, photo2, userId1 } = photoURL;
 
     const [videoURL, setvideoURL] = useState({
         youtube: "",
         vimeo: "",
-        userId2:"1",
+        userId2: "1",
     });
-    const { youtube,vimeo,userId2 } = videoURL;
+    const { youtube, vimeo, userId2 } = videoURL;
 
     // const upload = (e) => {
     //     e.preventDefault();
@@ -64,31 +64,46 @@ const PhotoVideoForm = ({ display }) => {
     const handlePhotoSubmit = (e) => {
         e.preventDefault();
         const data = photoURL;
-        axios.post('http://localhost:5000/profiles/photoUrl', {
+        axios.put('http://localhost:5000/profile/photo', {
             photo1,
-        photo2,
-        userId1,
-        }).then(() => {
+            photo2,
+            userId1,
+        },
+            {
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                }
+            }
+
+        ).then((res) => {
             alert("Photos url data saved!")
             console.log("data added");
+            console.log(res)
         })
         console.log(data);
     }
 
     const handleVideoInputChange = (e) => {
-        setvideoURL({...videoURL, [e.target.name]: e.target.value });
+        setvideoURL({ ...videoURL, [e.target.name]: e.target.value });
     };
 
     const handleVideoSubmit = (e) => {
         e.preventDefault();
         const data = videoURL;
-        axios.post('http://localhost:5000/profiles/videoUrl', {
-        youtube,
-        vimeo,
-        userId2,
-        }).then(() => {
+        axios.put('http://localhost:5000/profile/video', {
+            youtube,
+            vimeo,
+            userId2,
+        },
+            {
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                }
+            }
+        ).then((res) => {
             alert("Videos url data saved!")
             console.log("data added");
+            console.log(res)
         })
         console.log(data);
     }
@@ -127,7 +142,7 @@ const PhotoVideoForm = ({ display }) => {
                             <input type="text" className="form-control" placeholder="Enter photo url" name="photo1" value={photoURL.photo1} onChange={handlePhotoInputChange} />
                             <input type="text" className="form-control" placeholder="Enter photo url" name="photo2" value={photoURL.photo2} onChange={handlePhotoInputChange} />
                             {/* <input type="file" multiple="false" accept="image/*" id="finput" onChange={upload} /> */}
-                            
+
                             <img src={file} className="photoUpload" alt="" />
                             <canvas id="canv1"></canvas>
                             <div className="row">
@@ -150,8 +165,8 @@ const PhotoVideoForm = ({ display }) => {
                                 <p className="mx-1"></p>
                                 <input type="submit" className="full-width-btn" value="Add Vimeo Link" />
                             </div>
-                            <input type="text" className="form-control" placeholder="Youtube link" name="youtube" value={videoURL.youtube} onChange={handleVideoInputChange}/>
-                            <input type="text" className="form-control" placeholder="Vimeo link" name="vimeo" value={videoURL.vimeo} onChange={handleVideoInputChange}/>
+                            <input type="text" className="form-control" placeholder="Youtube link" name="youtube" value={videoURL.youtube} onChange={handleVideoInputChange} />
+                            <input type="text" className="form-control" placeholder="Vimeo link" name="vimeo" value={videoURL.vimeo} onChange={handleVideoInputChange} />
 
                             <div className="row">
                                 <input

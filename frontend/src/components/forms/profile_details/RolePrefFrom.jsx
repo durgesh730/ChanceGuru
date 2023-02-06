@@ -44,7 +44,19 @@ const RolePref = ({ display }) => {
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
-        console.log(formFields);
+        axios.put('http://localhost:5000/profile/rolePref', {
+            roles:formFields[0].roles
+        },
+            {
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                }
+            }
+        ).then((res) => {
+            alert("Videos url data saved!")
+            console.log("data added");
+            console.log(res)
+        })
     };
 
     const addFields = (e) => {
