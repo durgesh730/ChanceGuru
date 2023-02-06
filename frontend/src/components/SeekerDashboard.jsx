@@ -18,13 +18,13 @@ const SeekerDashboard = () => {
             }
         });
         const ok = await res.json();
-        // console.log(ok);'
-        setcard(ok)
+        setcard(ok);
+        // console.log(ok)
     }
 
     useEffect(() => {
         getProjects();
-    }, [])
+    }, [setcard])
 
     let navigate = useNavigate();
     const routeChange = () => {
@@ -48,9 +48,8 @@ const SeekerDashboard = () => {
                 </div>
                 <div className="main-container">
                     <ul className="grid-wrapper">
-                        {card?.map((card) => (
-                            // console.log(card.name)
-                            <Card2 card={card} />
+                        {card?.map((card,i) => (
+                            <Card2 key={i} card={card} />
                         ))}{" "}
                     </ul>
                 </div>

@@ -27,6 +27,17 @@ router.get("/allProjectsSeekers",jwtAuth,(req, res) => {
         })
 })
 
+router.get("/projectDetails/:_id",(req, res) => {
+    Project.find({_id: req.params._id})
+        .then((response) => {
+            res.json(response);
+            // console.log(response)
+        })
+        .catch((err) => {
+            res.status(400).json(err);
+        })
+})
+
 
 router.get("/Seekers/:pId",(req, res) => {
     JobApplication.find({pId: req.params.pId})
@@ -50,38 +61,6 @@ router.get("/UserId/:id",(req, res) => {
             res.status(400).json(err);
         })
 })
-
-// router.get("/Seekers", async (req, res) => {
-//     //  const id = 
-//      console.log(req.body)
-//     try {
-//         const note = await JobApplication.findone({ pId: req.params.pId });
-//         res.json(note)
-//         // console.log(note) 
-//     } catch (error) {
-//         console.error(error.message);
-//         res.status(500).send("Some error occured")
-//     }
-// })
-
-// router.get("/Seekers/:pId", async (req, res) => {
-
-//     const id = pId;
-//     console.log(id)
-
-//     try {
-//         const note = await JobApplication.aggregate([
-//             {
-//                 $match: { pId: `${id}` }
-//             }
-//         ])
-//         res.json(note)
-//         console.log(note)
-//     } catch (error) {
-//         console.error(error.message);
-//         res.status(500).send("Some error occured")
-//     }
-// })
 
 
 //To get project for particular seeker 

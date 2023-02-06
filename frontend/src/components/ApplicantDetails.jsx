@@ -8,19 +8,45 @@ import ApplicantRowCard from './mini_components/ApplicantRowCard';
 import { useLocation } from 'react-router-dom';
 
 const ApplicantDetails = () => {
-    const [projectDetails, setProjectDetails] = useState({
-        date: "05/8/2018",
-        location: "New Jersey",
-        projectName: "Shakespeare's Macbeth",
-        applicantCount: "23",
-        roleCount: "03",
-        charCount: "06",
-    });
-
     const location = useLocation();
 
-    const [Data, setData] = useState();
+    const [projectDetails, setProjectDetails] = useState();
 
+    const ProjectData = async () => {
+        const data = await fetch(`http://localhost:5000/project/projectDetails/${location.state}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+        const res = await data.json();
+        setProjectDetails(res)
+    }
+
+    // for finding total characters in Project by using map
+
+    var char = 0;
+    var all = new Array();
+    var a = 0;
+
+    {
+        projectDetails?.map((items, i) => items.roles.map((i) => {
+            char = char + i.characters.length;
+            var length = i.characters.length;
+            for (i = 0; i < length; i++) {
+                all[i] = char
+            }
+
+            for (i = 0; i < all.length; i++) {
+                if (all[i] > a)
+                    a = all[i]
+            }
+        })
+        )
+    }
+
+
+    const [Data, setData] = useState();
     const fetchData = async () => {
         const data = await fetch(`http://localhost:5000/project/Seekers/${location.state}`, {
             method: "GET",
@@ -32,8 +58,22 @@ const ApplicantDetails = () => {
         setData(json)
     }
 
+    // for count applied by
+
+    var len = 0;
+    var c = 0;
+    {
+        Data?.map((Data, i) => {
+            len = Data.userId.length;
+            if (len) {
+                c++;
+            }
+        })
+    }
+
     useEffect(() => {
         fetchData();
+        ProjectData()
     }, [setData])
 
     return (
@@ -43,37 +83,87 @@ const ApplicantDetails = () => {
 
                 <div className="projCont">
                     <img src={promotion} className="promotion" alt="" />
-                    <span className="projectTitle">
-                        {projectDetails.projectName}
-                    </span>
-                    <span className="projectInfo">
-                        Casting "Macbeth" by William Shakespeare.
-                        Set in 11th century Scotland.
-                    </span>
+                    {
+                        projectDetails?.map((items, i) => {
+                            // console.log(items.basicInfo.name)
+                            return (
+                                <>
+                                    <span key={i} className="projectTitle">
+                                        {items.basicInfo.name}
+                                    </span>
+                                    <span className="projectInfo">
+                                        {items.basicInfo.desc}
+                                    </span>
+                                </>
+                            )
+                        })
+                    }
 
                     <div className="Path-26"></div>
+
                     <span className='postedOn'>Posted On</span>
-                    <span className="date">{projectDetails.date}</span>
+                    <span className="date">{"02/04/2001"}</span>
                     <span className="location">Location</span>
-                    <span className="locationName">{projectDetails.location}</span>
+
+                    {
+                        projectDetails?.map((items, i) => {
+                            return (
+                                <>
+                                    <span className="locationName">{items.basicInfo.address}</span>
+                                </>
+                            )
+                        })
+                    }
+
                     <div className="lastRow">
-                        <span number={projectDetails.applicantCount} className='appliedBy'>Applied By</span>
-                        <span number={projectDetails.roleCount} className='roles'>Roles</span>
-                        <span number={projectDetails.charCount} className='characters'>Characters</span>
+                        <span number={c} className='appliedBy'>Applied By</span>
+
+                        {
+                            projectDetails?.map((items, i) => {
+                                return (
+                                    <>
+                                        <span key={i} number={items.roles.length} className='roles'>Roles</span>
+                                    </>
+                                )
+                            })
+                        }
+                        <span number={a} className='characters'>Characters</span>
                     </div>
                 </div>
+
+
                 <div className="applicantDetails">
                     <div className="topNavbar">
-                        <span highlighted="true" className='lead' >Lead(03)</span>
-                        <span className='supportingActor' >Supporting Actor(01)</span>
-                        <span className='chorus' >Chorus/Ensemble(01)</span>
+
+                        {
+                            projectDetails?.map((items, i) => items.roles.map((i) => {
+                                return (
+                                    <span highlighted="true" className='lead' >{i.role}</span>
+                                )
+                            })
+                            )
+                        }
                     </div>
                     <hr />
-                    <div className="leadRoles">
-                        <span className='malcom'>Malcom</span>
-                        <span highlighted="true" className='macDuff' >MacDuff</span>
-                        <span className='ladymacduff'>Lady MacDuff</span>
+
+                    <div className="leadRoles" style={{ dispay: "flex", flexDirection: "row", justifyContent: "space-between" }} >
+                        {
+                            projectDetails?.map((items, i) => items.roles.map((i) => i.characters.map((p) => {
+                                // console.log(p.name)
+                                return (
+                                    <>
+
+                                        <span className='malcom'>{p.name}</span>
+
+                                    </>
+
+                                )
+                            }))
+                            )
+                        }
+
                     </div>
+
                     <div className="statusContainer">
                         <div highlighted="true" className='shortlisted'>
                             <img src={list} alt="" />
@@ -99,16 +189,14 @@ const ApplicantDetails = () => {
                         </div>
                         <hr />
                         <div className="listItems">
-                            {Data?.map((item) => {
-                                // console.log(item)
-                                <ApplicantRowCard  Data = {item} />
-                            })}{''}
-                            {/* <ApplicantRowCard />
-                            <ApplicantRowCard />
-                            <ApplicantRowCard />
-                            <ApplicantRowCard />
-                            <ApplicantRowCard /> */}
+                            {Data?.map((Data, i) =>
+                            (
+                                <ApplicantRowCard key={i} Data={Data} />
+                            )
+                            )}{" "}
                         </div>
+
+
                     </div>
                 </div>
             </div>
