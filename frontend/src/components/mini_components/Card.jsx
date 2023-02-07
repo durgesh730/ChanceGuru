@@ -4,6 +4,7 @@ import Modal from "./Modal";
 import axios from "axios";
 
 const Card = ({ card }) => {
+    console.log(card);
     const [model, setModel] = useState(false);
     const [roles, setroles] = useState([])
     const getRoles = () => {
@@ -37,7 +38,8 @@ const Card = ({ card }) => {
                 </div>
             </div>
             <div className="card-footer">
-                <span>{card.roles} Roles</span> {card.deadline}
+                
+                <span>{card.roles.length} Roles</span> {card.deadline}
             </div>
             <button
                 className="card-apply btn"

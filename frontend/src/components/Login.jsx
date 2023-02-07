@@ -41,6 +41,7 @@ const Login = () => {
                                     })
                                     .then((data) => {
                                         // data.data.type="talent"
+                                        data.data.token = localStorage.getItem("token")
                                         localStorage.setItem("login", JSON.stringify(data.data))
                                         if (localStorage.getItem("type") == "seeker") {
                                             navigate("/seekerdashboard");

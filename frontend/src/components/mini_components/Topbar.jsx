@@ -28,7 +28,7 @@ const Topbar = (props) => {
         localStorage.clear()
         navigate("/login")
         console.log("Logout succesfull")
-        
+
     }
     const user = JSON.parse(localStorage.getItem("login"));
     return (
@@ -37,7 +37,7 @@ const Topbar = (props) => {
                 Chance <br /> Guru
             </div>
             <div className="topbar-nav">
-                <Link to="/talentdashboard">
+                <Link to={user.type==="user"?"/talentdashboard":"/seekerdashboard"}>
                     <span className="topbar-icons-container">
                         <img className="topbar-icons" src={home} alt="" />
                     </span>
@@ -54,9 +54,11 @@ const Topbar = (props) => {
                 <span className="topbar-icons-container">
                     <img className="topbar-icons" src={thumbsup} alt="" />
                 </span>
-                <span className="topbar-icons-container">
-                    <img className="topbar-icons" src={chat} alt="" />
-                </span>
+                <Link to="/chat" >
+                    <span className="topbar-icons-container">
+                        <img className="topbar-icons" src={chat} alt="" />
+                    </span>
+                </Link>
                 <Link to="/projectcreation">
                     <span className="topbar-icons-container">
                         <img className="topbar-icons" src={notification} alt="" />
