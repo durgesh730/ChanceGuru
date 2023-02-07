@@ -789,7 +789,6 @@ div.topNavbar {
   margin-top: 23.5px;
 }
 .topNavbar span {
-  cursor: pointer;
   height: 20px;
   display: inline-block;
   position: relative;
@@ -936,3 +935,8 @@ div.applicantList hr {
 div.listItems {
   margin-top: 10px;
 }
+
+
+div.css-18dcxwc{
+  overflow-y: scroll !important;
+} 
