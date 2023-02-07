@@ -11,6 +11,9 @@ const ApplicantDetails = () => {
     const location = useLocation();
 
     const [projectDetails, setProjectDetails] = useState();
+    const [active, setActive] = useState(0);
+    const [leadRoles, setLeadRoles] = useState([])
+
 
     const ProjectData = async () => {
         const data = await fetch(`http://localhost:5000/project/projectDetails/${location.state}`, {
@@ -21,7 +24,16 @@ const ApplicantDetails = () => {
         })
         const res = await data.json();
         setProjectDetails(res)
+        
     }
+
+    useEffect(()=>{
+        console.log(projectDetails)
+        if(projectDetails){
+
+            setLeadRoles(projectDetails[0].roles[0].characters)
+        }
+    },[projectDetails])
 
     // for finding total characters in Project by using map
 
@@ -136,9 +148,10 @@ const ApplicantDetails = () => {
                     <div className="topNavbar">
 
                         {
-                            projectDetails?.map((items, i) => items.roles.map((i) => {
+                            
+                            projectDetails?.map((items, ind) => items.roles.map((i,index) => {
                                 return (
-                                    <span highlighted="true" className='lead' >{i.role}</span>
+                                    <span highlighted={active === index?"true":"false"} className='lead' onClick={()=>{setActive(index); setLeadRoles(i.characters)}} >{i.role}</span>
                                 )
                             })
                             )
@@ -148,7 +161,7 @@ const ApplicantDetails = () => {
 
                     <div className="leadRoles" style={{ dispay: "flex", flexDirection: "row", justifyContent: "space-between" }} >
                         {
-                            projectDetails?.map((items, i) => items.roles.map((i) => i.characters.map((p) => {
+                            leadRoles.map((p) => {
                                 // console.log(p.name)
                                 return (
                                     <>
@@ -158,7 +171,7 @@ const ApplicantDetails = () => {
                                     </>
 
                                 )
-                            }))
+                            }
                             )
                         }
 
