@@ -935,3 +935,8 @@ div.applicantList hr {
 div.listItems {
   margin-top: 10px;
 }
+
+
+div.css-18dcxwc{
+  overflow-y: scroll !important;
+} 
