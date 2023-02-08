@@ -40,7 +40,7 @@ const TalentDetailsForm = ({ display }) => {
             hairStyle, beardStyle, language, boldScenes, allowances, travelling, userId
         } = talentDetails;
 
-        const res = await fetch("http://localhost:5000/profile/talent", {
+        const res = await fetch("/profile/talent", {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",

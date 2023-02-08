@@ -47,7 +47,7 @@ const ProfileDetailsForm = ({ display }) => {
             country, address, linkedin, facebook, instagram, userId } =
             profileDetails;
 
-        const res = await fetch("http://localhost:5000/profile/", {
+        const res = await fetch("/profile/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -64,7 +64,7 @@ const ProfileDetailsForm = ({ display }) => {
 
     const handleShow = async () => {
         axios
-            .get(`http://localhost:5000/profile/`, {
+            .get(`/profile/`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },

@@ -11,7 +11,7 @@ const ApplicantRowCard = ({ Data }) => {
     const [User, SetUser] = useState([]);
     // console.log(User)
     const fetchData = async () => {
-        const data = await fetch(`http://localhost:5000/project/UserId/${id}`, {
+        const data = await fetch(`/project/UserId/${id}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",

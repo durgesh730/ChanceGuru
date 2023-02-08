@@ -48,7 +48,7 @@ const EduSkillForm = ({ display }) => {
     const handleEduSubmit = (e) => {
         e.preventDefault();
         const data = eduSkillDetails;
-        axios.put('http://localhost:5000/profile/education', {
+        axios.put('/profile/education', {
             school: school,
             schoolYear: schoolYear,
             course: course,
@@ -74,7 +74,7 @@ const EduSkillForm = ({ display }) => {
     const handleSkillsSubmit = (e) => {
         e.preventDefault();
         const data = eduSkillDetails;
-        axios.put('http://localhost:5000/profile/skills', {
+        axios.put('/profile/skills', {
             userId: userId,
             addSkills: addSkills,
         },

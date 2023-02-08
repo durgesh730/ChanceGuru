@@ -24,7 +24,7 @@ const Login = () => {
         console.log(values.email , values.pass)
         setErrorMsg("");
         axios
-            .post("http://localhost:5000/auth/login", { email: values.email, password: values.pass })
+            .post("/auth/login", { email: values.email, password: values.pass })
             .then((res) => {
                 if (res.status == 200) {
                     signInWithEmailAndPassword(authentication, values.email, values.pass)
@@ -35,7 +35,7 @@ const Login = () => {
                                 localStorage.setItem("token", res.data.token);
                                 localStorage.setItem("type", res.data.type);
                                 axios
-                                    .get("http://localhost:5000/auth/", {
+                                    .get("/auth/", {
                                         headers: {
                                             Authorization: `Bearer ${res.data.token}`,
                                         },

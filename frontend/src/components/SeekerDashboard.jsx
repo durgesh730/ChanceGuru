@@ -10,7 +10,7 @@ const SeekerDashboard = () => {
     const [card, setcard] = useState([]);
 
     const getProjects = async () => {
-        const res = await fetch("http://localhost:5000/project/allProjectsSeekers", {
+        const res = await fetch("/project/allProjectsSeekers", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",

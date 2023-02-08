@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const passportConfig = require("./lib/passportConfig");
 const cors = require("cors");
 const dotenv = require("dotenv");
+const path = __dirname + "/build/";
 
 dotenv.config();
 
@@ -43,4 +44,8 @@ app.use("/application", require("./routes/applicationRoutes"));
 
 app.listen(port, () => {
   console.log(`Server started on port ${port}!`);
+});
+
+app.get("/*", function (req, res) {
+  res.sendFile(path + "index.html");
 });
