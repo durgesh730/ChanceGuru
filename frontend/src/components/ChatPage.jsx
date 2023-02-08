@@ -5,6 +5,7 @@ import ChatBox from './mini_components/ChatBox';
 import SideDrawer from '../components/miscellaneous/SideDrawer';
 import { Box } from '@chakra-ui/react';
 
+import Topbar from "./mini_components/Topbar"
 
 const ChatPage = () => {
     const [fetchAgain, setFetchAgain] = useState(false);
@@ -17,7 +18,8 @@ const ChatPage = () => {
 
     return (
         
-
+            <>
+            <Topbar/>
             <div style={{ width: "100%" }}>
 
                 {user && <SideDrawer />}
@@ -26,6 +28,7 @@ const ChatPage = () => {
                     {user && (<ChatBox fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />)}
                 </Box>
             </div>
+            </>
         
     );
 };

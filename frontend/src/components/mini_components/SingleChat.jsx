@@ -22,7 +22,7 @@ const ENDPOINT = "http://localhost:5000";
 var socket, selectedChatCompare;
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
-  const [messages, setMessages] = useState([]);
+  let [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [newMessage, setNewMessage] = useState("");
   const [socketConnected, setSocketConnected] = useState(false);
@@ -30,17 +30,10 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [istyping, setIsTyping] = useState(false);
 
   const toast = useToast();
-
   const { selectedChat, setSelectedChat, user, notification, setNotification } = useContext(ChatContext);
   // console.log(selectedChat, "selectedChat in chatBox");
   
-  let roomToJoin
-
-  useEffect(()=>{
-    if(selectedChat){
-      roomToJoin = selectedChat._id
-    }
-  },[selectedChat])
+  
  
   const defaultOptions = {
     loop: true,
@@ -70,7 +63,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       setLoading(false);
       console.log(data, "fetched messsages of the selected chat data");
 
-      socket.emit("join chat", roomToJoin);
+      socket.emit("join chat", selectedChat._id);
     } catch (error) {
       console.log(error.message);
       toast({
@@ -84,10 +77,12 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     }
   };
 
+
+
   const sendMessage = async (event) => {
     if (event.key === "Enter" && newMessage) {
 
-      socket.emit("stop typing", roomToJoin);
+      socket.emit("stop typing", selectedChat._id);
 
       try {
         const config = {
@@ -113,9 +108,9 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         //setNewMessage("");
         data.users = selectedChat.users
         console.log("Emit new message data: ",data)
-        socket.emit("new message", roomToJoin,data);
-
-        setMessages([...messages, data]);
+        socket.emit("new message", selectedChat._id,data);
+        
+        // setMessages(messages => [...messages, data]);
         console.log(data, "sent message response data");
       } catch (error) {
         console.log(error.message);
@@ -155,7 +150,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
   useEffect(() => {
     socket.on("message recieved", (newMessageRecieved) => {
-      if ( !selectedChatCompare || selectedChatCompare._id !== newMessageRecieved.chat._id) {
+      
+      if ( !selectedChatCompare || selectedChatCompare._id !== newMessageRecieved.chat) {
 
         // if chat is not selected or doesn't match current chat
         if (!notification.includes(newMessageRecieved)) {
@@ -163,8 +159,10 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           setFetchAgain(!fetchAgain); //updating our chats in our my chats on newMessageRecieved
           console.log(notification, "notification bell-icon check");
         }
-      } else {
-        setMessages([...messages, newMessageRecieved]);
+      }
+       else {
+        console.log("Adding message into message list:  ",messages)
+        setMessages(messages => [...messages, newMessageRecieved]);
       }
     });
   });

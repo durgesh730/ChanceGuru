@@ -75,7 +75,7 @@ io.on("connection", (socket) => {
   socket.on("stop typing", (room) => socket.in(room).emit("stop typing"));
 
   socket.on("new message", (room,newMessageRecieved) => {
-    console.log(newMessageRecieved)
+    
     var chat = newMessageRecieved.chat;
 
     if (!newMessageRecieved.users) return console.log("chat.users not defined");
@@ -84,7 +84,7 @@ io.on("connection", (socket) => {
       if (user._id == newMessageRecieved.sender._id) return;
 
       socket.in(user._id).emit("message recieved", newMessageRecieved);
-      console.log("Message Received emited with: ",newMessageRecieved)
+  
       //.in-- inside user._id exclusive socket room joined-- emit this "message recieved" event ////mern-docs
     });
     
