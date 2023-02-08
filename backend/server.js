@@ -34,6 +34,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 app.use(cors());
 app.use(express.json());
 app.use(passportConfig.initialize());
+app.use(express.static(path));
 
 // Routing
 app.use("/auth", require("./routes/authRoutes"));
