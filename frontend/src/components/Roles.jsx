@@ -10,6 +10,19 @@ const Roles = ({ display }) => {
   const location = useLocation();
   const [projectDetails, setProjectDetails] = useState();
 
+  const [val, setVal] = useState([])
+  const handleadd = () => {
+    const abc = [...val, []]
+    setVal(abc)
+  }
+
+  const handlechanged = (onChangeValue, i) => {
+    const inputData = [...val];
+    inputData[i] = onChangeValue.target.value;
+    setVal(inputData)
+  }
+
+
   // const [getData, setGetData] = useState({ option: "" })
   // console.log(getData)
 
@@ -218,10 +231,19 @@ const Roles = ({ display }) => {
 
                 <form id="roles-form">
                   <input
-                    type="submit"
+                    // type="submit"
                     className="full-width-btn"
                     value="Add Roles"
+                    onClick={() => handleadd()}
                   />
+
+                  {val.map((data, i) => {
+                    return (
+                      <input className="py-2" type="text" name="role" id="role"
+                        placeholder="add roles" onChange={(e) => handlechanged(e, i)} />
+                    )
+                  })}
+
 
                   {projectDetails?.map((items) => items.roles.map((i, index) => {
                     return (
@@ -255,15 +277,25 @@ const Roles = ({ display }) => {
                 <form id="char-form" style={{ display: "none" }}>
                   <div className="charList row">
 
-                    <div
-                      className="col-lg-3  btn btn-sm btn-block my-2"
-                      onClick={() => {
-                        toggle("");
-                      }}
-                      id=""
-                    >
-                      Lead Negative Role
-                    </div>
+
+                    {projectDetails?.map((items) => items.roles.map((i, index) => {
+                      return (
+                        <>
+                          <div
+                            className="col-lg-3  btn btn-sm btn-block my-2"
+                            onClick={() => {
+                              toggle("");
+                            }}
+                            id=""
+                          >
+                            {i.role}
+                          </div>
+                        </>
+                      )
+                    }))}
+
+                    {/* 
+
                     <div
                       className="col-lg-3  btn btn-sm btn-block my-2 "
                       onClick={() => {
@@ -290,8 +322,10 @@ const Roles = ({ display }) => {
                       id=""
                     >
                       Chorus/Ensemble
-                    </div>
+                    </div> */}
+                    
                   </div>
+
                   <div className="d-flex">
                     <p className="mx-1"></p>
                     <input
