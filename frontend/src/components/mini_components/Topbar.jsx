@@ -37,7 +37,7 @@ const Topbar = (props) => {
                 Chance <br /> Guru
             </div>
             <div className="topbar-nav">
-                <Link to="/talentdashboard">
+                <Link to={user.type==="user"?"/talentdashboard":"/seekerdashboard"}>
                     <span className="topbar-icons-container">
                         <img className="topbar-icons" src={home} alt="" />
                     </span>
@@ -57,11 +57,11 @@ const Topbar = (props) => {
                 <span className="topbar-icons-container">
                     <img className="topbar-icons" src={chat} alt="" />
                 </span>
-                <Link to="/projectcreation">
+                {/* <Link to="/projectcreation"> */}
                     <span className="topbar-icons-container">
                         <img className="topbar-icons" src={notification} alt="" />
                     </span>
-                </Link>
+                {/* </Link> */}
                 {/* <Link to="/profiledetails"> */}
                 <span className="d-flex align-items-center cursor-pointer"
                     onClick={toggleProfileOptions} >
