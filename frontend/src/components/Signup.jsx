@@ -96,7 +96,7 @@ const Login = () => {
             signInWithPhoneNumber(authentication, phone, appVerifier)
                 .then((confirmationResult) => {
                     window.confirmationResult = confirmationResult;
-                    axios.post("/auth/signup",{
+                    axios.post("http://localhost:5000/auth/signup",{
                         username: username,
                         email: email,
                         pass: pass,

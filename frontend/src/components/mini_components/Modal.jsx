@@ -4,7 +4,7 @@ import axios from "axios";
 const Modal = ({ setModel, info, roles }) => {
     const roleApply = (chrId , rId ) => {
         axios
-            .post("/application", {
+            .post("http://localhost:5000/application", {
                 pId: info._id,
                 roleId: rId,
                 charId: chrId,

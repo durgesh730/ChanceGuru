@@ -17,7 +17,7 @@ const ProjectSummaryForm = ({ display  , values }) => {
 
     const publishProject = () => {
         axios
-            .post("/project" , {basicInfo : basicInfo , roles : roles} ,  {
+            .post("http://localhost:5000/project" , {basicInfo : basicInfo , roles : roles} ,  {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 }

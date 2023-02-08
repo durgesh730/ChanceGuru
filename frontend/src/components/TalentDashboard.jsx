@@ -9,7 +9,7 @@ const TalentDashboard = () => {
     console.log(cards);
     const getProjects = () => {
         axios
-            .get("/project/allProjects")
+            .get("http://localhost:5000/project/allProjects")
             .then((res) => {
                 setcards(res.data)
             })
