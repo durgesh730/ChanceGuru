@@ -4,12 +4,13 @@ import kamal from "../../assets/images/kamal.jpeg"
 
 const ApplicantRowCard = ({ Data }) => {
 
-    // console.log(Data)
     const id = Data.userId;
-    // console.log(id)
+    const _id = Data._id;
+
+    const [select, setSelect] = useState('selected')
+    const [rejected, setRejected] = useState('rejected')
 
     const [User, SetUser] = useState([]);
-    // console.log(User)
     const fetchData = async () => {
         const data = await fetch(`http://localhost:5000/project/UserId/${id}`, {
             method: "GET",
@@ -19,9 +20,31 @@ const ApplicantRowCard = ({ Data }) => {
         })
         const json = await data.json();
         SetUser(json)
-        // console.log(json);
     }
 
+    const handleSelect = async () => {
+        const data = await fetch(`http://localhost:5000/project/Select/${_id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ select })
+        })
+        const res = await data.json();
+    }
+
+    const handleReject = async () => {
+        const data = await fetch(`http://localhost:5000/project/Reject/${_id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ rejected })
+        })
+        const res = await data.json();
+    }
+
+    
     useEffect(() => {
         fetchData();
     }, [SetUser])
@@ -43,8 +66,8 @@ const ApplicantRowCard = ({ Data }) => {
                 <span className="applicantStatus">2 hrs ago</span>
             </div>
             <div className="actionButtons" >
-                <button>Select</button>
-                <button>Reject</button>
+                <button onClick={handleSelect} >Select</button>
+                <button onClick={handleReject} >Reject</button>
             </div>
             <div />
         </div>

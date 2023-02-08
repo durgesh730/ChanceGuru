@@ -14,6 +14,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import VerifyEmail from "./components/verifyEmail";
 import TalentDashboard from "./components/TalentDashboard";
 import SeekerDashboard from "./components/SeekerDashboard";
+import RolesDashboard from "./components/RolesDashboard";
 import ProfileDetails from "./components/ProfileDetails";
 import ProjectCreation from "./components/ProjectCreation";
 import Roles from "./components/Roles";
@@ -47,6 +48,7 @@ function App() {
                     <Route path="/projectcreation" element={<ProjectCreation />} />
                     <Route path="/talentdashboard" element={<TalentDashboard />} />
                     <Route path="/seekerdashboard" element={<SeekerDashboard />} />
+                    <Route path="/rolesdashboard" element={<RolesDashboard/>} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/verification" element={<Verification />} />

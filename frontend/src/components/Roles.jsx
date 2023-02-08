@@ -1,16 +1,57 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Topbar from "./mini_components/Topbar";
 import annouce from "../assets/icons/noun-announce-4868354.svg";
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
+
 
 const Roles = ({ display }) => {
-  const [projectDetails, setProjectDetails] = useState({
-    date: "11/12/2018",
-    location: "New Jersey",
-    projectName: "Shakespeare's Macbeth",
-    roleCount: "04",
-    charCount: "06",
-  });
+
+  const location = useLocation();
+  const [projectDetails, setProjectDetails] = useState();
+
+  // const [getData, setGetData] = useState({ option: "" })
+  // console.log(getData)
+
+  const handlechange = (e) => {
+    console.log(e.target.value)
+  }
+
+  const ProjectData = async () => {
+    const data = await fetch(`http://localhost:5000/project/projectDetails/${location.state}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    const res = await data.json();
+    setProjectDetails(res)
+  }
+
+  var char = 0;
+  var all = new Array();
+  var a = 0;
+
+  {
+    projectDetails?.map((items, i) => items.roles.map((i) => {
+      char = char + i.characters.length;
+      var length = i.characters.length;
+      for (i = 0; i < length; i++) {
+        all[i] = char
+      }
+
+      for (i = 0; i < all.length; i++) {
+        if (all[i] > a)
+          a = all[i]
+      }
+    })
+    )
+  }
+
+
+  useEffect(() => {
+    ProjectData()
+  }, [setProjectDetails])
 
   const [rolesDetails, setRolesDetails] = useState({
     leadNegative: "Voldemort",
@@ -79,29 +120,60 @@ const Roles = ({ display }) => {
               <img className="announcesvg" src={annouce} alt="" />
             </div>
             <div className="col-lg-9">
-              <span class="project-name">{projectDetails.projectName}</span>{" "}
-              <br />
-              <span class="project-desc">
-                Casting "Macbeth" by William Shakespeare. Set in 11th century
-                Scotland.
-              </span>
+
+              {
+                projectDetails?.map((item) => {
+
+                  return (
+                    <>
+                      <span class="project-name">{item.basicInfo.name}</span>{" "}
+                      <br />
+                      <span class="project-desc">
+                        {item.basicInfo.desc}
+                      </span>
+                    </>
+                  )
+                })
+              }
             </div>
           </div>
 
           <hr className="hr1" />
           <div className="posted">
             <span className="date">Posted On</span>
-            <span class="date-value">{projectDetails.date}</span>
+            <span class="date-value">0/05/2001</span>
             <span class="Location">Location</span>
-            <span class="location-value">{projectDetails.location}</span>
+
+            {
+              projectDetails?.map((item) => {
+
+                return (
+                  <>
+                    <span class="location-value">
+                      {item.basicInfo.address}
+                    </span>
+                  </>
+                )
+              })
+            }
+
           </div>
 
           <div className="count">
             <span class="role">Roles</span>
             <span class="characters">Characters</span>
             <br />
-            <span class="role-count">{projectDetails.roleCount}</span>
-            <span class="character-count">{projectDetails.charCount}</span>
+            {
+              projectDetails?.map((item) => {
+
+                return (
+                  <>
+                    <span class="role-count">{item.roles.length}</span>
+                  </>
+                )
+              })
+            }
+            <span class="character-count">{a}</span>
           </div>
         </div>
         <>
@@ -150,42 +222,19 @@ const Roles = ({ display }) => {
                     className="full-width-btn"
                     value="Add Roles"
                   />
-                  <select
-                    className="form-control form-select"
-                    id="exampleFormControlSelect1"
-                  >
-                    <option value="" disabled selected>
-                      Lead Negative Role
-                    </option>
-                    <option value="villain">{rolesDetails.leadNegative}</option>
-                  </select>
-                  <select
-                    className="form-control form-select"
-                    id="exampleFormControlSelect1"
-                  >
-                    <option value="" disabled selected>
-                      Lead
-                    </option>
-                    <option value="lead">{rolesDetails.lead}</option>
-                  </select>
-                  <select
-                    className="form-control form-select"
-                    id="exampleFormControlSelect1"
-                  >
-                    <option value="spporting actor" disabled selected>
-                      Supporting Actor
-                    </option>
-                    <option value="lead">{rolesDetails.supportingActor}</option>
-                  </select>
-                  <select
-                    className="form-control form-select"
-                    id="exampleFormControlSelect1"
-                  >
-                    <option value="chorus" disabled selected>
-                      Chorus/Ensemble
-                    </option>
-                    <option value="lead">{rolesDetails.chorusEnsemble}</option>
-                  </select>
+
+                  {projectDetails?.map((items) => items.roles.map((i, index) => {
+                    return (
+                      <>
+                        <div key={index} className="my-2">
+                          <input className="px-2" type="text" name="role" id="role"
+                            placeholder={i.role} onChange={handlechange} />
+                        </div>
+                      </>
+                    )
+                  }))}
+
+
                   <div className="row">
                     <input
                       type="submit"
@@ -201,6 +250,8 @@ const Roles = ({ display }) => {
                     />
                   </div>
                 </form>
+
+
                 <form id="char-form" style={{ display: "none" }}>
                   <div className="charList row">
 

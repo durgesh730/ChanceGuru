@@ -79,8 +79,8 @@ const ApplicantDetails = () => {
     return (
         <>
             <Topbar />
-            <div className="content-container">
 
+            <div className="content-container">
                 <div className="projCont">
                     <img src={promotion} className="promotion" alt="" />
                     {
@@ -100,7 +100,6 @@ const ApplicantDetails = () => {
                     }
 
                     <div className="Path-26"></div>
-
                     <span className='postedOn'>Posted On</span>
                     <span className="date">{"02/04/2001"}</span>
                     <span className="location">Location</span>
@@ -146,17 +145,16 @@ const ApplicantDetails = () => {
                     </div>
                     <hr />
 
+
+
                     <div className="leadRoles" style={{ dispay: "flex", flexDirection: "row", justifyContent: "space-between" }} >
                         {
                             projectDetails?.map((items, i) => items.roles.map((i) => i.characters.map((p) => {
-                                // console.log(p.name)
+                                // { i.role ? "" : "" }
                                 return (
                                     <>
-
                                         <span className='malcom'>{p.name}</span>
-
                                     </>
-
                                 )
                             }))
                             )

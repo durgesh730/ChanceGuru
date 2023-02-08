@@ -45,7 +45,7 @@ const Topbar = (props) => {
                 <span className="topbar-icons-container">
                     <img className="topbar-icons" src={directorchair} alt="" />
                 </span>
-                <Link to="/roles">
+                <Link to="/rolesdashboard">
                     <span className="topbar-icons-container">
                         <img className="topbar-icons" src={mask} alt="" />
                     </span>
