@@ -69,7 +69,7 @@ const BioExpForm = ({ display }) => {
         console.log('hii')
         e.preventDefault();
         const data = bioData;
-        axios.put('/profile/portfolio', { bio: bio }, {
+        axios.put('http://localhost:5000/profile/portfolio', { bio: bio }, {
             headers: {
                 "Authorization": `Bearer ${localStorage.getItem("token")}`
             }
@@ -86,7 +86,7 @@ const BioExpForm = ({ display }) => {
     const handleExpSubmit = (e) => {
         e.preventDefault();
         const data = expData;
-        axios.put('/profile/portfolio/exp', {
+        axios.put('http://localhost:5000/profile/portfolio/exp', {
             workedIn,
             workedAs,
             startDate,

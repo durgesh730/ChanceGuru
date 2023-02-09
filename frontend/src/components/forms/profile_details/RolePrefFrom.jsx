@@ -44,7 +44,7 @@ const RolePref = ({ display }) => {
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
-        axios.put('/profile/rolePref', {
+        axios.put('http://localhost:5000/profile/rolePref', {
             roles:formFields[0].roles
         },
             {

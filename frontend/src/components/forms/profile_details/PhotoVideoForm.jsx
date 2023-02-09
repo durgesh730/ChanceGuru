@@ -64,7 +64,7 @@ const PhotoVideoForm = ({ display }) => {
     const handlePhotoSubmit = (e) => {
         e.preventDefault();
         const data = photoURL;
-        axios.put('/profile/photo', {
+        axios.put('http://localhost:5000/profile/photo', {
             photo1,
             photo2,
             userId1,
@@ -90,7 +90,7 @@ const PhotoVideoForm = ({ display }) => {
     const handleVideoSubmit = (e) => {
         e.preventDefault();
         const data = videoURL;
-        axios.put('/profile/video', {
+        axios.put('http://localhost:5000/profile/video', {
             youtube,
             vimeo,
             userId2,
