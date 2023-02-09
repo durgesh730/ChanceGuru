@@ -8,45 +8,67 @@ import { useLocation } from "react-router-dom";
 const Roles = ({ display }) => {
 
   const location = useLocation();
-  const [projectDetails, setProjectDetails] = useState();
+  const [projectDetails, setProjectDetails] = useState(location.state);
 
-  const [val, setVal] = useState([])
-  const handleadd = () => {
-    const abc = [...val, []]
-    setVal(abc)
-  }
+  const [active, setActive] = useState(0);
+  const [leadRoles, setLeadRoles] = useState([])
 
-  const handlechanged = (onChangeValue, i) => {
+  // ==== usestate for put request on  role data
+
+  const [val, setVal] = useState([{ role: ""}])
+// console.log(val)
+  const handlechange = (onChangeValue, i) => {
     const inputData = [...val];
-    inputData[i] = onChangeValue.target.value;
+    inputData[i].role = onChangeValue.target.value;
     setVal(inputData)
   }
 
+  const handleadd = () => {
+    let obj = { role: "" };
+    setVal([...val, obj]);
+  };
 
-  // const [getData, setGetData] = useState({ option: "" })
-  // console.log(getData)
+  // ===== get roles data onchange ======
+  // const handlechar = (e, i) => {
+  //   const { value } = e.target;
+  //   putData[i].role = value;
+  // }
 
-  const handlechange = (e) => {
-    console.log(e.target.value)
+  // Initialise the states
+  const [state, setState] = useState([]);
+  const [answers, setAnswers] = useState({});
+
+  function handleClick() {
+    setState([...state, answers]);
+    setAnswers({});
   }
 
-  const ProjectData = async () => {
-    const data = await fetch(`http://localhost:5000/project/projectDetails/${location.state}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-    const res = await data.json();
-    setProjectDetails(res)
+  function handleAnswerChange(e) {
+    const { name, value } = e.target;
+    setAnswers({...answers, [name]: value} )
   }
+
+  // Log the main state when it changes
+  useEffect(() =>
+   console.log(state), 
+   [state]);
+
+  // console.log(answers)
+
+
+  useEffect(() => {
+    if (projectDetails) {
+      setLeadRoles(projectDetails.roles[0].characters)
+    }
+  }, [projectDetails])
+
 
   var char = 0;
   var all = new Array();
   var a = 0;
 
   {
-    projectDetails?.map((items, i) => items.roles.map((i) => {
+    projectDetails.roles?.map((i) => {
       char = char + i.characters.length;
       var length = i.characters.length;
       for (i = 0; i < length; i++) {
@@ -58,13 +80,8 @@ const Roles = ({ display }) => {
           a = all[i]
       }
     })
-    )
   }
 
-
-  useEffect(() => {
-    ProjectData()
-  }, [setProjectDetails])
 
   const [rolesDetails, setRolesDetails] = useState({
     leadNegative: "Voldemort",
@@ -105,15 +122,6 @@ const Roles = ({ display }) => {
       summToggle.classList.remove("active-toggle");
 
     }
-    // else {
-    //   summForm.style.display = "block";
-    //   charForm.style.display = "none";
-    //   rolesForm.style.display = "none";
-    //   summToggle.classList.add("active-toggle");
-    //   charToggle.classList.remove("active-toggle");
-    //   rolesToggle.classList.remove("active-toggle");
-    //   cur_form = "";
-    // }
   };
 
   let show = {};
@@ -134,20 +142,15 @@ const Roles = ({ display }) => {
             </div>
             <div className="col-lg-9">
 
-              {
-                projectDetails?.map((item) => {
 
-                  return (
-                    <>
-                      <span class="project-name">{item.basicInfo.name}</span>{" "}
-                      <br />
-                      <span class="project-desc">
-                        {item.basicInfo.desc}
-                      </span>
-                    </>
-                  )
-                })
-              }
+              <span class="project-name">
+                {projectDetails.basicInfo.name}
+              </span>{" "}
+              <br />
+              <span class="project-desc">
+                {projectDetails.basicInfo.desc}
+              </span>
+
             </div>
           </div>
 
@@ -156,36 +159,18 @@ const Roles = ({ display }) => {
             <span className="date">Posted On</span>
             <span class="date-value">0/05/2001</span>
             <span class="Location">Location</span>
-
-            {
-              projectDetails?.map((item) => {
-
-                return (
-                  <>
-                    <span class="location-value">
-                      {item.basicInfo.address}
-                    </span>
-                  </>
-                )
-              })
-            }
-
+            <span class="location-value">
+              {projectDetails.basicInfo.address}
+            </span>
           </div>
 
           <div className="count">
             <span class="role">Roles</span>
             <span class="characters">Characters</span>
             <br />
-            {
-              projectDetails?.map((item) => {
-
-                return (
-                  <>
-                    <span class="role-count">{item.roles.length}</span>
-                  </>
-                )
-              })
-            }
+            <span class="role-count">
+              {projectDetails.roles.length}
+            </span>
             <span class="character-count">{a}</span>
           </div>
         </div>
@@ -239,22 +224,29 @@ const Roles = ({ display }) => {
 
                   {val.map((data, i) => {
                     return (
-                      <input className="py-2" type="text" name="role" id="role"
-                        placeholder="add roles" onChange={(e) => handlechanged(e, i)} />
+                      <input
+                        // style={!showInput ? ({ display: "none" }) : ({ display: "block" })}
+                        className="py-2" type="text" name="role" id="role"
+                        placeholder="add roles" onChange={(e) => handlechange(e, i)} />
                     )
                   })}
 
 
-                  {projectDetails?.map((items) => items.roles.map((i, index) => {
+                  {projectDetails ? projectDetails.roles?.map((item,i) => {
+                     const {_id, role} = item
                     return (
                       <>
-                        <div key={index} className="my-2">
-                          <input className="px-2" type="text" name="role" id="role"
-                            placeholder={i.role} onChange={handlechange} />
+                        <div className="my-2">
+                          <input
+                            className="px-2"
+                            // value={putData.role}
+                            key={_id}
+                            type="text" name={_id} id="role"
+                            placeholder={role} onChange={(e)=>handleAnswerChange(e,i)} />
                         </div>
                       </>
                     )
-                  }))}
+                  }) : <></>}
 
 
                   <div className="row">
@@ -265,10 +257,10 @@ const Roles = ({ display }) => {
                     />
                     <p className="col-1"></p>
                     <input
-                      type="submit"
+                      // type="submit"
                       className="col-7 save-btn btn btn-lg btn-block my-2"
                       value="Save"
-                      onClick={changeRoleHandler}
+                      onClick={handleClick}
                     />
                   </div>
                 </form>
@@ -278,52 +270,18 @@ const Roles = ({ display }) => {
                   <div className="charList row">
 
 
-                    {projectDetails?.map((items) => items.roles.map((i, index) => {
+                    {projectDetails ? projectDetails.roles?.map((i, index) => {
                       return (
                         <>
-                          <div
-                            className="col-lg-3  btn btn-sm btn-block my-2"
-                            onClick={() => {
-                              toggle("");
-                            }}
-                            id=""
-                          >
+                          <div highlighted={active === index ? "true" : "false"}
+
+                            onClick={() => { setActive(index); setLeadRoles(i.characters); toggle(""); }}
+                            className="col-lg-3  btn btn-sm btn-block my-2" id="">
                             {i.role}
                           </div>
                         </>
                       )
-                    }))}
-
-                    {/* 
-
-                    <div
-                      className="col-lg-3  btn btn-sm btn-block my-2 "
-                      onClick={() => {
-                        toggle("");
-                      }}
-                      id=""
-                    >
-                      Lead
-                    </div>
-                    <div
-                      className="col-lg-3  btn btn-sm btn-block my-2"
-                      onClick={() => {
-                        toggle("");
-                      }}
-                      id=""
-                    >
-                      Supporting Actor
-                    </div>
-                    <div
-                      className="col-lg-3  btn btn-sm btn-block my-2"
-                      onClick={() => {
-                        toggle("");
-                      }}
-                      id=""
-                    >
-                      Chorus/Ensemble
-                    </div> */}
-                    
+                    }) : <></>}
                   </div>
 
                   <div className="d-flex">
@@ -331,44 +289,58 @@ const Roles = ({ display }) => {
                     <input
                       type="submit"
                       className="full-width-btn"
-                      value="Add Another Character"
-                    />
+                      value="Add Another Character" />
                   </div>
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Character Name"
-                  />
-                  <select
-                    className="form-control form-select"
-                    id="exampleFormControlSelect1"
-                  >
-                    <option value="chorus" disabled selected>
-                      Gender
-                    </option>
-                    <option value="male">Male</option>
-                    <option value="male">Female</option>
-                  </select>
+
+
+                  {
+                    leadRoles.map((p, i) => {
+                      return (
+                        <>
+                          <input key={i} type="text" className="form-control" placeholder={`${p.name}`} />
+                          <select className="form-control form-select" id="exampleFormControlSelect1" >
+                            <option value="chorus" disabled selected>
+                              {p.gender}
+                            </option>
+                            <option value="male">Male</option>
+                            <option value="male">Female</option>
+                          </select>
+                        </>
+                      )
+                    }
+                    )
+                  }
+
                   <textarea
                     name=""
                     id=""
                     className="form-control text-area"
                     rows="5"
                     placeholder="Details..."
-                    maxlength="250"
-                  ></textarea>
-                  <select
-                    className="form-control form-select"
-                    id="exampleFormControlSelect1"
-                  >
-                    <option value="" disabled selected>
-                      Age
-                    </option>
-                    <option value="male">19</option>
-                    <option value="female">20</option>
-                    <option value="female">21</option>
-                    <option value="female">22</option>
-                  </select>
+                    maxlength="250">
+                  </textarea>
+
+                  {
+                    leadRoles.map((p) => {
+                      return (
+                        <>
+                          <select
+                            className="form-control form-select"
+                            id="exampleFormControlSelect1"
+                          >
+                            <option value="" disabled selected>
+                              {p.age}
+                            </option>
+                            <option value="male">19</option>
+                            <option value="female">20</option>
+                            <option value="female">21</option>
+                            <option value="female">22</option>
+                          </select>
+                        </>
+                      )
+                    }
+                    )
+                  }
 
                   <div className="row">
                     <input

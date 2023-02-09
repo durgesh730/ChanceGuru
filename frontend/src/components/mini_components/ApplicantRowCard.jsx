@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react'
 import kamal from "../../assets/images/kamal.jpeg"
 
 
-const ApplicantRowCard = ({ Data }) => {
+const ApplicantRowCard = ({ Data, applied }) => {
 
-    const id = Data.userId;
+    var a = applied;
+    var id = Data.userId
+
     const _id = Data._id;
 
     const [select, setSelect] = useState('selected')
@@ -12,14 +14,14 @@ const ApplicantRowCard = ({ Data }) => {
 
     const [User, SetUser] = useState([]);
     const fetchData = async () => {
-        const data = await fetch(`http://localhost:5000/project/UserId/${id}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
-        const json = await data.json();
-        SetUser(json)
+            const data = await fetch(`http://localhost:5000/project/UserId/${id}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+            const json = await data.json();
+            SetUser(json)
     }
 
     const handleSelect = async () => {
@@ -44,7 +46,7 @@ const ApplicantRowCard = ({ Data }) => {
         const res = await data.json();
     }
 
-    
+
     useEffect(() => {
         fetchData();
     }, [SetUser])
@@ -54,11 +56,11 @@ const ApplicantRowCard = ({ Data }) => {
         <div className="lI" style={{ display: "flex", flexDirection: "row", gap: "4rem" }}>
             <div>
                 <img src={kamal} alt="" style={{ width: '4rem' }} />
-                {User.map((items, i) => {
+                {/* {User?.map((items, i) => {
                     return (<span key={i} className="applicantName">
                         {items.username}
                     </span>)
-                })}
+                })} */}
 
             </div>
 
