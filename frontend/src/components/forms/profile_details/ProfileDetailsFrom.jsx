@@ -64,7 +64,7 @@ const ProfileDetailsForm = ({ display }) => {
 
     const handleShow = async () => {
         axios
-            .get(`/profile/`, {
+            .get(`https://localhost:5000/profile/`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },

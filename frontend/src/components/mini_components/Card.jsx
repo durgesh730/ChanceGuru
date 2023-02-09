@@ -11,7 +11,7 @@ const Card = ({ card }) => {
     const [roles, setroles] = useState([])
     const getRoles = () => {
         axios
-            .get(`/projects/getroles/${card.id}`)
+            .get(`https://localhost:5000/projects/getroles/${card.id}`)
             .then((res) => {
                 setroles(res.data.data)
             })
