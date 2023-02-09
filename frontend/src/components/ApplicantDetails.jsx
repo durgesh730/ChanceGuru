@@ -16,7 +16,7 @@ const ApplicantDetails = () => {
 
 
     const ProjectData = async () => {
-        const data = await fetch(`/project/projectDetails/${location.state}`, {
+        const data = await fetch(`https://localhost:5000/project/projectDetails/${location.state}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -60,7 +60,7 @@ const ApplicantDetails = () => {
 
     const [Data, setData] = useState();
     const fetchData = async () => {
-        const data = await fetch(`/project/Seekers/${location.state}`, {
+        const data = await fetch(`https://localhost:5000/project/Seekers/${location.state}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",

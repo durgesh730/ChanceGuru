@@ -47,7 +47,7 @@ const ProfileDetailsForm = ({ display }) => {
             country, address, linkedin, facebook, instagram, userId } =
             profileDetails;
 
-        const res = await fetch("/profile/", {
+        const res = await fetch("https://localhost:5000/profile/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
