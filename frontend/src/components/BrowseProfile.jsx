@@ -1,7 +1,7 @@
 import React from "react";
 import Searchbar from "./mini_components/Searchbar";
 import Topbar from "./mini_components/Topbar";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { BsChevronDown } from "react-icons/bs";
 import godfather from "../assets/images/godfather.png";
 import UserProfile from "./UserProfile";
@@ -12,6 +12,10 @@ const BrowseProfile = () => {
     let path = `/projectcreation`;
     navigate(path);
   };
+
+  const location = useLocation();
+  console.log(location);
+
   return (
     <div>
       <Topbar />
@@ -54,7 +58,11 @@ const BrowseProfile = () => {
                 <td>New Jersey</td>
                 <td>+1 263 3456 78</td>
                 <td>
-                  <NavLink to={"/browseprofile/:nickdavolt"} exact>
+                  <NavLink
+                    to="/browseprofile/:nickdavolt"
+                    state={{ browse_location: location.pathname }}
+                    exact
+                  >
                     <button>View Profile</button>
                   </NavLink>
                 </td>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Topbar from "./mini_components/Topbar";
 import pfp from "../assets/images/Mask Group 29.png";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import Details from "./mini_components/userProfile/Details";
 import Talents from "./mini_components/userProfile/Talents";
 import BioExperience from "./mini_components/userProfile/BioExperience";
@@ -9,10 +9,19 @@ import Education from "./mini_components/userProfile/Education";
 import UserRole from "./mini_components/userProfile/UserRole";
 import Thumb from "../assets/images/Group 36.png";
 
-const UserProfile = () => {
+const UserProfile = (props) => {
   const [active, setActive] = useState("details");
   const [modal, setModal] = useState(false);
-  //   console.log("modal" + modal);
+
+  const location = useLocation();
+
+  const b_location = location.state.browse_location;
+  const s_location = location.state.submission_location;
+  const a_location = location.state.audition_location;
+
+  // console.log(b_location);
+  // console.log(s_location);
+  // console.log(a_location);
 
   return (
     <>
@@ -47,22 +56,77 @@ const UserProfile = () => {
                   <h6>Nick Davolt</h6>
                   <p>Actor</p>
                 </div>
-                <button onClick={() => setModal(true)}>Send Request</button>
+                <div>
+                  {("/manage/submission" === s_location ||
+                    "/manage/audition" === a_location) && (
+                    <>
+                      <button
+                        onClick={() => setModal(true)}
+                        style={{ color: "#6cc592", borderColor: "#6cc592" }}
+                      >
+                        Select
+                      </button>
+                      <button
+                        onClick={() => setModal(true)}
+                        style={{ color: "#16bac5", borderColor: "#16bac5" }}
+                      >
+                        Shortlist
+                      </button>
+                    </>
+                  )}
+                  {"/manage/audition" === a_location && (
+                    <button onClick={() => setModal(true)}>Schedule</button>
+                  )}
+                  {("/manage/submission" === s_location ||
+                    "/manage/audition" === a_location) && (
+                    <button
+                      onClick={() => setModal(true)}
+                      style={{ color: "#b8d0eb", borderColor: "#b8d0eb" }}
+                    >
+                      Reject
+                    </button>
+                  )}
+
+                  {"/browseprofile" === b_location && (
+                    <button onClick={() => setModal(true)}>Send Request</button>
+                  )}
+                </div>
               </div>
               <hr />
               <div className="horizontal_nav d-flex justify-content-between">
-                <span onClick={() => setActive("details")}>
+                <span
+                  onClick={() => setActive("details")}
+                  className={active === "details" ? "activeUser-class" : ""}
+                >
                   Profile Details
                 </span>
-                <span onClick={() => setActive("talent")}>Talent Details</span>
-                <span onClick={() => setActive("bio")}>Bio & Experience</span>
-                <span onClick={() => setActive("education")}>
+                <span
+                  onClick={() => setActive("talent")}
+                  className={active === "talent" ? "activeUser-class" : ""}
+                >
+                  Talent Details
+                </span>
+                <span
+                  onClick={() => setActive("bio")}
+                  className={active === "bio" ? "activeUser-class" : ""}
+                >
+                  Bio & Experience
+                </span>
+                <span
+                  onClick={() => setActive("education")}
+                  className={active === "education" ? "activeUser-class" : ""}
+                >
                   Education & Skills
                 </span>
-                <span onClick={() => setActive("role")}>Role Preferences</span>
+                <span
+                  onClick={() => setActive("role")}
+                  className={active === "role" ? "activeUser-class" : ""}
+                >
+                  Role Preferences
+                </span>
               </div>
               <hr />
-              <div className="h-100">
+              <div>
                 {active === "details" && <Details />}
                 {active === "talent" && <Talents />}
                 {active === "bio" && <BioExperience />}

@@ -3,11 +3,12 @@ import Searchbar from "./mini_components/Searchbar";
 import Topbar from "./mini_components/Topbar";
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 import godfather from "../assets/images/godfather.png";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import SideNav from "./SideNav";
 
 const Audition = () => {
   const [active, setActive] = useState(false);
+  const location = useLocation();
   return (
     <>
       <Topbar />
@@ -62,7 +63,10 @@ const Audition = () => {
                               <td>
                                 <div className="d-flex justify-content-center align-items-center">
                                   <NavLink
-                                    to={"/browseprofile/:nickdavolt"}
+                                    to="/browseprofile/:nickdavolt"
+                                    state={{
+                                      audition_location: location.pathname,
+                                    }}
                                     exact
                                   >
                                     <button>View Profile</button>

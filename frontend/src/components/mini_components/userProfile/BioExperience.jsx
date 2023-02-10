@@ -1,4 +1,5 @@
 import React from "react";
+import Carousel from "./Carousel";
 
 const BioExperience = () => {
   return (
@@ -19,7 +20,7 @@ const BioExperience = () => {
             </div>
             <div>
               <p>Experience</p>
-              <div className="scroll_x">
+              {/* <div className="scroll_x">
                 <div className="x_cards">
                   <h6>05/12/2018 - 01/12/2018</h6>
                   <p>
@@ -55,7 +56,8 @@ const BioExperience = () => {
                     role of Ensemble in Man of La Mancha.
                   </p>
                 </div>
-              </div>
+              </div> */}
+              <Carousel />
             </div>
           </div>
         </div>

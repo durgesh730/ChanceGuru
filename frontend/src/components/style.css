@@ -1023,15 +1023,15 @@ div.listItems {
   color: #b8b8b8;
 }
 .p1 button {
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 600;
   line-height: 1.27;
   text-align: center;
   color: #8443e5;
-  /* width: 147px; */
+  width: 100px;
   height: 35px;
-  margin: 0 8px 20px 31px;
-  padding: 8.4px 24px 7.6px 25px;
+  margin: 5px 5px;
+  /* padding: 5px 10px; */
   border-radius: 8px;
   border: solid 1px #8443e5;
   background-color: #fff;
@@ -1049,9 +1049,14 @@ div.listItems {
   text-align: center;
   color: #b8b8b8;
   cursor: pointer;
+  padding-bottom: 5px;
+}
+.activeUser-class {
+  color: #8443e5 !important;
+  border-bottom: 2px solid #8443e5;
 }
 .horizontal_nav span:hover {
-  color: #6c54a6;
+  color: #8443e5;
 }
 
 .purple_title {
@@ -1087,7 +1092,7 @@ div.listItems {
   flex: 0 0 auto;
   width: 300px;
   margin: 29px 18px 49px 13.3px;
-  padding: 22px 32px 35px 23px;
+  padding: 22px 32px 0px 23px;
   border-radius: 6px;
   border: solid 1px #d1d1d1;
   background-color: #fff;
@@ -1180,4 +1185,56 @@ div.listItems {
 .side_nav span {
   color: #fff;
   height: 30px;
+  /* padding: 10px 5px; */
+}
+
+.side_nav span a {
+  /* width: 100px; */
+  padding: 3px 0px;
+}
+
+.lactive-class {
+  border-bottom: 2px solid #fff;
+}
+
+.experience_container {
+  position: relative;
+}
+.experience_container {
+  padding: 10px 40px;
+}
+.ec_child {
+  display: flex;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+.experience_container .ec_child div {
+  min-width: 48.7%;
+  border-radius: 6px;
+  border: solid 1px #d1d1d1;
+  padding: 10px;
+  margin-right: 10px;
+  /* width: 50% !important; */
+}
+.experience_container .controllers button:nth-child(1) {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translate(0%, -50%);
+  height: 100%;
+  border: none;
+  background-color: #fff;
+  padding: 0 10px;
+  font-size: 20px;
+}
+.experience_container .controllers button:nth-child(2) {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translate(0%, -50%);
+  height: 100%;
+  border: none;
+  background-color: #fff;
+  padding: 0 10px;
+  font-size: 20px;
 }
