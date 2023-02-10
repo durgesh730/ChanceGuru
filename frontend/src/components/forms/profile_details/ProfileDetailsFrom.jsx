@@ -73,7 +73,6 @@ const ProfileDetailsForm = ({ display }) => {
                 if(response.data !== null){
                     setProfileDetails(response.data);
                 }
-                
             })
             .catch((err) => {
                 console.log(err.response);
