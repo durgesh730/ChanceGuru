@@ -154,13 +154,23 @@ router.post("/", jwtAuth, (req, res) => {
 router.put("/changeRoles", jwtAuth, (req, res) => {
     const user = req.user;
     const data = req.body;
-
-    Project.findOneAndUpdate({ seekerId: user._id }, {
+    // console.log(data.project.roles,data.project._id)
+    Project.findOneAndUpdate({ _id: data.project._id }, {
         $set: {
-            roles: data.roles,
+            roles: data.project.roles,
         },
     })
+    .then((response) => {
+        res.json(response);
+
+    })
+    .catch((err) => {
+        // console.log(err)
+        res.status(400).json(err);
+    })
 })
+
+
 
 
 module.exports = router;

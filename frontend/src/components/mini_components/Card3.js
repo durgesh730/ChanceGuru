@@ -12,7 +12,7 @@ const Card2 = ({ card }) => {
     return (
         <li>
 
-            <Link to={"/roles"} state={card._id} >
+            <Link to={"/roles"} state={card} >
 
                 <div className="card-title">‘{name}’</div>
                 {/* <span className="card-footer">{card.roles} Roles</span> */}
