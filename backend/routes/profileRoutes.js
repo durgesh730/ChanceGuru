@@ -2,6 +2,8 @@ const express = require("express");
 const jwtAuth = require("../lib/jwtAuth");
 const router = express.Router();
 const Profile = require("../db/Profile")
+const User = require("../db/User");
+const asyncHandler = require("express-async-handler");
 
 //to get profile details by user id from user side
 router.get("/", jwtAuth, (req, res) => {
@@ -9,6 +11,59 @@ router.get("/", jwtAuth, (req, res) => {
     Profile.findOne({ userId: user._id })
         .then((response) => {
             res.json(response);
+        })
+        .catch((err) => {
+            res.status(400).json(err);
+        })
+})
+
+// API used for user phone number and email
+router.get("/Users", async (req, res) => {
+    try {
+        const user = await User.aggregate([
+            {
+                $match: { type: "user" }
+            }
+        ])
+        res.json(user)
+        // console.log(user)
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Some error occured")
+    }
+})
+
+// router.get("/ProData", async (req, res) => {
+//     const { fullname } = req.query;
+//     const basicInfo = {}
+//     if(fullname){
+//         basicInfo.fullname = fullname;
+//     }
+//     console.log({ basicInfo})
+
+//     const data = await Profile.find({"basicInfo.fullname":`${fullname}`});
+//     res.status(200).json({data})
+// })
+
+
+router.get("/ProData", async (req, res) => {
+    const keyword = req.query.fullname
+        ?
+        { "basicInfo.fullname": { $regex: req.query.fullname, $options: "i" } } //case insensitive
+
+        : {};
+    console.log(keyword)
+    const users = await Profile.find(keyword);
+    res.send(users);
+});
+
+
+// data of profiles 
+router.get("/profileData", (req, res) => {
+    Profile.find(req.params.id)
+        .then((response) => {
+            res.json(response);
+            // console.log(response)
         })
         .catch((err) => {
             res.status(400).json(err);
@@ -30,8 +85,8 @@ router.get("/:id", (req, res) => {
 router.post("/", jwtAuth, (req, res) => {
     const { fullname, gender, email, password, DOB, city, state,
         country, address, linkedin, facebook, instagram, userId } = req.body;
-     
-        console.log(req.body)
+
+    console.log(req.body)
 
     const user = req.user;
     const profile = new Profile({
@@ -81,32 +136,32 @@ router.post("/", jwtAuth, (req, res) => {
 //     console.log(user)
 
 
-    // try {
-    //     const newData = {};
-    //     if (fullname) { newData.fullname = fullname };
-    //     if (gender) { newData.gender = gender };
-    //     if (email) { newData.email = email };
-    //     if (password) { newData.password = password };
-    //     if (DOB) { newData.DOB = DOB }
-    //     if (city) { newData.city = city }
-    //     if (state) { newData.state = state }
-    //     if (country) { newData.country = country }
-    //     if (address) { newData.address = address }
-    //     if (linkedin) { newData.linkedin = linkedin }
-    //     if (facebook) { newData.facebook = facebook }
-    //     if (instagram) { newData.instagram = instagram }
-    //     if (userId) { newData.userId = userId }
+// try {
+//     const newData = {};
+//     if (fullname) { newData.fullname = fullname };
+//     if (gender) { newData.gender = gender };
+//     if (email) { newData.email = email };
+//     if (password) { newData.password = password };
+//     if (DOB) { newData.DOB = DOB }
+//     if (city) { newData.city = city }
+//     if (state) { newData.state = state }
+//     if (country) { newData.country = country }
+//     if (address) { newData.address = address }
+//     if (linkedin) { newData.linkedin = linkedin }
+//     if (facebook) { newData.facebook = facebook }
+//     if (instagram) { newData.instagram = instagram }
+//     if (userId) { newData.userId = userId }
 
-    //     const userData = await Profile.findOneAndUpdate({ userId: user._id },
-    //         { $set: { basicInfo: newData } }, { new: true })
+//     const userData = await Profile.findOneAndUpdate({ userId: user._id },
+//         { $set: { basicInfo: newData } }, { new: true })
 
-    //     res.json({ userData });
-    //     console.log(userData);
+//     res.json({ userData });
+//     console.log(userData);
 
-    // } catch (error) {
-    //     console.error(error.message);
-    //     res.status(500).send("Some error occured")
-    // }
+// } catch (error) {
+//     console.error(error.message);
+//     res.status(500).send("Some error occured")
+// }
 // })
 
 
