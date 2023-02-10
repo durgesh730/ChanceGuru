@@ -171,15 +171,6 @@ const Roles = ({ display }) => {
       summToggle.classList.remove("active-toggle");
 
     }
-    // else {
-    //   summForm.style.display = "block";
-    //   charForm.style.display = "none";
-    //   rolesForm.style.display = "none";
-    //   summToggle.classList.add("active-toggle");
-    //   charToggle.classList.remove("active-toggle");
-    //   rolesToggle.classList.remove("active-toggle");
-    //   cur_form = "";
-    // }
   };
 
   let show = {};
@@ -310,7 +301,7 @@ const Roles = ({ display }) => {
                     />
                     <p className="col-1"></p>
                     <input
-                      type="submit"
+                      // type="submit"
                       className="col-7 save-btn btn btn-lg btn-block my-2"
                       value="Save"
                     />
