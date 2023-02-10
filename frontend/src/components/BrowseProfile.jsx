@@ -1,24 +1,74 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Searchbar from "./mini_components/Searchbar";
 import Topbar from "./mini_components/Topbar";
-import { NavLink, useNavigate } from "react-router-dom";
-import { BsChevronDown } from "react-icons/bs";
+import { Await, json, NavLink, useNavigate } from "react-router-dom";
+import { BsChevronDown, BsPhone } from "react-icons/bs";
 import godfather from "../assets/images/godfather.png";
-import UserProfile from "./UserProfile";
 
 const BrowseProfile = () => {
+
+  const [query, setQuery] = useState('');
+  const [profileData, setProfileData] = useState();
+
+  const handleSearch = async () => {
+    const data = await fetch(`http://localhost:5000/profile/ProData?fullname=${query}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json"
+      },
+    })
+    const res = await data.json();
+    if (res) {
+      setProfileData(res);
+      console.log(res)
+    }
+  }
+
+  const [userData, setUserData] = useState();
+
+  const GetProfiledata = async () => {
+    const data = await fetch('http://localhost:5000/profile/profileData', {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json"
+      },
+    })
+    const res = await data.json();
+    if (res) {
+      setProfileData(res);
+    }
+  }
+
+  const GetUserData = async () => {
+    const data = await fetch('http://localhost:5000/profile/Users', {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json"
+      },
+    })
+    const res = await data.json();
+    setUserData(res);
+  }
+
+
   let navigate = useNavigate();
   const routeChange = () => {
     let path = `/projectcreation`;
     navigate(path);
   };
+
+  useEffect(() => {
+    GetProfiledata();
+    GetUserData()
+  }, [setProfileData])
+
   return (
     <div>
       <Topbar />
       <div className="container">
         <div className="row">
           <div className="col-lg-8">
-            <Searchbar />
+            <Searchbar setQuery={setQuery} query={query} handleSearch={handleSearch} />
           </div>
           <div className="col-lg-4">
             <button
@@ -45,20 +95,34 @@ const BrowseProfile = () => {
               <td>Contact</td>
             </thead>
             <tbody>
-              <tr>
-                <td>
-                  <img src={godfather} />
-                  Nick Davolt
-                </td>
-                <td>Lead, Supporting Actor</td>
-                <td>New Jersey</td>
-                <td>+1 263 3456 78</td>
-                <td>
-                  <NavLink to={"/browseprofile/:nickdavolt"} exact>
-                    <button>View Profile</button>
-                  </NavLink>
-                </td>
-              </tr>
+
+              { profileData?.map((item, index) => {
+        
+                  return (
+                    <tr key={index} >
+                      <td>
+                        <img src={godfather} />
+                        {item.basicInfo.fullname}
+                      </td>
+                      {
+                        item.rolePref?.map((i) => {
+                          return (
+                            <td>{i.role}</td>
+                          )
+                        })
+                      }
+                      <td> {item.basicInfo.address} </td>
+                      <td>61 502648952</td>
+                      <td>
+                        <NavLink to={"/browseprofile/:nickdavolt"} state={item} exact>
+                          <button>View Profile</button>
+                        </NavLink>
+                      </td>
+                    </tr>
+                  )
+                })
+              }
+
             </tbody>
           </table>
         </div>

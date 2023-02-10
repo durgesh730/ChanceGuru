@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Topbar from "./mini_components/Topbar";
 import pfp from "../assets/images/Mask Group 29.png";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import Details from "./mini_components/userProfile/Details";
 import Talents from "./mini_components/userProfile/Talents";
 import BioExperience from "./mini_components/userProfile/BioExperience";
@@ -10,10 +10,11 @@ import UserRole from "./mini_components/userProfile/UserRole";
 import Thumb from "../assets/images/Group 36.png";
 
 const UserProfile = () => {
+
+  const location = useLocation();
   const [active, setActive] = useState("details");
   const [modal, setModal] = useState(false);
-  //   console.log("modal" + modal);
-
+ 
   return (
     <>
       <div>
@@ -44,7 +45,7 @@ const UserProfile = () => {
             <div className="p-4">
               <div className="p1 d-flex justify-content-between">
                 <div>
-                  <h6>Nick Davolt</h6>
+                  <h6>{location.state.basicInfo.fullname}</h6>
                   <p>Actor</p>
                 </div>
                 <button onClick={() => setModal(true)}>Send Request</button>
@@ -63,11 +64,19 @@ const UserProfile = () => {
               </div>
               <hr />
               <div className="h-100">
-                {active === "details" && <Details />}
-                {active === "talent" && <Talents />}
-                {active === "bio" && <BioExperience />}
-                {active === "education" && <Education />}
-                {active === "role" && <UserRole />}
+                {active === "details" && <Details Data={location.state.basicInfo} />}
+                {active === "talent" && <Talents  Data={location.state.talent}  />}
+                {active === "bio" && <BioExperience
+                 Data ={location.state.
+                  portfolio}
+                  />}
+                {active === "education" && <Education
+                 Data ={location.state
+                 } 
+                 />}
+                {active === "role" && <UserRole
+                 Data ={location.state}
+                  />}
               </div>
             </div>
           </div>

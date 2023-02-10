@@ -1,6 +1,7 @@
 import React from "react";
 
-const Details = () => {
+const Details = ({Data}) => {
+
   return (
     <>
       <div className="userdetails d-flex justify-content-between flex-column h-100">
@@ -9,15 +10,15 @@ const Details = () => {
           <div className="row">
             <div className="col-lg-3">
               <p>Full Name</p>
-              <h6>Nick Davolt</h6>
+              <h6>{Data.fullname}</h6>
             </div>
             <div className="col-lg-3">
               <p>Gender</p>
-              <h6>Male</h6>
+              <h6>{Data.gender}</h6>
             </div>
             <div className="col-lg-3">
               <p>Date of Birth</p>
-              <h6>01.01.1990</h6>
+              <h6>{Data.DOB}</h6>
             </div>
             <div className="col-lg-3"></div>
           </div>
@@ -42,19 +43,19 @@ const Details = () => {
           <div className="row">
             <div className="col-lg-3">
               <p>City</p>
-              <h6>New York City</h6>
+              <h6>{Data.city}</h6>
             </div>
             <div className="col-lg-3">
               <p>State</p>
-              <h6>New York</h6>
+              <h6>{Data.state}</h6>
             </div>
             <div className="col-lg-3">
               <p>Country</p>
-              <h6>United States</h6>
+              <h6>{Data.country}</h6>
             </div>
             <div className="col-lg-3">
               <p>Address</p>
-              <h6>22, Brookebond Apartment, Park Avenue, Red Street</h6>
+              <h6>{Data.address}</h6>
             </div>
           </div>
         </div>
@@ -62,15 +63,15 @@ const Details = () => {
           <div className="row">
             <div className="col-lg-3">
               <p>Linkedin</p>
-              <h6>NIL</h6>
+              <h6>{Data.linkedin}</h6>
             </div>
             <div className="col-lg-3">
               <p>Facebook</p>
-              <h6>www.facebook.com/ NuanceTheatreCo</h6>
+              <h6>{Data.facebook}</h6>
             </div>
             <div className="col-lg-3">
               <p>Instagram</p>
-              <h6>Nuance Casting (@nuance_co)</h6>
+              <h6>{Data.instagram}</h6>
             </div>
             <div className="col-lg-3"></div>
           </div>
