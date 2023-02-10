@@ -16,6 +16,45 @@ router.get("/allProjects", (req, res) => {
         })
 })
 
+// API for change status of jobapplication
+
+router.put("/Select/:_id", (req, res) => {
+    const data = req.body;
+    const d =  data.select 
+
+    JobApplication.findOneAndUpdate({_id:req.params._id}, {
+        $set: {
+             status:d,
+        },
+    })
+        .then((response) => {
+            res.json(response);
+        })
+        .catch((err) => {
+            res.status(400).json(err);
+        })
+})
+
+// API for change status of jobapplication
+
+router.put("/Reject/:_id", (req, res) => {
+    const data = req.body;
+    const d =  data.rejected 
+
+    JobApplication.findOneAndUpdate({_id:req.params._id}, {
+        $set: {
+             status:d,
+        },
+    })
+        .then((response) => {
+            res.json(response);
+        })
+        .catch((err) => {
+            res.status(400).json(err);
+        })
+})
+
+
 router.get("/allProjectsSeekers",jwtAuth,(req, res) => {
     const user = req.user;
     Project.find({ seekerId: user._id })
@@ -27,11 +66,11 @@ router.get("/allProjectsSeekers",jwtAuth,(req, res) => {
         })
 })
 
+
 router.get("/projectDetails/:_id",(req, res) => {
     Project.find({_id: req.params._id})
         .then((response) => {
             res.json(response);
-            // console.log(response)
         })
         .catch((err) => {
             res.status(400).json(err);
@@ -115,13 +154,23 @@ router.post("/", jwtAuth, (req, res) => {
 router.put("/changeRoles", jwtAuth, (req, res) => {
     const user = req.user;
     const data = req.body;
-
-    Project.findOneAndUpdate({ seekerId: user._id }, {
+    // console.log(data.project.roles,data.project._id)
+    Project.findOneAndUpdate({ _id: data.project._id }, {
         $set: {
-            roles: data.roles,
+            roles: data.project.roles,
         },
     })
+    .then((response) => {
+        res.json(response);
+
+    })
+    .catch((err) => {
+        // console.log(err)
+        res.status(400).json(err);
+    })
 })
+
+
 
 
 module.exports = router;

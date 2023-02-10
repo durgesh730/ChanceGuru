@@ -8,7 +8,14 @@ const Login = () => {
     const navigate = useNavigate();
     useEffect(() => {
         if (localStorage.getItem("login")) {
-            navigate("/talentdashboard");
+            if(localStorage.getItem("type") === "user"){
+
+                navigate("/talentdashboard");
+            }
+            else{
+                
+                navigate("/seekerdashboard");
+            }
         }
     }, [])
     return (

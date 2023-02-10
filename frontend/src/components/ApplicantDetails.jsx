@@ -15,6 +15,10 @@ const ApplicantDetails = () => {
     const [leadRoles, setLeadRoles] = useState([])
 
 
+    var applied = leadRoles.map((Data) => { return Data._id });
+    var check = applied[0]
+
+
     const ProjectData = async () => {
         const data = await fetch(`http://localhost:5000/project/projectDetails/${location.state}`, {
             method: "GET",
@@ -24,16 +28,14 @@ const ApplicantDetails = () => {
         })
         const res = await data.json();
         setProjectDetails(res)
-        
+
     }
 
-    useEffect(()=>{
-        console.log(projectDetails)
-        if(projectDetails){
-
+    useEffect(() => {
+        if (projectDetails) {
             setLeadRoles(projectDetails[0].roles[0].characters)
         }
-    },[projectDetails])
+    }, [projectDetails])
 
     // for finding total characters in Project by using map
 
@@ -91,8 +93,8 @@ const ApplicantDetails = () => {
     return (
         <>
             <Topbar />
-            <div className="content-container">
 
+            <div className="content-container">
                 <div className="projCont">
                     <img src={promotion} className="promotion" alt="" />
                     {
@@ -112,7 +114,6 @@ const ApplicantDetails = () => {
                     }
 
                     <div className="Path-26"></div>
-
                     <span className='postedOn'>Posted On</span>
                     <span className="date">{"02/04/2001"}</span>
                     <span className="location">Location</span>
@@ -148,10 +149,10 @@ const ApplicantDetails = () => {
                     <div className="topNavbar">
 
                         {
-                            
-                            projectDetails?.map((items, ind) => items.roles.map((i,index) => {
+
+                            projectDetails?.map((items, ind) => items.roles.map((i, index) => {
                                 return (
-                                    <span highlighted={active === index?"true":"false"} className='lead' onClick={()=>{setActive(index); setLeadRoles(i.characters)}} >{i.role}</span>
+                                    <span highlighted={active === index ? "true" : "false"} className='lead' onClick={() => { setActive(index); setLeadRoles(i.characters) }} >{i.role}</span>
                                 )
                             })
                             )
@@ -159,17 +160,16 @@ const ApplicantDetails = () => {
                     </div>
                     <hr />
 
+
+
                     <div className="leadRoles" style={{ dispay: "flex", flexDirection: "row", justifyContent: "space-between" }} >
                         {
                             leadRoles.map((p) => {
                                 // console.log(p.name)
                                 return (
                                     <>
-
                                         <span className='malcom'>{p.name}</span>
-
                                     </>
-
                                 )
                             }
                             )
@@ -202,14 +202,14 @@ const ApplicantDetails = () => {
                         </div>
                         <hr />
                         <div className="listItems">
+
                             {Data?.map((Data, i) =>
                             (
-                                <ApplicantRowCard key={i} Data={Data} />
+                                <ApplicantRowCard key={i} Data={Data} applied={check} />
                             )
                             )}{" "}
+
                         </div>
-
-
                     </div>
                 </div>
             </div>

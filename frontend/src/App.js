@@ -14,6 +14,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import VerifyEmail from "./components/verifyEmail";
 import TalentDashboard from "./components/TalentDashboard";
 import SeekerDashboard from "./components/SeekerDashboard";
+import RolesDashboard from "./components/RolesDashboard";
 import ProfileDetails from "./components/ProfileDetails";
 import ProjectCreation from "./components/ProjectCreation";
 import Roles from "./components/Roles";

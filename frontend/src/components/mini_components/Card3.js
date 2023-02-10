@@ -11,7 +11,8 @@ const Card2 = ({ card }) => {
     return (
         <li>
 
-            <Link to={"/applicantdetails"} state={card._id} >
+            <Link to={"/roles"} state={card} >
+
                 <div className="card-title">‘{name}’</div>
                 <div className="card-author d-flex align-items-center">
                     <div className="d-flex flex-column mx-2">
@@ -21,6 +22,7 @@ const Card2 = ({ card }) => {
                 </div>
 
                 {model && <Modal setModel={setModel} info={card} />}
+
             </Link>
         </li>
     );
