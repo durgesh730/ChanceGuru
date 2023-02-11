@@ -4,12 +4,26 @@ import { NavLink } from "react-router-dom";
 const SideNav = () => {
   return (
     <>
-      <NavLink to="/manage/submission" exact>
-        <span>Submission</span>
-      </NavLink>
-      <NavLink to="/manage/audition" exact>
-        <span>Audition</span>
-      </NavLink>
+      <span>
+        <NavLink
+          to="/manage/submission"
+          className={({ isActive }) =>
+            isActive ? "lactive-class" : "not-active-class"
+          }
+        >
+          Submission
+        </NavLink>
+      </span>
+      <span>
+        <NavLink
+          to="/manage/audition"
+          className={({ isActive }) =>
+            isActive ? "lactive-class" : "not-active-class"
+          }
+        >
+          Audition
+        </NavLink>
+      </span>
     </>
   );
 };
