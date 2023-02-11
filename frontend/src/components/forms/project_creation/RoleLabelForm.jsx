@@ -23,6 +23,8 @@ const RoleLabelForm = ({ display , functions }) => {
         setformFields([...formFields, obj]);
     };
 
+    console.log(addFields)
+
     const removeFields = (index) => {
         let data = [...formFields];
         data.splice(index, 1);
@@ -42,6 +44,7 @@ const RoleLabelForm = ({ display , functions }) => {
 
                 <form id="form1" onSubmit={handleRoles}>
                     <input type="button" className="full-width-btn" value="Add Roles" onClick={addFields} />
+
                     {formFields.map((form, index) => {
                         return (
                             <div key={index} className="d-flex align-items-center">

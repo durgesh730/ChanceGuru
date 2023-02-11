@@ -37,10 +37,10 @@ const EduSkillForm = ({ display }) => {
         college: "",
         collegeYear: "",
         addSkills: "",
-        userId:"1"
+        userId: "1"
     });
 
-    const { school, schoolYear, course, college, collegeYear,addSkills,userId } = eduSkillDetails;
+    const { school, schoolYear, course, college, collegeYear, addSkills, userId } = eduSkillDetails;
 
     const handleInputChange = (e) => {
         setEduSkillDetails({ ...eduSkillDetails, [e.target.name]: e.target.value });
@@ -48,33 +48,48 @@ const EduSkillForm = ({ display }) => {
     const handleEduSubmit = (e) => {
         e.preventDefault();
         const data = eduSkillDetails;
-        axios.post('http://localhost:5000/profiles/education', {
+        axios.put('http://localhost:5000/profile/education', {
             school: school,
             schoolYear: schoolYear,
             course: course,
             college: college,
             collegeYear: collegeYear,
             userId: userId
-          
-        }).then(() => {
+
+        },
+            {
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                }
+            }
+
+        ).then(() => {
             alert("Eudcation details saved!")
             console.log("data added")
         });
         console.log(data);
-        
+
     };
 
-    const handleSkillsSubmit = (e) =>{
+    const handleSkillsSubmit = (e) => {
         e.preventDefault();
         const data = eduSkillDetails;
-        axios.post('http://localhost:5000/profiles/skills', {
+        axios.put('http://localhost:5000/profile/skills', {
             userId: userId,
-        addSkills: addSkills,
-   }).then(() => {
-       alert("Skills Details saved!")
-       console.log("data added")
-   })
-   console.log(addSkills);
+            addSkills: addSkills,
+        },
+            {
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                }
+            }
+
+        ).then((res) => {
+            alert("Skills Details saved!")
+            console.log("data added")
+            console.log(res)
+        })
+        console.log(addSkills);
     }
     return (
         <>

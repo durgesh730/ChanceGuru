@@ -1,8 +1,8 @@
-import React, { useState , useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
-const RoleDescForm = ({ display , functions }) => {
+const RoleDescForm = ({ display, functions }) => {
     const formFields = functions.formFields;
-    const setformFields = functions.setformFields ;
+    const setformFields = functions.setformFields;
     const roleData = functions.formFields;
     const [active, setactive] = useState(functions.formFields[0].role);
     const [showchar, setshowchar] = useState([]);
@@ -51,26 +51,26 @@ const RoleDescForm = ({ display , functions }) => {
     }
 
     const handleDesc = () => {
-        let bool = false ;
-        formFields.forEach((item)  =>{
-            if(item.characters.length === 0){
-                bool = true ;
-                return ;
+        let bool = false;
+        formFields.forEach((item) => {
+            if (item.characters.length === 0) {
+                bool = true;
+                return;
             }
         })
-        if(bool){
+        if (bool) {
             alert("There should be atleat one formFields for each role");
-        }else{
+        } else {
             setformFields(formFields);
-            functions.toggleForm("summary");    
+            functions.toggleForm("summary");
         }
     }
 
     useEffect(() => {
-      setactive(functions.formFields[0].role)
-      setformFields(functions.formFields)
+        setactive(functions.formFields[0].role)
+        setformFields(functions.formFields)
     }, [])
-    
+
     return (
         <>
             {" "}
@@ -84,7 +84,7 @@ const RoleDescForm = ({ display , functions }) => {
                                 return (
                                     <>
                                         <div
-                                            className={`toggle-option ${active === item.role && "active-toggle" }`}
+                                            className={`toggle-option ${active === item.role && "active-toggle"}`}
                                             onClick={() => { setactive(item.role); updateChar(item.role); }}
                                         >
                                             {item.role}
@@ -95,7 +95,7 @@ const RoleDescForm = ({ display , functions }) => {
                         </div>
 
                         <div>
-                            <table className="charTable" style={{display : `${showchar?.length == 0 ? "none" : ""}`}} >
+                            <table className="charTable" style={{ display: `${showchar?.length == 0 ? "none" : ""}` }} >
                                 <tr>
                                     <th>Name</th>
                                     <th>Gender</th>
