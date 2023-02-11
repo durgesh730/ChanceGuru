@@ -70,6 +70,7 @@ router.get("/allProjectsSeekers",jwtAuth,(req, res) => {
 router.get("/projectDetails/:_id",(req, res) => {
     Project.find({_id: req.params._id})
         .then((response) => {
+            
             res.json(response);
         })
         .catch((err) => {

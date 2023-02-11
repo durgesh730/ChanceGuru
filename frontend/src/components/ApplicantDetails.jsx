@@ -7,13 +7,16 @@ import reject from "../assets/icons/round-delete-button.svg";
 import ApplicantRowCard from './mini_components/ApplicantRowCard';
 import { useLocation } from 'react-router-dom';
 
+
+
+
 const ApplicantDetails = () => {
     const location = useLocation();
 
     const [projectDetails, setProjectDetails] = useState();
     const [active, setActive] = useState(0);
     const [leadRoles, setLeadRoles] = useState([])
-
+    const [activeChar, setActiveChar] = useState({})
 
     var applied = leadRoles.map((Data) => { return Data._id });
     var check = applied[0]
@@ -27,6 +30,7 @@ const ApplicantDetails = () => {
             },
         })
         const res = await data.json();
+        console.log(res)
         setProjectDetails(res)
 
     }
@@ -34,10 +38,13 @@ const ApplicantDetails = () => {
     useEffect(() => {
         if (projectDetails) {
             setLeadRoles(projectDetails[0].roles[0].characters)
+            setActiveChar(projectDetails[0].roles[0].characters[0])
+
         }
     }, [projectDetails])
 
     // for finding total characters in Project by using map
+
 
     var char = 0;
     var all = new Array();
@@ -70,6 +77,7 @@ const ApplicantDetails = () => {
         })
         const json = await data.json();
         setData(json)
+        console.log(json);
     }
 
     // for count applied by
@@ -152,7 +160,7 @@ const ApplicantDetails = () => {
 
                             projectDetails?.map((items, ind) => items.roles.map((i, index) => {
                                 return (
-                                    <span highlighted={active === index ? "true" : "false"} className='lead' onClick={() => { setActive(index); setLeadRoles(i.characters) }} >{i.role}</span>
+                                    <span highlighted={active === index ? "true" : "false"} className='lead' onClick={() => { setActive(index); setLeadRoles(i.characters); setActiveChar(i.characters[0]) }} >{i.role}</span>
                                 )
                             })
                             )
@@ -164,11 +172,11 @@ const ApplicantDetails = () => {
 
                     <div className="leadRoles" style={{ dispay: "flex", flexDirection: "row", justifyContent: "space-between" }} >
                         {
-                            leadRoles.map((p) => {
-                                // console.log(p.name)
+                            leadRoles.map((p, index) => {
+
                                 return (
                                     <>
-                                        <span className='malcom'>{p.name}</span>
+                                        <span style={{ color: activeChar === p ? "#8443e5" : "initial" }} onClick={() => setActiveChar(p)} className='malcom'>{p.name}</span>
                                     </>
                                 )
                             }
@@ -203,10 +211,18 @@ const ApplicantDetails = () => {
                         <hr />
                         <div className="listItems">
 
-                            {Data?.map((Data, i) =>
-                            (
-                                <ApplicantRowCard key={i} Data={Data} applied={check} />
-                            )
+                            {Data?.map((Data, i) => {
+                                console.log(Data)
+                                if (activeChar._id == Data.charId) {
+
+                                    return(
+                                        <ApplicantRowCard key={i} Data={Data} applied={check} />
+                                    )
+                                }
+                                else{
+                                    return <h6>No one has applied to this character yet!!!</h6>
+                                }
+                            }
                             )}{" "}
 
                         </div>
