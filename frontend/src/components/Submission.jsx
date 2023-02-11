@@ -3,11 +3,13 @@ import Searchbar from "./mini_components/Searchbar";
 import Topbar from "./mini_components/Topbar";
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 import godfather from "../assets/images/godfather.png";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import SideNav from "./SideNav";
 
 const Submission = () => {
   const [active, setActive] = useState(false);
+  const location = useLocation();
+
   return (
     <>
       <Topbar />
@@ -46,8 +48,7 @@ const Submission = () => {
                       <div className="b_table">
                         <table>
                           <thead>
-                            <td>Applocant Name</td>
-                            <td>Auditioned For</td>
+                            <td>Applicant Name</td>
                             <td>Status</td>
                             <td></td>
                           </thead>
@@ -57,12 +58,14 @@ const Submission = () => {
                                 <img src={godfather} />
                                 Nick Davolt
                               </td>
-                              <td>Malcolm, Lead</td>
-                              <td>Scheduled</td>
+                              <td>Shortlisted</td>
                               <td>
                                 <div className="d-flex justify-content-center align-items-center">
                                   <NavLink
-                                    to={"/browseprofile/:nickdavolt"}
+                                    to="/browseprofile/:nickdavolt"
+                                    state={{
+                                      submission_location: location.pathname,
+                                    }}
                                     exact
                                   >
                                     <button>View Profile</button>

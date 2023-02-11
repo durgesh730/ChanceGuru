@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Searchbar from "./mini_components/Searchbar";
 import Topbar from "./mini_components/Topbar";
-import { Await, json, NavLink, useNavigate } from "react-router-dom";
+import { Await, json, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { BsChevronDown, BsPhone } from "react-icons/bs";
 import godfather from "../assets/images/godfather.png";
 
@@ -61,6 +61,8 @@ const BrowseProfile = () => {
     GetProfiledata();
     GetUserData()
   }, [setProfileData])
+  const location = useLocation();
+  console.log(location);
 
   return (
     <div>

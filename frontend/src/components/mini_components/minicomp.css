@@ -49,6 +49,7 @@
 }
 
 .topbar-icons-container:hover {
+  color: var(--color_p2);
   border-bottom: 3px solid var(--color_p2);
   transition: 0.1s;
 }
@@ -218,8 +219,8 @@ div.profile-options > ul > li {
   text-align: left;
   color: #8443e5;
 }
-div.profile-options > ul > li:last-child{
-    border-bottom: none;
+div.profile-options > ul > li:last-child {
+  border-bottom: none;
 }
 
 /* Sidebar */
@@ -288,13 +289,13 @@ div.profile-options > ul > li:last-child{
 }
 
 .modal-container {
-    background-color: #fff;
-    width: 50%;
-    padding: 30px;
-    font-weight: bold;
-    font-size: 20px;
-    overflow: auto;
-    height: 90vh;
+  background-color: #fff;
+  width: 50%;
+  padding: 30px;
+  font-weight: bold;
+  font-size: 20px;
+  overflow: auto;
+  height: 90vh;
 }
 
 .modal-header {
@@ -320,9 +321,9 @@ div.profile-options > ul > li:last-child{
   width: 200px;
 }
 
-.char-name{
-    color: var(--color_p2);
-    font-weight: bold;
+.char-name {
+  color: var(--color_p2);
+  font-weight: bold;
 }
 .modal-name {
   margin: 15px 0;
@@ -333,11 +334,11 @@ div.profile-options > ul > li:last-child{
 }
 
 .modal-roles > div {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 3px solid ;
-    margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 3px solid;
+  margin-bottom: 10px;
 }
 
 .apply-btn,
