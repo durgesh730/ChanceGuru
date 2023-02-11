@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-const RoleDescForm = ({ display }) => {
-    const roleData = JSON.parse(localStorage.getItem("roles"));
-    const [active, setactive] = useState(roleData ? roleData[0].id : []);
+const RoleDescForm = ({ display, functions }) => {
+    const formFields = functions.formFields;
+    const setformFields = functions.setformFields;
+    const roleData = functions.formFields;
+    const [active, setactive] = useState(functions.formFields[0].role);
     const [showchar, setshowchar] = useState([]);
     const [charData, setcharData] = useState({
         name: "",
@@ -10,7 +12,7 @@ const RoleDescForm = ({ display }) => {
         details: "",
         age: ""
     })
-    const [character, setcharacter] = useState([]);
+    console.log(formFields);
     let show = {};
     if (display) {
         show = { display: "block" };
@@ -20,9 +22,9 @@ const RoleDescForm = ({ display }) => {
 
     const updateChar = (id) => {
         let bool = false;
-        character.forEach(item => {
-            if (item.rId === id) {
-                setshowchar(item.chr);
+        formFields.forEach(item => {
+            if (item.role === id) {
+                setshowchar(item.characters);
                 bool = true;
             }
         })
@@ -36,22 +38,38 @@ const RoleDescForm = ({ display }) => {
             alert("All fields are required");
             return;
         }
-        let bool = false;
 
-        character.forEach(item => {
-            if (item.rId === active) {
-                const data = item.chr;
+        formFields.forEach(item => {
+            if (item.role === active) {
+                const data = item.characters;
                 const newData = [...data, charData];
-                item.chr = newData;
-                bool = true;
+                item.characters = newData;
             }
         })
-        if (!bool) {
-            setcharacter((prev) => [...prev, { rId: active, chr: [charData] }])
-        }
 
         updateChar(active);
     }
+
+    const handleDesc = () => {
+        let bool = false;
+        formFields.forEach((item) => {
+            if (item.characters.length === 0) {
+                bool = true;
+                return;
+            }
+        })
+        if (bool) {
+            alert("There should be atleat one formFields for each role");
+        } else {
+            setformFields(formFields);
+            functions.toggleForm("summary");
+        }
+    }
+
+    useEffect(() => {
+        setactive(functions.formFields[0].role)
+        setformFields(functions.formFields)
+    }, [])
 
     return (
         <>
@@ -62,14 +80,14 @@ const RoleDescForm = ({ display }) => {
                         <div className="form-head">Role Description</div>
                         <div className="form-desc">Brief us about each role's description.</div>
                         <div className="form-toggle d-flex justify-content-between  ">
-                            {roleData?.map((item, index) => {
+                            {roleData.map((item, index) => {
                                 return (
                                     <>
                                         <div
-                                            className={`toggle-option ${active === item.id && "active-toggle"}`}
-                                            onClick={() => { setactive(item.id); updateChar(item.id); }}
+                                            className={`toggle-option ${active === item.role && "active-toggle"}`}
+                                            onClick={() => { setactive(item.role); updateChar(item.role); }}
                                         >
-                                            {item.roles}
+                                            {item.role}
                                         </div>
                                     </>
                                 )
@@ -77,7 +95,7 @@ const RoleDescForm = ({ display }) => {
                         </div>
 
                         <div>
-                            <table className="charTable" style={{display : `${showchar.length == 0 ? "none" : ""}`}} >
+                            <table className="charTable" style={{ display: `${showchar?.length == 0 ? "none" : ""}` }} >
                                 <tr>
                                     <th>Name</th>
                                     <th>Gender</th>
@@ -102,8 +120,8 @@ const RoleDescForm = ({ display }) => {
                         </div>
                         <div>
 
-                            <input type="button" className="full-width-btn" value="Add Another Character" />
-                            <input type="text" onChange={(e) => { setcharData({ ...charData, name: e.target.value }) }} className="form-control" placeholder="Character Name" />
+                            <input type="button" className="full-width-btn" value="Add Another formFields" />
+                            <input type="text" onChange={(e) => { setcharData({ ...charData, name: e.target.value }) }} className="form-control" placeholder="formFields Name" />
                             <select onChange={(e) => { setcharData({ ...charData, gender: e.target.value }) }} className="form-control form-select">
                                 <option value="" disabled selected>
                                     Gender
@@ -130,9 +148,12 @@ const RoleDescForm = ({ display }) => {
                                 <option value="22">22</option>
                             </select>
                             <div className="row">
-
-                                <p className="col-1"></p>
                                 <input onClick={(e) => { e.preventDefault(); addChar() }}
+                                    type="button"
+                                    className="col-7 save-btn btn btn-lg btn-block my-2"
+                                    value="Add"
+                                />
+                                <input onClick={(e) => { e.preventDefault(); handleDesc() }}
                                     type="submit"
                                     className="col-7 save-btn btn btn-lg btn-block my-2"
                                     value="Save"

@@ -23,7 +23,7 @@ const RolePref = ({ display }) => {
     // const handleSubmit = (e) => {
     //     e.preventDefault();
     //     const data = rolePrefDetails;
-    //     // axios.post('http://localhost:5000/profiles/rolePrefDetails', {
+    //     // axios.post('/profiles/rolePrefDetails', {
     //     // rolePref1:rolePref1,
     //     // rolePref2:rolePref2,
     //     // rolePref3:rolePref3,

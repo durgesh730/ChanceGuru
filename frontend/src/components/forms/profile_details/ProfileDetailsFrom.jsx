@@ -70,8 +70,9 @@ const ProfileDetailsForm = ({ display }) => {
                 },
             })
             .then((response) => {
-                setProfileDetails(response.data);
-                // console.log(response)
+                if(response.data !== null){
+                    setProfileDetails(response.data);
+                }
             })
             .catch((err) => {
                 console.log(err.response);
