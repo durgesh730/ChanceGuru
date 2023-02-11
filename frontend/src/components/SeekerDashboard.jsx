@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import "./style.css";
 
 const SeekerDashboard = () => {
-  const [card, setcard] = useState([]);
+  const [card, setcard] = useState();
 
   const getProjects = async () => {
     const res = await fetch(
@@ -19,9 +19,10 @@ const SeekerDashboard = () => {
         },
       }
     );
-    const ok = await res.json();
-    setcard(ok);
-    // console.log(ok)
+    const response = await res.json();
+    if(response !== null){
+      setcard(response);
+    }
   };
 
   useEffect(() => {
