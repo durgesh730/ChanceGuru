@@ -65,8 +65,7 @@ const ApplicantDetails = () => {
         })
         )
     }
-
-
+    
     const [Data, setData] = useState();
     const fetchData = async () => {
         const data = await fetch(`http://localhost:5000/project/Seekers/${location.state}`, {

@@ -30,9 +30,10 @@ const ApplicantRowCard = ({ Data, applied }) => {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ select })
+            body: JSON.stringify({select})
         })
         const res = await data.json();
+        console.log(res)
     }
 
     const handleReject = async () => {

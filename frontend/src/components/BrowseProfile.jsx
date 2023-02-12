@@ -8,7 +8,8 @@ import godfather from "../assets/images/godfather.png";
 const BrowseProfile = () => {
 
   const [query, setQuery] = useState('');
-  const [profileData, setProfileData] = useState();
+  const [profileData, setProfileData] = useState([]);
+  // console.log(profileData)
 
   const handleSearch = async () => {
     const data = await fetch(`http://localhost:5000/profile/ProData?fullname=${query}`, {
@@ -18,6 +19,7 @@ const BrowseProfile = () => {
       },
     })
     const res = await data.json();
+    // console.log(res)
     if (res) {
       setProfileData(res);
       console.log(res)
@@ -34,6 +36,7 @@ const BrowseProfile = () => {
       },
     })
     const res = await data.json();
+    // console.log(res)
     if (res) {
       setProfileData(res);
     }
@@ -61,8 +64,9 @@ const BrowseProfile = () => {
     GetProfiledata();
     GetUserData()
   }, [setProfileData])
-  const location = useLocation();
-  console.log(location);
+
+  // const location = useLocation();
+  // console.log(location);
 
   return (
     <div>
@@ -99,7 +103,7 @@ const BrowseProfile = () => {
             <tbody>
 
               { profileData?.map((item, index) => {
-        
+                  
                   return (
                     <tr key={index} >
                       <td>
@@ -109,11 +113,15 @@ const BrowseProfile = () => {
                       {
                         item.rolePref?.map((i) => {
                           return (
-                            <td>{i.role}</td>
+                            <td>
+                              {i.role}
+                              </td>
                           )
                         })
                       }
-                      <td> {item.basicInfo.address} </td>
+                      <td>
+                         { item.basicInfo.address } 
+                      </td>
                       <td>61 502648952</td>
                       <td>
                         <NavLink to={"/browseprofile/:nickdavolt"} state={item} exact>

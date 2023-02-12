@@ -10,8 +10,7 @@ const Carousel = () => {
   };
   const nextCon = () => {
     let width = box.offsetWidth;
-    // console.log(width);
-
+    console.log(width);
     box.scrollLeft = box.scrollLeft + width;
   };
   return (
