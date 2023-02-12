@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 const SideNav = () => {
   return (
     <>
-      <span>
+      <span className="mb-3">
         <NavLink
           to="/manage/submission"
           className={({ isActive }) =>

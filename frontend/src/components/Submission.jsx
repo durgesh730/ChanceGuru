@@ -5,6 +5,7 @@ import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 import godfather from "../assets/images/godfather.png";
 import { NavLink, useLocation } from "react-router-dom";
 import SideNav from "./SideNav";
+import Button from "@material-ui/core/Button";
 
 const Submission = () => {
   const [active, setActive] = useState(false);
@@ -22,6 +23,7 @@ const Submission = () => {
             <div className="px-4">
               <Searchbar />
               <h5 className="purple_title">Projects</h5>
+
               <div className="audition_accordion">
                 <div className="aa1 border p-2">
                   <div className="aa_head d-flex justify-content-between">
@@ -44,6 +46,34 @@ const Submission = () => {
                   </div>
                   {active && (
                     <div className="aa_body">
+                      <hr />
+                      <div className="horizontal_nav w-50 d-flex justify-content-between">
+                        <span
+                          className={
+                            active === "details" ? "activeUser-class" : ""
+                          }
+                        >
+                          Lead
+                        </span>
+                        <span
+                          className={
+                            active === "talent" ? "activeUser-class" : ""
+                          }
+                        >
+                          Supporting Actor
+                        </span>
+                        <span
+                          className={active === "bio" ? "activeUser-class" : ""}
+                        >
+                          Chorus/Ensemble
+                        </span>
+                      </div>
+                      <hr className="mt-0" />
+                      <div className="sub_nav d-flex justify-content-start">
+                        <button>Malcom</button>
+                        <button className="active_btn">MacDuff</button>
+                        <button>Lady MacDuff</button>
+                      </div>
                       <hr />
                       <div className="b_table">
                         <table>
