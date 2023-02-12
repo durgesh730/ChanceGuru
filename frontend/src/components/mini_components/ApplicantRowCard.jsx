@@ -32,7 +32,7 @@ const ApplicantRowCard = ({ Data }) => {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ select })
+            body: JSON.stringify({select})
         })
         const res = await data.json();
         console.log(res)

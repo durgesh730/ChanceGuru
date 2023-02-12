@@ -37,16 +37,13 @@ const SubmissionStatus = ({ id }) => {
                             {cards?.map((item, index) => {
                                 return (
                                     <>
-                                        {
-                                            item.status === "selected" ? (
-                                                <tr>
-                                                    <StatusSide userId={item.userId} />
-                                                    <td>{item.status}</td>
-                                                    <SubViewProfile userId={item.userId} />
-                                                </tr>
-                                            )
-                                                : ("")
-                                        }
+
+                                        <tr>
+                                            <StatusSide userId={item.userId} />
+                                            <td>{item.status}</td>
+                                            <SubViewProfile userId={item.userId} statusId={item._id} />
+                                        </tr>
+
                                     </>
                                 )
                             })
