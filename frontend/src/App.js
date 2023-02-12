@@ -28,67 +28,53 @@ import Setting from "./components/Setting";
 import FaqsHelp from "./components/FaqsHelp";
 
 function App() {
-  const [currentUser, setCurrentUser] = useState(null);
-  const [timeActive, setTimeActive] = useState(false);
-  const [clicked, setClicked] = useState(0);
+    const [currentUser, setCurrentUser] = useState(null);
+    const [timeActive, setTimeActive] = useState(false);
+    const [clicked, setClicked] = useState(0);
 
-  useEffect(() => {
-    let user = JSON.parse(localStorage.getItem("login"));
-    if (user) {
-      setCurrentUser(user);
-      console.log(user);
-    }
-  }, []);
+    useEffect(() => {
+        let user = JSON.parse(localStorage.getItem("login"));
+        if (user) {
+            setCurrentUser(user);
+            // console.log(user);
+        }
+    }, []);
 
-  return (
-    <Router>
-      <AuthProvider
-        value={{ currentUser, timeActive, setTimeActive, setClicked, clicked }}
-      >
-        <Routes>
-          <Route
-            path="/logintest"
-            element={
-              !currentUser?.emailVerified ? (
-                <Login />
-              ) : (
-                <Navigate to="/" replace />
-              )
-            }
-          />
-          <Route
-            path="/register"
-            element={
-              !currentUser?.emailVerified ? (
-                <Signup />
-              ) : (
-                <Navigate to="/" replace />
-              )
-            }
-          />
-          <Route path="/profiledetails" element={<ProfileDetails />} />
-          <Route path="/projectcreation" element={<ProjectCreation />} />
-          <Route path="/talentdashboard" element={<TalentDashboard />} />
-          <Route path="/seekerdashboard" element={<SeekerDashboard />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/verification" element={<Verification />} />
-          <Route path="/emailverify" element={<EmailVerification />} />
-          <Route path="/" element={<Web1 />} />
-          <Route path="/roles" element={<Roles />} />
-          <Route path="/applicantdetails" element={<ApplicantDetails />} />
-          <Route path="/browseprofile" element={<BrowseProfile />} />
-          <Route path="/browseprofile/:user" element={<UserProfile />} />
-          <Route path="/manage" element={<ManageProfile />} />
-          <Route path="/manage/submission" element={<Submission />} />
-          <Route path="/manage/audition" element={<Audition />} />
-          <Route path="/notification" element={<Notification />} />
-          <Route path="/setting" element={<Setting />} />
-          <Route path="/help" element={<FaqsHelp />} />
-        </Routes>
-      </AuthProvider>
-    </Router>
-  );
+    return (
+        <Router>
+            <AuthProvider value={{ currentUser, timeActive, setTimeActive, setClicked, clicked }}>
+                <Routes>
+                    <Route
+                        path="/logintest"
+                        element={!currentUser?.emailVerified ? <Login /> : <Navigate to="/" replace />}
+                    />
+                    <Route
+                        path="/register"
+                        element={!currentUser?.emailVerified ? <Signup /> : <Navigate to="/" replace />}
+                    />
+                    <Route path="/profiledetails" element={<ProfileDetails />} />
+                    <Route path="/projectcreation" element={<ProjectCreation />} />
+                    <Route path="/talentdashboard" element={<TalentDashboard />} />
+                    <Route path="/seekerdashboard" element={<SeekerDashboard />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/signup" element={<Signup />} />
+                    <Route path="/verification" element={<Verification />} />
+                    <Route path="/emailverify" element={<EmailVerification />} />
+                    <Route path="/" element={<Web1 />} />
+                    <Route path="/roles" element={<Roles />} />
+                    <Route path="/applicantdetails" element={<ApplicantDetails />} />
+                    <Route path="/browseprofile" element={<BrowseProfile />} />
+                    <Route path="/browseprofile/:user" element={<UserProfile />} />
+                    <Route path="/manage" element={<ManageProfile />} />
+                    <Route path="/manage/submission" element={<Submission />} />
+                    <Route path="/manage/audition" element={<Audition />} />
+                    <Route path="/notification" element={<Notification />} />
+                    <Route path="/setting" element={<Setting />} />
+                    <Route path="/help" element={<FaqsHelp />} />
+                </Routes>
+            </AuthProvider>
+        </Router>
+    );
 }
 
 export default App;
