@@ -122,6 +122,7 @@ const ProfileDetailsForm = ({ display , toggle , profileData , bool , setbool })
                                 placeholder='Name'
                                 name="fullname"
                                 value={profileDetails.fullname}
+                                required
                                 onChange={handleInputChange}
                             />
                             <div style={{ position: "relative", display: "flex" }}>
@@ -130,6 +131,7 @@ const ProfileDetailsForm = ({ display , toggle , profileData , bool , setbool })
                                     onChange={handleInputChange}
                                     value={profileDetails.gender}
                                     className="form-control form-select"
+                                    required
                                 >
                                     <option value="" disabled selected>
                                         Gender
@@ -145,6 +147,7 @@ const ProfileDetailsForm = ({ display , toggle , profileData , bool , setbool })
                                 name="DOB"
                                 value={profileDetails.DOB}
                                 onChange={handleInputChange}
+                                required
                             />
                             <div style={{ position: "relative", display: "flex" }}>
                                 <select
@@ -165,6 +168,7 @@ const ProfileDetailsForm = ({ display , toggle , profileData , bool , setbool })
                                     onChange={handleInputChange}
                                     value={profileDetails.state}
                                     className="form-control form-select"
+                                    required
                                 >
                                     <option value="" disabled selected>
                                         State
@@ -178,6 +182,7 @@ const ProfileDetailsForm = ({ display , toggle , profileData , bool , setbool })
                                 onChange={handleInputChange}
                                 value={profileDetails.country}
                                 className="form-control form-select"
+                                required
                             >
                                 <option value="" disabled selected>
                                     Country
@@ -192,6 +197,7 @@ const ProfileDetailsForm = ({ display , toggle , profileData , bool , setbool })
                                 name="address"
                                 value={profileDetails.address}
                                 onChange={handleInputChange}
+                                required
                             />
                             <input
                                 type="text"
