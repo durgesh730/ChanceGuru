@@ -5,6 +5,45 @@ const Project = require("../db/Project");
 const JobApplication = require('../db/JobApplication')
 const User = require('../db/User')
 
+
+// API for change status of jobapplication
+
+router.put("/Select/:_id", (req, res) => {
+    const data = req.body;
+    const d =  data.select 
+
+    JobApplication.findOneAndUpdate({_id:req.params._id}, {
+        $set: {
+             status:d,
+        },
+    })
+        .then((response) => {
+            res.json(response);
+        })
+        .catch((err) => {
+            res.status(400).json(err);
+        })
+})
+
+// API for change status of jobapplication
+
+router.put("/Reject/:_id", (req, res) => {
+    const data = req.body;
+    const d =  data.rejected 
+
+    JobApplication.findOneAndUpdate({_id:req.params._id}, {
+        $set: {
+             status:d,
+        },
+    })
+        .then((response) => {
+            res.json(response);
+        })
+        .catch((err) => {
+            res.status(400).json(err);
+        })
+})
+
 //TO get all the projects 
 router.get("/allProjects", (req, res) => {
     Project.find()

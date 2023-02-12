@@ -20,6 +20,7 @@ const SeekerDashboard = () => {
       }
     );
     const response = await res.json();
+    console.log(response)
     if(response !== null){
       setcard(response);
     }

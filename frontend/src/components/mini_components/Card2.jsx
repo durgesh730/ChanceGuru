@@ -25,8 +25,6 @@ const Card2 = ({ card }) => {
                     </div>
                 </div>
 
-
-
                 {model && <Modal setModel={setModel} info={card} />}
             </Link>
         </li>

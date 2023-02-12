@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import Searchbar from "./mini_components/Searchbar";
 import Topbar from "./mini_components/Topbar";
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
-import godfather from "../assets/images/godfather.png";
+
 import { NavLink, useLocation } from "react-router-dom";
 import SideNav from "./SideNav";
 import axios from 'axios'
+import SubmissionStatus from "./SubmissionStatus";
 
 const Submission = () => {
 
@@ -40,8 +41,8 @@ const Submission = () => {
               <Searchbar />
               <h5 className="purple_title">Projects</h5>
               {cards?.map((item, index) => {
-                 
-         // ========= calculate total charcters =============
+
+                // ========= calculate total charcters =============
                 var char = 0;
                 var all = new Array();
                 var a = 0;
@@ -58,12 +59,11 @@ const Submission = () => {
                         a = all[i]
                     }
                   })
-
                 }
-                // console.log()
+      
                 return (
                   <>
-                    <div className="audition_accordion">
+                    <div className="audition_accordion mb-3 ">
                       <div className="aa1 border p-2">
                         <div key={index} className="aa_head d-flex justify-content-between">
                           <p>{item.basicInfo.name}</p>
@@ -85,39 +85,7 @@ const Submission = () => {
                         </div>
 
                         {active && (
-                          <div className="aa_body">
-                            <hr />
-                            <div className="b_table">
-                              <table>
-                                <thead>
-                                  <td>Applocant Name</td>
-                                  <td>Auditioned For</td>
-                                  <td>Status</td>
-                                  <td></td>
-                                </thead>
-                                <tbody>
-                                  <tr>
-                                    <td>
-                                      <img src={godfather} />
-                                      Nick Davolt
-                                    </td>
-                                    <td>Malcolm, Lead</td>
-                                    <td>Scheduled</td>
-                                    <td>
-                                      <div className="d-flex justify-content-center align-items-center">
-                                        <NavLink
-                                          to={"/browseprofile/:nickdavolt"}
-                                          exact
-                                        >
-                                          <button>View Profile</button>
-                                        </NavLink>
-                                      </div>
-                                    </td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
+                          <SubmissionStatus id={item._id} />
                         )}
                       </div>
                     </div>

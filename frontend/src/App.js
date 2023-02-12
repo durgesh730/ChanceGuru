@@ -23,6 +23,7 @@ import UserProfile from "./components/UserProfile";
 import Audition from "./components/Audition";
 import ManageProfile from "./components/ManageProfile";
 import Submission from "./components/Submission";
+import SubmissionStatus from "./components/SubmissionStatus";
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
