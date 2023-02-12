@@ -1,30 +1,28 @@
 import React from "react";
-import { useState } from "react";
+import { useState , useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const RolePref = ({ display , profileData }) => {
+const RolePref = ({ display  }) => {
     const navigate = useNavigate();
     let show = {};
     if (display) {
-        show = { display: "block" };
+        show = { display: "block" };    
     } else {
         show = { display: "none" };
     }
 
-    const [formFields, setformFields] = useState([{ roles: "" }]);
+    const [formFields, setformFields] = useState([{ role: "" }]);
 
     const handleFormChange = (e, index) => {
         let data = [...formFields];
-        data[index].roles = e.target.value;
+        data[index].role = e.target.value;
         setformFields(data);
     };
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
-        axios.put('http://localhost:5000/profile/rolePref', {
-            roles:formFields[0].roles
-        },
+        axios.put('http://localhost:5000/profile/rolePref', { formFields },
             {
                 headers: {
                     "Authorization": `Bearer ${localStorage.getItem("token")}`
@@ -34,13 +32,13 @@ const RolePref = ({ display , profileData }) => {
             alert("Role prefrences saved successfully")
             console.log("data added");
             console.log(res);
-            navigate("/talentdashboard");
+            navigate("/");
         })
     };
 
     const addFields = (e) => {
         e.preventDefault();
-        let obj = { roles: "" };
+        let obj = { role: "" };
         setformFields([...formFields, obj]);
     };
 
@@ -50,6 +48,30 @@ const RolePref = ({ display , profileData }) => {
         setformFields(data);
     };
 
+    const handleShow = async () => {
+        axios
+            .get(`http://localhost:5000/profile/`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+            })
+            .then((response) => {
+                if (response.data !== null) {
+                    console.log(response.data)
+                    if (response.data.rolePref !== 0) {
+                        setformFields(response.data.rolePref);
+                    }
+                }
+            })
+            .catch((err) => {
+                console.log(err.response);
+            });
+    }
+
+    useEffect(() => {
+        handleShow();
+    }, [])
+    
     return (
         <>
             {
@@ -62,14 +84,14 @@ const RolePref = ({ display , profileData }) => {
                             <button className="full-width-btn" onClick={addFields}>
                                 Add Roles
                             </button>
-                            {formFields.map((form, index) => {
+                            {formFields?.map((form, index) => {
                                 return (
                                     <div key={index} className="d-flex align-items-center">
                                         <select
                                             className="form-control form-select"
                                             data-num={index}
                                             name="role"
-                                            value={form.roles}
+                                            value={form.role}
                                             onChange={(e) => {
                                                 handleFormChange(e, index);
                                             }}

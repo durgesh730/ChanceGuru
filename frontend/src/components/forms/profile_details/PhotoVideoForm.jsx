@@ -1,10 +1,10 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "../forms.css";
 import axios from "axios";
 
 
-const PhotoVideoForm = ({ display , toggleForm , profileData }) => {
+const PhotoVideoForm = ({ display, toggleForm }) => {
     let photoForm = document.getElementById("photo-form");
     let vidForm = document.getElementById("vid-form");
     let photoToggle = document.getElementById("photo-toggle");
@@ -34,17 +34,13 @@ const PhotoVideoForm = ({ display , toggleForm , profileData }) => {
     }
 
     const [file, setFile] = useState();
-    const [photoURL, setphotoURL] = useState({
-        photo1: "",
-        photo2: "",
-    });
-    const { photo1, photo2 } = photoURL;
+    const [photoURL, setphotoURL] = useState([{
+        link: ""
+    }]);
 
-    const [videoURL, setvideoURL] = useState({
-        youtube: "",
-        vimeo: "",
-    });
-    const { youtube, vimeo, userId2 } = videoURL;
+    const [videoURL, setvideoURL] = useState([{
+        link: ""
+    }]);
 
     // const upload = (e) => {
     //     e.preventDefault();
@@ -55,16 +51,29 @@ const PhotoVideoForm = ({ display , toggleForm , profileData }) => {
     //     console.log(e.target.files);
     //     setFile(URL.createObjectURL(e.target.files[0]));
     // }
-    const handlePhotoInputChange = (e) => {
-        setphotoURL({ ...photoURL, [e.target.name]: e.target.value });
+    const handlePhotoInputChange = (e, index) => {
+        let data = [...photoURL];
+        data[index].link = e.target.value;
+        setphotoURL(data);
+    };
+
+    const addFields = (e) => {
+        e.preventDefault();
+        let obj = { link: "" };
+        setphotoURL([...photoURL, obj]);
+    };
+
+    const removeFields = (index) => {
+        let data = [...photoURL];
+        data.splice(index, 1);
+        setphotoURL(data);
     };
 
     const handlePhotoSubmit = (e) => {
         e.preventDefault();
         const data = photoURL;
         axios.put('http://localhost:5000/profile/photo', {
-            photo1,
-            photo2,
+            photoURL
         },
             {
                 headers: {
@@ -81,17 +90,28 @@ const PhotoVideoForm = ({ display , toggleForm , profileData }) => {
         console.log(data);
     }
 
-    const handleVideoInputChange = (e) => {
-        setvideoURL({ ...videoURL, [e.target.name]: e.target.value });
+    const handleVideoInputChange = (e, index) => {
+        let data = [...videoURL];
+        data[index].link = e.target.value;
+        setvideoURL(data);
+    };
+
+    const addFieldsVideo = (e) => {
+        e.preventDefault();
+        let obj = { link: "" };
+        setvideoURL([...videoURL, obj]);
+    };
+
+    const removeFieldsVideo = (index) => {
+        let data = [...videoURL];
+        data.splice(index, 1);
+        setvideoURL(data);
     };
 
     const handleVideoSubmit = (e) => {
         e.preventDefault();
         const data = videoURL;
-        axios.put('http://localhost:5000/profile/video', {
-            youtube,
-            vimeo,
-        },
+        axios.put('http://localhost:5000/profile/video', videoURL ,
             {
                 headers: {
                     "Authorization": `Bearer ${localStorage.getItem("token")}`
@@ -101,12 +121,37 @@ const PhotoVideoForm = ({ display , toggleForm , profileData }) => {
             alert("Videos url data saved!")
             console.log("data added");
             console.log(res);
-            if(res){
+            if (res) {
                 toggleForm("skill");
             }
         })
         console.log(data);
     }
+
+    const handleShow = async () => {
+        axios
+            .get(`http://localhost:5000/profile/`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+            })
+            .then((response) => {
+                if (response.data !== null) {
+                    if(response.data.photos.length !== 0){
+                        setphotoURL(response.data.photos);
+                    }
+                    if(response.data.videos.length !== 0){
+                        setvideoURL(response.data.videos);
+                    }
+                }
+            })
+            .catch((err) => {
+                console.log(err.response);
+            });
+    }
+    useEffect(() => {
+        handleShow();
+    }, [])
 
 
     return (
@@ -138,13 +183,28 @@ const PhotoVideoForm = ({ display , toggleForm , profileData }) => {
                             </div>
                         </div>
                         <form id="photo-form" onSubmit={handlePhotoSubmit}>
-                            <input type="submit" className="full-width-btn" value="Upload Photo" />
-                            <input type="text" className="form-control" placeholder="Enter photo url" name="photo1" value={photoURL.photo1} onChange={handlePhotoInputChange} />
-                            <input type="text" className="form-control" placeholder="Enter photo url" name="photo2" value={photoURL.photo2} onChange={handlePhotoInputChange} />
+                            <div className="d-flex">
+                                <input  type="button" className="full-width-btn" value="Upload Photo" />
+                                <p className="mx-1"></p>
+                                <input onClick={addFields} type="button" className="full-width-btn" value="Add Photo Link" />
+                            </div>
+                            {photoURL.map((item, index) => {
+                                return (
+                                    <>
+                                        <div key={index} className="d-flex align-items-center">
+                                            <input required type="text" className="form-control" placeholder="Enter photo url" name="photo1" value={item.link} onChange={(e) => { handlePhotoInputChange(e, index) }} />
+                                            <i
+                                                className="fa-solid fa-trash-can mx-2 mb-2"
+                                                onClick={() => removeFields(index)}
+                                            ></i>
+                                        </div>
+                                    </>
+                                )
+                            })}
                             {/* <input type="file" multiple="false" accept="image/*" id="finput" onChange={upload} /> */}
 
-                            <img src={file} className="photoUpload" alt="" />
-                            <canvas id="canv1"></canvas>
+                                {/* <img src={file} className="photoUpload" alt="" />
+                                <canvas id="canv1"></canvas> */}
                             <div className="row">
                                 <input
                                     type="submit"
@@ -161,12 +221,23 @@ const PhotoVideoForm = ({ display , toggleForm , profileData }) => {
                         </form>
                         <form id="vid-form" style={{ display: "none" }} onSubmit={handleVideoSubmit}>
                             <div className="d-flex">
-                                <input type="submit" className="full-width-btn" value="Add Youtube link" />
+                                <input onClick={addFieldsVideo} type="button" className="full-width-btn" value="Add Youtube link" />
                                 <p className="mx-1"></p>
-                                <input type="submit" className="full-width-btn" value="Add Vimeo Link" />
+                                <input onClick={addFieldsVideo} type="button" className="full-width-btn" value="Add Vimeo Link" />
                             </div>
-                            <input type="text" className="form-control" placeholder="Youtube link" name="youtube" value={videoURL.youtube} onChange={handleVideoInputChange} />
-                            <input type="text" className="form-control" placeholder="Vimeo link" name="vimeo" value={videoURL.vimeo} onChange={handleVideoInputChange} />
+                            {videoURL.map((item, index) => {
+                                return (
+                                    <>
+                                        <div key={index} className="d-flex align-items-center">
+                                            <input required type="text" className="form-control" placeholder="Enter photo url" name="photo1" value={item.link} onChange={(e) => { handleVideoInputChange(e, index) }} />
+                                            <i
+                                                className="fa-solid fa-trash-can mx-2 mb-2"
+                                                onClick={() => removeFieldsVideo(index)}
+                                            ></i>
+                                        </div>
+                                    </>
+                                )
+                            })}
 
                             <div className="row">
                                 <input

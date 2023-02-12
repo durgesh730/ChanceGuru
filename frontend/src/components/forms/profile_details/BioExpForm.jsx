@@ -2,12 +2,12 @@ import React from "react";
 import { useState , useEffect } from "react";
 import axios from "axios";
 
-const BioExpForm = ({ display , toggleForm , profileData }) => {
+const BioExpForm = ({ display , toggleForm  }) => {
     let bioForm = document.getElementById("bio-form");
     let expForm = document.getElementById("exp-form");
     let bioToggle = document.getElementById("bio-toggle");
     let expToggle = document.getElementById("exp-toggle");
-
+    const [profileData, setprofileData] = useState({});
     const toggle = (cur_form) => {
         if (cur_form == "bio") {
             bioForm.style.display = "block";
@@ -45,15 +45,6 @@ const BioExpForm = ({ display , toggleForm , profileData }) => {
         bio
     } = bioData;
 
-    const {
-        workedIn,
-        workedAs,
-        startDate,
-        endDate,
-        aboutWork,
-        userId2
-    } = expData;
-
     const handleBioInputChange = (e) => {
         setBioData({ ...bioData, [e.target.name]: e.target.value });
     };
@@ -63,7 +54,6 @@ const BioExpForm = ({ display , toggleForm , profileData }) => {
     };
 
     const handleBioSubmit = (e) => {
-        console.log('hii')
         e.preventDefault();
         const data = bioData;
         axios.put('http://localhost:5000/profile/portfolio', { bio: bio }, {
@@ -73,7 +63,6 @@ const BioExpForm = ({ display , toggleForm , profileData }) => {
         },
         ).then((res) => {
             alert("Bio Details data saved!")
-            console.log("data added");
             console.log(res);
             toggle("exp");
         })
@@ -84,14 +73,7 @@ const BioExpForm = ({ display , toggleForm , profileData }) => {
     const handleExpSubmit = (e) => {
         e.preventDefault();
         const data = expData;
-        axios.put('http://localhost:5000/profile/portfolio/exp', {
-            workedIn,
-            workedAs,
-            startDate,
-            endDate,
-            aboutWork,
-            userId2
-        },
+        axios.put('http://localhost:5000/profile/portfolio/exp', expData,
 
             {
                 headers: {
@@ -101,7 +83,6 @@ const BioExpForm = ({ display , toggleForm , profileData }) => {
 
         ).then((res) => {
             alert("Experience Details data saved!")
-            console.log("data added");
             console.log(res);
             if(res){
                 toggleForm("photo");
@@ -110,12 +91,31 @@ const BioExpForm = ({ display , toggleForm , profileData }) => {
         console.log(data);
     }
 
+    const handleShow = async () => {
+        axios
+            .get(`http://localhost:5000/profile/`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+            })
+            .then((response) => {
+                if (response.data !== null) {
+                    if(response.data.portfolio.bio !== ""){
+                        setBioData({bio : response.data.portfolio.bio});
+                    }
+                    if(response.data.portfolio.experience.length !== 0){
+                        setExpData(response.data.portfolio.experience[0]);
+                    }
+                    console.log(response.data);
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
+
     useEffect(() => {
-        if(profileData.portfolio){
-            setBioData({bio : profileData.portfolio.bio});
-            console.log(profileData.portfolio.experience[0]);
-            setExpData(profileData.portfolio.experience[0]);
-        }
+        handleShow();
     }, [])
     
     return (
@@ -176,20 +176,20 @@ const BioExpForm = ({ display , toggleForm , profileData }) => {
                         <form id="exp-form" style={{ display: "none" }} onSubmit={handleExpSubmit}>
                             <input type="submit" className="full-width-btn" value="Add Experience" />
                             <input name="workedIn"
-                                value={bioData.workedIn}
+                                value={expData.workedIn}
                                 onChange={handleExpInputChange} type="text" className="form-control" placeholder="Worked in" />
                             <input name="workedAs"
-                                value={bioData.workedAs}
+                                value={expData.workedAs}
                                 onChange={handleExpInputChange} type="text" className="form-control" placeholder="Worked as" />
                             <input name="startDate"
-                                value={bioData.startDate}
+                                value={expData.startDate}
                                 onChange={handleExpInputChange} type="text" className="form-control" placeholder="Start date" />
                             <input name="endDate"
-                                value={bioData.endDate}
+                                value={expData.endDate}
                                 onChange={handleExpInputChange} type="text" className="form-control" placeholder="End date" />
                             <textarea
                                 name="aboutWork"
-                                value={bioData.aboutWork}
+                                value={expData.aboutWork}
                                 onChange={handleExpInputChange}
                                 id="bio"
                                 className="form-control text-area"
@@ -199,7 +199,7 @@ const BioExpForm = ({ display , toggleForm , profileData }) => {
                             ></textarea>
                             <div className="row">
                                 <input
-                                    type="submit"
+                                    type="button"
                                     className="col-4 cancel-btn btn btn-lg btn-block my-2"
                                     value="Cancel"
                                 />

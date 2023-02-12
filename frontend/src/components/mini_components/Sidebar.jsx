@@ -16,8 +16,6 @@ const Sidebar = () => {
     const [photo, setPhoto] = useState(false);
     const [skill, setSkill] = useState(false);
     const [role, setRole] = useState(false);
-
-    const [profileData, setprofileData] = useState({});
     const [bool, setbool] = useState(false);
 
     const setFalse = () => {
@@ -60,27 +58,6 @@ const Sidebar = () => {
         }
     };
 
-    const handleShow = async () => {
-        axios
-            .get(`http://localhost:5000/profile/`, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
-                },
-            })
-            .then((response) => {
-                if (response.data !== null) {
-                    setprofileData(response.data);
-                    setbool(true);
-                }
-            })
-            .catch((err) => {
-                console.log(err.response);
-            });
-    }
-
-    useEffect(() => {
-      handleShow();
-    }, [])
     
     return (
         <>
@@ -108,12 +85,12 @@ const Sidebar = () => {
                 </div>
             </div>
 
-            <ProfileDetailsForm display={profile} toggle={toggleForm} profileData={profileData} bool={bool}  setbool={setbool} />
-            <TalentDetailsForm display={talent} toggle={toggleForm} profileData={profileData} />
-            <BioExpForm display={bio} toggleForm={toggleForm} profileData={profileData} />
-            <PhotoVideoForm display={photo} toggleForm={toggleForm} profileData={profileData} />
-            <EduSkillForm display={skill} toggleForm={toggleForm} profileData={profileData} />
-            <RolePref display={role} toggleForm={toggleForm} profileData={profileData} />
+            <ProfileDetailsForm display={profile} toggle={toggleForm}  bool={bool}  setbool={setbool} />
+            <TalentDetailsForm display={talent} toggle={toggleForm}  />
+            <BioExpForm display={bio} toggleForm={toggleForm} />
+            <PhotoVideoForm display={photo} toggleForm={toggleForm}  />
+            <EduSkillForm display={skill} toggleForm={toggleForm}  />
+            <RolePref display={role} toggleForm={toggleForm} />
         </>
     );
 };
