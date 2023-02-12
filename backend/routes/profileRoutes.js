@@ -26,7 +26,6 @@ router.get("/Users", async (req, res) => {
             }
         ])
         res.json(user)
-        // console.log(user)
     } catch (error) {
         console.error(error.message);
         res.status(500).send("Some error occured")
@@ -39,8 +38,6 @@ router.get("/Users", async (req, res) => {
 //     if(fullname){
 //         basicInfo.fullname = fullname;
 //     }
-//     console.log({ basicInfo})
-
 //     const data = await Profile.find({"basicInfo.fullname":`${fullname}`});
 //     res.status(200).json({data})
 // })
@@ -52,7 +49,6 @@ router.get("/ProData", async (req, res) => {
         { "basicInfo.fullname": { $regex: req.query.fullname, $options: "i" } } //case insensitive
 
         : {};
-    console.log(keyword)
     const users = await Profile.find(keyword);
     res.send(users);
 });
@@ -63,7 +59,6 @@ router.get("/profileData", (req, res) => {
     Profile.find(req.params.id)
         .then((response) => {
             res.json(response);
-            // console.log(response)
         })
         .catch((err) => {
             res.status(400).json(err);
@@ -99,7 +94,6 @@ router.post("/", jwtAuth, (req, res) => {
         .save()
         .then((response) => {
             res.json(response);
-            console.log(response)
         })
         .catch((err) => {
             res.status(400).json(err);
@@ -120,7 +114,6 @@ router.put("/basicinfo", jwtAuth, (req, res) => {
     })
         .then((response) => {
             res.json(response);
-            console.log(response)
         })
         .catch((err) => {
             res.status(400).json(err);
@@ -155,7 +148,6 @@ router.put("/talent", jwtAuth, async (req, res) => {
             { $set: { talent: newData } }, { new: true })
 
         res.json({ userData });
-        // console.log(userData);
 
     } catch (error) {
         console.error(error.message);
@@ -168,7 +160,6 @@ router.put("/talent", jwtAuth, async (req, res) => {
 router.put("/portfolio", jwtAuth, (req, res) => {
     const data = req.body;
     const user = req.user;
-    console.log(req.body);
     const d = { bio: data.bio }
 
     Profile.findOneAndUpdate({ userId: user._id }, {
@@ -179,7 +170,6 @@ router.put("/portfolio", jwtAuth, (req, res) => {
     })
         .then((response) => {
             res.json(response);
-            // console.log(response)
         })
         .catch((err) => {
             res.status(400).json(err);
@@ -190,11 +180,9 @@ router.put("/portfolio", jwtAuth, (req, res) => {
 router.put("/portfolio/exp", jwtAuth, (req, res) => {
     const data = req.body;
     const user = req.user;
-
     const d = {}
     Profile.findOne({ userId: user._id })
         .then((r) => {
-            // console.log(r.portfolio.bio);
             d.bio = r.portfolio.bio;
             d.experience = data;
 
@@ -206,10 +194,8 @@ router.put("/portfolio/exp", jwtAuth, (req, res) => {
             })
                 .then((response) => {
                     res.json(response);
-                    console.log(response)
                 })
                 .catch((err) => {
-                    console.log(err);
                     res.status(400).json(err);
                 })
 
@@ -222,14 +208,10 @@ router.put("/portfolio/exp", jwtAuth, (req, res) => {
 router.put("/photo", jwtAuth, (req, res) => {
     const data = req.body;
     const user = req.user;
-    const p = { link: data.photo1 }
-    console.log(data)
-    console.log(p)
-
     Profile.findOneAndUpdate({ userId: user._id }, {
         $set: {
-            photos: p,
-            // updatedAt: new Date(),
+            photos: data.photoURL,
+            updatedAt: new Date(),
         },
     })
         .then((response) => {
@@ -244,12 +226,10 @@ router.put("/photo", jwtAuth, (req, res) => {
 router.put("/video", jwtAuth, (req, res) => {
     const data = req.body;
     const user = req.user;
-    const p = { link: data.youtube }
-    console.log(req.body)
     Profile.findOneAndUpdate({ userId: user._id }, {
         $set: {
-            videos: p,
-            // updatedAt: new Date(),
+            videos: data,
+            updatedAt: new Date(),
         },
     })
         .then((response) => {
@@ -265,7 +245,6 @@ router.put("/video", jwtAuth, (req, res) => {
 
 router.put("/education", jwtAuth, async (req, res) => {
     const { college, schoolYear, collegeYear, course } = req.body;
-    console.log(req.body)
     const user = req.user;
     try {
         const newData = {};
@@ -273,13 +252,11 @@ router.put("/education", jwtAuth, async (req, res) => {
         if (schoolYear) { newData.startYear = schoolYear };
         if (collegeYear) { newData.endYear = collegeYear };
         if (course) { newData.degree = course };
-        console.log(newData)
 
         const userData = await Profile.findOneAndUpdate({ userId: user._id },
             { $set: { education: newData } }, { new: true })
 
         res.json({ userData });
-        console.log(userData);
 
     } catch (error) {
         console.error(error.message);
@@ -292,17 +269,15 @@ router.put("/education", jwtAuth, async (req, res) => {
 router.put("/skills", jwtAuth, (req, res) => {
     const data = req.body;
     const user = req.user;
-    const p = { skill: data.addSkills }
 
     Profile.findOneAndUpdate({ userId: user._id }, {
         $set: {
-            skills: p,
-            // updatedAt: new Date(),
+            skills: data.skills,
+            updatedAt: new Date(),
         },
     })
         .then((response) => {
             res.json(response);
-            console.log(response)
         })
         .catch((err) => {
             res.status(400).json(err);
@@ -314,20 +289,14 @@ router.put("/skills", jwtAuth, (req, res) => {
 router.put('/rolePref', jwtAuth, (req, res) => {
     const data = req.body;
     const user = req.user;
-    console.log(data)
-    const p = { role: data.roles }
-    console.log(p)
-
     Profile.findOneAndUpdate({ userId: user._id }, {
         $set: {
-            rolePref: p,
+            rolePref: data.formFields,
             updatedAt: new Date(),
         },
     })
         .then((response) => {
             res.json(response);
-            console.log(response)
-
         })
         .catch((err) => {
             res.status(400).json(err);

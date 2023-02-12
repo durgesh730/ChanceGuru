@@ -93,13 +93,13 @@ let schema = new mongoose.Schema(
             },
             experience: [
                 {
-                    workIn: {
+                    workedIn: {
                         type: String,
                     },
                     workedAs: {
                         type: String,
                     },
-                    startData: {
+                    startDate: {
                         type: String,
                         max: new Date().getFullYear(),
                     },
@@ -107,7 +107,7 @@ let schema = new mongoose.Schema(
                         type: String,
                         max: new Date().getFullYear(),
                     },
-                    about: {
+                    aboutWork: {
                         type: String,
                     },
                 }

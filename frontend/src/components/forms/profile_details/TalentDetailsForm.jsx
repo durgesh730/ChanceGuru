@@ -3,14 +3,13 @@ import { useState , useEffect } from "react";
 import axios from "axios";
 import "../forms.css";
 
-const TalentDetailsForm = ({ display , toggle , profileData}) => {
+const TalentDetailsForm = ({ display , toggle , getFunction}) => {
     let show = {};
     if (display) {
         show = { display: "block" };
     } else {
         show = { display: "none" };
     }
-    
     const [talentDetails, setTalentDetails] = useState({
         type: "",
         height: "",
@@ -36,7 +35,7 @@ const TalentDetailsForm = ({ display , toggle , profileData}) => {
         e.preventDefault();
     
         const { type, height, weight, bodyType, skinTone, eyeColour, hairColour,
-            hairStyle, beardStyle, language, boldScenes, allowances, travelling, userId
+            hairStyle, beardStyle, language, boldScenes, allowances, travelling
         } = talentDetails;
 
         const res = await fetch("http://localhost:5000/profile/talent", {
@@ -48,8 +47,7 @@ const TalentDetailsForm = ({ display , toggle , profileData}) => {
             body: JSON.stringify({
                 type, height, weight, bodyType, skinTone,
                 eyeColour, hairColour, hairStyle, beardStyle,
-                language, boldScenes, allowances, travelling,
-                userId
+                language, boldScenes, allowances, travelling
             })
         });
         const ok = await res.json();
@@ -58,10 +56,28 @@ const TalentDetailsForm = ({ display , toggle , profileData}) => {
             toggle("bio");
         }
     }
+
+    const handleShow = async () => {
+        axios
+            .get(`http://localhost:5000/profile/`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+            })
+            .then((response) => {
+                if (response.data !== null) {
+                    if(response.data.talent.type !== ""){
+                        setTalentDetails(response.data.talent)
+                    }
+                }
+            })
+            .catch((err) => {
+                console.log(err.response);
+            });
+    }
+
     useEffect(() => {
-      if(profileData.talent){
-        setTalentDetails(profileData.talent);
-      }
+        handleShow();
     }, [])
     
     return (
