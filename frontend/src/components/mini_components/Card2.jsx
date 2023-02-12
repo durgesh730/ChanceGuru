@@ -10,7 +10,7 @@ const Card2 = ({ card }) => {
   // console.log(card._id)
 
   return (
-    <li>
+    <li className="child_cards">
       <Link to={"/applicantdetails"} state={card._id}>
         <div className="card-title">‘{name}’</div>
         {/* <span className="card-footer">{card.roles} Roles</span> */}

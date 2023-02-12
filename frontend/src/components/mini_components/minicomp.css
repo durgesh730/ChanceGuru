@@ -22,7 +22,6 @@
   display: flex;
   align-items: center;
 }
-
 .topbar-name {
   color: var(--color_p2);
   font-size: 25px;
@@ -78,7 +77,7 @@
 
 /* Searchbar */
 .searchbar {
-  margin: 15px 0;
+  margin: 30px 0;
 }
 
 .search-input {
