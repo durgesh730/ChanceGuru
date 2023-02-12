@@ -16,27 +16,15 @@ const Topbar = (props) => {
   const navigate = useNavigate();
 
 
-  document.addEventListener('click', (e) => {
-    console.log(e.target.matches('#profileToggler', '#profileOption *'))
-    if (!e.target.matches('#profileOption, #profileToggler', '#profileOption *')) {
-      setProfileHeight(0)
-      document.getElementById('profileOption').style.height = "0px"
-    }
-    else {
+  function toggleProfileOptions() {
+    if (profileHeight == 0) {
+      setProfileHeight(192);
+      document.getElementById("profileOption").style.height = "192px";
+    } else {
       setProfileHeight(0);
       document.getElementById("profileOption").style.height = "0px";
     }
-  });
 
-  function toggleProfileOptions() {
-    // if (profileHeight == 0) {
-    //   setProfileHeight(192);
-    //   document.getElementById("profileOption").style.height = "192px";
-    // } else {
-    //   setProfileHeight(0);
-    //   document.getElementById("profileOption").style.height = "0px";
-    // }
-  }
   function handleLogout() {
     localStorage.clear()
     navigate("/login")
@@ -58,7 +46,8 @@ const Topbar = (props) => {
         <span className="topbar-icons-container">
           <img className="topbar-icons" src={directorchair} alt="" />
         </span>
-        <Link to="/rolesdashboard">
+        <Link to="/">
+
           <span className="topbar-icons-container">
             <img className="topbar-icons" src={mask} alt="" />
           </span>

@@ -1,16 +1,16 @@
 import React from "react";
-import { useState } from "react";
+import { useState , useEffect } from "react";
 import axios from "axios";
 import "../forms.css";
 
-const TalentDetailsForm = ({ display }) => {
+const TalentDetailsForm = ({ display , toggle , profileData}) => {
     let show = {};
     if (display) {
         show = { display: "block" };
     } else {
         show = { display: "none" };
     }
-
+    
     const [talentDetails, setTalentDetails] = useState({
         type: "",
         height: "",
@@ -25,7 +25,6 @@ const TalentDetailsForm = ({ display }) => {
         boldScenes: "",
         allowances: "",
         travelling: "",
-        userId: "1",
     });
     
     const handleInputChange = (e) => {
@@ -55,8 +54,16 @@ const TalentDetailsForm = ({ display }) => {
         });
         const ok = await res.json();
         console.log(ok);
+        if(ok){
+            toggle("bio");
+        }
     }
-
+    useEffect(() => {
+      if(profileData.talent){
+        setTalentDetails(profileData.talent);
+      }
+    }, [])
+    
     return (
         <>
             {

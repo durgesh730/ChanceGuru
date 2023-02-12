@@ -1,38 +1,16 @@
 import React from "react";
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-const RolePref = ({ display }) => {
+const RolePref = ({ display , profileData }) => {
+    const navigate = useNavigate();
     let show = {};
     if (display) {
         show = { display: "block" };
     } else {
         show = { display: "none" };
     }
-
-    // const [rolePrefDetails, setRolePrefDetails] = useState({
-    //     rolePref1: "",
-    //     rolePref2: "",
-    //     rolePref3: "",
-    // });
-    // const { rolePref1, rolePref2, rolePref3 } = rolePrefDetails;
-
-    // const handleInputChange = (e) => {
-    //     setRolePrefDetails({ ...rolePrefDetails, [e.target.name]: e.target.value });
-    // };
-    // const handleSubmit = (e) => {
-    //     e.preventDefault();
-    //     const data = rolePrefDetails;
-    //     // axios.post('/profiles/rolePrefDetails', {
-    //     // rolePref1:rolePref1,
-    //     // rolePref2:rolePref2,
-    //     // rolePref3:rolePref3,
-    //     // }).then(() => {
-    //     //     alert("Role Preferences Details data saved!")
-    //     //     console.log("data added")
-    //     // })
-    //     console.log(data);
-    // };
 
     const [formFields, setformFields] = useState([{ roles: "" }]);
 
@@ -53,9 +31,10 @@ const RolePref = ({ display }) => {
                 }
             }
         ).then((res) => {
-            alert("Videos url data saved!")
+            alert("Role prefrences saved successfully")
             console.log("data added");
-            console.log(res)
+            console.log(res);
+            navigate("/talentdashboard");
         })
     };
 

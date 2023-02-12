@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import axios from "axios";
 
-const EduSkillForm = ({ display }) => {
+const EduSkillForm = ({ display , toggleForm , profileData}) => {
     let form1 = document.getElementById("form1");
     let form2 = document.getElementById("form2");
     let toggle1 = document.getElementById("toggle1");
@@ -65,7 +65,8 @@ const EduSkillForm = ({ display }) => {
 
         ).then(() => {
             alert("Eudcation details saved!")
-            console.log("data added")
+            console.log("data added");
+            toggle("tog2");
         });
         console.log(data);
 
@@ -87,9 +88,11 @@ const EduSkillForm = ({ display }) => {
         ).then((res) => {
             alert("Skills Details saved!")
             console.log("data added")
-            console.log(res)
+            console.log(res);
+            if(res){
+                toggleForm("role");
+            }
         })
-        console.log(addSkills);
     }
     return (
         <>

@@ -100,11 +100,11 @@ let schema = new mongoose.Schema(
                         type: String,
                     },
                     startData: {
-                        type: Number,
+                        type: String,
                         max: new Date().getFullYear(),
                     },
                     endDate: {
-                        type: Number,
+                        type: String,
                         max: new Date().getFullYear(),
                     },
                     about: {
@@ -158,7 +158,7 @@ let schema = new mongoose.Schema(
             }
         ],
         updatedAt: {
-            type: mongoose.Schema.Types.ObjectId,
+            type: String,
         }
     },
     { collation: { locale: "en" } }
