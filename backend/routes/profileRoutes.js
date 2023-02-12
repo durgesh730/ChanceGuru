@@ -3,7 +3,10 @@ const jwtAuth = require("../lib/jwtAuth");
 const router = express.Router();
 const Profile = require("../db/Profile")
 const User = require("../db/User");
+const ReqToApp = require("../db/RequestToApply");
 const asyncHandler = require("express-async-handler");
+const { response } = require("express");
+
 
 //to get profile details by user id from user side
 router.get("/", jwtAuth, (req, res) => {
@@ -104,6 +107,30 @@ router.post("/", jwtAuth, (req, res) => {
         .catch((err) => {
             res.status(400).json(err);
         })
+})
+
+//to get profile id of user from seeker side
+
+//to post request of request to apply with talent,seeker and apply id  
+router.post('/ReqToApp',jwtAuth,(req,res) => {
+    const user = req.user ;
+    const {talentId} = req.body;
+    
+    const newData = new ReqToApp({
+        
+        seekerId: user._id,
+        talentId: talentId,
+        RequestSendAt : new Date(),
+    })
+    newData
+    .save()
+    .then((response) => {
+        res.json(response);
+        console.log(response);
+    })
+    .catch((err) => {
+        res.status(400).json(err);
+    })
 })
 
 //To change the basicinfo of user
