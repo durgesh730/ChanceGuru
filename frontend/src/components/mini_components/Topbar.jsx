@@ -25,6 +25,7 @@ const Topbar = (props) => {
       document.getElementById("profileOption").style.height = "0px";
     }
   }
+  
   function handleLogout() {
     localStorage.clear()
     navigate("/login")

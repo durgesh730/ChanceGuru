@@ -8,10 +8,31 @@ import BioExperience from "./mini_components/userProfile/BioExperience";
 import Education from "./mini_components/userProfile/Education";
 import UserRole from "./mini_components/userProfile/UserRole";
 import Thumb from "../assets/images/Group 36.png";
+import axios from "axios";
 
 const UserProfile = (props) => {
   const [active, setActive] = useState("details");
   const [modal, setModal] = useState(false);
+
+
+
+  const handleApplyReq = () => {
+
+    axios.post('http://localhost:5000/profile/ReqToApp',{talentId: location.state.userId},{
+      
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+      
+    })
+    .then(res => {
+      console.log(res.data);
+     
+    })
+    .catch(err => {
+      console.log(err);
+    });
+  };
 
   const location = useLocation();
 
@@ -87,7 +108,7 @@ const UserProfile = (props) => {
                     </button>
                   )}
 
-                  {"/browseprofile" === b_location && (
+                  {"/browseprofile" === "/browseprofile" && (
                     <button onClick={() => setModal(true)}>Send Request</button>
                   )}
                 </div>
@@ -156,7 +177,7 @@ const UserProfile = (props) => {
               <p>Are you sure to send a Request to the viewed Profile?</p>
               <div className="btns">
                 <button onClick={() => setModal(false)}>Cancel</button>
-                <button>Send</button>
+                <button onClick={handleApplyReq}  >Send</button>
               </div>
             </div>
           </div>
