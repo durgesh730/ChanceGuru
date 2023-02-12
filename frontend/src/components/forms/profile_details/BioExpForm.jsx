@@ -1,8 +1,8 @@
 import React from "react";
-import { useState } from "react";
+import { useState , useEffect } from "react";
 import axios from "axios";
 
-const BioExpForm = ({ display }) => {
+const BioExpForm = ({ display , toggleForm , profileData }) => {
     let bioForm = document.getElementById("bio-form");
     let expForm = document.getElementById("exp-form");
     let bioToggle = document.getElementById("bio-toggle");
@@ -31,7 +31,6 @@ const BioExpForm = ({ display }) => {
 
     const [bioData, setBioData] = useState({
         bio: "",
-        userId1: "1",
     });
 
     const [expData, setExpData] = useState({
@@ -40,12 +39,10 @@ const BioExpForm = ({ display }) => {
         startDate: "",
         endDate: "",
         aboutWork: "",
-        userId2: "1"
     })
 
     const {
-        bio,
-        userId1,
+        bio
     } = bioData;
 
     const {
@@ -77,7 +74,8 @@ const BioExpForm = ({ display }) => {
         ).then((res) => {
             alert("Bio Details data saved!")
             console.log("data added");
-            console.log(res)
+            console.log(res);
+            toggle("exp");
         })
         console.log(data);
     }
@@ -104,12 +102,22 @@ const BioExpForm = ({ display }) => {
         ).then((res) => {
             alert("Experience Details data saved!")
             console.log("data added");
-            console.log(res)
+            console.log(res);
+            if(res){
+                toggleForm("photo");
+            }
         })
         console.log(data);
     }
 
-
+    useEffect(() => {
+        if(profileData.portfolio){
+            setBioData({bio : profileData.portfolio.bio});
+            console.log(profileData.portfolio.experience[0]);
+            setExpData(profileData.portfolio.experience[0]);
+        }
+    }, [])
+    
     return (
         <>
             {

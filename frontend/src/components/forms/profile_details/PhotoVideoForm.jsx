@@ -4,7 +4,7 @@ import "../forms.css";
 import axios from "axios";
 
 
-const PhotoVideoForm = ({ display }) => {
+const PhotoVideoForm = ({ display , toggleForm , profileData }) => {
     let photoForm = document.getElementById("photo-form");
     let vidForm = document.getElementById("vid-form");
     let photoToggle = document.getElementById("photo-toggle");
@@ -37,14 +37,12 @@ const PhotoVideoForm = ({ display }) => {
     const [photoURL, setphotoURL] = useState({
         photo1: "",
         photo2: "",
-        userId1: "1",
     });
-    const { photo1, photo2, userId1 } = photoURL;
+    const { photo1, photo2 } = photoURL;
 
     const [videoURL, setvideoURL] = useState({
         youtube: "",
         vimeo: "",
-        userId2: "1",
     });
     const { youtube, vimeo, userId2 } = videoURL;
 
@@ -67,7 +65,6 @@ const PhotoVideoForm = ({ display }) => {
         axios.put('http://localhost:5000/profile/photo', {
             photo1,
             photo2,
-            userId1,
         },
             {
                 headers: {
@@ -78,7 +75,8 @@ const PhotoVideoForm = ({ display }) => {
         ).then((res) => {
             alert("Photos url data saved!")
             console.log("data added");
-            console.log(res)
+            console.log(res);
+            toggle("vid");
         })
         console.log(data);
     }
@@ -93,7 +91,6 @@ const PhotoVideoForm = ({ display }) => {
         axios.put('http://localhost:5000/profile/video', {
             youtube,
             vimeo,
-            userId2,
         },
             {
                 headers: {
@@ -103,7 +100,10 @@ const PhotoVideoForm = ({ display }) => {
         ).then((res) => {
             alert("Videos url data saved!")
             console.log("data added");
-            console.log(res)
+            console.log(res);
+            if(res){
+                toggleForm("skill");
+            }
         })
         console.log(data);
     }
