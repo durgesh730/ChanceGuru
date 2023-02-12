@@ -18,6 +18,8 @@ import achat from "../../assets/icons/active-chat.svg";
 import afingers from "../../assets/icons/active-fingers.svg";
 import amask from "../../assets/icons/active-mask.svg";
 import anotification from "../../assets/icons/active-notification.svg";
+import role from "../../assets/images/role.png";
+import arole from "../../assets/images/active-role.png";
 
 const Topbar = (props) => {
     const [profileHeight, setProfileHeight] = useState(0);
@@ -49,25 +51,178 @@ const Topbar = (props) => {
             document.getElementById("notifOption").style.height = "0px";
         }
     }
+  }
 
-    const [modal, setModal] = useState(false);
+  const [modal, setModal] = useState(false);
 
-    function handleLogout() {
-        localStorage.clear();
-        navigate("/login");
-        // console.log("Logout succesfull");
-    }
+  function handleLogout() {
+    localStorage.clear();
+    navigate("/login");
+    console.log("Logout succesfull");
+  }
 
-    const user = JSON.parse(localStorage.getItem("login"));
+  const user = JSON.parse(localStorage.getItem("login"));
 
-    const [active, setActive] = useState("home");
-    // console.log(active);
+  const [active, setActive] = useState("home");
+  console.log(active);
 
-    return (
-        <>
-            <div className="topbar">
-                <div className="topbar-name">
-                    Chance <br /> Guru
+  return (
+    <>
+      <div className="topbar">
+        <div className="topbar-name">
+          Chance <br /> Guru
+        </div>
+
+        <div className="topbar-nav">
+          <div onClick={() => setActive("home")}>
+            {" "}
+            <Link
+              to={
+                user.type === "user" ? "/talentdashboard" : "/seekerdashboard"
+              }
+            >
+              <span
+                className={
+                  active === "home"
+                    ? `nav_active topbar-icons-container`
+                    : "topbar-icons-container"
+                }
+              >
+                {active === "home" ? (
+                  <img className="topbar-icons" src={ahome} alt="" />
+                ) : (
+                  <img className="topbar-icons" src={home} alt="" />
+                )}
+              </span>
+            </Link>
+          </div>
+
+          <div onClick={() => setActive("role")}>
+            {user.type == "user" && (
+              <Link to="/myrole">
+                <span
+                  className={
+                    active === "role"
+                      ? `nav_active topbar-icons-container`
+                      : "topbar-icons-container"
+                  }
+                >
+                  {active === "role" ? (
+                    <img className="topbar-icons" src={arole} alt="" />
+                  ) : (
+                    <img className="topbar-icons" src={role} alt="" />
+                  )}
+                </span>
+              </Link>
+            )}
+          </div>
+
+          <div onClick={() => setActive("chair")}>
+            {user.type == "seeker" && (
+              <Link to="/submission">
+                <span
+                  className={
+                    active === "chair"
+                      ? `nav_active topbar-icons-container`
+                      : "topbar-icons-container"
+                  }
+                >
+                  {active === "chair" ? (
+                    <img className="topbar-icons" src={achair} alt="" />
+                  ) : (
+                    <img className="topbar-icons" src={directorchair} alt="" />
+                  )}
+                </span>
+              </Link>
+            )}
+          </div>
+          {user.type == "seeker" && (
+            <Link to="/roles">
+              <span
+                className={
+                  active === "mask"
+                    ? `nav_active topbar-icons-container`
+                    : "topbar-icons-container"
+                }
+                onClick={() => setActive("mask")}
+              >
+                {active === "mask" ? (
+                  <img className="topbar-icons" src={amask} alt="" />
+                ) : (
+                  <img className="topbar-icons" src={mask} alt="" />
+                )}
+              </span>
+            </Link>
+          )}
+
+          {user.type == "seeker" && (
+            <Link to="/browseprofile" onClick={() => setActive("fingers")}>
+              <span
+                className={
+                  active === "fingers"
+                    ? `nav_active topbar-icons-container`
+                    : "topbar-icons-container"
+                }
+              >
+                {active === "fingers" ? (
+                  <img className="topbar-icons" src={afingers} alt="" />
+                ) : (
+                  <img className="topbar-icons" src={thumbsup} alt="" />
+                )}
+              </span>
+            </Link>
+          )}
+
+          <span
+            className={
+              active === "chat"
+                ? `nav_active topbar-icons-container`
+                : "topbar-icons-container"
+            }
+            onClick={() => setActive("chat")}
+          >
+            {active === "chat" ? (
+              <img className="topbar-icons" src={achat} alt="" />
+            ) : (
+              <img className="topbar-icons" src={chat} alt="" />
+            )}
+          </span>
+          {/* <Link to="/projectcreation"> */}
+          <span
+            className="topbar-icons-container n_icon"
+            onClick={toggleNotifOption}
+          >
+            {active === "notification" ? (
+              <img className="topbar-icons" src={anotification} alt="" />
+            ) : (
+              <img className="topbar-icons " src={notification} alt="" />
+            )}
+            <div className="notif-options" id="notifOption">
+              <div>
+                <div>
+                  <img src="" alt="pfp" />
+                  <p>
+                    You have successfully created the project "Shakespeare's
+                    Macbeth"
+                  </p>
+                </div>
+                <hr />
+                <div>
+                  <img src="" alt="pfp" />
+                  <p>
+                    You have successfully created the project "Shakespeare's
+                    Macbeth"
+                  </p>
+                </div>
+                <hr />
+
+                <div>
+                  <img src="" alt="pfp" />
+                  <p>
+                    You have successfully created the project "Shakespeare's
+                    Macbeth"
+                  </p>
+
                 </div>
                 <div className="topbar-nav">
                     <Link

@@ -60,8 +60,8 @@ const UserProfile = (props) => {
                       <p>Actor</p>
                     </div>
                     <div>
-                      {("/manage/submission" === s_location ||
-                        "/manage/audition" === a_location) && (
+                      {("/submission" === s_location ||
+                        "/audition" === a_location) && (
                         <>
                           <button
                             onClick={() => setModal(true)}
@@ -77,11 +77,11 @@ const UserProfile = (props) => {
                           </button>
                         </>
                       )}
-                      {"/manage/audition" === a_location && (
+                      {"/audition" === a_location && (
                         <button onClick={() => setModal(true)}>Schedule</button>
                       )}
-                      {("/manage/submission" === s_location ||
-                        "/manage/audition" === a_location) && (
+                      {("/submission" === s_location ||
+                        "/audition" === a_location) && (
                         <button
                           onClick={() => setModal(true)}
                           style={{ color: "#b8d0eb", borderColor: "#b8d0eb" }}
@@ -141,8 +141,8 @@ const UserProfile = (props) => {
                     {active === "role" && <UserRole />}
                   </div>
                 </div>
-                {("/manage/submission" === s_location ||
-                  "/manage/audition" === a_location) && (
+                {("/submission" === s_location ||
+                  "/audition" === a_location) && (
                   <div className="next_bottom shadow">
                     <div className="m-4">
                       <img src={pfp} alt="next" />
