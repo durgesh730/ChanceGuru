@@ -21,13 +21,16 @@ import ApplicantDetails from "./components/ApplicantDetails";
 import BrowseProfile from "./components/BrowseProfile";
 import UserProfile from "./components/UserProfile";
 import Audition from "./components/Audition";
-import ManageProfile from "./components/ManageProfile";
 import Submission from "./components/Submission";
-import SubmissionStatus from "./components/SubmissionStatus";
+import Notification from "./components/Notification";
+import Setting from "./components/Setting";
+import FaqsHelp from "./components/FaqsHelp";
+import MyRoles from "./components/MyRoles";
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [timeActive, setTimeActive] = useState(false);
+  const [clicked, setClicked] = useState(0);
 
   useEffect(() => {
     let user = JSON.parse(localStorage.getItem("login"));
@@ -39,7 +42,9 @@ function App() {
 
   return (
     <Router>
-      <AuthProvider value={{ currentUser, timeActive, setTimeActive }}>
+      <AuthProvider
+        value={{ currentUser, timeActive, setTimeActive, setClicked, clicked }}
+      >
         <Routes>
           <Route
             path="/logintest"
@@ -74,9 +79,12 @@ function App() {
           <Route path="/applicantdetails" element={<ApplicantDetails />} />
           <Route path="/browseprofile" element={<BrowseProfile />} />
           <Route path="/browseprofile/:user" element={<UserProfile />} />
-          <Route path="/manage" element={<ManageProfile />} />
-          <Route path="/manage/submission" element={<Submission />} />
-          <Route path="/manage/audition" element={<Audition />} />
+          <Route path="/submission" element={<Submission />} />
+          <Route path="/audition" element={<Audition />} />
+          <Route path="/notification" element={<Notification />} />
+          <Route path="/setting" element={<Setting />} />
+          <Route path="/help" element={<FaqsHelp />} />
+          <Route path="/myrole" element={<MyRoles />} />
         </Routes>
       </AuthProvider>
     </Router>
