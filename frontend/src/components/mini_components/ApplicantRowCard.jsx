@@ -56,11 +56,11 @@ const ApplicantRowCard = ({ Data, applied }) => {
         <div className="lI" style={{ display: "flex", flexDirection: "row", gap: "4rem" }}>
             <div>
                 <img src={kamal} alt="" style={{ width: '4rem' }} />
-                {/* {User?.map((items, i) => {
+                {User?.map((items, i) => {
                     return (<span key={i} className="applicantName">
                         {items.username}
                     </span>)
-                })} */}
+                })}
 
             </div>
 

@@ -16,7 +16,6 @@ const Topbar = (props) => {
   const navigate = useNavigate();
 
 
-
   function toggleProfileOptions() {
     if (profileHeight == 0) {
       setProfileHeight(192);
@@ -25,7 +24,7 @@ const Topbar = (props) => {
       setProfileHeight(0);
       document.getElementById("profileOption").style.height = "0px";
     }
-  }
+
   function handleLogout() {
     localStorage.clear()
     navigate("/login")
@@ -48,6 +47,7 @@ const Topbar = (props) => {
           <img className="topbar-icons" src={directorchair} alt="" />
         </span>
         <Link to="/">
+
           <span className="topbar-icons-container">
             <img className="topbar-icons" src={mask} alt="" />
           </span>
