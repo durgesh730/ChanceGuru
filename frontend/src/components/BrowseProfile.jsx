@@ -33,6 +33,7 @@ const BrowseProfile = () => {
             },
         });
         const res = await data.json();
+        console.log(res);
         if (res) {
             setProfileData(res);
         }
@@ -99,10 +100,15 @@ const BrowseProfile = () => {
                                             <img src={godfather} />
                                             {item.basicInfo.fullname}
                                         </td>
-                                        {item.rolePref?.map((i) => {
-                                            return <td>{i.role}</td>;
-                                        })}
-                                        <td> {item.basicInfo.address} </td>
+                                        <td>
+                                            {item.rolePref.length !== 0 ? 
+                                            item.rolePref?.map((i) => {
+                                                return <><span>{i.role}</span><br/></>;
+                                            }):
+                                            "No role preferences found"
+                                            }
+                                        </td>
+                                        <td> {item.basicInfo.address ? item.basicInfo.address : "No address"} </td>
                                         <td>61 502648952</td>
                                         <td>
                                             <NavLink to={"/browseprofile/:nickdavolt"} state={item} exact>
