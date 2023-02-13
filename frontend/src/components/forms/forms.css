@@ -190,6 +190,7 @@ td {
     left: -130px;
     transform: rotate(-90deg) translate(-50%, -50%);
     width: 230px;
+    z-index: -99;
 }
 
 .form_group p {
