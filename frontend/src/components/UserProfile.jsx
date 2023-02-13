@@ -20,9 +20,9 @@ const UserProfile = (props) => {
   const s_location = location.state.submission_location;
   const a_location = location.state.audition_location;
 
-  // console.log(b_location);
-  // console.log(s_location);
-  // console.log(a_location);
+  console.log(b_location);
+  console.log(s_location);
+  console.log(a_location);
 
   return (
     <>
