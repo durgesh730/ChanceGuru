@@ -76,6 +76,7 @@ function App() {
           <Route path="/verification" element={<Verification />} />
           <Route path="/emailverify" element={<EmailVerification />} />
           <Route path="/" element={<Web1 />} />
+          <Route path="/rolesdashboard" element={<RolesDashboard />} />
           <Route path="/roles" element={<Roles />} />
           <Route path="/applicantdetails" element={<ApplicantDetails />} />
           <Route path="/browseprofile" element={<BrowseProfile />} />
