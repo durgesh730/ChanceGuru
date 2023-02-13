@@ -201,7 +201,7 @@ td {
     position: absolute;
     left: 0;
     right: 0;
-    top: -1px;
+    top: 0px;
     margin: auto;
     width: fit-content;
 }

@@ -44,19 +44,23 @@ const RolePref = ({ display }) => {
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
-        axios.put('http://localhost:5000/profile/rolePref', {
-            roles:formFields[0].roles
-        },
-            {
-                headers: {
-                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+        axios
+            .put(
+                "http://localhost:5000/profile/rolePref",
+                {
+                    roles: formFields[0].roles,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    },
                 }
-            }
-        ).then((res) => {
-            alert("Videos url data saved!")
-            console.log("data added");
-            console.log(res)
-        })
+            )
+            .then((res) => {
+                alert("Videos url data saved!");
+                console.log("data added");
+                console.log(res);
+            });
     };
 
     const addFields = (e) => {
@@ -86,7 +90,7 @@ const RolePref = ({ display }) => {
                             {formFields.map((form, index) => {
                                 return (
                                     <div key={index} className="d-flex align-items-center">
-                                        <select
+                                        {/* <select
                                             className="form-control form-select"
                                             data-num={index}
                                             name="role"
@@ -101,7 +105,17 @@ const RolePref = ({ display }) => {
                                             <option value="Supporting Actor">Supporting Actor</option>
                                             <option value="Main Role Hero">Main Role Hero</option>
                                             <option value="Main Role Villan">Main Role Villan</option>
-                                        </select>
+                                        </select> */}
+                                        <input
+                                            name="role"
+                                            value={form.roles}
+                                            onChange={(e) => {
+                                                handleFormChange(e, index);
+                                            }}
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="Add Role"
+                                        />
                                         <i
                                             className="fa-solid fa-trash-can mx-2 mb-2"
                                             onClick={() => removeFields(index)}
