@@ -31,6 +31,7 @@ function App() {
     const [currentUser, setCurrentUser] = useState(null);
     const [timeActive, setTimeActive] = useState(false);
     const [clicked, setClicked] = useState(0);
+    const [active, setActive] = useState("home");
 
     useEffect(() => {
         let user = JSON.parse(localStorage.getItem("login"));
@@ -42,7 +43,7 @@ function App() {
 
     return (
         <Router>
-            <AuthProvider value={{ currentUser, timeActive, setTimeActive, setClicked, clicked }}>
+            <AuthProvider value={{ currentUser, timeActive, setTimeActive, setClicked, clicked, setActive, active }}>
                 <Routes>
                     <Route
                         path="/logintest"

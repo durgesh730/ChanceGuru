@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { RiLogoutBoxRLine } from "react-icons/ri";
+import AuthContext from "../AuthContext";
 
 import "./minicomp.css";
 import home from "../../assets/icons/home.svg";
@@ -20,6 +21,9 @@ import amask from "../../assets/icons/active-mask.svg";
 import anotification from "../../assets/icons/active-notification.svg";
 
 const Topbar = (props) => {
+    const auth = useContext(AuthContext);
+    const active = auth.active;
+
     const [profileHeight, setProfileHeight] = useState(0);
     const [notifHeight, setnotifHeight] = useState(0);
     const [dim, setDim] = useState(0);
@@ -60,8 +64,9 @@ const Topbar = (props) => {
 
     const user = JSON.parse(localStorage.getItem("login"));
 
-    const [active, setActive] = useState("home");
-    // console.log(active);
+    useEffect(() => {
+        console.log(active);
+    }, [active]);
 
     return (
         <>
@@ -72,7 +77,7 @@ const Topbar = (props) => {
                 <div className="topbar-nav">
                     <Link
                         to={user.type === "user" ? "/talentdashboard" : "/seekerdashboard"}
-                        onClick={() => setActive("home")}
+                        onClick={() => auth.setActive("home")}
                     >
                         <span
                             className={
@@ -86,7 +91,7 @@ const Topbar = (props) => {
                             )}
                         </span>
                     </Link>
-                    <Link to="/manage" onClick={() => setActive("chair")}>
+                    <Link to="/manage" onClick={() => auth.setActive("chair")}>
                         <span
                             className={
                                 active === "chair" ? `nav_active topbar-icons-container` : "topbar-icons-container"
@@ -104,7 +109,7 @@ const Topbar = (props) => {
                             className={
                                 active === "mask" ? `nav_active topbar-icons-container` : "topbar-icons-container"
                             }
-                            onClick={() => setActive("mask")}
+                            onClick={() => auth.setActive("mask")}
                         >
                             {active === "mask" ? (
                                 <img className="topbar-icons" src={amask} alt="" />
@@ -114,7 +119,7 @@ const Topbar = (props) => {
                         </span>
                     </Link>
 
-                    <Link to="/browseprofile" onClick={() => setActive("fingers")}>
+                    <Link to="/browseprofile" onClick={() => auth.setActive("fingers")}>
                         <span
                             className={
                                 active === "fingers" ? `nav_active topbar-icons-container` : "topbar-icons-container"
@@ -129,7 +134,7 @@ const Topbar = (props) => {
                     </Link>
                     <span
                         className={active === "chat" ? `nav_active topbar-icons-container` : "topbar-icons-container"}
-                        onClick={() => setActive("chat")}
+                        onClick={() => auth.setActive("chat")}
                     >
                         {active === "chat" ? (
                             <img className="topbar-icons" src={achat} alt="" />
