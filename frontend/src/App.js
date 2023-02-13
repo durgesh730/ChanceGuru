@@ -28,17 +28,17 @@ import FaqsHelp from "./components/FaqsHelp";
 import MyRoles from "./components/MyRoles";
 
 function App() {
-  const [currentUser, setCurrentUser] = useState(null);
-  const [timeActive, setTimeActive] = useState(false);
-  const [clicked, setClicked] = useState(0);
+    const [currentUser, setCurrentUser] = useState(null);
+    const [timeActive, setTimeActive] = useState(false);
+    const [clicked, setClicked] = useState(0);
 
-  useEffect(() => {
-    let user = JSON.parse(localStorage.getItem("login"));
-    if (user) {
-      setCurrentUser(user);
-      console.log(user);
-    }
-  }, []);
+    useEffect(() => {
+        let user = JSON.parse(localStorage.getItem("login"));
+        if (user) {
+            setCurrentUser(user);
+            // console.log(user);
+        }
+    }, []);
 
   return (
     <Router>
