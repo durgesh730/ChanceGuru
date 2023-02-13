@@ -93,21 +93,21 @@ let schema = new mongoose.Schema(
             },
             experience: [
                 {
-                    workIn: {
+                    workedIn: {
                         type: String,
                     },
                     workedAs: {
                         type: String,
                     },
-                    startData: {
-                        type: Number,
+                    startDate: {
+                        type: String,
                         max: new Date().getFullYear(),
                     },
                     endDate: {
-                        type: Number,
+                        type: String,
                         max: new Date().getFullYear(),
                     },
-                    about: {
+                    aboutWork: {
                         type: String,
                     },
                 }
@@ -158,7 +158,7 @@ let schema = new mongoose.Schema(
             }
         ],
         updatedAt: {
-            type: mongoose.Schema.Types.ObjectId,
+            type: String,
         }
     },
     { collation: { locale: "en" } }

@@ -34,7 +34,7 @@ const Sidebar2 = () => {
         setSummary(false);
     };
 
-    const [active, setactive] = useState({ 1: true, 2: false, 3: false, 4: false })
+        const [active, setactive] = useState({ 1: true, 2: false, 3: false, 4: false })
     const toggleForm = (form_name) => {
         setFalse();
         switch (form_name) {

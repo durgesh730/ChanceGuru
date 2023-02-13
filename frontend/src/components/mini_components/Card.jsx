@@ -1,31 +1,30 @@
 import React from "react";
-import { useState , useEffect } from "react";
+import { useState, useEffect } from "react";
 import Modal from "./Modal";
 import axios from "axios";
 
-const Card = ({ card }) => {
-    console.log(card);
-    const basicInfo = card.basicInfo ;
-    const role = card.roles ;
+const Card = ({ card, setClicked }) => {
+    const basicInfo = card.basicInfo;
+    const role = card.roles;
     const [model, setModel] = useState(false);
-    const [roles, setroles] = useState([])
+    const [roles, setroles] = useState([]);
     const getRoles = () => {
         axios
             .get(`http://localhost:5000/projects/getroles/${card.id}`)
             .then((res) => {
-                setroles(res.data.data)
+                setroles(res.data.data);
             })
             .catch((err) => {
-                console.log(err)
-            })
-    }
+                // console.log(err);
+            });
+    };
 
     useEffect(() => {
-      getRoles();
-    }, [])
-    
+        getRoles();
+    }, []);
+
     return (
-        <li>
+        <li className="child_cards">
             <div className="card-title">‘{basicInfo.name}’</div>
             <div className="card-desc">{basicInfo.desc}</div>
             <div className="card-author d-flex align-items-center">
@@ -46,6 +45,7 @@ const Card = ({ card }) => {
                 className="card-apply btn"
                 onClick={() => {
                     setModel(true);
+                    setClicked(1);
                 }}
             >
                 Apply

@@ -7,8 +7,7 @@ import "../forms.css";
 import { useState } from "react";
 import { useEffect } from "react";
 
-const ProfileDetailsForm = ({ display }) => {
-
+const ProfileDetailsForm = ({ display , toggle , profileData , bool , setbool }) => {
     const user = JSON.parse(localStorage.getItem("login"));
 
     let show = {};
@@ -47,19 +46,43 @@ const ProfileDetailsForm = ({ display }) => {
             country, address, linkedin, facebook, instagram, userId } =
             profileDetails;
 
-        const res = await fetch("http://localhost:5000/profile/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${localStorage.getItem("token")}`,
-            },
-            body: JSON.stringify({
-                fullname, gender, email, password, DOB, city, state,
-                country, address, linkedin, facebook, instagram, userId
-            })
-        });
-        const ok = await res.json();
-        console.log(ok)
+        if (bool) {
+            const res = await fetch("http://localhost:5000/profile/basicinfo", {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`,
+                },
+                body: JSON.stringify({
+                    fullname, gender, email, password, DOB, city, state,
+                    country, address, linkedin, facebook, instagram, userId
+                })
+            });
+            const ok = await res.json();
+            if(ok){
+                alert("Profile details updated successfully");
+                toggle("talent");
+            }
+        } else {
+
+            const res = await fetch("http://localhost:5000/profile/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`,
+                },
+                body: JSON.stringify({
+                    fullname, gender, email, password, DOB, city, state,
+                    country, address, linkedin, facebook, instagram, userId
+                })
+            });
+            const ok = await res.json();
+            console.log(ok)
+            if(ok){
+                alert("Profile details saved successfully");
+                toggle("talent");
+            }
+        }
     }
 
     const handleShow = async () => {
@@ -70,8 +93,10 @@ const ProfileDetailsForm = ({ display }) => {
                 },
             })
             .then((response) => {
-                setProfileDetails(response.data);
-                // console.log(response)
+                if (response.data !== null) {
+                    setProfileDetails(response.data.basicInfo);
+                    setbool(true);
+                }
             })
             .catch((err) => {
                 console.log(err.response);
@@ -97,6 +122,7 @@ const ProfileDetailsForm = ({ display }) => {
                                 placeholder='Name'
                                 name="fullname"
                                 value={profileDetails.fullname}
+                                required
                                 onChange={handleInputChange}
                             />
                             <div style={{ position: "relative", display: "flex" }}>
@@ -105,6 +131,7 @@ const ProfileDetailsForm = ({ display }) => {
                                     onChange={handleInputChange}
                                     value={profileDetails.gender}
                                     className="form-control form-select"
+                                    required
                                 >
                                     <option value="" disabled selected>
                                         Gender
@@ -114,28 +141,13 @@ const ProfileDetailsForm = ({ display }) => {
                                 </select>
                             </div>
                             <input
-                                type="text"
-                                className="form-control"
-                                placeholder="Email"
-                                name="email"
-                                value={profileDetails.email}
-                                onChange={handleInputChange}
-                            />
-                            <input
-                                type="password"
-                                className="form-control"
-                                placeholder="Password"
-                                name="password"
-                                value={profileDetails.password}
-                                onChange={handleInputChange}
-                            />
-                            <input
                                 type="date"
                                 className="form-control empty"
                                 placeholder="Date of birth"
                                 name="DOB"
                                 value={profileDetails.DOB}
                                 onChange={handleInputChange}
+                                required
                             />
                             <div style={{ position: "relative", display: "flex" }}>
                                 <select
@@ -156,6 +168,7 @@ const ProfileDetailsForm = ({ display }) => {
                                     onChange={handleInputChange}
                                     value={profileDetails.state}
                                     className="form-control form-select"
+                                    required
                                 >
                                     <option value="" disabled selected>
                                         State
@@ -169,6 +182,7 @@ const ProfileDetailsForm = ({ display }) => {
                                 onChange={handleInputChange}
                                 value={profileDetails.country}
                                 className="form-control form-select"
+                                required
                             >
                                 <option value="" disabled selected>
                                     Country
@@ -183,6 +197,7 @@ const ProfileDetailsForm = ({ display }) => {
                                 name="address"
                                 value={profileDetails.address}
                                 onChange={handleInputChange}
+                                required
                             />
                             <input
                                 type="text"
@@ -210,7 +225,7 @@ const ProfileDetailsForm = ({ display }) => {
                             />
                             <div className="row">
                                 <input
-                                    type="submit"
+                                    type="button"
                                     className="col-4 cancel-btn btn btn-lg btn-block my-2"
                                     value="Cancel"
                                 />
