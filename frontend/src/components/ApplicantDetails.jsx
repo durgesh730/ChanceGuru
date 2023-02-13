@@ -17,6 +17,11 @@ const ApplicantDetails = () => {
     const [active, setActive] = useState(0);
     const [leadRoles, setLeadRoles] = useState([])
     const [activeChar, setActiveChar] = useState({})
+    const [activeStatus, setActiveStatus] = useState("shortlist")
+
+    const [shortListCount,setShortListCount] = useState(0)
+    const [waitingCount,setWaitingCount] = useState(0)
+    const [rejectedCount,setRejectedCount] = useState(0)
 
     var applied = leadRoles.map((Data) => { return Data._id });
     var check = applied[0]
@@ -30,7 +35,7 @@ const ApplicantDetails = () => {
             },
         })
         const res = await data.json();
-        console.log(res)
+        // console.log(res)
         setProjectDetails(res)
 
     }
@@ -65,7 +70,7 @@ const ApplicantDetails = () => {
         })
         )
     }
-    
+
     const [Data, setData] = useState();
     const fetchData = async () => {
         const data = await fetch(`http://localhost:5000/project/Seekers/${location.state}`, {
@@ -76,8 +81,27 @@ const ApplicantDetails = () => {
         })
         const json = await data.json();
         setData(json)
-        console.log(json);
+        // console.log(json);
     }
+
+    useEffect(() => {
+        setShortListCount(0)
+        setWaitingCount(0)
+        setRejectedCount(0)
+        Data?.map((item) => {
+            if(item.status === "shortlist" || item.status === "selected"){
+                setShortListCount(prevCount => prevCount += 1)
+                
+            }
+            else if(item.status === "scheduled" || item.status === "applied"){
+                setWaitingCount(prevCount => prevCount += 1)
+            }
+            else if(item.status === "rejected"){
+                setRejectedCount(prevCount => prevCount += 1)
+            }
+
+        })
+    }, [Data])
 
     // for count applied by
 
@@ -96,6 +120,9 @@ const ApplicantDetails = () => {
         fetchData();
         ProjectData()
     }, [setData])
+
+
+
 
     return (
         <>
@@ -136,7 +163,7 @@ const ApplicantDetails = () => {
                     }
 
                     <div className="lastRow">
-                        <span number={c} className='appliedBy'>Applied By</span>
+                        <span number={`${c}`} className='appliedBy'>Applied By</span>
 
                         {
                             projectDetails?.map((items, i) => {
@@ -147,7 +174,7 @@ const ApplicantDetails = () => {
                                 )
                             })
                         }
-                        <span number={a} className='characters'>Characters</span>
+                        <span number={`${a}`} className='characters'>Characters</span>
                     </div>
                 </div>
 
@@ -175,7 +202,7 @@ const ApplicantDetails = () => {
 
                                 return (
                                     <>
-                                        <span style={{ color: activeChar === p ? "#8443e5" : "initial" }} onClick={() => setActiveChar(p)} className='malcom'>{p.name}</span>
+                                        <span highlighted={activeChar === p ? "true" : "false"} onClick={() => setActiveChar(p)} >{p.name}</span>
                                     </>
                                 )
                             }
@@ -185,19 +212,22 @@ const ApplicantDetails = () => {
                     </div>
 
                     <div className="statusContainer">
-                        <div highlighted="true" className='shortlisted'>
+                        {
+                            console.log(shortListCount,waitingCount,rejectedCount)
+                        }
+                        <div highlighted={activeStatus === "shortlist" ? "true" : "false"} className='shortlisted' onClick={() => setActiveStatus("shortlist")} >
                             <img src={list} alt="" />
-                            <span number="10" >Short-listed</span>
+                            <span number={`${shortListCount}`}   >Short-listed</span>
 
                         </div>
-                        <div className='rejected'>
+                        <div highlighted={activeStatus === "scheduled" ? "true" : "false"} className='rejected' onClick={() => setActiveStatus("scheduled")} >
                             <img src={time} alt="" />
-                            <span number="01" >Waiting List</span>
+                            <span number={`${waitingCount}`}  >Waiting List</span>
 
                         </div>
-                        <div className='waiting'>
+                        <div highlighted={activeStatus === "rejected" ? "true" : "false"} className='waiting' onClick={() => setActiveStatus("rejected")} >
                             <img src={reject} alt="" />
-                            <span number="12" >Rejected</span>
+                            <span number={`${rejectedCount}`}  >Rejected</span>
 
                         </div>
                     </div>
@@ -210,19 +240,42 @@ const ApplicantDetails = () => {
                         <hr />
                         <div className="listItems">
 
-                            {Data?.map((Data, i) => {
-                                console.log(Data)
-                                if (activeChar._id == Data.charId) {
+                            {
 
-                                    return(
-                                        <ApplicantRowCard key={i} Data={Data} applied={check} />
-                                    )
+                                Data?.map((Data, i) => {
+                                    console.log(Data)
+                                    if (activeChar._id == Data.charId) {
+                                        if (activeStatus === "shortlist") {
+                                            if (Data.status === activeStatus || Data.status === "selected") {
+
+                                                return (
+                                                    <ApplicantRowCard key={i} Data={Data} applied={check} />
+                                                )
+                                            }
+                                        }
+                                        if (activeStatus === "scheduled") {
+                                            if (Data.status === activeStatus || Data.status === "applied") {
+
+                                                return (
+                                                    <ApplicantRowCard key={i} Data={Data} applied={check} />
+                                                )
+                                            }
+                                        }
+
+                                        if (activeStatus === "rejected") {
+                                            if (Data.status === activeStatus) {
+
+                                                return (
+                                                    <ApplicantRowCard key={i} Data={Data} applied={check} />
+                                                )
+                                            }
+                                        }
+
+
+                                    }
+
                                 }
-                                else{
-                                    return <h6>No one has applied to this character yet!!!</h6>
-                                }
-                            }
-                            )}{" "}
+                                )}{""}
 
                         </div>
                     </div>

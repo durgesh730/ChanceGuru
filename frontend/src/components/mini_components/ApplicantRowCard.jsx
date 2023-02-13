@@ -12,6 +12,8 @@ const ApplicantRowCard = ({ Data, applied }) => {
     const [select, setSelect] = useState('selected')
     const [rejected, setRejected] = useState('rejected')
 
+    console.log(Data)
+
     const [User, SetUser] = useState([]);
     const fetchData = async () => {
             const data = await fetch(`http://localhost:5000/project/UserId/${id}`, {
