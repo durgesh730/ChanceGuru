@@ -3,13 +3,12 @@ import Searchbar from "./mini_components/Searchbar";
 import Topbar from "./mini_components/Topbar";
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 import godfather from "../assets/images/godfather.png";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import SideNav from "./SideNav";
 import Button from "@material-ui/core/Button";
 
 const Submission = () => {
   const [active, setActive] = useState(false);
-  const location = useLocation();
 
   return (
     <>
@@ -94,7 +93,7 @@ const Submission = () => {
                                   <NavLink
                                     to="/browseprofile/:nickdavolt"
                                     state={{
-                                      submission_location: location.pathname,
+                                      submission_location: "submission",
                                     }}
                                     exact
                                   >

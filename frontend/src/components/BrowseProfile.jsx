@@ -60,7 +60,7 @@ const BrowseProfile = () => {
                 <td>
                   <NavLink
                     to="/browseprofile/:nickdavolt"
-                    state={{ browse_location: location.pathname }}
+                    state={{ browse_location: "browse" }}
                     exact
                   >
                     <button>View Profile</button>

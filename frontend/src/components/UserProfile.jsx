@@ -60,8 +60,8 @@ const UserProfile = (props) => {
                       <p>Actor</p>
                     </div>
                     <div>
-                      {("/submission" === s_location ||
-                        "/audition" === a_location) && (
+                      {("submission" === s_location ||
+                        "audition" === a_location) && (
                         <>
                           <button
                             onClick={() => setModal(true)}
@@ -77,11 +77,11 @@ const UserProfile = (props) => {
                           </button>
                         </>
                       )}
-                      {"/audition" === a_location && (
+                      {"audition" === a_location && (
                         <button onClick={() => setModal(true)}>Schedule</button>
                       )}
-                      {("/submission" === s_location ||
-                        "/audition" === a_location) && (
+                      {("submission" === s_location ||
+                        "audition" === a_location) && (
                         <button
                           onClick={() => setModal(true)}
                           style={{ color: "#b8d0eb", borderColor: "#b8d0eb" }}
@@ -90,7 +90,7 @@ const UserProfile = (props) => {
                         </button>
                       )}
 
-                      {"/browseprofile" === b_location && (
+                      {"browse" === b_location && (
                         <button onClick={() => setModal(true)}>
                           Send Request
                         </button>
