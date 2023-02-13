@@ -10,7 +10,7 @@ import AuditionStatus from "./AuditionStatus";
 
 const Audition = () => {
 
-  const [active, setActive] = useState(false);
+  const [active, setActive] = useState('');
   const location = useLocation();
 
   const [cards, setcards] = useState();
@@ -79,15 +79,15 @@ const Audition = () => {
                           </div>
                           <div className="aa_icon">
                             {active ? (
-                              <BsChevronUp onClick={() => setActive(!active)} />
+                              <BsChevronUp onClick={() => setActive()} />
                             ) : (
-                              <BsChevronDown onClick={() => setActive(!active)} />
+                              <BsChevronDown onClick={() => setActive('1')} />
                             )}
                           </div>
                         </div>
 
-                        {active && (
-                          <AuditionStatus id={item._id} />
+                        {active === '1' && (
+                          <AuditionStatus id={item._id} audition ={cards} />
                         )}
                       </div>
                     </div>

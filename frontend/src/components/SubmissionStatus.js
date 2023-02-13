@@ -3,7 +3,7 @@ import SubViewProfile from './SubViewProfile';
 import axios from 'axios'
 import StatusSide from './StatusSide';
 
-const SubmissionStatus = ({ id }) => {
+const SubmissionStatus = ({ id, audition }) => {
     const [cards, setcards] = useState();
     const getuserId = () => {
         axios
@@ -32,18 +32,19 @@ const SubmissionStatus = ({ id }) => {
                             <td>Status</td>
                             <td></td>
                         </thead>
-                        <tbody>
 
+                        <tbody>
                             {cards?.map((item, index) => {
                                 return (
                                     <>
-
                                         <tr>
-                                            <StatusSide userId={item.userId} />
+                                            <StatusSide
+                                             userId={item.userId} 
+                                            charId={item.charId} charDetails={audition} 
+                                             />                                         
                                             <td>{item.status}</td>
                                             <SubViewProfile userId={item.userId} statusId={item._id} />
                                         </tr>
-
                                     </>
                                 )
                             })

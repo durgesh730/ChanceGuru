@@ -20,7 +20,8 @@ const UserProfile = (props) => {
   const [schedule, setSchedule] = useState('scheduled')
 
   const location = useLocation();
-  // console.log()
+
+  console.log(location.state.statusId)
 
   const b_location = location.state.browse_location;
   const s_location = location.state.submission_location;
@@ -31,7 +32,7 @@ const UserProfile = (props) => {
   // console.log(a_location);
 
   const handleSelect = async () => {
-    const data = await fetch(`http://localhost:5000/project/SelectuserId/${location.state.userId}`, {
+    const data = await fetch(`http://localhost:5000/project/SelectuserId/${location.state.statusId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -39,11 +40,11 @@ const UserProfile = (props) => {
       body: JSON.stringify({ select })
     })
     const res = await data.json();
-    // console.log(res)
+    console.log(res)
   }
 
   const handleReject = async () => {
-    const data = await fetch(`http://localhost:5000/project/SelectuserId/${location.state.userId}`, {
+    const data = await fetch(`http://localhost:5000/project/SelectuserId/${location.state.statusId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -51,11 +52,11 @@ const UserProfile = (props) => {
       body: JSON.stringify({ select:rejected })
     })
     const res = await data.json();
-    console.log(res)
+    // console.log(res)
   }
 
   const handleShortlist = async () => {
-    const data = await fetch(`http://localhost:5000/project/SelectuserId/${location.state.userId}`, {
+    const data = await fetch(`http://localhost:5000/project/SelectuserId/${location.state.statusId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -63,11 +64,11 @@ const UserProfile = (props) => {
       body: JSON.stringify({ select:shortlist})
     })
     const res = await data.json();
-    console.log(res)
+    // console.log(res)
   }
 
   const handleSchedule = async () => {
-    const data = await fetch(`http://localhost:5000/project/SelectuserId/${location.state.userId}`, {
+    const data = await fetch(`http://localhost:5000/project/SelectuserId/${location.state.statusId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -75,7 +76,7 @@ const UserProfile = (props) => {
       body: JSON.stringify({ select:schedule})
     })
     const res = await data.json();
-    console.log(res)
+    // console.log(res)
   }
 
   return (
@@ -109,7 +110,7 @@ const UserProfile = (props) => {
                 <div className="p-4 pb-0">
                   <div className="p1 d-flex justify-content-between">
                     <div>
-                      <h6>{location.state.basicInfo.fullname}</h6>
+                      <h6>{location.state.cards.basicInfo.fullname}</h6>
                       <p>Actor</p>
                     </div>
                     <div>
@@ -206,18 +207,18 @@ const UserProfile = (props) => {
                   <hr />
 
                   <div className="h-100">
-                    {active === "details" && <Details Data={location.state.basicInfo} />}
-                    {active === "talent" && <Talents Data={location.state.talent} />}
+                    {active === "details" && <Details Data={location.state.cards.basicInfo} />}
+                    {active === "talent" && <Talents Data={location.state.cards.talent} />}
                     {active === "bio" && <BioExperience
-                      Data={location.state.
+                      Data={location.state.cards.
                         portfolio}
                     />}
                     {active === "education" && <Education
-                      Data={location.state
+                      Data={location.state.cards
                       }
                     />}
                     {active === "role" && <UserRole
-                      Data={location.state}
+                      Data={location.state.cards}
                     />}
                   </div>
 

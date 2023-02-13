@@ -4,6 +4,8 @@ import { NavLink } from 'react-router-dom'
 
 const SubViewProfile = ({userId, statusId }) => {
 
+    // console.log(statusId)
+
     const [cards, setcards] = useState();
     const getuserData = () => {
         axios
@@ -27,7 +29,7 @@ const SubViewProfile = ({userId, statusId }) => {
         <>
             <td>
                 <div className="d-flex justify-content-center align-items-center">
-                    <NavLink to={"/browseprofile/:nickdavolt"} state = {cards} exact>
+                    <NavLink to={"/browseprofile/:nickdavolt"} state = {{cards,  statusId }} exact>
                         <button>View Profile</button>
                     </NavLink>
                 </div>

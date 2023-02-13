@@ -5,6 +5,18 @@ const Project = require("../db/Project");
 const JobApplication = require('../db/JobApplication')
 const User = require('../db/User')
 
+//TO get all the characters
+// router.get("/characters/:charId", (req, res) => {
+//     Project.findOne({_id:req.params.charId})
+//         .then((response) => {
+//             res.json(response);
+//             console.log(res);
+//         })
+//         .catch((err) => {
+//             res.status(400).json(err);
+//         })
+// })
+
 
 // API for change status of jobapplication using default _id
 
@@ -27,13 +39,13 @@ router.put("/Select/:_id", (req, res) => {
 
 // API for change status of jobapplication using userId
 
-router.put("/SelectuserId/:userId", (req, res) => {
+router.put("/SelectuserId/:_id", (req, res) => {
     const data = req.body;
-    console.log(data)
+    // console.log(data)
     const d =  data.select 
-    console.log(d)
+    // console.log(d)
 
-    JobApplication.findOneAndUpdate({userId:req.params.userId}, {
+    JobApplication.findOneAndUpdate({_id:req.params._id}, {
         $set: {
              status:d,
         },
@@ -75,6 +87,7 @@ router.get("/allProjects", (req, res) => {
             res.status(400).json(err);
         })
 })
+
 
 router.get("/allProjectsSeekers",jwtAuth,(req, res) => {
     const user = req.user;

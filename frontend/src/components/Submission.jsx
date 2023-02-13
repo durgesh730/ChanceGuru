@@ -85,7 +85,7 @@ const Submission = () => {
                         </div>
 
                         {active && (
-                          <SubmissionStatus id={item._id} />
+                          <SubmissionStatus audition ={cards} id={item._id} />
                         )}
                       </div>
                     </div>
