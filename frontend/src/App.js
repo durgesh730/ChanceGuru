@@ -21,11 +21,11 @@ import ApplicantDetails from "./components/ApplicantDetails";
 import BrowseProfile from "./components/BrowseProfile";
 import UserProfile from "./components/UserProfile";
 import Audition from "./components/Audition";
-import ManageProfile from "./components/ManageProfile";
 import Submission from "./components/Submission";
 import Notification from "./components/Notification";
 import Setting from "./components/Setting";
 import FaqsHelp from "./components/FaqsHelp";
+import MyRoles from "./components/MyRoles";
 
 function App() {
     const [currentUser, setCurrentUser] = useState(null);

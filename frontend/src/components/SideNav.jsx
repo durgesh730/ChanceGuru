@@ -6,7 +6,7 @@ const SideNav = () => {
     <>
       <span className="mb-3">
         <NavLink
-          to="/manage/submission"
+          to="/submission"
           className={({ isActive }) =>
             isActive ? "lactive-class" : "not-active-class"
           }
@@ -16,7 +16,7 @@ const SideNav = () => {
       </span>
       <span>
         <NavLink
-          to="/manage/audition"
+          to="/audition"
           className={({ isActive }) =>
             isActive ? "lactive-class" : "not-active-class"
           }

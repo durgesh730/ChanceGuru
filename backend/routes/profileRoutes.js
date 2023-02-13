@@ -15,6 +15,59 @@ router.get("/", jwtAuth, (req, res) => {
         })
 })
 
+// API used for user phone number and email
+router.get("/Users", async (req, res) => {
+    try {
+        const user = await User.aggregate([
+            {
+                $match: { type: "user" }
+            }
+        ])
+        res.json(user)
+        // console.log(user)
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Some error occured")
+    }
+})
+
+// router.get("/ProData", async (req, res) => {
+//     const { fullname } = req.query;
+//     const basicInfo = {}
+//     if(fullname){
+//         basicInfo.fullname = fullname;
+//     }
+//     console.log({ basicInfo})
+
+//     const data = await Profile.find({"basicInfo.fullname":`${fullname}`});
+//     res.status(200).json({data})
+// })
+
+
+router.get("/ProData", async (req, res) => {
+    const keyword = req.query.fullname
+        ?
+        { "basicInfo.fullname": { $regex: req.query.fullname, $options: "i" } } //case insensitive
+
+        : {};
+    console.log(keyword)
+    const users = await Profile.find(keyword);
+    res.send(users);
+});
+
+
+// data of profiles 
+router.get("/profileData", (req, res) => {
+    Profile.find(req.params.id)
+        .then((response) => {
+            res.json(response);
+            // console.log(response)
+        })
+        .catch((err) => {
+            res.status(400).json(err);
+        })
+})
+
 //to get profile details by user id from seeker side by providing user id
 router.get("/:id", (req, res) => {
     Profile.findOne({ userId: req.params.id })

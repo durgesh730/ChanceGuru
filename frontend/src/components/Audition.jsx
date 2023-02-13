@@ -3,12 +3,11 @@ import Searchbar from "./mini_components/Searchbar";
 import Topbar from "./mini_components/Topbar";
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 import godfather from "../assets/images/godfather.png";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import SideNav from "./SideNav";
 
 const Audition = () => {
   const [active, setActive] = useState(false);
-  const location = useLocation();
   return (
     <>
       <Topbar />
@@ -65,7 +64,7 @@ const Audition = () => {
                                   <NavLink
                                     to="/browseprofile/:nickdavolt"
                                     state={{
-                                      audition_location: location.pathname,
+                                      audition_location: "audition",
                                     }}
                                     exact
                                   >
