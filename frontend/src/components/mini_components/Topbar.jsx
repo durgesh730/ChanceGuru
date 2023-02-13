@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { RiLogoutBoxRLine } from "react-icons/ri";
+import AuthContext from "../AuthContext";
 
 import "./minicomp.css";
 import home from "../../assets/icons/home.svg";
@@ -22,20 +23,24 @@ import role from "../../assets/images/role.png";
 import arole from "../../assets/images/active-role.png";
 
 const Topbar = (props) => {
-  const [profileHeight, setProfileHeight] = useState(0);
-  const [notifHeight, setnotifHeight] = useState(0);
-  const [dim, setDim] = useState(0);
+    const auth = useContext(AuthContext);
+    const active = auth.active;
 
-  const navigate = useNavigate();
-  function toggleProfileOptions() {
-    if (profileHeight == 0) {
-      setProfileHeight(192);
-      setDim(1);
-      document.getElementById("profileOption").style.height = "192px";
-    } else {
-      setProfileHeight(0);
-      setDim(0);
-      document.getElementById("profileOption").style.height = "0px";
+    const [profileHeight, setProfileHeight] = useState(0);
+    const [notifHeight, setnotifHeight] = useState(0);
+    const [dim, setDim] = useState(0);
+
+    const navigate = useNavigate();
+    function toggleProfileOptions() {
+        if (profileHeight == 0) {
+            setProfileHeight(192);
+            setDim(1);
+            document.getElementById("profileOption").style.height = "192px";
+        } else {
+            setProfileHeight(0);
+            setDim(0);
+            document.getElementById("profileOption").style.height = "0px";
+        }
     }
   }
   function toggleNotifOption() {
@@ -147,21 +152,127 @@ const Topbar = (props) => {
                   <p>You have successfully created the project "Shakespeare's Macbeth"</p>
                 </div>
                 <hr />
+    const [modal, setModal] = useState(false);
 
-                <div>
-                  <img src="" alt="pfp" />
-                  <p>You have successfully created the project "Shakespeare's Macbeth"</p>
-                </div>
-                <hr />
-                <div className="d-flex justify-content-center align-items-center view_all">
-                  <NavLink to="/notification">
-                    <p>View All</p>
-                  </NavLink>
-                </div>
-              </div>
-            </div>
-          </span>
+    function handleLogout() {
+        localStorage.clear();
+        navigate("/login");
+        // console.log("Logout succesfull");
+    }
 
+    const user = JSON.parse(localStorage.getItem("login"));
+
+    useEffect(() => {
+        console.log(active);
+    }, [active]);
+
+    return (
+        <>
+            <div className="topbar">
+                <div className="topbar-name">
+                    Chance <br /> Guru
+                </div>
+                <div className="topbar-nav">
+                    <Link
+                        to={user.type === "user" ? "/talentdashboard" : "/seekerdashboard"}
+                        onClick={() => auth.setActive("home")}
+                    >
+                        <span
+                            className={
+                                active === "home" ? `nav_active topbar-icons-container` : "topbar-icons-container"
+                            }
+                        >
+                            {active === "home" ? (
+                                <img className="topbar-icons" src={ahome} alt="" />
+                            ) : (
+                                <img className="topbar-icons" src={home} alt="" />
+                            )}
+                        </span>
+                    </Link>
+                    <Link to="/manage" onClick={() => auth.setActive("chair")}>
+                        <span
+                            className={
+                                active === "chair" ? `nav_active topbar-icons-container` : "topbar-icons-container"
+                            }
+                        >
+                            {active === "chair" ? (
+                                <img className="topbar-icons" src={achair} alt="" />
+                            ) : (
+                                <img className="topbar-icons" src={directorchair} alt="" />
+                            )}
+                        </span>
+                    </Link>
+                    <Link to="/roles">
+                        <span
+                            className={
+                                active === "mask" ? `nav_active topbar-icons-container` : "topbar-icons-container"
+                            }
+                            onClick={() => auth.setActive("mask")}
+                        >
+                            {active === "mask" ? (
+                                <img className="topbar-icons" src={amask} alt="" />
+                            ) : (
+                                <img className="topbar-icons" src={mask} alt="" />
+                            )}
+                        </span>
+                    </Link>
+
+                    <Link to="/browseprofile" onClick={() => auth.setActive("fingers")}>
+                        <span
+                            className={
+                                active === "fingers" ? `nav_active topbar-icons-container` : "topbar-icons-container"
+                            }
+                        >
+                            {active === "fingers" ? (
+                                <img className="topbar-icons" src={afingers} alt="" />
+                            ) : (
+                                <img className="topbar-icons" src={thumbsup} alt="" />
+                            )}
+                        </span>
+                    </Link>
+                    <span
+                        className={active === "chat" ? `nav_active topbar-icons-container` : "topbar-icons-container"}
+                        onClick={() => auth.setActive("chat")}
+                    >
+                        {active === "chat" ? (
+                            <img className="topbar-icons" src={achat} alt="" />
+                        ) : (
+                            <img className="topbar-icons" src={chat} alt="" />
+                        )}
+                    </span>
+                    {/* <Link to="/projectcreation"> */}
+                    <span className="topbar-icons-container n_icon" onClick={toggleNotifOption}>
+                        {active === "notification" ? (
+                            <img className="topbar-icons" src={anotification} alt="" />
+                        ) : (
+                            <img className="topbar-icons " src={notification} alt="" />
+                        )}
+                        <div className="notif-options" id="notifOption">
+                            <div>
+                                <div>
+                                    <img src="" alt="pfp" />
+                                    <p>You have successfully created the project "Shakespeare's Macbeth"</p>
+                                </div>
+                                <hr />
+                                <div>
+                                    <img src="" alt="pfp" />
+                                    <p>You have successfully created the project "Shakespeare's Macbeth"</p>
+                                </div>
+                                <hr />
+
+                                <div>
+                                    <img src="" alt="pfp" />
+                                    <p>You have successfully created the project "Shakespeare's Macbeth"</p>
+                                </div>
+                                <hr />
+                                <div className="d-flex justify-content-center align-items-center view_all">
+                                    <NavLink to="/notification">
+                                        <p>View All</p>
+                                    </NavLink>
+                                </div>
+                            </div>
+                        </div>
+                    </span>
 
           <span className="d-flex align-items-center cursor-pointer" onClick={toggleProfileOptions}>
             <span className="topbar-icons-container">
