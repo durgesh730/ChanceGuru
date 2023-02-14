@@ -9,7 +9,23 @@ import AuthContext from "./AuthContext";
 
 const TalentDashboard = () => {
     const auth = useContext(AuthContext);
-    const [cards, setcards] = useState([]);
+    const [cards, setcards] = useState();
+
+    const [query, setQuery] = useState("");
+
+    const handleSearch = async () => {
+        const data = await fetch(`http://localhost:5000/profile/searchData?name=${query}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        const res = await data.json();
+        if (res) {
+            setcards(res);
+        }
+    };
+
     const [profileStrength, setProfileStrength] = useState({
         profile: 0,
         talent: 0,
@@ -31,7 +47,7 @@ const TalentDashboard = () => {
 
     useEffect(() => {
         getProjects();
-    }, []);
+    }, [setcards]);
 
     const user = JSON.parse(localStorage.getItem("login"));
 
@@ -97,7 +113,7 @@ const TalentDashboard = () => {
         <>
             <Topbar />
             <div className="container-fluid" style={{ padding: "0 60px" }}>
-                <Searchbar />
+                <Searchbar setQuery={setQuery} query={query} handleSearch={handleSearch} />
                 <div className="talent-heading d-flex justify-content-between">
                     <div className="">Suggestions</div>
                 </div>
