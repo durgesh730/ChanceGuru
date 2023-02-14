@@ -4,7 +4,9 @@ import axios from 'axios'
 import StatusSide from './StatusSide';
 
 const SubmissionStatus = ({ id }) => {
+
     const [cards, setcards] = useState();
+    
     const getuserId = () => {
         axios
             .get(`http://localhost:5000/project/Seekers/${id}`)

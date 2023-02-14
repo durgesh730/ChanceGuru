@@ -3,6 +3,17 @@ const jwtAuth = require("../lib/jwtAuth");
 const JobApplicant = require("../db/JobApplication");
 const router = express.Router();
 
+// To find pid 
+router.get("/project/:_id", (req, res) => {
+    JobApplicant.find({pId:req.params._id})
+        .then((response) => {
+            res.json(response);
+            console.log(response)
+        })
+        .catch((err) => {
+            res.status(400).json(err);
+        })
+})
 
 //To generate application
 router.post("/", jwtAuth , (req, res) => {

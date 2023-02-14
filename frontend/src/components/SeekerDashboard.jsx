@@ -6,7 +6,24 @@ import { useNavigate } from "react-router-dom";
 import "./style.css";
 
 const SeekerDashboard = () => {
+  const [query, setQuery] = useState("");
   const [card, setcard] = useState();
+  // console.log(card[0].basicInfo.name)
+
+  const handleSearch = async () => {
+    const data = await fetch(`http://localhost:5000/profile/searchSeekerData?name=${query}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    const res = await data.json();
+    console.log(res);
+    if (res) {
+      setcard(res);
+    }
+  };
 
   const getProjects = async () => {
     const res = await fetch(
@@ -20,8 +37,8 @@ const SeekerDashboard = () => {
       }
     );
     const response = await res.json();
-    console.log(response)
-    if(response !== null){
+
+    if (response !== null) {
       setcard(response);
     }
   };
@@ -41,7 +58,7 @@ const SeekerDashboard = () => {
       <div className="container">
         <div className="row">
           <div className="col-lg-8">
-            <Searchbar />
+            <Searchbar setQuery={setQuery} query={query} handleSearch={handleSearch} />
           </div>
           <div className="col-lg-4">
             <button

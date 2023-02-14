@@ -13,6 +13,21 @@ const Submission = () => {
   const [active, setActive] = useState(false);
   const [cards, setcards] = useState();
 
+  const [query, setQuery] = useState("");
+
+  const handleSearch = async () => {
+    const data = await fetch(`http://localhost:5000/profile/searchData?name=${query}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const res = await data.json();
+    if (res) {
+      setcards(res);
+    }
+  };
+
   const getProjects = () => {
     axios
       .get("http://localhost:5000/project/allProjects")
@@ -38,7 +53,7 @@ const Submission = () => {
           </div>
           <div className="col-lg-10">
             <div className="px-4">
-              <Searchbar />
+              <Searchbar setQuery={setQuery} query={query} handleSearch={handleSearch} />
               <h5 className="purple_title">Projects</h5>
               {cards?.map((item, index) => {
 
@@ -60,7 +75,7 @@ const Submission = () => {
                     }
                   })
                 }
-      
+
                 return (
                   <>
                     <div className="audition_accordion mb-3 ">

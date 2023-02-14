@@ -6,6 +6,9 @@ const User = require("../db/User");
 const ReqToApp = require("../db/RequestToApply");
 const asyncHandler = require("express-async-handler");
 const { response } = require("express");
+const Project = require("../db/Project");
+
+
 
 
 //to get profile details by user id from user side
@@ -35,17 +38,8 @@ router.get("/Users", async (req, res) => {
     }
 })
 
-// router.get("/ProData", async (req, res) => {
-//     const { fullname } = req.query;
-//     const basicInfo = {}
-//     if(fullname){
-//         basicInfo.fullname = fullname;
-//     }
-//     const data = await Profile.find({"basicInfo.fullname":`${fullname}`});
-//     res.status(200).json({data})
-// })
 
-
+// API for search data on browser Profile by fullname
 router.get("/ProData", async (req, res) => {
     const keyword = req.query.fullname
         ?
@@ -56,6 +50,30 @@ router.get("/ProData", async (req, res) => {
     res.send(users);
 });
 
+
+// API for search data on seeker dashboard by name
+router.get("/searchSeekerData",jwtAuth,async (req, res) => {
+    const user = req.user;
+    const keyword = req.query.name
+        ?
+        { "basicInfo.name": { $regex: req.query.name, $options: "i" } } //case insensitive
+
+        : {};
+    const users = await Project.find(keyword).find({seekerId: user._id});
+    res.send(users);
+});
+
+
+// API for search data on talent dashboard by fullname
+router.get("/searchData", async (req, res) => {
+    const keyword = req.query.name
+        ?
+        { "basicInfo.name": { $regex: req.query.name, $options: "i" } } //case insensitive
+
+        : {};
+    const users = await Project.find(keyword);
+    res.send(users);
+});
 
 // data of profiles 
 router.get("/profileData", (req, res) => {
