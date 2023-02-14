@@ -1239,6 +1239,12 @@ div.css-18dcxwc {
   border-bottom: 2px solid #fff;
 }
 
+.aa_head p {
+  width: 170px;
+}
+.aa_head div {
+  width: 100px;
+}
 .experience_container {
   position: relative;
 }
@@ -1538,4 +1544,13 @@ div.css-18dcxwc {
   background-color: #8443e5;
   height: 16px;
   width: 16px;
+}
+
+/* ====================REquest Page============================= */
+.requestPage {
+  height: 100vh;
+  width: 100vw;
+}
+.requestPage .b_table td {
+  width: 200px;
 }
