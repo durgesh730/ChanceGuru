@@ -1,8 +1,8 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
-const EduSkillForm = ({ display }) => {
+const EduSkillForm = ({ display, toggleForm }) => {
     let form1 = document.getElementById("form1");
     let form2 = document.getElementById("form2");
     let toggle1 = document.getElementById("toggle1");
@@ -31,16 +31,31 @@ const EduSkillForm = ({ display }) => {
 
 
     const [eduSkillDetails, setEduSkillDetails] = useState({
-        school: "",
-        schoolYear: "",
-        course: "",
         college: "",
-        collegeYear: "",
-        addSkills: "",
-        userId: "1"
+        degree: "",
+        startYear: "",
+        endYear: ""
     });
 
-    const { school, schoolYear, course, college, collegeYear, addSkills, userId } = eduSkillDetails;
+    const [skills, setskills] = useState([{ skill: "" }]);
+
+    const handleSkillChange = (e, index) => {
+        let data = [...skills];
+        data[index].skill = e.target.value;
+        setskills(data);
+    };
+
+    const addFields = (e) => {
+        e.preventDefault();
+        let obj = { skill: "" };
+        setskills([...skills, obj]);
+    };
+
+    const removeFields = (index) => {
+        let data = [...skills];
+        data.splice(index, 1);
+        setskills(data);
+    };
 
     const handleInputChange = (e) => {
         setEduSkillDetails({ ...eduSkillDetails, [e.target.name]: e.target.value });
@@ -48,15 +63,7 @@ const EduSkillForm = ({ display }) => {
     const handleEduSubmit = (e) => {
         e.preventDefault();
         const data = eduSkillDetails;
-        axios.put('http://localhost:5000/profile/education', {
-            school: school,
-            schoolYear: schoolYear,
-            course: course,
-            college: college,
-            collegeYear: collegeYear,
-            userId: userId
-
-        },
+        axios.put('http://localhost:5000/profile/education', eduSkillDetails,
             {
                 headers: {
                     "Authorization": `Bearer ${localStorage.getItem("token")}`
@@ -65,7 +72,8 @@ const EduSkillForm = ({ display }) => {
 
         ).then(() => {
             alert("Eudcation details saved!")
-            console.log("data added")
+            console.log("data added");
+            toggle("tog2");
         });
         console.log(data);
 
@@ -73,11 +81,7 @@ const EduSkillForm = ({ display }) => {
 
     const handleSkillsSubmit = (e) => {
         e.preventDefault();
-        const data = eduSkillDetails;
-        axios.put('http://localhost:5000/profile/skills', {
-            userId: userId,
-            addSkills: addSkills,
-        },
+        axios.put('http://localhost:5000/profile/skills', { skills },
             {
                 headers: {
                     "Authorization": `Bearer ${localStorage.getItem("token")}`
@@ -87,10 +91,39 @@ const EduSkillForm = ({ display }) => {
         ).then((res) => {
             alert("Skills Details saved!")
             console.log("data added")
-            console.log(res)
+            console.log(res);
+            if (res) {
+                toggleForm("role");
+            }
         })
-        console.log(addSkills);
     }
+
+    const handleShow = async () => {
+        axios
+            .get(`http://localhost:5000/profile/`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+            })
+            .then((response) => {
+                if (response.data !== null) {
+                    console.log(response.data)
+                    if (response.data.education.length !== 0) {
+                        setEduSkillDetails(response.data.education[0]);
+                    }
+                    if(response.data.skills.length !== 0){
+                        setskills(response.data.skills);
+                    }
+                }
+            })
+            .catch((err) => {
+                console.log(err.response);
+            });
+    }
+    useEffect(() => {
+        handleShow();
+    }, [])
+
     return (
         <>
             {
@@ -119,41 +152,6 @@ const EduSkillForm = ({ display }) => {
                             </div>
                         </div>
                         <form id="form1" onSubmit={handleEduSubmit}>
-                            <input
-                                name="school"
-                                onChange={handleInputChange}
-                                value={eduSkillDetails.school}
-                                type="text"
-                                className="form-control"
-                                placeholder="School"
-                            />
-                            {/* <input type="month" className="form-control" /> */}
-                            <select
-                                name="schoolYear"
-                                onChange={handleInputChange}
-                                value={eduSkillDetails.schoolYear}
-                                className="form-control form-select"
-                            >
-                                <option value="" disabled selected>
-                                    Year
-                                </option>
-                                <option>2017</option>
-                                <option>2018</option>
-                                <option>2019</option>
-                                <option>2020</option>
-                            </select>
-                            <select
-                                name="course"
-                                onChange={handleInputChange}
-                                value={eduSkillDetails.course}
-                                className="form-control form-select"
-                            >
-                                <option value="" disabled selected>
-                                    Course
-                                </option>
-                                <option>Engineeting</option>
-                                <option>Pharmacy</option>
-                            </select>
                             <select
                                 name="college"
                                 onChange={handleInputChange}
@@ -169,13 +167,40 @@ const EduSkillForm = ({ display }) => {
                                 <option>COEP</option>
                             </select>
                             <select
-                                name="collegeYear"
+                                name="course"
                                 onChange={handleInputChange}
-                                value={eduSkillDetails.collegeYear}
+                                value={eduSkillDetails.degree}
                                 className="form-control form-select"
                             >
                                 <option value="" disabled selected>
-                                    Year
+                                    Degree
+                                </option>
+                                <option>Engineeting</option>
+                                <option>Pharmacy</option>
+                            </select>
+                            <select
+                                name="schoolYear"
+                                onChange={handleInputChange}
+                                value={eduSkillDetails.startYear}
+                                className="form-control form-select"
+                            >
+                                <option value="" disabled selected>
+                                    Start Year
+                                </option>
+                                <option>2017</option>
+                                <option>2018</option>
+                                <option>2019</option>
+                                <option>2020</option>
+                            </select>
+
+                            <select
+                                name="collegeYear"
+                                onChange={handleInputChange}
+                                value={eduSkillDetails.endYear}
+                                className="form-control form-select"
+                            >
+                                <option value="" disabled selected>
+                                    End Year
                                 </option>
                                 <option>2019</option>
                                 <option>2020</option>
@@ -197,21 +222,36 @@ const EduSkillForm = ({ display }) => {
                             </div>
                         </form>
                         <form id="form2" style={{ display: "none" }} onSubmit={handleSkillsSubmit}>
-                            <select
-                                name="addSkills"
-                                onChange={handleInputChange}
-                                value={eduSkillDetails.addSkills}
-                                className="form-control form-select"
-                            >
-                                <option value="" disabled selected>
-                                    Add Skill
-                                </option>
-                                <option>Singing</option>
-                                <option>Acting</option>
-                            </select>
+                            <button className="full-width-btn" onClick={addFields}>
+                                Add Skills
+                            </button>
+                            {skills.map((item, index) => {
+                                return (
+                                    <>
+                                        <div key={index} className="d-flex align-items-center">
+                                            <select
+                                                name="addSkills"
+                                                onChange={(e)=>{handleSkillChange(e, index)}}
+                                                value={item.skill}
+                                                className="form-control form-select"
+                                            >
+                                                <option value="" disabled selected>
+                                                    Add Skill
+                                                </option>
+                                                <option>Singing</option>
+                                                <option>Acting</option>
+                                            </select>
+                                            <i
+                                                className="fa-solid fa-trash-can mx-2 mb-2"
+                                                onClick={() => removeFields(index)}
+                                            ></i>
+                                        </div>
+                                    </>
+                                )
+                            })}
                             <div className="row">
                                 <input
-                                    type="submit"
+                                    type="button"
                                     className="col-4 cancel-btn btn btn-lg btn-block my-2"
                                     value="Cancel"
                                 />

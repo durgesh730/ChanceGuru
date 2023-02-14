@@ -8,21 +8,107 @@ import BioExperience from "./mini_components/userProfile/BioExperience";
 import Education from "./mini_components/userProfile/Education";
 import UserRole from "./mini_components/userProfile/UserRole";
 import Thumb from "../assets/images/Group 36.png";
+import axios from "axios";
 import { BsArrowRight } from "react-icons/bs";
 
 const UserProfile = (props) => {
   const [active, setActive] = useState("details");
   const [modal, setModal] = useState(false);
+  const [select, setSelect] = useState("selected");
+  const [rejected, setRejected] = useState("rejected");
+  const [shortlist, setshortlist] = useState("shortlist");
+  const [schedule, setSchedule] = useState("scheduled");
+
+  const handleApplyReq = () => {
+    axios
+      .post(
+        "http://localhost:5000/profile/ReqToApp",
+        { talentId: location.state.userId },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const location = useLocation();
+  // console.log()
 
   const b_location = location.state.browse_location;
   const s_location = location.state.submission_location;
   const a_location = location.state.audition_location;
 
-  console.log(b_location);
-  console.log(s_location);
-  console.log(a_location);
+  // console.log(b_location);
+
+  console.log(location.state.card);
+  console.log(location.state.submission_location);
+
+  const handleSelect = async () => {
+    const data = await fetch(
+      `http://localhost:5000/project/SelectuserId/${location.state.userId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ select }),
+      }
+    );
+    const res = await data.json();
+    // console.log(res)
+  };
+
+  const handleReject = async () => {
+    const data = await fetch(
+      `http://localhost:5000/project/SelectuserId/${location.state.userId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ select: rejected }),
+      }
+    );
+    const res = await data.json();
+    console.log(res);
+  };
+
+  const handleShortlist = async () => {
+    const data = await fetch(
+      `http://localhost:5000/project/SelectuserId/${location.state.userId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ select: shortlist }),
+      }
+    );
+    const res = await data.json();
+    console.log(res);
+  };
+
+  const handleSchedule = async () => {
+    const data = await fetch(
+      `http://localhost:5000/project/SelectuserId/${location.state.userId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ select: schedule }),
+      }
+    );
+    const res = await data.json();
+    console.log(res);
+  };
 
   return (
     <>
@@ -46,7 +132,6 @@ const UserProfile = (props) => {
                   <img src={pfp} className="m-1" alt="" />
                   <img src={pfp} className="m-1" alt="" />
                   <img src={pfp} className="m-1" alt="" />
-
                   <span> + 5</span>
                 </figure>
               </div>
@@ -56,41 +141,57 @@ const UserProfile = (props) => {
                 <div className="p-4 pb-0">
                   <div className="p1 d-flex justify-content-between">
                     <div>
-                      <h6>Nick Davolt</h6>
+                      <h6>{location.state.basicInfo.fullname}</h6>
                       <p>Actor</p>
                     </div>
                     <div>
-                      {("submission" === s_location ||
-                        "audition" === a_location) && (
+                      {("/submission" === "/submission" ||
+                        "/audition" === "/audition") && (
                         <>
                           <button
-                            onClick={() => setModal(true)}
+                            onClick={() => {
+                              setModal(true);
+                              handleSelect();
+                            }}
                             style={{ color: "#6cc592", borderColor: "#6cc592" }}
                           >
                             Select
                           </button>
                           <button
-                            onClick={() => setModal(true)}
+                            onClick={() => {
+                              setModal(true);
+                              handleShortlist();
+                            }}
                             style={{ color: "#16bac5", borderColor: "#16bac5" }}
                           >
                             Shortlist
                           </button>
                         </>
                       )}
-                      {"audition" === a_location && (
-                        <button onClick={() => setModal(true)}>Schedule</button>
-                      )}
-                      {("submission" === s_location ||
-                        "audition" === a_location) && (
+                      {"/audition" === "/audition" && (
                         <button
-                          onClick={() => setModal(true)}
+                          onClick={() => {
+                            setModal(true);
+                            handleSchedule();
+                          }}
+                        >
+                          Schedule
+                        </button>
+                      )}
+                      {("/submission" === "/submission" ||
+                        "/audition" === "/audition") && (
+                        <button
+                          onClick={() => {
+                            setModal(true);
+                            handleReject();
+                          }}
                           style={{ color: "#b8d0eb", borderColor: "#b8d0eb" }}
                         >
                           Reject
                         </button>
                       )}
 
-                      {"browse" === b_location && (
+                      {"/browseprofile" === "/browseprofile" && (
                         <button onClick={() => setModal(true)}>
                           Send Request
                         </button>
@@ -133,12 +234,21 @@ const UserProfile = (props) => {
                     </span>
                   </div>
                   <hr />
-                  <div className="d-flex flex-column justify-content-between">
-                    {active === "details" && <Details />}
-                    {active === "talent" && <Talents />}
-                    {active === "bio" && <BioExperience />}
-                    {active === "education" && <Education />}
-                    {active === "role" && <UserRole />}
+
+                  <div className="h-100">
+                    {active === "details" && (
+                      <Details Data={location.state.basicInfo} />
+                    )}
+                    {active === "talent" && (
+                      <Talents Data={location.state.talent} />
+                    )}
+                    {active === "bio" && (
+                      <BioExperience Data={location.state.portfolio} />
+                    )}
+                    {active === "education" && (
+                      <Education Data={location.state} />
+                    )}
+                    {active === "role" && <UserRole Data={location.state} />}
                   </div>
                 </div>
                 {("/submission" === s_location ||
@@ -155,24 +265,24 @@ const UserProfile = (props) => {
             </div>
           </div>
         </div>
-      </div>
 
-      {/* -------------modal----------------------------- */}
-      {modal && (
-        <div className="userSub_modal">
-          <div className="modal_child shadow">
-            <h1 className="purple_title">Request Confirmation</h1>
-            <figure>
-              <img src={Thumb} alt="thumb" />
-            </figure>
-            <p>Are you sure to send a Request to the viewed Profile?</p>
-            <div className="btns">
-              <button onClick={() => setModal(false)}>Cancel</button>
-              <button>Send</button>
+        {/* -------------modal----------------------------- */}
+        {modal && (
+          <div className="userSub_modal">
+            <div className="modal_child shadow">
+              <h1 className="purple_title">Request Confirmation</h1>
+              <figure>
+                <img src={Thumb} alt="thumb" />
+              </figure>
+              <p>Are you sure to send a Request to the viewed Profile?</p>
+              <div className="btns">
+                <button onClick={() => setModal(false)}>Cancel</button>
+                <button onClick={handleApplyReq}>Send</button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </>
   );
 };

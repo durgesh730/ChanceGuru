@@ -1,13 +1,34 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Searchbar from "./mini_components/Searchbar";
 import Topbar from "./mini_components/Topbar";
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 import godfather from "../assets/images/godfather.png";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import SideNav from "./SideNav";
+import axios from "axios";
+import AuditionStatus from "./AuditionStatus";
 
 const Audition = () => {
-  const [active, setActive] = useState(false);
+  const [active, setActive] = useState("");
+  const location = useLocation();
+
+  const [cards, setcards] = useState();
+
+  const getProjects = () => {
+    axios
+      .get("http://localhost:5000/project/allProjects")
+      .then((res) => {
+        setcards(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    getProjects();
+  }, []);
+
   return (
     <>
       <Topbar />
@@ -20,66 +41,62 @@ const Audition = () => {
             <div className="px-4">
               <Searchbar />
               <h5 className="purple_title">Projects</h5>
-              <div className="audition_accordion">
-                <div className="aa1 border p-2">
-                  <div className="aa_head d-flex justify-content-between">
-                    <p>Shakespeare's Macbeth</p>
-                    <div>
-                      <span>Roles : </span>
-                      <span>03</span>
-                    </div>
-                    <div>
-                      <span>Character : </span>
-                      <span>06</span>
-                    </div>
-                    <div className="aa_icon">
-                      {active ? (
-                        <BsChevronUp onClick={() => setActive(!active)} />
-                      ) : (
-                        <BsChevronDown onClick={() => setActive(!active)} />
-                      )}
-                    </div>
-                  </div>
-                  {active && (
-                    <div className="aa_body">
-                      <hr />
-                      <div className="b_table">
-                        <table>
-                          <thead>
-                            <td>Applocant Name</td>
-                            <td>Auditioned For</td>
-                            <td>Status</td>
-                            <td></td>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td>
-                                <img src={godfather} />
-                                Nick Davolt
-                              </td>
-                              <td>Malcolm, Lead</td>
-                              <td>Scheduled</td>
-                              <td>
-                                <div className="d-flex justify-content-center align-items-center">
-                                  <NavLink
-                                    to="/browseprofile/:nickdavolt"
-                                    state={{
-                                      audition_location: "audition",
-                                    }}
-                                    exact
-                                  >
-                                    <button>View Profile</button>
-                                  </NavLink>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
+
+              {cards?.map((item, index) => {
+                // ========= calculate total charcters =============
+                var char = 0;
+                var all = new Array();
+                var a = 0;
+                {
+                  item.roles.map((i) => {
+                    char = char + i.characters.length;
+                    var length = i.characters.length;
+                    for (i = 0; i < length; i++) {
+                      all[i] = char;
+                    }
+
+                    for (i = 0; i < all.length; i++) {
+                      if (all[i] > a) a = all[i];
+                    }
+                  });
+                }
+
+                return (
+                  <>
+                    <div className="audition_accordion mb-3 ">
+                      <div className="aa1 border p-2">
+                        <div
+                          key={index}
+                          className="aa_head d-flex justify-content-between"
+                        >
+                          <p>{item.basicInfo.name}</p>
+                          <div>
+                            <span>Roles : </span>
+                            <span>{item.roles.length}</span>
+                          </div>
+                          <div>
+                            <span>Character : </span>
+                            <span>{a}</span>
+                          </div>
+                          <div className="aa_icon">
+                            {active === index.toString() ? (
+                              <BsChevronUp onClick={() => setActive("")} />
+                            ) : (
+                              <BsChevronDown
+                                onClick={() => setActive(index.toString())}
+                              />
+                            )}
+                          </div>
+                        </div>
+
+                        {active === index.toString() && (
+                          <AuditionStatus id={item._id} />
+                        )}
                       </div>
                     </div>
-                  )}
-                </div>
-              </div>
+                  </>
+                );
+              })}
             </div>
           </div>
         </div>

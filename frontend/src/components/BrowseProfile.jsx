@@ -138,7 +138,7 @@ const BrowseProfile = () => {
                     <td>
                       <NavLink
                         to={"/browseprofile/:nickdavolt"}
-                        state={{ item, browse_location: "browse" }}
+                        state={item}
                         exact
                       >
                         <button>View Profile</button>

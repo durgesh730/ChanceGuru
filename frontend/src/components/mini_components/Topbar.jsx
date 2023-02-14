@@ -27,6 +27,8 @@ const Topbar = (props) => {
   const [dim, setDim] = useState(0);
 
   const navigate = useNavigate();
+
+
   function toggleProfileOptions() {
     if (profileHeight == 0) {
       setProfileHeight(192);
@@ -56,9 +58,10 @@ const Topbar = (props) => {
   const [modal, setModal] = useState(false);
 
   function handleLogout() {
-    localStorage.clear();
-    navigate("/login");
-    console.log("Logout succesfull");
+    localStorage.clear()
+    navigate("/login")
+    console.log("Logout succesfull")
+
   }
 
   const user = JSON.parse(localStorage.getItem("login"));
@@ -96,7 +99,7 @@ const Topbar = (props) => {
               )}
             </span>
           </Link>
-          <Link to="/roles">
+          <Link to="/rolesdashboard">
             <span className={active === "mask" ? `nav_active topbar-icons-container`
               : "topbar-icons-container"} onClick={() => setActive("mask")}
             >

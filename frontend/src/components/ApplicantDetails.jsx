@@ -7,10 +7,20 @@ import reject from "../assets/icons/round-delete-button.svg";
 import ApplicantRowCard from './mini_components/ApplicantRowCard';
 import { useLocation } from 'react-router-dom';
 
+
+
+
 const ApplicantDetails = () => {
     const location = useLocation();
 
     const [projectDetails, setProjectDetails] = useState();
+    const [active, setActive] = useState(0);
+    const [leadRoles, setLeadRoles] = useState([])
+    const [activeChar, setActiveChar] = useState({})
+
+    var applied = leadRoles.map((Data) => { return Data._id });
+    var check = applied[0]
+
 
     const ProjectData = async () => {
         const data = await fetch(`http://localhost:5000/project/projectDetails/${location.state}`, {
@@ -20,10 +30,21 @@ const ApplicantDetails = () => {
             },
         })
         const res = await data.json();
+        console.log(res)
         setProjectDetails(res)
+
     }
 
+    useEffect(() => {
+        if (projectDetails) {
+            setLeadRoles(projectDetails[0].roles[0].characters)
+            setActiveChar(projectDetails[0].roles[0].characters[0])
+
+        }
+    }, [projectDetails])
+
     // for finding total characters in Project by using map
+
 
     var char = 0;
     var all = new Array();
@@ -44,8 +65,7 @@ const ApplicantDetails = () => {
         })
         )
     }
-
-
+    
     const [Data, setData] = useState();
     const fetchData = async () => {
         const data = await fetch(`http://localhost:5000/project/Seekers/${location.state}`, {
@@ -56,6 +76,7 @@ const ApplicantDetails = () => {
         })
         const json = await data.json();
         setData(json)
+        console.log(json);
     }
 
     // for count applied by
@@ -79,8 +100,8 @@ const ApplicantDetails = () => {
     return (
         <>
             <Topbar />
-            <div className="content-container">
 
+            <div className="content-container">
                 <div className="projCont">
                     <img src={promotion} className="promotion" alt="" />
                     {
@@ -100,7 +121,6 @@ const ApplicantDetails = () => {
                     }
 
                     <div className="Path-26"></div>
-
                     <span className='postedOn'>Posted On</span>
                     <span className="date">{"02/04/2001"}</span>
                     <span className="location">Location</span>
@@ -136,9 +156,10 @@ const ApplicantDetails = () => {
                     <div className="topNavbar">
 
                         {
-                            projectDetails?.map((items, i) => items.roles.map((i) => {
+
+                            projectDetails?.map((items, ind) => items.roles.map((i, index) => {
                                 return (
-                                    <span highlighted="true" className='lead' >{i.role}</span>
+                                    <span highlighted={active === index ? "true" : "false"} className='lead' onClick={() => { setActive(index); setLeadRoles(i.characters); setActiveChar(i.characters[0]) }} >{i.role}</span>
                                 )
                             })
                             )
@@ -146,19 +167,18 @@ const ApplicantDetails = () => {
                     </div>
                     <hr />
 
+
+
                     <div className="leadRoles" style={{ dispay: "flex", flexDirection: "row", justifyContent: "space-between" }} >
                         {
-                            projectDetails?.map((items, i) => items.roles.map((i) => i.characters.map((p) => {
-                                // console.log(p.name)
+                            leadRoles.map((p, index) => {
+
                                 return (
                                     <>
-
-                                        <span className='malcom'>{p.name}</span>
-
+                                        <span style={{ color: activeChar === p ? "#8443e5" : "initial" }} onClick={() => setActiveChar(p)} className='malcom'>{p.name}</span>
                                     </>
-
                                 )
-                            }))
+                            }
                             )
                         }
 
@@ -189,14 +209,22 @@ const ApplicantDetails = () => {
                         </div>
                         <hr />
                         <div className="listItems">
-                            {Data?.map((Data, i) =>
-                            (
-                                <ApplicantRowCard key={i} Data={Data} />
-                            )
+
+                            {Data?.map((Data, i) => {
+                                console.log(Data)
+                                if (activeChar._id == Data.charId) {
+
+                                    return(
+                                        <ApplicantRowCard key={i} Data={Data} applied={check} />
+                                    )
+                                }
+                                else{
+                                    return <h6>No one has applied to this character yet!!!</h6>
+                                }
+                            }
                             )}{" "}
+
                         </div>
-
-
                     </div>
                 </div>
             </div>

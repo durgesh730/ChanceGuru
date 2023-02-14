@@ -939,6 +939,9 @@ div.listItems {
   margin-top: 10px;
 }
 
+div.css-18dcxwc {
+  overflow-y: scroll !important;
+}
 /* ------------------browse profile-------------------- */
 .b_table table {
   width: 100%;
