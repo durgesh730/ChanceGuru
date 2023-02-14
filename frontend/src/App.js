@@ -66,7 +66,7 @@ function App() {
                     <Route path="/applicantdetails" element={<ApplicantDetails />} />
                     <Route path="/browseprofile" element={<BrowseProfile />} />
                     <Route path="/browseprofile/:user" element={<UserProfile />} />
-                    <Route path="/manage" element={<ManageProfile />} />
+                    <Route path="/manage" element={<MyRoles />} />
                     <Route path="/manage/submission" element={<Submission />} />
                     <Route path="/manage/audition" element={<Audition />} />
                     <Route path="/notification" element={<Notification />} />
