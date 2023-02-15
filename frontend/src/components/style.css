@@ -792,6 +792,7 @@ div.topNavbar {
   margin-top: 23.5px;
 }
 .topNavbar span {
+  cursor: pointer;
   height: 20px;
   display: inline-block;
   position: relative;
@@ -848,22 +849,19 @@ span.chorus {
   margin-left: 52px;
 }
 .leadRoles span {
-  display: inline-block;
-  width: 52px;
-  height: 18px;
+    cursor: pointer;
+    display: inline-block;
+    width: fit-content;
+    height: 18px;
+    margin-right: 50px;
 }
-.leadRoles .macDuff {
-  margin-left: 50px;
-}
-.leadRoles .ladymacduff {
-  width: 92px;
-  margin-left: 37px;
-}
+
 .leadRoles span[highlighted="true"] {
-  width: 121px;
+  
   height: 31px;
   padding: 6.5px 33px 6.5px 32px;
   border-radius: 6px;
+  color: #fff;
   background-color: #8443e5;
 }
 div.statusContainer {
@@ -871,6 +869,7 @@ div.statusContainer {
   margin-left: 47px;
 }
 div.statusContainer > div {
+  cursor: pointer;
   position: relative;
   width: 241px;
   height: 74px;
