@@ -6,8 +6,23 @@ import axios from "axios";
 const Card = ({ card, setClicked }) => {
     const basicInfo = card.basicInfo;
     const role = card.roles;
+    const create = card.createAt;
+    // console.log(create)
     const [model, setModel] = useState(false);
     const [roles, setroles] = useState([]);
+
+    const current = new Date().toUTCString();
+    var date1 = new Date(create);
+    var date2 = new Date(current);
+    // console.log(utcStr);
+
+    var Difference_In_Time = date2.getTime() - date1.getTime();
+    var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+    let a = Math.round(Difference_In_Days);
+    // console.log(a)
+
+
+
     const getRoles = () => {
         axios
             .get(`http://localhost:5000/projects/getroles/${card.id}`)
@@ -39,7 +54,8 @@ const Card = ({ card, setClicked }) => {
                 </div>
             </div>
             <div className="card-footer">
-                <span>{basicInfo.roles} Roles</span>
+                <span>{role.length} Roles</span>
+                <span className="mx-2" >{a} days ago</span>
             </div>
             <button
                 className="card-apply btn"
