@@ -6,6 +6,7 @@ import axios from "axios";
 import { AiFillCheckCircle } from "react-icons/ai";
 import cardImg from "../assets/images/rectangle-13.png";
 import AuthContext from "./AuthContext";
+import { BsChevronDown, BsPhone } from "react-icons/bs";
 
 const TalentDashboard = () => {
     const auth = useContext(AuthContext);
@@ -116,7 +117,14 @@ const TalentDashboard = () => {
                 <Searchbar setQuery={setQuery} query={query} handleSearch={handleSearch} />
                 <div className="talent-heading d-flex justify-content-between">
                     <div className="">Suggestions</div>
+                    <div className="filter d-flex justify-content-between align-item-center">
+                    <button className="bg-light p-2 border-0">
+                        Filter
+                        <BsChevronDown className="mx-1" />
+                    </button>
                 </div>
+                </div>
+
                 <div className="container-fluid">
                     <div className="row">
                         <ul className="grid-wrapper">
