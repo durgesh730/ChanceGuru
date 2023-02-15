@@ -56,37 +56,37 @@ const ApplicantRowCard = ({ Data, applied }) => {
     }, [SetUser])
 
     function getLastUpdate(lastUpDate) {
-        if(lastUpDate == null){
+        if (lastUpDate == null) {
             return `NA`
         }
         let lastDate = new Date(lastUpDate)
         let newDate = new Date()
-        
+
         let yearDifference = newDate.getFullYear() - lastDate.getFullYear()
-        if(yearDifference !== 0){
+        if (yearDifference !== 0) {
             return `${yearDifference} years ago`
         }
 
         let monthsDifference = newDate.getMonth() - lastDate.getMonth()
-        if(monthsDifference !== 0){
+        if (monthsDifference !== 0) {
             return `${monthsDifference} months ago`
         }
 
         let daysDifference = newDate.getDate() - lastDate.getDate()
-        if(daysDifference !== 0){
+        if (daysDifference !== 0) {
             return `${daysDifference} days ago`
         }
 
         let hoursDifference = newDate.getHours() - lastDate.getHours()
-        if(hoursDifference !== 0){
+        if (hoursDifference !== 0) {
             return `${hoursDifference} hrs ago`
         }
 
         let minutesDifference = newDate.getMinutes() - lastDate.getMinutes()
-        if(minutesDifference !== 0){
+        if (minutesDifference !== 0) {
             return `${minutesDifference} hrs ago`
         }
-        
+
         let secondsDifference = newDate.getSeconds() - lastDate.getSeconds()
         return `${secondsDifference} seconds ago`
 
@@ -94,29 +94,32 @@ const ApplicantRowCard = ({ Data, applied }) => {
 
 
     return (
-        <div className="lI" style={{ display: "flex", flexDirection: "row", gap: "4rem" }}>
-            <div>
-                <img src={kamal} alt="" style={{ width: '4rem' }} />
-                {User?.map((items, i) => {
-                    return (
-                        <>
+        <div className="lI" >
+            {/* <div> */}
+
+            {User?.map((items, i) => {
+                return (
+                    <>
+                        <div>
+                            <img src={kamal} alt="" style={{ width: '4rem' }} />
                             <span key={i} className="applicantName">
                                 {items.basicInfo.fullname}
                             </span>
-                            <div>
-                                <span className="applicantStatus">{getLastUpdate(items.updatedAt)}</span>
-                            </div>
-                            <div className="actionButtons" >
-                                <button onClick={handleSelect} >Select</button>
-                                <button onClick={handleReject} >Reject</button>
-                            </div>
+                        </div>
+                        <div style={{marginLeft:"-100px"}} >
+                            <span className="applicantStatus">{getLastUpdate(items.updatedAt)}</span>
+                        </div>
+                        <div className="actionButtons" >
+                            <button onClick={handleSelect} >Select</button>
+                            <button onClick={handleReject} >Reject</button>
+                        </div>
 
-                        </>
-                    )
-                })}
+                    </>
+                )
+            })}
 
-            </div>
-            <div />
+            {/* </div> */}
+
         </div>
     )
 }
