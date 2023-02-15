@@ -2,10 +2,13 @@ import { FormControl } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
 import { Box, Text } from "@chakra-ui/layout";
 
+import userImg from "../../assets/images/kamal.jpeg";
+import { BsThreeDotsVertical } from "react-icons/bs";
+
 import { IconButton, Spinner, useToast } from "@chakra-ui/react";
 import { getSender, getSenderFull } from "../config/ChatLogics";
 //import { useHelper } from '../config/helper-hook';
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import ProfileModal from "../miscellaneous/ProfileModal";
@@ -16,12 +19,13 @@ import Lottie from "react-lottie";
 import animationData from "../../animations/typing.json";
 
 import io from "socket.io-client";
+import ScrollableChat1 from "./ScrollableChat1";
 
 //const ENDPOINT = "http://localhost:5000"; //development
 const ENDPOINT = "http://localhost:5000";
 var socket, selectedChatCompare;
 
-const SingleChat = ({ fetchAgain, setFetchAgain }) => {
+const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
   let [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [newMessage, setNewMessage] = useState("");
@@ -187,45 +191,27 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       }
     }, timerLength);
   };
+  console.log(messages);
+
+  const cb_bottom = useRef("");
+  console.log(cb_bottom.current);
+  //   cb_bottom.current.scrollTop = cb_bottom.current.scrollHeight;
 
   return (
     <>
       {selectedChat ? (
-        <>
-          <Text
-            fontSize={{ base: "28px", md: "30px" }}
-            pb={3}
-            px={2}
-            w="100%"
-            fontFamily="Work sans"
-            d="flex"
-            justifyContent={{ base: "space-between" }}
-            alignItems="center"
-          >
-            <IconButton
-              d={{ base: "flex", md: "none" }}
-              icon={<ArrowBackIcon />}
-              onClick={() => setSelectedChat("")}
-            />
-            {messages && (
-              <>
-                {getSender(user, selectedChat.users)}
-                <ProfileModal user={getSenderFull(user, selectedChat.users)} />
-              </>
-            )}
-          </Text>
+        <div className="chatBox_main col-lg-9">
+          <div className="cb_top">
+            <div className="d-flex align-items-center justify-content-between w-100 ">
+              <div className="cb_textDiv">
+                <h6> {getSender(user, selectedChat.users)}</h6>
+                <p>typing…</p>
+              </div>
+              <BsThreeDotsVertical className="text-light" />
+            </div>
+          </div>
 
-          <Box
-            d="flex"
-            flexDir="column"
-            justifyContent="flex-end"
-            p={3}
-            bg="#E8E8E8"
-            w="100%"
-            h="100%"
-            borderRadius="lg"
-            overflowY="hidden"
-          >
+          <div className="cb_bottom" ref={cb_bottom}>
             {loading ? (
               <Spinner
                 size="xl"
@@ -235,39 +221,50 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 margin="auto"
               />
             ) : (
-              <div className="messages">
-                <ScrollableChat messages={messages} />
+              <div className="msg_Div">
+                <ScrollableChat1 messages={messages} />
               </div>
             )}
 
-            <FormControl
+            {/* <div className="cb_chats_main">
+              <div className="cb_chats_msg">
+                <figure>
+                  <img src={userImg} />
+                </figure>
+                <p>
+                  Hey, guys! I am a founder of VR Production. I’m here to share
+                  my new script with you, and get your valuable opinions.
+                </p>
+              </div>
+              <div className="cb_chats_msg2">
+                <figure>
+                  <img src={userImg} />
+                </figure>
+                <p>
+                  Hey, guys! I am a founder of VR Production. I’m here to share
+                  my new script with you, and get your valuable opinions.
+                </p>
+              </div>
+            </div>
+               */}
+
+            <div
+              className="cb_msgSend"
               onKeyDown={sendMessage}
               id="first-name"
               isRequired
               mt={3}
             >
-              {istyping ? (
-                <div>
-                  <Lottie
-                    options={defaultOptions}
-                    height={40}
-                    width={50}
-                    style={{ marginBottom: 15, marginLeft: 0 }}
-                  />
-                </div>
-              ) : (
-                <></>
-              )}
-              <Input
-                variant="filled"
-                bg="#E0E0E0"
+              <input
+                type="text"
                 placeholder="Enter a message.."
                 value={newMessage}
                 onChange={typingHandler}
               />
-            </FormControl>
-          </Box>
-        </>
+              <button>Send</button>
+            </div>
+          </div>
+        </div>
       ) : (
         <Box d="flex" alignItems="center" justifyContent="center" h="100%">
           <Text fontSize="3xl" pb={3} fontFamily="Work sans">
@@ -279,4 +276,4 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   );
 };
 
-export default SingleChat;
+export default ChatBox1;

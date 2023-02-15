@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext } from "react";
 import { Box, Stack, Text } from "@chakra-ui/layout";
 
 import axios from "axios";
@@ -11,35 +11,31 @@ import ChatLoading from "./ChatLoading";
 const MyChats = ({ fetchAgain }) => {
   const [loggedUser, setLoggedUser] = useState();
 
-  const { selectedChat, setSelectedChat, user, chats, setChats } = useContext(ChatContext);
+  const { selectedChat, setSelectedChat, user, chats, setChats } =
+    useContext(ChatContext);
   //const {getSender}=useHelper();
-
-
 
   const fetchChats = async () => {
     // console.log(user._id);
     try {
       const config = {
-        headers: { Authorization: `Bearer ${user.token}` }
+        headers: { Authorization: `Bearer ${user.token}` },
       };
 
-      const { data } = await axios.get("http://localhost:5000/api/chat", config);
+      const { data } = await axios.get(
+        "http://localhost:5000/api/chat",
+        config
+      );
       setChats(data);
-      console.log(data, 'fetching all users chats in my chats');
-
+      console.log(data, "fetching all users chats in my chats");
     } catch (error) {
-
       console.log(error.message);
-
     }
   };
   // console.log(selectedChat, user, chats)
 
-
-
-
   useEffect(() => {
-    setLoggedUser(JSON.parse(localStorage.getItem("login"))); //chatLogics 
+    setLoggedUser(JSON.parse(localStorage.getItem("login"))); //chatLogics
     fetchChats();
     // eslint-disable-next-line
   }, [fetchAgain]);
@@ -67,9 +63,7 @@ const MyChats = ({ fetchAgain }) => {
         justifyContent="space-between"
         alignItems="center"
       >
-
         My Chats
-
       </Box>
       <Box
         d="flex"
@@ -84,23 +78,19 @@ const MyChats = ({ fetchAgain }) => {
         {chats ? (
           <Stack overflowY="scroll">
             {chats.map((chat, i) => (
-
-                <Box
-                  onClick={() => setSelectedChat(chat)}
-                  cursor="pointer"
-                  bg={selectedChat === chat ? "#38B2AC" : "#E8E8E8"}
-                  color={selectedChat === chat ? "white" : "black"}
-                  px={3}
-                  py={2}
-                  borderRadius="lg"
-                  key={chat._id}
-                >
-                  <Text>
-                    {getSender(loggedUser, chat.users)}
-                  </Text>
-                </Box>
-              )
-            )}
+              <Box
+                onClick={() => setSelectedChat(chat)}
+                cursor="pointer"
+                bg={selectedChat === chat ? "#38B2AC" : "#E8E8E8"}
+                color={selectedChat === chat ? "white" : "black"}
+                px={3}
+                py={2}
+                borderRadius="lg"
+                key={chat._id}
+              >
+                <Text>{getSender(loggedUser, chat.users)}</Text>
+              </Box>
+            ))}
           </Stack>
         ) : (
           <ChatLoading />

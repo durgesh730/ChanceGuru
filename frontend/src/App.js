@@ -22,6 +22,7 @@ import ApplicantDetails from "./components/ApplicantDetails";
 import ChatPage from "./components/ChatPage";
 import ChatProvider from "./components/Context/ChatProvider";
 import { ChakraProvider } from "@chakra-ui/react";
+import ChatPage1 from "./components/ChatPage1";
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -78,6 +79,14 @@ function App() {
                   <ChatPage />
                 </ChatProvider>
               </ChakraProvider>
+            }
+          />
+          <Route
+            path="/chat1"
+            element={
+              <ChatProvider>
+                <ChatPage1 />
+              </ChatProvider>
             }
           />
         </Routes>
