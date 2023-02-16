@@ -111,7 +111,7 @@ const BrowseProfile = () => {
                                         <td> {item.basicInfo.address ? item.basicInfo.address : "No address"} </td>
                                         <td>61 502648952</td>
                                         <td>
-                                            <NavLink to={"/browseprofile/:nickdavolt"} state={item} exact>
+                                            <NavLink to={"/browseprofile/:nickdavolt"} state={{user:item , card : [] ,  index :0 , btn : 0 }} exact>
                                                 <button>View Profile</button>
                                             </NavLink>
                                         </td>

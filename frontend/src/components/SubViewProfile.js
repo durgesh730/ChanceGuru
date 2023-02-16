@@ -2,15 +2,17 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 
-const SubViewProfile = ({userId, statusId }) => {
-
-    const [cards, setcards] = useState();
+const SubViewProfile = ({display , index, card, msg }) => {
+    console.log(index)
+    const [user, setUser] = useState();
+    const [d, setd] = useState(1);
+    // console.log(cards)
     const getuserData = () => {
         axios
-            .get(`http://localhost:5000/profile/${userId}`)
+            .get(`http://localhost:5000/profile/${card[index]?.userId}`)
             .then((res) => {
                 if (res !== null) {
-                    setcards(res.data)
+                    setUser(res.data)
                 }
                 // console.log(res)
             })
@@ -20,15 +22,27 @@ const SubViewProfile = ({userId, statusId }) => {
     }
 
     useEffect(() => {
+        if(display == "/submission"){
+            setd(1);
+        }else{
+            setd(2);
+        }
+
+        if(msg == "Next"){
+            index = index + 1 ;
+        }else if(msg == "Back"){
+            index = index - 1 ;
+        }
+
         getuserData();
     }, [])
 
     return (
         <>
-            <td>
+            <td style={{display: display}}>
                 <div className="d-flex justify-content-center align-items-center">
-                    <NavLink to={"/browseprofile/:nickdavolt"} state = {cards} exact>
-                        <button>View Profile</button>
+                    <NavLink to={"/browseprofile/:nickdavolt"}  state={{user, card, index , btn : d }} exact>
+                        <button>{msg}</button>
                     </NavLink>
                 </div>
             </td>

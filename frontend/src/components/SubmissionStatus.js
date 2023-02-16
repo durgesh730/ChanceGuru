@@ -35,15 +35,14 @@ const SubmissionStatus = ({ id }) => {
                         <tbody>
 
                             {cards?.map((item, index) => {
+                                // console.log(item._id)
                                 return (
                                     <>
-
                                         <tr>
                                             <StatusSide userId={item.userId} />
                                             <td>{item.status}</td>
-                                            <SubViewProfile userId={item.userId} statusId={item._id} />
+                                            <SubViewProfile display={'/submission'} index={index} card={cards} msg={'View Profile'}  />
                                         </tr>
-
                                     </>
                                 )
                             })

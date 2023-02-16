@@ -10,6 +10,7 @@ import UserRole from "./mini_components/userProfile/UserRole";
 import Thumb from "../assets/images/Group 36.png";
 import axios from "axios";
 import { BsArrowRight } from "react-icons/bs";
+import SubViewProfile from './SubViewProfile';
 
 const UserProfile = (props) => {
 
@@ -24,35 +25,31 @@ const UserProfile = (props) => {
 
   const handleApplyReq = () => {
 
-    axios.post('http://localhost:5000/profile/ReqToApp',{talentId: location.state.userId},{
-      
+    axios.post('http://localhost:5000/profile/ReqToApp', { talentId: userData.userId }, {
+
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-      
+      },
+
     })
-    .then(res => {
-      console.log(res.data);
-     
-    })
-    .catch(err => {
-      console.log(err);
-    });
+      .then(res => {
+        console.log(res.data);
+
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   const location = useLocation();
-  // console.log()
 
-  const b_location = location.state.browse_location;
-  const s_location = location.state.submission_location;
-  const a_location = location.state.audition_location;
-
-  // console.log(b_location);
-  // console.log(s_location);
-  // console.log(a_location);
+  const userData = location.state.user;
+  const index = location.state.index;
+  const card = location.state.card;
+  const d = location.state.btn ;
 
   const handleSelect = async () => {
-    const data = await fetch(`http://localhost:5000/project/SelectuserId/${location.state.userId}`, {
+    const data = await fetch(`http://localhost:5000/project/SelectuserId/${userData.userId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -64,36 +61,36 @@ const UserProfile = (props) => {
   }
 
   const handleReject = async () => {
-    const data = await fetch(`http://localhost:5000/project/SelectuserId/${location.state.userId}`, {
+    const data = await fetch(`http://localhost:5000/project/SelectuserId/${userData.userId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ select:rejected })
+      body: JSON.stringify({ select: rejected })
     })
     const res = await data.json();
     console.log(res)
   }
 
   const handleShortlist = async () => {
-    const data = await fetch(`http://localhost:5000/project/SelectuserId/${location.state.userId}`, {
+    const data = await fetch(`http://localhost:5000/project/SelectuserId/${userData.userId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ select:shortlist})
+      body: JSON.stringify({ select: shortlist })
     })
     const res = await data.json();
     console.log(res)
   }
 
   const handleSchedule = async () => {
-    const data = await fetch(`http://localhost:5000/project/SelectuserId/${location.state.userId}`, {
+    const data = await fetch(`http://localhost:5000/project/SelectuserId/${userData.userId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ select:schedule})
+      body: JSON.stringify({ select: schedule })
     })
     const res = await data.json();
     console.log(res)
@@ -130,12 +127,11 @@ const UserProfile = (props) => {
                 <div className="p-4 pb-0">
                   <div className="p1 d-flex justify-content-between">
                     <div>
-                      <h6>{location.state.basicInfo.fullname}</h6>
+                      <h6>{userData.basicInfo.fullname}</h6>
                       <p>Actor</p>
                     </div>
                     <div>
-                      {("/submission" === "/submission" ||
-                        "/audition" === "/audition") && (
+                      {(d==1 || d==2) && (
                           <>
                             <button
                               onClick={() => {
@@ -148,28 +144,25 @@ const UserProfile = (props) => {
                               Select
                             </button>
                             <button
-                              onClick={() =>
-                                 {
-                                   setModal(true) 
-                                   handleShortlist()
-                                }
-                                }
+                              onClick={() => {
+                                setModal(true)
+                                handleShortlist()
+                              }
+                              }
                               style={{ color: "#16bac5", borderColor: "#16bac5" }}
                             >
                               Shortlist
                             </button>
                           </>
                         )}
-                      {"/audition" === "/audition" && (
-                        <button onClick={() =>
-                          { 
-                            setModal(true)
-                            handleSchedule()
-                          }
-                          }>Schedule</button>
+                      { d == 2 && (
+                        <button onClick={() => {
+                          setModal(true)
+                          handleSchedule()
+                        }
+                        }>Schedule</button>
                       )}
-                      {("/submission" === "/submission" ||
-                        "/audition" === "/audition") && (
+                      {(d==1 || d==2) && (
                           <button
                             onClick={() => {
                               setModal(true)
@@ -182,7 +175,7 @@ const UserProfile = (props) => {
                           </button>
                         )}
 
-                      {"/browseprofile" === "/browseprofile" && (
+                      {d == 0 && (
                         <button onClick={() => setModal(true)}>
                           Send Request
                         </button>
@@ -227,18 +220,18 @@ const UserProfile = (props) => {
                   <hr />
 
                   <div className="h-100">
-                    {active === "details" && <Details Data={location.state.basicInfo} />}
-                    {active === "talent" && <Talents Data={location.state.talent} />}
+                    {active === "details" && <Details Data={userData.basicInfo} />}
+                    {active === "talent" && <Talents Data={userData.talent} />}
                     {active === "bio" && <BioExperience
-                      Data={location.state.
+                      Data={userData.
                         portfolio}
                     />}
                     {active === "education" && <Education
-                      Data={location.state
+                      Data={userData
                       }
                     />}
                     {active === "role" && <UserRole
-                      Data={location.state}
+                      Data={userData}
                     />}
                   </div>
 
@@ -246,18 +239,13 @@ const UserProfile = (props) => {
                   {"/browseprofile" === "/browseprofile" && (
                     <button onClick={() => setModal(true)}>Send Request</button>
                   )}
+
                 </div>
-                {("/submission" === s_location ||
-                  "/audition" === a_location) && (
-                    <div className="next_bottom shadow">
-                      <div className="m-4">
-                        <img src={pfp} alt="next" />
-                        <p>Hugh Charles</p>
-                        <BsArrowRight />
-                      </div>
-                    </div>
-                  )}
-              </div>
+                {d !== 0 ?
+                <><SubViewProfile display={index == 0 ? "none":"" } index={index} card={card} msg={`Back`} /> 
+                <SubViewProfile display={card?.length == index+1? "none":"" } index={index} card={card} msg={`Next`} /></>: ""
+                }
+              </div> 
             </div>
           </div>
         </div>
@@ -274,10 +262,10 @@ const UserProfile = (props) => {
               <div className="btns">
                 <button onClick={() => setModal(false)}>Cancel</button>
                 <button onClick={handleApplyReq}  >Send</button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
       </div>
     </>
   );

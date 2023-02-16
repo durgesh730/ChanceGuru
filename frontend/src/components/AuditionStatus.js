@@ -44,7 +44,7 @@ const SubmissionStatus = ({ id }) => {
                                                 <tr>
                                                     <StatusSide userId={item.userId} />
                                                     <td>{item.status}</td>
-                                                    <SubViewProfile userId={item.userId} />
+                                                    <SubViewProfile display={'/audition'} index={index} card={cards} msg={'View Profile'}  />
                                                 </tr>
                                             )
                                                 : ("")
