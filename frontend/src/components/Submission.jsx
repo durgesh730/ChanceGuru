@@ -28,16 +28,29 @@ const Submission = () => {
     }
   };
 
-  const getProjects = () => {
-    axios
-      .get("http://localhost:5000/project/allProjects")
-      .then((res) => {
-        setcards(res.data)
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-  }
+  // const getProjects = () => {
+  //   axios
+  //     .get("http://localhost:5000/project/allProjectsSeekers")
+  //     .then((res) => {
+  //       setcards(res.data)
+  //       console.log(res.data)
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     })
+  // }
+
+  const getProjects = (e) => {
+    axios.get('http://localhost:5000/project/allProjectsSeekers', {
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("token")}`
+            }
+        }
+    ).then((res) => {
+      setcards(res.data)
+      console.log(res.data);
+    });
+};
 
   useEffect(() => {
     getProjects();

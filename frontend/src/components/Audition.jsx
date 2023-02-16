@@ -31,8 +31,11 @@ const Audition = () => {
   };
 
   const getProjects = () => {
-    axios
-      .get("http://localhost:5000/project/allProjects")
+    axios.get("http://localhost:5000/project/allProjectsSeekers", {
+      headers: {
+        "Authorization": `Bearer ${localStorage.getItem("token")}`
+      }
+    })
       .then((res) => {
         setcards(res.data)
       })

@@ -65,16 +65,7 @@ router.put("/Reject/:_id", (req, res) => {
         })
 })
 
-//TO get all the projects 
-router.get("/allProjects", (req, res) => {
-    Project.find()
-        .then((response) => {
-            res.json(response);
-        })
-        .catch((err) => {
-            res.status(400).json(err);
-        })
-})
+
 
 // API for change status of jobapplication
 
@@ -118,6 +109,17 @@ router.put("/Reject/:_id", (req, res) => {
 router.get("/allProjectsSeekers",jwtAuth,(req, res) => {
     const user = req.user;
     Project.find({ seekerId: user._id })
+        .then((response) => {
+            res.json(response);
+        })
+        .catch((err) => {
+            res.status(400).json(err);
+        })
+})
+
+//TO get all the sekers projects 
+router.get("/allProjects", jwtAuth , (req, res) => {
+    Project.find()
         .then((response) => {
             res.json(response);
         })
