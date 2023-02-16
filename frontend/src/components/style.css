@@ -987,6 +987,11 @@ div.css-18dcxwc {
 .active_userChat div p {
   color: #9996d2;
 }
+.myChat_users {
+  width: max-content;
+  height: calc(600px - 69px);
+  overflow-y: scroll;
+}
 .myChat input {
   width: 292px;
   height: 59px;
@@ -1138,6 +1143,43 @@ div.css-18dcxwc {
 }
 
 .msg_Div {
-  height: calc(100% - 59px);
-  overflow: scroll;
+  height: 460px !important;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+}
+
+.dots_div {
+  position: relative;
+  top: 50%;
+}
+.dots_div div {
+  position: absolute;
+  width: 143px;
+  right: 50%;
+  bottom: -70%;
+  z-index: 1;
+  display: none;
+}
+.dots_div div ul {
+  background-color: #6c54a6;
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  flex-direction: column;
+  padding-left: 15px;
+}
+.dots_div ul li {
+  color: #fff;
+
+  list-style: none;
+  font-style: 11px;
+  /* line-height: 1.27; */
+  margin: 10px 0;
+}
+
+.searchedChat {
+  background-color: #ebe6f8;
+}
+.searchedChat:hover {
+  background-color: #c0abf5;
 }

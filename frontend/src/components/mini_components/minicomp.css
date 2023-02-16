@@ -13,7 +13,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 50px;
+  padding: 15px 36px;
   box-shadow: 0 0 9px 0 rgba(160, 160, 160, 0.5);
   z-index: 99;
 }
@@ -25,16 +25,16 @@
 
 .topbar-name {
   color: var(--color_p2);
-  font-size: 25px;
+  font-size: 22px;
   font-weight: 600;
-  line-height: 30px;
+  line-height: 25px;
 }
 
 .topbar-icons {
   color: lightgray;
   cursor: pointer;
-  width: 50px;
-  height: 50px;
+  width: 45px;
+  height: 45px;
   padding: 10px;
 }
 
@@ -44,7 +44,7 @@
   align-items: center;
   /* width: 50px; */
   height: 50px;
-  margin-left: 30px;
+  margin-left: 20px;
   border-bottom: 3px solid #fff;
 }
 
@@ -218,8 +218,8 @@ div.profile-options > ul > li {
   text-align: left;
   color: #8443e5;
 }
-div.profile-options > ul > li:last-child{
-    border-bottom: none;
+div.profile-options > ul > li:last-child {
+  border-bottom: none;
 }
 
 /* Sidebar */

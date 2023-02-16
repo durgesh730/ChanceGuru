@@ -1,11 +1,12 @@
 import { FormControl } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
+
 import { Box, Text } from "@chakra-ui/layout";
 
 import userImg from "../../assets/images/kamal.jpeg";
 import { BsThreeDotsVertical } from "react-icons/bs";
 
-import { IconButton, Spinner, useToast } from "@chakra-ui/react";
+import { CheckboxGroup, IconButton, Spinner, useToast } from "@chakra-ui/react";
 import { getSender, getSenderFull } from "../config/ChatLogics";
 //import { useHelper } from '../config/helper-hook';
 import { useContext, useEffect, useRef, useState } from "react";
@@ -20,6 +21,7 @@ import animationData from "../../animations/typing.json";
 
 import io from "socket.io-client";
 import ScrollableChat1 from "./ScrollableChat1";
+import { Link } from "react-router-dom";
 
 //const ENDPOINT = "http://localhost:5000"; //development
 const ENDPOINT = "http://localhost:5000";
@@ -64,11 +66,11 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
 
       setMessages(data);
       setLoading(false);
-      console.log(data, "fetched messsages of the selected chat data");
+      //   console.log(data, "fetched messsages of the selected chat data");
 
       socket.emit("join chat", selectedChat._id);
     } catch (error) {
-      console.log(error.message);
+      //   console.log(error.message);
       toast({
         title: "Error Occured!",
         description: "Failed to Load the Messages",
@@ -107,13 +109,13 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
 
         //setNewMessage("");
         data.users = selectedChat.users;
-        console.log("Emit new message data: ", data);
+        // console.log("Emit new message data: ", data);
         socket.emit("new message", selectedChat._id, data);
 
         // setMessages(messages => [...messages, data]);
-        console.log(data, "sent message response data");
+        // console.log(data, "sent message response data");
       } catch (error) {
-        console.log(error.message);
+        // console.log(error.message);
         toast({
           title: "Error Occured!",
           description: "Failed to send the Message",
@@ -158,10 +160,10 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
         if (!notification.includes(newMessageRecieved)) {
           setNotification([newMessageRecieved, ...notification]);
           setFetchAgain(!fetchAgain); //updating our chats in our my chats on newMessageRecieved
-          console.log(notification, "notification bell-icon check");
+          //   console.log(notification, "notification bell-icon check");
         }
       } else {
-        console.log("Adding message into message list:  ", messages);
+        // console.log("Adding message into message list:  ", messages);
         setMessages((messages) => [...messages, newMessageRecieved]);
       }
     });
@@ -191,11 +193,31 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
       }
     }, timerLength);
   };
-  console.log(messages);
+  //   console.log(messages);
 
-  const cb_bottom = useRef("");
-  console.log(cb_bottom.current);
-  //   cb_bottom.current.scrollTop = cb_bottom.current.scrollHeight;
+  const msgDiv = useRef("");
+
+  useEffect(() => {
+    // msgDiv.current.scrollTop = msgDiv.current.scrollHeight;
+    // msgDiv.current.lastElementChild.scrollIntoView();
+    console.log(msgDiv.current);
+  }, [selectedChat]);
+
+  //   msgDiv.scrollTop = msgDiv.scrollHeight;
+
+  const [dots, setdots] = useState(1);
+
+  function toggleProfileOptions() {
+    if (dots === 0) {
+      setdots(1);
+      document.getElementById("chatOption").style.height = "125px";
+      document.getElementById("chatOption").style.display = "none";
+    } else {
+      setdots(0);
+      document.getElementById("chatOption").style.height = "0px";
+      document.getElementById("chatOption").style.display = "block";
+    }
+  }
 
   return (
     <>
@@ -207,11 +229,23 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
                 <h6> {getSender(user, selectedChat.users)}</h6>
                 <p>typing…</p>
               </div>
-              <BsThreeDotsVertical className="text-light" />
+
+              <div className="dots_div">
+                <span onClick={toggleProfileOptions}>
+                  <BsThreeDotsVertical className="text-light" />
+                </span>
+                <div id="chatOption">
+                  <ul>
+                    <li>Delete Chat</li>
+                    <li>Block {getSender(user, selectedChat.users)}</li>
+                    <li>Report {getSender(user, selectedChat.users)}</li>
+                  </ul>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div className="cb_bottom" ref={cb_bottom}>
+          <div className="cb_bottom">
             {loading ? (
               <Spinner
                 size="xl"
@@ -221,7 +255,7 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
                 margin="auto"
               />
             ) : (
-              <div className="msg_Div">
+              <div className="msg_Div" ref={msgDiv}>
                 <ScrollableChat1 messages={messages} />
               </div>
             )}
@@ -252,7 +286,6 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
               className="cb_msgSend"
               onKeyDown={sendMessage}
               id="first-name"
-              isRequired
               mt={3}
             >
               <input

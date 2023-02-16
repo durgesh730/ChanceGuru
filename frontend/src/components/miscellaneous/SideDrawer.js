@@ -31,17 +31,21 @@ import NotificationBadge from "react-notification-badge";
 import { Effect } from "react-notification-badge";
 import { getSender } from "../config/ChatLogics";
 
-
 const SideDrawer = () => {
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingChat, setLoadingChat] = useState(false);
 
-  const { user,setSelectedChat, chats, setChats, notification, setNotification } = useContext(ChatContext);
-  
-  
-  
+  const {
+    user,
+    setSelectedChat,
+    chats,
+    setChats,
+    notification,
+    setNotification,
+  } = useContext(ChatContext);
+
   const navigate = useNavigate();
   const toast = useToast();
 
@@ -52,8 +56,8 @@ const SideDrawer = () => {
     navigate("/");
   };
 
-  const handleSearch = async(searchValue) => {
-    console.log(searchValue)
+  const handleSearch = async (searchValue) => {
+    console.log(searchValue);
     if (!searchValue) {
       // toast({
       //   title: "Please Enter something in search",
@@ -69,18 +73,19 @@ const SideDrawer = () => {
       setLoading(true);
 
       const config = {
-        headers: { Authorization: `Bearer ${user.token}`}
+        headers: { Authorization: `Bearer ${user.token}` },
       };
-      console.log(config,user)
+      console.log(config, user);
 
-      const { data } = await axios.get(`http://localhost:5000/api/user?search=${searchValue}`, config);
+      const { data } = await axios.get(
+        `http://localhost:5000/api/user?search=${searchValue}`,
+        config
+      );
       //console.log(data, 'searchQuerry keyword response data');
 
       setLoading(false);
       setSearchResult(data);
-
     } catch (error) {
-
       console.log(error.message);
       toast({
         title: "Error Occured!",
@@ -93,16 +98,10 @@ const SideDrawer = () => {
     }
   };
 
-  function handleInputChange(e){
-    setSearch(e.target.value)
-    handleSearch(e.target.value)
-    
+  function handleInputChange(e) {
+    setSearch(e.target.value);
+    handleSearch(e.target.value);
   }
-
-  
-
-
-  
 
   const accessChatCreateChat = async (userId) => {
     //console.log(userId); id of selected user
@@ -115,19 +114,23 @@ const SideDrawer = () => {
           Authorization: `Bearer ${user.token}`,
         },
       };
-      const { data } = await axios.post(`http://localhost:5000/api/chat`, { userId }, config);
+      const { data } = await axios.post(
+        `http://localhost:5000/api/chat`,
+        { userId },
+        config
+      );
 
-      if (!chats.find((chat) => chat._id === data._id)) setChats([data, ...chats]); 
+      if (!chats.find((chat) => chat._id === data._id))
+        setChats([data, ...chats]);
       //already existing check clause //newly created chat above the rest
 
       setSelectedChat(data);
 
-      console.log(data, 'access new/existing chat response data');
+      console.log(data, "access new/existing chat response data");
 
       setLoadingChat(false);
       onClose(); //drawer close afterwards
     } catch (error) {
-
       console.log(error.message);
       toast({
         title: "Error fetching the chat",
@@ -142,14 +145,19 @@ const SideDrawer = () => {
 
   return (
     <React.Fragment>
-      
-      <Button variant="ghost" bg ='blue.700' onClick={onOpen} color="white"
-            _hover={{ background: "purple.800", color:"yellow.400" }} _active={{ background: "purple.800", color:"yellow.400" }}>
-              <i className="fas fa-search"></i>
-              <Text d={{ base: "none", md: "flex" }} px={4} fontWeight="bold">
-                Search User
-              </Text>
-          </Button>
+      <Button
+        variant="ghost"
+        bg="blue.700"
+        onClick={onOpen}
+        color="white"
+        _hover={{ background: "purple.800", color: "yellow.400" }}
+        _active={{ background: "purple.800", color: "yellow.400" }}
+      >
+        <i className="fas fa-search"></i>
+        <Text d={{ base: "none", md: "flex" }} px={4} fontWeight="bold">
+          Search User
+        </Text>
+      </Button>
       <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />
         <DrawerContent>
@@ -167,14 +175,18 @@ const SideDrawer = () => {
             {loading ? (
               <ChatLoading />
             ) : (
-              searchResult?.map((user) => ( //user clicked on for chat
-                <UserListItem
-                  key={user._id}
-                  user={user}
-                  handleFunction={() => accessChatCreateChat(user._id)}
-                />
-              ))
-            )} 
+              searchResult?.map(
+                (
+                  user //user clicked on for chat
+                ) => (
+                  <UserListItem
+                    key={user._id}
+                    user={user}
+                    handleFunction={() => accessChatCreateChat(user._id)}
+                  />
+                )
+              )
+            )}
             {loadingChat && <Spinner ml="auto" d="flex" />}
           </DrawerBody>
         </DrawerContent>
