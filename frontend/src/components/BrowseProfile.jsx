@@ -5,6 +5,10 @@ import { Await, json, NavLink, useLocation, useNavigate } from "react-router-dom
 import { BsChevronDown, BsPhone } from "react-icons/bs";
 import godfather from "../assets/images/godfather.png";
 
+import axios from "axios";
+
+
+
 const BrowseProfile = () => {
     const [query, setQuery] = useState("");
     const [profileData, setProfileData] = useState();
@@ -63,6 +67,25 @@ const BrowseProfile = () => {
     const location = useLocation();
     console.log(location);
 
+
+    function viewProfileClicked(item) {
+        console.log(item)
+
+        axios.post('http://localhost:5000/profile/ReqToApp', { talentId: item.userId }, {
+
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+
+        })
+            .then(res => {
+                console.log(res.data);
+
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
     return (
         <div>
             <Topbar />
@@ -101,18 +124,20 @@ const BrowseProfile = () => {
                                             {item.basicInfo.fullname}
                                         </td>
                                         <td>
-                                            {item.rolePref.length !== 0 ? 
-                                            item.rolePref?.map((i) => {
-                                                return <><span>{i.role}</span><br/></>;
-                                            }):
-                                            "No role preferences found"
+                                            {item.rolePref.length !== 0 ?
+                                                item.rolePref?.map((i) => {
+                                                    return <><span>{i.role}</span><br /></>;
+                                                }) :
+                                                "No role preferences found"
                                             }
                                         </td>
                                         <td> {item.basicInfo.address ? item.basicInfo.address : "No address"} </td>
                                         <td>61 502648952</td>
                                         <td>
-                                            <NavLink to={"/browseprofile/:nickdavolt"} state={item} exact>
-                                                <button>View Profile</button>
+                                            <NavLink to={"/browseprofile/:nickdavolt"} state={item} onClick={() => viewProfileClicked(item)} exact>
+                                                <button  >
+                                                    View Profile
+                                                </button>
                                             </NavLink>
                                         </td>
                                     </tr>

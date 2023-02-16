@@ -9,6 +9,7 @@ const Modal = ({ setModel, info, roles }) => {
                 roleId: rId,
                 charId: chrId,
                 status : "applied",
+                seekerId:info.seekerId,
             },{ headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
             },}

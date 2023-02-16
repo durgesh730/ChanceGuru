@@ -24,7 +24,7 @@ const UserProfile = (props) => {
 
   const handleApplyReq = () => {
 
-    axios.post('http://localhost:5000/profile/ReqToApp',{talentId: location.state.userId},{
+    axios.put('http://localhost:5000/profile/ReqToApp',{talentId: location.state.userId},{
       
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,

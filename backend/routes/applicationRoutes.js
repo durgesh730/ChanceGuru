@@ -25,6 +25,7 @@ router.post("/", jwtAuth , (req, res) => {
         roleId: data.roleId,
         charId: data.charId,
         status: data.status,
+        seekerId:data.seekerId,
     })
 
     application
