@@ -29,9 +29,9 @@ router.put("/Select/:_id", (req, res) => {
 
 router.put("/SelectuserId/:userId", (req, res) => {
     const data = req.body;
-    console.log(data)
+    // console.log(data)
     const d =  data.select 
-    console.log(d)
+    // console.log(d)
 
     JobApplication.findOneAndUpdate({userId:req.params.userId}, {
         $set: {
