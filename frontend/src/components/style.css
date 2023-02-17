@@ -849,15 +849,14 @@ span.chorus {
   margin-left: 52px;
 }
 .leadRoles span {
-    cursor: pointer;
-    display: inline-block;
-    width: fit-content;
-    height: 18px;
-    margin-right: 50px;
+  cursor: pointer;
+  display: inline-block;
+  width: fit-content;
+  height: 18px;
+  margin-right: 50px;
 }
 
 .leadRoles span[highlighted="true"] {
-  
   height: 31px;
   padding: 6.5px 33px 6.5px 32px;
   border-radius: 6px;
@@ -938,10 +937,9 @@ div.listItems {
   margin-top: 10px;
 }
 
-
-div.css-18dcxwc{
+div.css-18dcxwc {
   overflow-y: scroll !important;
-} 
+}
 /* ------------------browse profile-------------------- */
 .b_table table {
   width: 100%;
@@ -1135,8 +1133,8 @@ div.css-18dcxwc{
   justify-content: center;
   z-index: 2;
   left: 0;
-  top: 0;
-  height: 100vh;
+  bottom: 0;
+  height: calc(100vh - 80px);
   width: 100vw;
   z-index: -1;
 }
@@ -1199,7 +1197,6 @@ div.css-18dcxwc{
 .dim {
   background-color: #000;
   opacity: 0.3;
-  z-index: 2;
 }
 .sub_nav button {
   border: none;
@@ -1297,7 +1294,6 @@ div.css-18dcxwc{
   height: 0px;
   overflow-y: hidden;
   transition: all 0.5s ease-in;
-  padding: 0px 27px;
 }
 .notif-options * {
   margin: 0;
@@ -1313,6 +1309,10 @@ div.css-18dcxwc{
   justify-content: start;
   align-items: center;
   flex-direction: row;
+  padding: 0px 27px;
+}
+.notif-options div div:hover {
+  background-color: #f2edf8;
 }
 .notif-options div div p {
   font-size: 14px;
@@ -1324,6 +1324,10 @@ div.css-18dcxwc{
   margin-left: 10px;
   color: #8443e5;
 }
+.notif-options .view_all {
+  height: fit-content;
+  padding: 7px;
+}
 .notif-options .view_all p {
   font-size: 13px;
   font-weight: normal;
@@ -1334,8 +1338,11 @@ div.css-18dcxwc{
   text-align: left;
   color: #cbcbcb !important;
 }
+.notif-options .view_all:hover p {
+  color: #8443e5 !important;
+}
 .notif-options hr {
-  margin: 0;
+  margin: 0 27px;
 }
 
 .next_bottom {

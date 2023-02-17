@@ -28,7 +28,6 @@ const Topbar = (props) => {
 
   const navigate = useNavigate();
 
-
   function toggleProfileOptions() {
     if (profileHeight == 0) {
       setProfileHeight(192);
@@ -54,14 +53,12 @@ const Topbar = (props) => {
     }
   }
 
-
   const [modal, setModal] = useState(false);
 
   function handleLogout() {
-    localStorage.clear()
-    navigate("/login")
-    console.log("Logout succesfull")
-
+    localStorage.clear();
+    navigate("/login");
+    console.log("Logout succesfull");
   }
 
   const user = JSON.parse(localStorage.getItem("login"));
@@ -77,11 +74,17 @@ const Topbar = (props) => {
         </div>
 
         <div className="topbar-nav">
-          <Link to={user.type === "user" ? "/talentdashboard" : "/seekerdashboard"} onClick={() =>
-            setActive("home")}
+          <Link
+            to={user.type === "user" ? "/talentdashboard" : "/seekerdashboard"}
+            onClick={() => setActive("home")}
           >
-            <span className={active === "home" ? `nav_active topbar-icons-container`
-              : "topbar-icons-container"}>
+            <span
+              className={
+                active === "home"
+                  ? `nav_active topbar-icons-container`
+                  : "topbar-icons-container"
+              }
+            >
               {active === "home" ? (
                 <img className="topbar-icons" src={ahome} alt="" />
               ) : (
@@ -90,8 +93,13 @@ const Topbar = (props) => {
             </span>
           </Link>
           <Link to="/submission" onClick={() => setActive("chair")}>
-            <span className={active === "chair" ? `nav_active topbar-icons-container`
-              : "topbar-icons-container"}>
+            <span
+              className={
+                active === "chair"
+                  ? `nav_active topbar-icons-container`
+                  : "topbar-icons-container"
+              }
+            >
               {active === "chair" ? (
                 <img className="topbar-icons" src={achair} alt="" />
               ) : (
@@ -100,8 +108,13 @@ const Topbar = (props) => {
             </span>
           </Link>
           <Link to="/rolesdashboard">
-            <span className={active === "mask" ? `nav_active topbar-icons-container`
-              : "topbar-icons-container"} onClick={() => setActive("mask")}
+            <span
+              className={
+                active === "mask"
+                  ? `nav_active topbar-icons-container`
+                  : "topbar-icons-container"
+              }
+              onClick={() => setActive("mask")}
             >
               {active === "mask" ? (
                 <img className="topbar-icons" src={amask} alt="" />
@@ -112,8 +125,13 @@ const Topbar = (props) => {
           </Link>
 
           <Link to="/browseprofile" onClick={() => setActive("fingers")}>
-            <span className={active === "fingers" ? `nav_active topbar-icons-container`
-              : "topbar-icons-container"}>
+            <span
+              className={
+                active === "fingers"
+                  ? `nav_active topbar-icons-container`
+                  : "topbar-icons-container"
+              }
+            >
               {active === "fingers" ? (
                 <img className="topbar-icons" src={afingers} alt="" />
               ) : (
@@ -121,8 +139,13 @@ const Topbar = (props) => {
               )}
             </span>
           </Link>
-          <span className={active === "chat" ? `nav_active topbar-icons-container`
-            : "topbar-icons-container"} onClick={() => setActive("chat")}
+          <span
+            className={
+              active === "chat"
+                ? `nav_active topbar-icons-container`
+                : "topbar-icons-container"
+            }
+            onClick={() => setActive("chat")}
           >
             {active === "chat" ? (
               <img className="topbar-icons" src={achat} alt="" />
@@ -132,7 +155,10 @@ const Topbar = (props) => {
           </span>
           {/*
                         <Link to="/projectcreation"> */}
-          <span className="topbar-icons-container n_icon" onClick={toggleNotifOption}>
+          <span
+            className="topbar-icons-container n_icon"
+            onClick={toggleNotifOption}
+          >
             {active === "notification" ? (
               <img className="topbar-icons" src={anotification} alt="" />
             ) : (
@@ -142,18 +168,27 @@ const Topbar = (props) => {
               <div>
                 <div>
                   <img src="" alt="pfp" />
-                  <p>You have successfully created the project "Shakespeare's Macbeth"</p>
+                  <p>
+                    You have successfully created the project "Shakespeare's
+                    Macbeth"
+                  </p>
                 </div>
                 <hr />
                 <div>
                   <img src="" alt="pfp" />
-                  <p>You have successfully created the project "Shakespeare's Macbeth"</p>
+                  <p>
+                    You have successfully created the project "Shakespeare's
+                    Macbeth"
+                  </p>
                 </div>
                 <hr />
 
                 <div>
                   <img src="" alt="pfp" />
-                  <p>You have successfully created the project "Shakespeare's Macbeth"</p>
+                  <p>
+                    You have successfully created the project "Shakespeare's
+                    Macbeth"
+                  </p>
                 </div>
                 <hr />
                 <div className="d-flex justify-content-center align-items-center view_all">
@@ -165,10 +200,16 @@ const Topbar = (props) => {
             </div>
           </span>
 
-
-          <span className="d-flex align-items-center cursor-pointer" onClick={toggleProfileOptions}>
+          <span
+            className="d-flex align-items-center cursor-pointer"
+            onClick={toggleProfileOptions}
+          >
             <span className="topbar-icons-container">
-              <img className="topbar-icons topbar-profile" src={profile} alt="" />
+              <img
+                className="topbar-icons topbar-profile"
+                src={profile}
+                alt=""
+              />
             </span>
             <span className="top-profile-name">{user.username}</span>
             <div className="profile-options" id="profileOption">
@@ -182,13 +223,15 @@ const Topbar = (props) => {
                 <li>
                   <NavLink to="/help">FAQ's & Help</NavLink>
                 </li>
-                <li onClick={() => setModal(true)}>Logout</li>
+                <li onClick={() => setModal(true)}>
+                  <a>Logout</a>
+                </li>
               </ul>
             </div>
           </span>
 
           {/* </Link> */}
-          {/* <div className={modal || dim ? `dim blur_black` : "blur_black"}></div> */}
+          <div className={modal || dim ? `dim blur_black` : "blur_black"}></div>
           {modal && (
             <div className="userSub_modal">
               <div className="modal_child shadow">
