@@ -3,11 +3,11 @@ import { useState, useEffect } from "react";
 import Modal from "./Modal";
 import axios from "axios";
 
-const Card = ({ card, setClicked }) => {
+const Card = ({ card, profile ,setClicked }) => {
     const basicInfo = card.basicInfo;
     const role = card.roles;
     const create = card.createAt;
-    // console.log(create)
+    // console.log(profile)
     const [model, setModel] = useState(false);
     const [roles, setroles] = useState([]);
 
@@ -67,7 +67,7 @@ const Card = ({ card, setClicked }) => {
                 Apply
             </button>
 
-            {model && <Modal setModel={setModel} info={card} roles={role} />}
+            {model && <Modal setModel={setModel} setProfile={profile} info={card} roles={role} />}
         </li>
     );
 };

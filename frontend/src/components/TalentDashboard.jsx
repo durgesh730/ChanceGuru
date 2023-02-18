@@ -37,7 +37,13 @@ const TalentDashboard = () => {
 
     const getProjects = () => {
         axios
-            .get("http://localhost:5000/project/allProjects")
+            .get("http://localhost:5000/project/allProjects",
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    }
+                }
+            )
             .then((res) => {
                 setcards(res.data);
             })
@@ -118,18 +124,18 @@ const TalentDashboard = () => {
                 <div className="talent-heading d-flex justify-content-between">
                     <div className="">Suggestions</div>
                     <div className="filter d-flex justify-content-between align-item-center">
-                    <button className="bg-light p-2 border-0">
-                        Filter
-                        <BsChevronDown className="mx-1" />
-                    </button>
-                </div>
+                        <button className="bg-light p-2 border-0">
+                            Filter
+                            <BsChevronDown className="mx-1" />
+                        </button>
+                    </div>
                 </div>
 
                 <div className="container-fluid">
                     <div className="row">
                         <ul className="grid-wrapper">
                             {cards?.map((card) => (
-                                <Card card={card} setClicked={auth.setClicked} />
+                                <Card card={card} profile={profileStrength} setClicked={auth.setClicked} />
                             ))}{" "}
                             <li className="side_div" style={auth.clicked ? {} : { display: "none" }}>
                                 <div className="sd_1">
