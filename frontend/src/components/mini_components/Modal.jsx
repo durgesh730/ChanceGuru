@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 const Modal = ({ setModel, info, setProfile, roles }) => {
 
     const navigate = useNavigate();
-
     const roleApply = (chrId, rId) => {
         axios
             .post("http://localhost:5000/application", {
@@ -35,7 +34,7 @@ const Modal = ({ setModel, info, setProfile, roles }) => {
     }
 
     return (
-        <div className="modal-background">
+        <div className="modal-background my-4">
             <div className="modal-container">
                 {/* {profile: 100, talent: 100, photo: 100, education: 100, roles: 50} */}
                 {(setProfile.profile && setProfile.talent && setProfile.photo && setProfile.education && setProfile.role ) >= 80 ?
@@ -71,7 +70,7 @@ const Modal = ({ setModel, info, setProfile, roles }) => {
                         )
                     })}
                 </div>
-                <div className="modal-footer">
+                <div className="modal-footer my-2">
                     <button
                         className="cancel-btn"
                         onClick={() => {

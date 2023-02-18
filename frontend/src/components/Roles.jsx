@@ -341,13 +341,18 @@ const Roles = ({ display }) => {
                     <p className="mx-1"></p>
 
                   </div>
-                  {
-                    chars.map((item, index) => {
-                      return (
-                        <CharacterCard index={index} cardData={item} toEdit={toEdit} setToEdit={setToEdit} />
-                      )
-                    })
-                  }
+
+                  <div className="d-flex overflow-auto " >
+                    {
+                      chars.map((item, index) => {
+                        return (
+                          <CharacterCard index={index} cardData={item} toEdit={toEdit} setToEdit={setToEdit} />
+                        )
+                      })
+                    }
+
+                  </div>
+
                   <input
                     type="submit"
                     className="full-width-btn"
@@ -444,7 +449,7 @@ const Roles = ({ display }) => {
                                       <h5 class="card-title">{not.name}</h5>
                                       <h6 class="card-subtitle mb-2 text-muted">{not.age}</h6>
                                       <h6 class="card-subtitle mb-2 text-muted">{not.gender}</h6>
-                                      <p class="card-text">{not.desc ? not.desc:"Not available" }</p>
+                                      <p class="card-text">{not.desc ? not.desc : "Not available"}</p>
                                     </div>
                                   </div>
                                 )
