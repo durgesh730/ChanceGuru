@@ -137,27 +137,6 @@ router.post("/", jwtAuth, (req, res) => {
 
 //to get profile id of user from seeker side
 
-//to put request of request to apply with talent,seeker and apply id
-// router.put('/ReqToApp',jwtAuth,(req,res) => {
-//     const user = req.user ;
-//     const {talentId} = req.body;
-
-//     const newData = new ReqToApp({
-
-//         seekerId: user._id,
-//         talentId: talentId,
-//         RequestSendAt : new Date(),
-//     })
-//     newData
-//     .save()
-//     .then((response) => {
-//         res.json(response);
-//         console.log(response);
-//     })
-//     .catch((err) => {
-//         res.status(400).json(err);
-//     })
-// })
 
 //to put request of request to apply with talent,seeker and apply id
 router.put("/ReqToApp", jwtAuth, (req, res) => {
@@ -203,6 +182,18 @@ router.post("/ReqToApp", jwtAuth, (req, res) => {
       res.status(400).json(err);
     });
 });
+
+// To get view profiles for talent notification
+router.get("/reqToApp/:userId",(req,res)=>{
+  let userId = req.params.userId;
+  ReqToApp.find({talentId:userId})
+  .then((response)=>{
+    res.json(response)
+  })
+  .catch((err)=>{
+    res.status(400).json(err)
+  })
+})
 
 //To change the basicinfo of user
 

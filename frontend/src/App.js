@@ -28,6 +28,8 @@ import Setting from "./components/Setting";
 import FaqsHelp from "./components/FaqsHelp";
 import MyRoles from "./components/MyRoles";
 
+import TalentNotification from "./components/TalentNotification";
+
 function App() {
     const [currentUser, setCurrentUser] = useState(null);
     const [timeActive, setTimeActive] = useState(false);
@@ -83,7 +85,7 @@ function App() {
           <Route path="/browseprofile/:user" element={<UserProfile />} />
           <Route path="/submission" element={<Submission />} />
           <Route path="/audition" element={<Audition />} />
-          <Route path="/notification" element={<Notification />} />
+          <Route path="/notification" element={currentUser?.type ==="seeker"?<Notification />:<TalentNotification/>} />
           <Route path="/setting" element={<Setting />} />
           <Route path="/help" element={<FaqsHelp />} />
           <Route path="/myrole" element={<MyRoles />} />
