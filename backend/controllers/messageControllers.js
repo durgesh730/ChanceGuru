@@ -38,7 +38,7 @@ const sendMessage = asyncHandler(async (req, res) => {
   }
   //schema 
   var newMessage = {
-    sender: req.user._id,
+    sender: req.user,
     content: content,
     chat: chatId,
   };

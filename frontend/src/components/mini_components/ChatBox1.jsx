@@ -106,9 +106,9 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
                 //setNewMessage("");
                 data.users = selectedChat.users;
                 // console.log("Emit new message data: ", data);
-                socket.emit("new message", selectedChat._id, data);
-
-                // setMessages(messages => [...messages, data]);
+                socket.emit("new_message", selectedChat._id, data);
+                
+                setMessages(messages => [...messages, data]);
                 // console.log(data, "sent message response data");
             } catch (error) {
                 // console.log(error.message);
@@ -147,7 +147,7 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
     //console.log(notification, 'notification Bellicon');
 
     useEffect(() => {
-        socket.on("message recieved", (newMessageRecieved) => {
+        socket.on("message_recieved", (newMessageRecieved) => {
             if (!selectedChatCompare || selectedChatCompare._id !== newMessageRecieved.chat) {
                 // if chat is not selected or doesn't match current chat
                 if (!notification.includes(newMessageRecieved)) {
@@ -156,11 +156,12 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
                     //   console.log(notification, "notification bell-icon check");
                 }
             } else {
-                // console.log("Adding message into message list:  ", messages);
+                console.log(newMessageRecieved);
                 setMessages((messages) => [...messages, newMessageRecieved]);
             }
+            socket.off("message_recieved")
         });
-    });
+    },[socket]);
 
     useEffect(() => {
         var objDiv = document.querySelector(".msg_Div");
@@ -228,7 +229,7 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
                         <div className="d-flex align-items-center justify-content-between w-100 ">
                             <div className="cb_textDiv">
                                 <h6> {getSender(user, selectedChat.users)}</h6>
-                                <p>typing…</p>
+                                { istyping && <p>typing…</p>}
                             </div>
 
                             <div className="dots_div">

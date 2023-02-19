@@ -14,7 +14,7 @@ const ChatPage1 = () => {
       <Topbar />
 
       <div className="chat_page container-fluid">
-        <h4>Messages</h4>
+        
         <div className="row">
           {user && <MyChats1 fetchAgain={fetchAgain} />}
           {user && (
