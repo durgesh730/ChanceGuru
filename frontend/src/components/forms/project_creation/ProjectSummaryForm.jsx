@@ -2,12 +2,15 @@ import React from "react";
 import axios from 'axios';
 import magnifyingIcon from "../../../assets/icons/find-my-friend.svg";
 import maskIcon from "../../../assets/icons/mask.svg";
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-const ProjectSummaryForm = ({ display  , values }) => {
+const ProjectSummaryForm = ({ display, values }) => {
     const navigate = useNavigate();
     const basicInfo = values.basicInfo;
     const roles = values.formFields;
+
+    // console.log(roles[0].role)
+
     let show = {};
     if (display) {
         show = { display: "block" };
@@ -17,15 +20,15 @@ const ProjectSummaryForm = ({ display  , values }) => {
 
     const publishProject = () => {
         axios
-            .post("http://localhost:5000/project" , {basicInfo : basicInfo , roles : roles} ,  {
+            .post("http://localhost:5000/project", { basicInfo: basicInfo, roles: roles }, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 }
             })
             .then((res) => {
-                if(res.status == 203){
+                if (res.status == 203) {
                     alert(res.data)
-                }else{
+                } else {
                     alert("Project Published Successfully");
                     navigate("seekerdashboard");
                     console.log(res)
@@ -96,15 +99,27 @@ const ProjectSummaryForm = ({ display  , values }) => {
                         maxLength="250"
                     ></textarea>
                     <input type="text" className="form-control" placeholder="Lady MacDuff: Female, 20-30" />
-                    <label className="label-desc">Supporting Actor (01)</label>
-                    <input type="text" className="form-control" placeholder="Ross : Male, 30-40" />
+                    {
+                        roles.map((item, index) => {
+                            return (
+                                <>
+                                    <div className="d-flex" >
+                                        <label className="label-desc">{item.role}(01)</label>
+                                    </div>
+                                </>
+                            )
+                        })
+                    }
+                    
+                    {/* <input type="text" className="form-control" placeholder="Ross : Male, 30-40" />
                     <label className="label-desc">Chorus/ Ensemble (01)</label>
-                    <input type="text" className="form-control" placeholder="Thanes : Male, 20-30" />
+                    <input type="text" className="form-control" placeholder="Thanes : Male, 20-30" /> */}
+
                     <div className="row">
                         <input type="button" className="col-4 cancel-btn btn btn-lg btn-block my-2" value="Cancel" />
                         <p className="col-1"></p>
                         <input
-                            onClick={()=>{publishProject()}}
+                            onClick={() => { publishProject() }}
                             type="button"
                             className="col-7 save-btn btn btn-lg btn-block my-2"
                             value="Save and Publish"
