@@ -1,13 +1,6 @@
 import React, { useContext } from "react";
-import { Avatar } from "@chakra-ui/avatar";
-import { Tooltip } from "@chakra-ui/tooltip";
-import ScrollableFeed from "react-scrollable-feed";
-import {
-  isLastMessage,
-  isSameSender,
-  isSameSenderMargin,
-  isSameUser,
-} from "../config/ChatLogics";
+
+
 import ChatContext from "../Context/chat-context";
 import userImg from "../../assets/images/kamal.jpeg";
 

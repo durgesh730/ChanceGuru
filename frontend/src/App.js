@@ -19,9 +19,9 @@ import ProjectCreation from "./components/ProjectCreation";
 import Roles from "./components/Roles";
 import ApplicantDetails from "./components/ApplicantDetails";
 
-import ChatPage from "./components/ChatPage";
+
 import ChatProvider from "./components/Context/ChatProvider";
-import { ChakraProvider } from "@chakra-ui/react";
+
 import ChatPage1 from "./components/ChatPage1";
 
 function App() {
@@ -71,18 +71,9 @@ function App() {
           <Route path="/" element={<Web1 />} />
           <Route path="/roles" element={<Roles />} />
           <Route path="/applicantdetails" element={<ApplicantDetails />} />
+          
           <Route
             path="/chat"
-            element={
-              <ChakraProvider>
-                <ChatProvider>
-                  <ChatPage />
-                </ChatProvider>
-              </ChakraProvider>
-            }
-          />
-          <Route
-            path="/chat1"
             element={
               <ChatProvider>
                 <ChatPage1 />

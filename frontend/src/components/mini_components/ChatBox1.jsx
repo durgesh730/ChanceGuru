@@ -1,27 +1,19 @@
-import { FormControl } from "@chakra-ui/form-control";
-import { Input } from "@chakra-ui/input";
-
-import { Box, Text } from "@chakra-ui/layout";
-
-import userImg from "../../assets/images/kamal.jpeg";
 import { BsThreeDotsVertical } from "react-icons/bs";
 
-import { CheckboxGroup, IconButton, Spinner, useToast } from "@chakra-ui/react";
+
 import { getSender, getSenderFull } from "../config/ChatLogics";
 //import { useHelper } from '../config/helper-hook';
 import { useContext, useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { ArrowBackIcon } from "@chakra-ui/icons";
-import ProfileModal from "../miscellaneous/ProfileModal";
-import ScrollableChat from "./ScrollableChat";
+
 
 import ChatContext from "../Context/chat-context";
-import Lottie from "react-lottie";
-import animationData from "../../animations/typing.json";
+
+
 
 import io from "socket.io-client";
 import ScrollableChat1 from "./ScrollableChat1";
-import { Link } from "react-router-dom";
+
 
 //const ENDPOINT = "http://localhost:5000"; //development
 const ENDPOINT = "http://localhost:5000";
@@ -35,18 +27,10 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
     const [typing, setTyping] = useState(false);
     const [istyping, setIsTyping] = useState(false);
 
-    const toast = useToast();
     const { selectedChat, setSelectedChat, user, notification, setNotification } = useContext(ChatContext);
     // console.log(selectedChat, "selectedChat in chatBox");
 
-    const defaultOptions = {
-        loop: true,
-        autoplay: true,
-        animationData: animationData,
-        rendererSettings: {
-            preserveAspectRatio: "xMidYMid slice",
-        },
-    };
+
 
     const fetchMessages = async () => {
         if (!selectedChat) return;
@@ -66,15 +50,8 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
 
             socket.emit("join chat", selectedChat._id);
         } catch (error) {
-            //   console.log(error.message);
-            toast({
-                title: "Error Occured!",
-                description: "Failed to Load the Messages",
-                status: "error",
-                duration: 3000,
-                isClosable: true,
-                position: "bottom",
-            });
+            console.log(error.message);
+
         }
     };
 
@@ -107,19 +84,12 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
                 data.users = selectedChat.users;
                 // console.log("Emit new message data: ", data);
                 socket.emit("new_message", selectedChat._id, data);
-                
+
                 setMessages(messages => [...messages, data]);
                 // console.log(data, "sent message response data");
             } catch (error) {
-                // console.log(error.message);
-                toast({
-                    title: "Error Occured!",
-                    description: "Failed to send the Message",
-                    status: "error",
-                    duration: 3000,
-                    isClosable: true,
-                    position: "bottom",
-                });
+                console.log(error.message);
+
             }
         }
     };
@@ -161,7 +131,7 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
             }
             socket.off("message_recieved")
         });
-    },[socket]);
+    }, [socket]);
 
     useEffect(() => {
         var objDiv = document.querySelector(".msg_Div");
@@ -229,7 +199,7 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
                         <div className="d-flex align-items-center justify-content-between w-100 ">
                             <div className="cb_textDiv">
                                 <h6> {getSender(user, selectedChat.users)}</h6>
-                                { istyping && <p>typing…</p>}
+                                {istyping && <p>typing…</p>}
                             </div>
 
                             <div className="dots_div">
@@ -249,7 +219,7 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
 
                     <div className="cb_bottom">
                         {loading ? (
-                            <Spinner size="xl" w={20} h={20} alignSelf="center" margin="auto" />
+                            <h5>Loading.......</h5>
                         ) : (
                             <div className="msg_Div" ref={msgDiv}>
                                 <ScrollableChat1 messages={messages} />
@@ -290,11 +260,7 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
                     </div>
                 </div>
             ) : (
-                <Box d="flex" alignItems="center" justifyContent="center" h="100%">
-                    <Text fontSize="3xl" pb={3} fontFamily="Work sans">
-                        Click on a user to start chatting
-                    </Text>
-                </Box>
+                <></>
             )}
         </>
     );

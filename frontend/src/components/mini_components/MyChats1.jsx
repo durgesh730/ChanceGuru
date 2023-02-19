@@ -5,12 +5,8 @@ import userImg from "../../assets/images/kamal.jpeg";
 import axios from "axios";
 import ChatContext from "../Context/chat-context";
 import { getSender } from "../config/ChatLogics";
-import ChatLoading from "./ChatLoading";
-import SideDrawer from "../miscellaneous/SideDrawer";
 
-import { useNavigate } from "react-router-dom";
-import { useDisclosure } from "@chakra-ui/hooks";
-import { useToast } from "@chakra-ui/toast";
+
 import UserListItem from "../userAvatar/UserListItem";
 
 const MyChats1 = ({ fetchAgain }) => {
@@ -55,17 +51,13 @@ const MyChats1 = ({ fetchAgain }) => {
   const [loading, setLoading] = useState(false);
   const [loadingChat, setLoadingChat] = useState(false);
 
-  const { notification, setNotification } = useContext(ChatContext);
 
-  const navigate = useNavigate();
-  const toast = useToast();
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const logoutHandler = () => {
-    localStorage.removeItem("userInformation");
-    navigate("/");
-  };
+
+  
+
+  
 
   const handleSearch = async (searchValue) => {
     console.log(searchValue);
@@ -100,14 +92,7 @@ const MyChats1 = ({ fetchAgain }) => {
       //console.log(data, 'searchQuerry keyword response data');
     } catch (error) {
       console.log(error.message);
-      toast({
-        title: "Error Occured!",
-        description: "Failed to Load the Search Results",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-        position: "bottom-left",
-      });
+      
     }
   };
 
@@ -146,17 +131,10 @@ const MyChats1 = ({ fetchAgain }) => {
       console.log(data, "access new/existing chat response data");
 
       setLoadingChat(false);
-      onClose(); //drawer close afterwards
+      
     } catch (error) {
       console.log(error.message);
-      toast({
-        title: "Error fetching the chat",
-        description: error.message,
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-        position: "bottom-left",
-      });
+      
     }
   };
 
@@ -182,7 +160,7 @@ const MyChats1 = ({ fetchAgain }) => {
             }}
           >
             {loading ? (
-              <ChatLoading />
+              <h3>Loading...</h3>
             ) : (
               searchResult?.map(
                 (
@@ -214,7 +192,7 @@ const MyChats1 = ({ fetchAgain }) => {
                 </div>
               ))
             ) : (
-              <ChatLoading />
+              <h3>Loading....</h3>
             )}
           </div>
         </div>
