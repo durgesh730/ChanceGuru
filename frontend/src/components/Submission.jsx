@@ -42,15 +42,15 @@ const Submission = () => {
 
   const getProjects = (e) => {
     axios.get('http://localhost:5000/project/allProjectsSeekers', {
-            headers: {
-                "Authorization": `Bearer ${localStorage.getItem("token")}`
-            }
-        }
+      headers: {
+        "Authorization": `Bearer ${localStorage.getItem("token")}`
+      }
+    }
     ).then((res) => {
       setcards(res.data)
       console.log(res.data);
     });
-};
+  };
 
   useEffect(() => {
     getProjects();
@@ -69,6 +69,7 @@ const Submission = () => {
               <Searchbar setQuery={setQuery} query={query} handleSearch={handleSearch} />
               <h5 className="purple_title">Projects</h5>
               {cards?.map((item, index) => {
+                console.log(item)
                 // ========= calculate total charcters =============
                 var char = 0;
                 var all = new Array();
@@ -91,33 +92,7 @@ const Submission = () => {
                   <>
                     <div className="audition_accordion mb-3 ">
                       <div className="aa1 border p-2">
-                        <div
-                          key={index}
-                          className="aa_head d-flex justify-content-between"
-                        >
-                          <p>{item.basicInfo.name}</p>
-                          <div>
-                            <span>Roles : </span>
-                            <span>{item.roles.length}</span>
-                          </div>
-                          <div>
-                            <span>Character : </span>
-                            <span>{a}</span>
-                          </div>
-                          <div className="aa_icon">
-                            {active === index.toString() ? (
-                              <BsChevronUp onClick={() => setActive("")} />
-                            ) : (
-                              <BsChevronDown
-                                onClick={() => setActive(index.toString())}
-                              />
-                            )}
-                          </div>
-                        </div>
-
-                        {active === index.toString() && (
-                          <SubmissionStatus id={item._id} />
-                        )}
+                        <SubmissionStatus a={a} project={item} id={item._id} />
                       </div>
                     </div>
                   </>

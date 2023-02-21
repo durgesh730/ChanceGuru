@@ -16,7 +16,7 @@ router.put("/Select/:_id", (req, res) => {
         $set: {
              status:d,
         },
-    })
+    },{returnOriginal : false })
         .then((response) => {
             res.json(response);
         })
@@ -27,17 +27,18 @@ router.put("/Select/:_id", (req, res) => {
 
 // API for change status of jobapplication using userId
 
-router.put("/SelectuserId/:_id", (req, res) => {
+
+router.put("/Shortlist/:_id", (req, res) => {
     const data = req.body;
     // console.log(data)
-    const d =  data.select 
+    const d =  data.shortlist 
     // console.log(d)
 
     JobApplication.findOneAndUpdate({_id:req.params._id}, {
         $set: {
              status:d,
         },
-    })
+    },{returnOriginal : false })
         .then((response) => {
             res.json(response);
         })
@@ -45,6 +46,26 @@ router.put("/SelectuserId/:_id", (req, res) => {
             res.status(400).json(err);
         })
 })
+
+router.put("/Schedule/:_id", (req, res) => {
+    const data = req.body;
+    // console.log(data)
+    const d =  data.schedule 
+    // console.log(d)
+
+    JobApplication.findOneAndUpdate({_id:req.params._id}, {
+        $set: {
+             status:d,
+        },
+    },{returnOriginal : false })
+        .then((response) => {
+            res.json(response);
+        })
+        .catch((err) => {
+            res.status(400).json(err);
+        })
+})
+
 
 // API for change status of jobapplication 
 
@@ -56,7 +77,7 @@ router.put("/Reject/:_id", (req, res) => {
         $set: {
              status:d,
         },
-    })
+    },{returnOriginal : false })
         .then((response) => {
             res.json(response);
         })
@@ -66,44 +87,6 @@ router.put("/Reject/:_id", (req, res) => {
 })
 
 
-
-// API for change status of jobapplication
-
-router.put("/Select/:_id", (req, res) => {
-    const data = req.body;
-    const d =  data.select 
-
-    JobApplication.findOneAndUpdate({_id:req.params._id}, {
-        $set: {
-             status:d,
-        },
-    })
-        .then((response) => {
-            res.json(response);
-        })
-        .catch((err) => {
-            res.status(400).json(err);
-        })
-})
-
-// API for change status of jobapplication
-
-router.put("/Reject/:_id", (req, res) => {
-    const data = req.body;
-    const d =  data.rejected 
-
-    JobApplication.findOneAndUpdate({_id:req.params._id}, {
-        $set: {
-             status:d,
-        },
-    })
-        .then((response) => {
-            res.json(response);
-        })
-        .catch((err) => {
-            res.status(400).json(err);
-        })
-})
 
 
 router.get("/allProjectsSeekers",jwtAuth,(req, res) => {

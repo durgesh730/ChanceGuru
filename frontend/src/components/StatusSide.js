@@ -3,12 +3,9 @@ import React, { useEffect, useState } from 'react'
 import godfather from "../assets/images/godfather.png";
 
 
-const StatusSide = ({ userId, charDetails, charId }) => {
-
-    // console.log(charDetails)
-
-    const [cards, setcards] = useState();
-
+const StatusSide = ({ charId, roleId, project, userId }) => {
+    const [cards, setcards] = useState([]);
+    const [character, setcharacter] = useState("");
     const getuserData = () => {
         axios
             .get(`http://localhost:5000/project/UserId/${userId}`)
@@ -39,32 +36,26 @@ const StatusSide = ({ userId, charDetails, charId }) => {
 
     useEffect(() => {
         getuserData();
-        // getcharactersData()
+        (project.roles).map(item => {
+            if (item._id === roleId) {
+                (item.characters).map(chr => {
+                    if (chr._id === charId) {
+                        setcharacter(chr.name)
+                    }
+                })
+            }
+        });
     }, [])
 
     return (
         <>
-
-            {cards?.map((item, index) => {
-                return (
-                    <>
-                        <td>
-                            <img src={godfather} />
-                            {item.username}
-                        </td>
-                    </>
-                )
-            })
-            }
-
-            {charDetails?.map((i)=> i.roles?.map((item, index)=>
-             item.characters?.map((data, index) =>{ 
-                    var id = data._id; 
-                    return (
-                         id == charId ? <td>{data.name}</td> : '' 
-                    )
-                }
-            )))}
+            <td>
+                <img src={godfather} />
+                {cards[0]?.username}
+            </td>
+            <td>
+                {character}
+            </td>
         </>
     )
 }

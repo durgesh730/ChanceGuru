@@ -25,7 +25,7 @@ let schema = new mongoose.Schema(
         "shortlisted", // when a applicant is shortlisted
         "selected", // when a applicant is selected
         "rejected", // when a applicant is rejected
-        "waiting"
+        "scheduled"
       ],
       default: "applied",
       required: true,
