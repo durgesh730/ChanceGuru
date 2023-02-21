@@ -27,19 +27,28 @@ import Notification from "./components/Notification";
 import Setting from "./components/Setting";
 import FaqsHelp from "./components/FaqsHelp";
 import MyRoles from "./components/MyRoles";
+import RequestPage from "./components/RequestPage";
+
+import TalentNotification from "./components/TalentNotification";
+
+
+import ChatProvider from "./components/Context/ChatProvider";
+
+import ChatPage1 from "./components/ChatPage1";
 
 function App() {
     const [currentUser, setCurrentUser] = useState(null);
     const [timeActive, setTimeActive] = useState(false);
     const [clicked, setClicked] = useState(0);
+    const [active, setActive] = useState("home");
 
-    useEffect(() => {
-        let user = JSON.parse(localStorage.getItem("login"));
-        if (user) {
-            setCurrentUser(user);
-            // console.log(user);
-        }
-    }, []);
+  useEffect(() => {
+    let user = JSON.parse(localStorage.getItem("login"));
+    if (user) {
+      setCurrentUser(user);
+      // console.log(user);
+    }
+  }, []);
 
   return (
     <Router>
@@ -83,10 +92,22 @@ function App() {
           <Route path="/browseprofile/:user" element={<UserProfile />} />
           <Route path="/submission" element={<Submission />} />
           <Route path="/audition" element={<Audition />} />
-          <Route path="/notification" element={<Notification />} />
+          <Route path="/notification" element={currentUser?.type ==="seeker"?<Notification />:<TalentNotification/>} />
           <Route path="/setting" element={<Setting />} />
           <Route path="/help" element={<FaqsHelp />} />
           <Route path="/myrole" element={<MyRoles />} />
+          <Route path="/requestpage" element={<RequestPage />} />
+          <Route path="/roles" element={<Roles />} />
+          <Route path="/applicantdetails" element={<ApplicantDetails />} />
+          
+          <Route
+            path="/chat"
+            element={
+              <ChatProvider>
+                <ChatPage1 />
+              </ChatProvider>
+            }
+          />
         </Routes>
       </AuthProvider>
     </Router>

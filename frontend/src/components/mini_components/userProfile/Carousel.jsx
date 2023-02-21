@@ -1,22 +1,25 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
 
 const Carousel = () => {
-  let box = document.querySelector(".ec_child");
+  const slideDiv = useRef("");
+
+  // let width = box.offsetWidth;
+  // console.log(box.offsetWidth);
+
   const prevCon = () => {
-    let width = box.offsetWidth;
-    console.log(width);
-    box.scrollLeft = box.scrollLeft - width;
+    let width = slideDiv.current.offsetWidth;
+    slideDiv.current.scrollLeft = slideDiv.current.scrollLeft - width;
+    console.log(slideDiv);
   };
   const nextCon = () => {
-    let width = box.offsetWidth;
-    console.log(width);
-    box.scrollLeft = box.scrollLeft + width;
+    let width = slideDiv.current.offsetWidth;
+    slideDiv.current.scrollLeft = slideDiv.current.scrollLeft + width;
   };
   return (
     <>
       <div className="container-fluid experience_container">
-        <div className="ec_child">
+        <div className="ec_child" ref={slideDiv}>
           <div>
             <h6>05/12/2018 - 01/12/2018</h6>
             <p>

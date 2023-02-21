@@ -12,6 +12,10 @@ let schema = new mongoose.Schema(
         },
         RequestSendAt: {
             type: Date,
+        },
+        isRequested: {
+            type: Boolean,
+            default:false,
         }
     }
 );

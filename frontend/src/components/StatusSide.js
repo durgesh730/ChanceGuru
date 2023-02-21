@@ -20,6 +20,20 @@ const StatusSide = ({ charId, roleId, project, userId }) => {
             })
     }
 
+    // const getcharactersData = () => {
+    //     axios
+    //         .get(`http://localhost:5000/project/UserId/${charId}`)
+    //         .then((res) => {
+    //             if (res !== null) {
+    //                 setcards(res.data)
+    //             }
+    //             // console.log(res)
+    //         })
+    //         .catch((err) => {
+    //             console.log(err);
+    //         })
+    // }
+
     useEffect(() => {
         getuserData();
         (project.roles).map(item => {

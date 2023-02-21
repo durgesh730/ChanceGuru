@@ -78,8 +78,8 @@ const TalentDashboard = () => {
     // Profile Strength Score
     const profileCompletion = (data) => {
         // console.log(data);
-        const profilePerc = calculatePercentage(data.basicInfo);
-        const talentPerc = calculatePercentage(data.talent);
+        const profilePerc = data.basicInfo ? calculatePercentage(data.basicInfo) : 0;
+        const talentPerc = data.talent ? calculatePercentage(data.talent) : 0 ;
         const photoPerc = data.photos.length === 0 ? 0 : 50;
         const videoPerc = data.videos.length === 0 ? 0 : 50;
         const eduPerc = data.education.length === 0 ? 0 : 50;

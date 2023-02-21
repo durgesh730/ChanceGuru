@@ -5,7 +5,6 @@ const Project = require("../db/Project");
 const JobApplication = require('../db/JobApplication')
 const User = require('../db/User');
 
-
 // API for change status of jobapplication using default _id
 
 router.put("/Select/:_id/:inc", (req, res) => {
@@ -232,5 +231,19 @@ router.put("/changeRoles", jwtAuth, (req, res) => {
 
 
 
+// To get just one character using character Id
+router.get("/getCharacter/:roleId",(req,res)=>{
+    let roleId = req.params.roleId;
+    Project.find(
+        { roles : { $elemMatch : { _id:roleId } } },
+        { basicInfo:1,roles : { $elemMatch : { _id:roleId } } }
+        )
+    .then((response)=>{
+        res.json(response);
+    })
+    .catch((err)=>{
+        res.status(400).json(err);
+    })
+})
 
 module.exports = router;

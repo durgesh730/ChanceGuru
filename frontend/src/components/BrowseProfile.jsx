@@ -11,6 +11,10 @@ import {
 import { BsChevronDown, BsPhone } from "react-icons/bs";
 import godfather from "../assets/images/godfather.png";
 
+import axios from "axios";
+
+
+
 const BrowseProfile = () => {
   const [query, setQuery] = useState("");
   const [profileData, setProfileData] = useState();
@@ -75,8 +79,24 @@ const BrowseProfile = () => {
             <Topbar />
             <div className="container">
                 <div className="row">
-                    <div className="col-lg-8">
+                    <div className="searchBox col-lg-8">
                         <Searchbar setQuery={setQuery} query={query} handleSearch={handleSearch} />
+                        <div
+              className="searchDropdown"
+              style={query === "" ? { border: "none" } : {}}
+            >
+              {searchData
+                .filter((item, index) => {
+                  const searchTerm = query.toLowerCase();
+                  const name = item.basicInfo.fullname.toLowerCase();
+                  return searchTerm && name.startsWith(searchTerm);
+                })
+                .map((item, index) => (
+                  <div onClick={() => setQuery(item.basicInfo.fullname)}>
+                    {item.basicInfo.fullname}
+                  </div>
+                ))}
+                </div>
                     </div>
                     <div className="col-lg-4">
                         <button className="btn btn-primary create-btn" onClick={routeChange}>

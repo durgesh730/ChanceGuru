@@ -2,15 +2,15 @@ import React, { useEffect, useState } from "react";
 import Searchbar from "./mini_components/Searchbar";
 import Topbar from "./mini_components/Topbar";
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
+import godfather from "../assets/images/godfather.png";
 
 import { NavLink, useLocation } from "react-router-dom";
 import SideNav from "./SideNav";
-import axios from 'axios'
+import axios from "axios";
 import SubmissionStatus from "./SubmissionStatus";
 
 const Submission = () => {
-
-  const [active, setActive] = useState(false);
+  const [active, setActive] = useState("");
   const [cards, setcards] = useState();
 
   const [query, setQuery] = useState("");
@@ -54,7 +54,7 @@ const Submission = () => {
 
   useEffect(() => {
     getProjects();
-  }, [])
+  }, []);
 
   return (
     <>
@@ -79,14 +79,13 @@ const Submission = () => {
                     char = char + i.characters.length;
                     var length = i.characters.length;
                     for (i = 0; i < length; i++) {
-                      all[i] = char
+                      all[i] = char;
                     }
 
                     for (i = 0; i < all.length; i++) {
-                      if (all[i] > a)
-                        a = all[i]
+                      if (all[i] > a) a = all[i];
                     }
-                  })
+                  });
                 }
 
                 return (
@@ -97,7 +96,7 @@ const Submission = () => {
                       </div>
                     </div>
                   </>
-                )
+                );
               })}
             </div>
           </div>

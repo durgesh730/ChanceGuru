@@ -19,9 +19,9 @@ const SubmissionStatus = ({a , project , id }) => {
             })
     }
 
-    useEffect(() => {
-        getuserId();
-    }, [])
+  useEffect(() => {
+    getuserId();
+  }, []);
 
     return (
         <>

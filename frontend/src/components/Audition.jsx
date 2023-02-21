@@ -33,16 +33,16 @@ const Audition = () => {
       }
     })
       .then((res) => {
-        setcards(res.data)
+        setcards(res.data);
       })
       .catch((err) => {
         console.log(err);
-      })
-  }
+      });
+  };
 
   useEffect(() => {
     getProjects();
-  }, [])
+  }, []);
 
   return (
     <>
@@ -56,8 +56,8 @@ const Audition = () => {
             <div className="px-4">
               <Searchbar setQuery={setQuery} query={query} handleSearch={handleSearch} />
               <h5 className="purple_title">Projects</h5>
-              {cards?.map((item, index) => {
 
+              {cards?.map((item, index) => {
                 // ========= calculate total charcters =============
                 var char = 0;
                 var all = new Array();
@@ -67,14 +67,13 @@ const Audition = () => {
                     char = char + i.characters.length;
                     var length = i.characters.length;
                     for (i = 0; i < length; i++) {
-                      all[i] = char
+                      all[i] = char;
                     }
 
                     for (i = 0; i < all.length; i++) {
-                      if (all[i] > a)
-                        a = all[i]
+                      if (all[i] > a) a = all[i];
                     }
-                  })
+                  });
                 }
 
                 return (
@@ -85,7 +84,7 @@ const Audition = () => {
                       </div>
                     </div>
                   </>
-                )
+                );
               })}
             </div>
           </div>
