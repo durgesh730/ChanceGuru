@@ -2,6 +2,9 @@ import React from "react";
 import { useState , useEffect } from "react";
 import axios from "axios";
 import "../forms.css";
+import form_group from "../../../assets/images/form_group.svg";
+import form_group_1 from "../../../assets/images/form-group-1.png";
+import form_group_2 from "../../../assets/images/form-group-2.png";
 
 const TalentDetailsForm = ({ display , toggle , getFunction}) => {
     let show = {};
