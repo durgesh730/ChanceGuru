@@ -33,7 +33,7 @@ let schema = new mongoose.Schema(
     value : {
       type : Number ,
       default : 5 
-    }
+    },
     seekerId:{
       type: mongoose.Schema.Types.ObjectId,
       required: true,
