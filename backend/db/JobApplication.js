@@ -30,6 +30,10 @@ let schema = new mongoose.Schema(
       default: "applied",
       required: true,
     },
+    value : {
+      type : Number ,
+      default : 5 
+    }
   },
   { collation: { locale: "en" } }
 );

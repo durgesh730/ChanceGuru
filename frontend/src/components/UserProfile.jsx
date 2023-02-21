@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useEffect } from "react";
 import Topbar from "./mini_components/Topbar";
 import pfp from "../assets/images/Mask Group 29.png";
 import { NavLink, useLocation } from "react-router-dom";
@@ -19,7 +19,17 @@ const UserProfile = () => {
     btn: "",
     num: 0
   })
+  const [selected, setSelected] = useState(false);
+  const [rejected, setRejected] = useState(false);
+  const [sheduled, setScheduled] = useState(false);
+  const [shortlisted, setShortlisted] = useState(false);
 
+  const setall = () => {
+    setSelected(false);
+    setRejected(false);
+    setScheduled(false);
+    setShortlisted(false);
+  }
   const location = useLocation();
 
   const userData = location.state.user;
@@ -46,14 +56,15 @@ const UserProfile = () => {
 
 
   const handleSelect = async () => {
-    const data = await fetch(`http://localhost:5000/project/Select/${card[index]._id}`, {
+    const data = await fetch(`http://localhost:5000/project/Select/${card[index]._id}/${d}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ select: "selected" })
     })
     const res = await data.json();
+    setall();
+    setSelected(true);
     setModal(false);
     console.log(res)
   };
@@ -64,39 +75,54 @@ const UserProfile = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ reject: "rejected" })
     })
     const res = await data.json();
+    setall();
+    setRejected(true);
     setModal(false);
     console.log(res);
   };
 
   const handleShortlist = async () => {
-    const data = await fetch(`http://localhost:5000/project/Shortlist/${card[index]._id}`, {
+    const data = await fetch(`http://localhost:5000/project/Shortlist/${card[index]._id}/${d}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ shortlist: "shortlisted" })
     })
     const res = await data.json();
     console.log(res);
+    setall();
+    setShortlisted(true);
     setModal(false);
   };
 
   const handleSchedule = async () => {
-    const data = await fetch(`http://localhost:5000/project/Schedule/${card[index]._id}`, {
+    const data = await fetch(`http://localhost:5000/project/Schedule/${card[index]._id}/${d}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ schedule: "scheduled" })
     })
     const res = await data.json();
+    setall();
+    setScheduled(true);
     setModal(false);
     console.log(res);
   };
 
+  useEffect(() => {
+    if(card[index].status === "selected"){
+      setSelected(true);
+    }else if(card[index].status === "scheduled"){
+      setScheduled(true);
+    }else if(card[index].status === "shortlisted"){
+      setShortlisted(true);
+    } else if(card[index] === "rejected"){
+      setRejected(true);
+    }
+  }, [])
+  
   return (
     <>
       <div className={modal ? `dim` : ""}>
@@ -128,12 +154,15 @@ const UserProfile = () => {
                 <div className="p-4 pb-0">
                   <div className="p1 d-flex justify-content-between">
                     <div>
-                      <h6>{userData.basicInfo.fullname}</h6>
+                      <h6>{userData?.basicInfo?.fullname}</h6>
                       <p>Actor</p>
                     </div>
                     <div>
+                      <div className="tag">
+                        {selected ? "Selected" : ""}{rejected ? "Rejected" : ""}{ sheduled ? "Scheduled" : ""}{ shortlisted ? "Shortlisted" : ""}
+                      </div>
                       {d == 1 &&
-                        <button onClick={() => { setModal(true); setmodalData({ msg: " to Shortlist the ", btn: "Shortlist", num: 1 }) }} style={{ color: "#16bac5", borderColor: "#16bac5" }}>
+                        <button className={`${selected || rejected || shortlisted || sheduled ? "d-none" : ""}`} onClick={() => { setModal(true); setmodalData({ msg: " to Shortlist the ", btn: "Shortlist", num: 1 }) }} style={{ color: "#16bac5", borderColor: "#16bac5" }}>
                           Shortlist
                         </button>
                       }
@@ -144,13 +173,13 @@ const UserProfile = () => {
                         </button>
                         :
                         <>
-                          <button onClick={() => { setModal(true); setmodalData({ msg: " to Select the ", btn: "Select", num: 0 }) }} style={{ color: "#6cc592", borderColor: "#6cc592" }}>
+                          <button className={` ${selected || rejected  ? "d-none" : ""} ${(d==1 ^ (shortlisted || sheduled || selected || rejected)) ? "" : "d-none"}`} onClick={() => { setModal(true); setmodalData({ msg: " to Select the ", btn: "Select", num: 0 }) }} style={{ color: "#6cc592", borderColor: "#6cc592" }}>
                             Select
                           </button>
-                          <button onClick={() => { setModal(true); setmodalData({ msg: " to send a Schedule to ", btn: "Schedule", num: 2 }) }}>
+                          <button className={`${selected || rejected || (sheduled || shortlisted && d == 1) ? "d-none" : ""}`} onClick={() => { setModal(true); setmodalData({ msg: " to send a Schedule to ", btn: "Schedule", num: 2 }) }}>
                             Schedule
                           </button>
-                          <button onClick={() => { setModal(true); setmodalData({ msg: " Reject the", btn: "Reject", num: 3 }) }} style={{ color: "#b8d0eb", borderColor: "#b8d0eb" }} >
+                          <button className={` ${selected || rejected  ? "d-none" : ""} ${(d==1 ^ (shortlisted || sheduled || selected || rejected)) ? "" : "d-none"}`} onClick={() => { setModal(true); setmodalData({ msg: " Reject the", btn: "Reject", num: 3 }) }} style={{ color: "#b8d0eb", borderColor: "#b8d0eb" }} >
                             Reject
                           </button>
                         </>
@@ -197,8 +226,7 @@ const UserProfile = () => {
                     {active === "details" && <Details Data={userData.basicInfo} />}
                     {active === "talent" && <Talents Data={userData.talent} />}
                     {active === "bio" && <BioExperience
-                      Data={userData.
-                        portfolio}
+                      Data={userData.portfolio}
                     />}
                     {active === "education" && <Education
                       Data={userData
@@ -208,17 +236,7 @@ const UserProfile = () => {
                       Data={userData}
                     />}
                   </div>
-
-
-                  {"/browseprofile" === "/browseprofile" && (
-                    <button onClick={() => setModal(true)}>Send Request</button>
-                  )}
-
                 </div>
-                {d !== 0 ?
-                  <><SubViewProfile display={index == 0 ? "none" : ""} index={index} card={card} msg={`Back`} />
-                    <SubViewProfile display={card?.length == index + 1 ? "none" : ""} index={index} card={card} msg={`Next`} /></> : ""
-                }
               </div>
             </div>
           </div>
