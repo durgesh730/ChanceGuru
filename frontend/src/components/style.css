@@ -1559,5 +1559,248 @@ div.css-18dcxwc {
   width: 100vw;
 }
 .requestPage .b_table td {
-  width: 200px;
+  width: 200px;}
+
+/* =============================================chat page===================================== */
+.chat_page * {
+  margin: 0;
+}
+.chat_page {
+  padding: 33px 27px 24px 27px;
+}
+.myChat_main {
+  box-shadow: 0 0 6px 0 rgba(180, 180, 180, 0.5);
+  width: 292px;
+  height: 600px;
+}
+.chat_page h4 {
+  font-size: 18px;
+  font-weight: bold;
+  color: #444444;
+}
+.chat_page .userChat {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  width: 292.9px;
+  height: 69px;
+  padding: 13px 9px 11px 9px;
+}
+.chat_page .userChat figure img {
+  width: 43px;
+  height: 43px;
+  margin-right: 9px;
+}
+.userChat div h6 {
+  font-size: 11px;
+  color: #8443e5;
+}
+.userChat div p {
+  font-size: 11px;
+}
+.active_userChat {
+  background-color: #6c54a6;
+}
+.active_userChat div h6 {
+  color: #fff;
+}
+
+.active_userChat div p {
+  color: #9996d2;
+}
+.myChat_users {
+  width: max-content;
+  height: calc(600px - 69px);
+  overflow-y: scroll;
+}
+.myChat input {
+  width: 292px;
+  height: 59px;
+  padding-left: 17%;
+  background-color: #8443e5;
+  outline: none;
+  border: none;
+  color: #fff;
+  width: 100%;
+}
+
+.searchChat {
+  position: relative;
+}
+.searchChat .search_icon {
+  position: absolute;
+  color: #fff;
+  font-size: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 10%;
+}
+
+/* -------------------chat boc-------------- */
+.chatBox_main {
+  box-shadow: 0 0 6px 0 rgba(180, 180, 180, 0.5);
+  height: 600px;
+}
+.cb_top {
+  width: 100%;
+  height: 59px;
+  background-color: #6c54a6;
+  display: flex;
+  align-items: center;
+  padding: 0 10px 0px 36px;
+}
+.cb_textDiv h6 {
+  color: #fff;
+  font-size: 12px;
+  font-weight: bold;
+}
+.cb_textDiv p {
+  color: #b8a3ec;
+  font-size: 11px;
+}
+.cb_bottom {
+  padding: 9px 15px;
+  height: calc(100% - 59px);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  background-color: #f6f0ff;
+  /* overflow-y: scroll; */
+}
+.cb_msgSend {
+  background-color: #fff;
+  width: 100%;
+  height: 56px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 10px;
+}
+.cb_msgSend input {
+  width: 100%;
+  outline: none;
+  border: none;
+}
+.cb_msgSend button {
+  width: 120px;
+  height: 42px;
+  border-radius: 3px;
+  background-color: #8443e5;
+  color: #fff;
+  border: none;
+  outline: none;
+}
+
+.cb_chats_main {
+  height: 100%;
+}
+.cb_chats_msg {
+  height: fit-content;
+  display: flex;
+  margin: 10px 0;
+}
+.cb_chats_msg img {
+  width: 43px;
+  height: 43px;
+  margin-right: 10px;
+}
+.cb_chats_msg p {
+  background-color: #fff;
+  padding: 10px 22px;
+  width: 390px;
+  position: relative;
+  font-size: 11px;
+  font-weight: bold;
+  color: #888;
+  line-height: 20px;
+  word-wrap: break-word;
+}
+.cb_chats_msg p::before {
+  content: "";
+  display: block;
+  position: absolute;
+  height: 0;
+  width: 0;
+  top: 0;
+  left: -10px;
+  border: 10px solid transparent;
+  border-top-color: #fff;
+}
+
+.cb_chats_msg2 {
+  height: fit-content;
+  display: flex;
+  justify-content: end;
+  flex-direction: row-reverse;
+  margin: 10px 0;
+}
+.cb_chats_msg2 img {
+  width: 43px;
+  height: 43px;
+  margin-left: 10px;
+}
+.cb_chats_msg2 p {
+  background-color: #fff;
+  padding: 10px 22px;
+  width: 390px;
+  position: relative;
+  font-size: 11px;
+  font-weight: bold;
+  color: #888;
+  line-height: 20px;
+  word-wrap: break-word;
+}
+.cb_chats_msg2 p::before {
+  content: "";
+  display: block;
+  position: absolute;
+  height: 0;
+  width: 0;
+  top: 0;
+  right: -10px;
+  border: 10px solid transparent;
+  border-top-color: #fff;
+}
+
+.msg_Div {
+  height: 460px !important;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+}
+
+.dots_div {
+  position: relative;
+  top: 50%;
+}
+.dots_div div {
+  position: absolute;
+  width: 143px;
+  right: 50%;
+  bottom: -70%;
+  z-index: 1;
+  display: none;
+}
+.dots_div div ul {
+  background-color: #6c54a6;
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  flex-direction: column;
+  padding-left: 15px;
+}
+.dots_div ul li {
+  color: #fff;
+
+  list-style: none;
+  font-style: 11px;
+  /* line-height: 1.27; */
+  margin: 10px 0;
+}
+
+.searchedChat {
+  background-color: #ebe6f8;
+}
+.searchedChat:hover {
+  background-color: #c0abf5;
 }

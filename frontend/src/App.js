@@ -31,6 +31,11 @@ import RequestPage from "./components/RequestPage";
 
 import TalentNotification from "./components/TalentNotification";
 
+
+import ChatProvider from "./components/Context/ChatProvider";
+
+import ChatPage1 from "./components/ChatPage1";
+
 function App() {
     const [currentUser, setCurrentUser] = useState(null);
     const [timeActive, setTimeActive] = useState(false);
@@ -92,6 +97,17 @@ function App() {
           <Route path="/help" element={<FaqsHelp />} />
           <Route path="/myrole" element={<MyRoles />} />
           <Route path="/requestpage" element={<RequestPage />} />
+          <Route path="/roles" element={<Roles />} />
+          <Route path="/applicantdetails" element={<ApplicantDetails />} />
+          
+          <Route
+            path="/chat"
+            element={
+              <ChatProvider>
+                <ChatPage1 />
+              </ChatProvider>
+            }
+          />
         </Routes>
       </AuthProvider>
     </Router>

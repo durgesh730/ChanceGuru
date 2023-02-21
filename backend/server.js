@@ -41,12 +41,69 @@ app.use("/auth", require("./routes/authRoutes"));
 app.use("/profile", require("./routes/profileRoutes"));
 app.use("/project", require("./routes/projectRoutes"));
 app.use("/application", require("./routes/applicationRoutes"));
+app.use("/api/user", require("./routes/userRoutes"));
+app.use("/api/chat", require("./routes/chatRoutes"));
+app.use("/api/message", require("./routes/messageRoutes"));
 
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`Server started on port ${port}!`);
 });
 
 app.get("/*", function (req, res) {
   res.sendFile(path + "index.html");
 });
+const io = require("socket.io")(server, {
+  pingTimeout: 120000,
+  cors: {
+    origin: "http://localhost:3000",
+    credentials: true,
+  },
+});
+
+io.on("connection", (socket) => {
+  console.log("Connected to socket.io");
+
+  socket.on("setup", (userData) => {
+    socket.join(userData._id);
+    console.log(`Logged in user ${userData.username} joined the created room`);
+    socket.emit("connected");
+  });
+
+  socket.on("join chat", (room) => {
+    socket.join(room);
+    console.log(room)
+    console.log("User Joined the selectedChat Room: " + room);//room-selectedChatId
+  });
+  
+  socket.on("typing", (room) => socket.in(room).emit("typing"));
+  socket.on("stop typing", (room) => socket.in(room).emit("stop typing"));
+
+  socket.on("new_message", (room,newMessageRecieved) => {
+    
+    var chat = newMessageRecieved.chat;
+
+    if (!newMessageRecieved.users) return console.log("chat.users not defined");
+
+    newMessageRecieved.users.forEach((user) => {
+      // console.log("New message received")
+      if (user._id == newMessageRecieved.sender._id) return;
+
+      else{
+
+        socket.in(user._id).emit("message_recieved", newMessageRecieved);
+      }
+  
+      //.in-- inside user._id exclusive socket room joined-- emit this "message recieved" event ////mern-docs
+    });
+    
+    // socket.to(room).emit('message recieved',newMessageRecieved)
+    
+  });
+
+  socket.off("setup", () => {
+    console.log("USER DISCONNECTED");
+    socket.leave(userData._id);
+  });
+
+});  
