@@ -139,6 +139,7 @@ const Topbar = (props) => {
               )}
             </span>
           </Link>
+          <Link to="/chat" >
           <span
             className={
               active === "chat"
@@ -153,6 +154,8 @@ const Topbar = (props) => {
               <img className="topbar-icons" src={chat} alt="" />
             )}
           </span>
+          </Link>
+          
           {/*
                         <Link to="/projectcreation"> */}
           <span
