@@ -30,6 +30,10 @@ let schema = new mongoose.Schema(
       default: "applied",
       required: true,
     },
+    value : {
+      type : Number ,
+      default : 5 
+    }
     seekerId:{
       type: mongoose.Schema.Types.ObjectId,
       required: true,

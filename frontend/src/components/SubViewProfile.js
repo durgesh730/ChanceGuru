@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 const SubViewProfile = ({display , index, card, msg }) => {
     const [user, setUser] = useState();
     const [d, setd] = useState(1);
-    // console.log(cards)
+
     const getuserData = () => {
         axios
             .get(`http://localhost:5000/profile/${card[index]?.userId}`)

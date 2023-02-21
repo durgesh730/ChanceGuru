@@ -3,12 +3,10 @@ import SubViewProfile from './SubViewProfile';
 import axios from 'axios'
 import StatusSide from './StatusSide';
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
-import godfather from "../assets/images/godfather.png";
 
 const SubmissionStatus = ({ a, project, id }) => {
     const [active, setActive] = useState(false);
     const [cards, setcards] = useState();
-    console.log(cards)
 
     const getuserId = () => {
         axios
@@ -62,7 +60,7 @@ const SubmissionStatus = ({ a, project, id }) => {
                                     return (
                                         <>
                                             {
-                                                item.status === "shortlisted" || item.status === "scheduled" || item.status === "selected" ? (
+                                                item.status === "shortlisted" || item.status === "scheduled" || item.status === "selected" || item.status === null ? (
                                                     <tr>
                                                         <StatusSide roleId={item.roleId} charId={item.charId} project={project} userId={item.userId} />
                                                         <td>{item.status}</td>
