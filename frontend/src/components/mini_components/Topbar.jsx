@@ -233,8 +233,8 @@ const Topbar = (props) => {
           {/* </Link> */}
           {/* <div className={modal || dim ? `dim blur_black` : "blur_black"}></div> */}
           {modal && (
-            <div className="userSub_modal">
-              <div className="modal_child shadow">
+            <div className="userSub_modal my-4 ">
+              <div className="modal_child shadow ">
                 <div className="d-flex justify-content-start align-items-center m-3">
                   <h1 className="purple_title m-0" style={{ fontSize: "30px" }}>
                     Logout Confirmation

@@ -13,18 +13,21 @@ import { BsArrowRight } from "react-icons/bs";
 import SubViewProfile from './SubViewProfile';
 
 const UserProfile = (props) => {
-
   const [active, setActive] = useState("details");
   const [modal, setModal] = useState(false);
-  const [select, setSelect] = useState('selected')
-  const [rejected, setRejected] = useState('rejected')
-  const [shortlist, setshortlist] = useState('shortlist')
-  const [schedule, setSchedule] = useState('scheduled')
+  const [select, setSelect] = useState("selected");
+  const [rejected, setRejected] = useState("rejected");
+  const [shortlist, setshortlist] = useState("shortlist");
+  const [schedule, setSchedule] = useState("scheduled");
+  
+  const location = useLocation();
 
-
-
+  const userData = location.state.user;
+  const index = location.state.index;
+  const card = location.state.card;
+  const d = location.state.btn ;
+  
   const handleApplyReq = () => {
-
     axios.post('http://localhost:5000/profile/ReqToApp', { talentId: userData.userId }, {
 
       headers: {
@@ -41,12 +44,6 @@ const UserProfile = (props) => {
       });
   };
 
-  const location = useLocation();
-
-  const userData = location.state.user;
-  const index = location.state.index;
-  const card = location.state.card;
-  const d = location.state.btn ;
 
   const handleSelect = async () => {
     const data = await fetch(`http://localhost:5000/project/SelectuserId/${userData.userId}`, {
@@ -58,7 +55,7 @@ const UserProfile = (props) => {
     })
     const res = await data.json();
     // console.log(res)
-  }
+  };
 
   const handleReject = async () => {
     const data = await fetch(`http://localhost:5000/project/SelectuserId/${userData.userId}`, {
@@ -69,8 +66,8 @@ const UserProfile = (props) => {
       body: JSON.stringify({ select: rejected })
     })
     const res = await data.json();
-    console.log(res)
-  }
+    console.log(res);
+  };
 
   const handleShortlist = async () => {
     const data = await fetch(`http://localhost:5000/project/SelectuserId/${userData.userId}`, {
@@ -81,8 +78,8 @@ const UserProfile = (props) => {
       body: JSON.stringify({ select: shortlist })
     })
     const res = await data.json();
-    console.log(res)
-  }
+    console.log(res);
+  };
 
   const handleSchedule = async () => {
     const data = await fetch(`http://localhost:5000/project/SelectuserId/${userData.userId}`, {
@@ -93,8 +90,8 @@ const UserProfile = (props) => {
       body: JSON.stringify({ select: schedule })
     })
     const res = await data.json();
-    console.log(res)
-  }
+    console.log(res);
+  };
 
   return (
     <>
@@ -218,7 +215,6 @@ const UserProfile = (props) => {
                     </span>
                   </div>
                   <hr />
-
                   <div className="h-100">
                     {active === "details" && <Details Data={userData.basicInfo} />}
                     {active === "talent" && <Talents Data={userData.talent} />}
@@ -249,6 +245,7 @@ const UserProfile = (props) => {
             </div>
           </div>
         </div>
+      </div>
 
         {/* -------------modal----------------------------- */}
         {modal && (
@@ -266,7 +263,6 @@ const UserProfile = (props) => {
             </div>
           </div>
         )}
-      </div>
     </>
   );
 };

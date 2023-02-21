@@ -27,7 +27,6 @@ const BrowseProfile = () => {
       }
     );
     const res = await data.json();
-
     if (res) {
       setProfileData(res);
       console.log(res);
@@ -44,9 +43,7 @@ const BrowseProfile = () => {
       },
     });
     const res = await data.json();
-    setsearchData(res);
-
-    console.log("res ", res);
+    console.log(res);
     if (res) {
       setProfileData(res);
     }
@@ -60,7 +57,6 @@ const BrowseProfile = () => {
       },
     });
     const res = await data.json();
-
     setUserData(res);
   };
 
@@ -73,20 +69,16 @@ const BrowseProfile = () => {
   useEffect(() => {
     GetProfiledata();
     GetUserData();
-  }, [setProfileData, setsearchData]);
+  }, [setProfileData]);
   const location = useLocation();
   console.log(location);
-
-  console.log("query = ", query);
-  console.log("userdata ", userData);
-  console.log("searchData ", searchData);
 
   return (
     <div>
       <Topbar />
       <div className="container">
         <div className="row">
-          <div className="searchBox col-lg-8 ">
+          <div className="searchBox col-lg-8">
             <Searchbar
               setQuery={setQuery}
               query={query}
@@ -164,7 +156,7 @@ const BrowseProfile = () => {
                     <td>
                       <NavLink
                         to={"/browseprofile/:nickdavolt"}
-                        state={item}
+                        state={{ user: item, card: [], index: 0, btn: 0 }}
                         exact
                       >
                         <button>View Profile</button>
