@@ -32,9 +32,10 @@ import RequestPage from "./components/RequestPage";
 import TalentNotification from "./components/TalentNotification";
 
 function App() {
-  const [currentUser, setCurrentUser] = useState(null);
-  const [timeActive, setTimeActive] = useState(false);
-  const [clicked, setClicked] = useState(0);
+    const [currentUser, setCurrentUser] = useState(null);
+    const [timeActive, setTimeActive] = useState(false);
+    const [clicked, setClicked] = useState(0);
+    const [active, setActive] = useState("home");
 
   useEffect(() => {
     let user = JSON.parse(localStorage.getItem("login"));

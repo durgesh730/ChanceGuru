@@ -87,22 +87,16 @@ const RolePref = ({ display  }) => {
                             {formFields?.map((form, index) => {
                                 return (
                                     <div key={index} className="d-flex align-items-center">
-                                        <select
-                                            className="form-control form-select"
-                                            data-num={index}
+                                        <input
                                             name="role"
                                             value={form.role}
                                             onChange={(e) => {
                                                 handleFormChange(e, index);
                                             }}
-                                        >
-                                            <option value="" disabled selected>
-                                                Name the Role
-                                            </option>
-                                            <option value="Supporting Actor">Supporting Actor</option>
-                                            <option value="Main Role Hero">Main Role Hero</option>
-                                            <option value="Main Role Villan">Main Role Villan</option>
-                                        </select>
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="Add Role"
+                                        />
                                         <i
                                             className="fa-solid fa-trash-can mx-2 mb-2"
                                             onClick={() => removeFields(index)}
