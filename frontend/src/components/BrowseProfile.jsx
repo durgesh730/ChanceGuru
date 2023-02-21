@@ -11,6 +11,10 @@ import {
 import { BsChevronDown, BsPhone } from "react-icons/bs";
 import godfather from "../assets/images/godfather.png";
 
+import axios from "axios";
+
+
+
 const BrowseProfile = () => {
   const [query, setQuery] = useState("");
   const [profileData, setProfileData] = useState();

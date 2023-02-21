@@ -30,6 +30,10 @@ let schema = new mongoose.Schema(
       default: "applied",
       required: true,
     },
+    seekerId:{
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+    }
   },
   { collation: { locale: "en" } }
 );

@@ -64,7 +64,7 @@ const Topbar = (props) => {
   const user = JSON.parse(localStorage.getItem("login"));
 
   const [active, setActive] = useState("home");
-  console.log(active);
+  // console.log(active);
 
   return (
     <>
