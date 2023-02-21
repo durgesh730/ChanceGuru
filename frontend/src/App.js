@@ -27,21 +27,22 @@ import Notification from "./components/Notification";
 import Setting from "./components/Setting";
 import FaqsHelp from "./components/FaqsHelp";
 import MyRoles from "./components/MyRoles";
+import RequestPage from "./components/RequestPage";
 
 import TalentNotification from "./components/TalentNotification";
 
 function App() {
-    const [currentUser, setCurrentUser] = useState(null);
-    const [timeActive, setTimeActive] = useState(false);
-    const [clicked, setClicked] = useState(0);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [timeActive, setTimeActive] = useState(false);
+  const [clicked, setClicked] = useState(0);
 
-    useEffect(() => {
-        let user = JSON.parse(localStorage.getItem("login"));
-        if (user) {
-            setCurrentUser(user);
-            // console.log(user);
-        }
-    }, []);
+  useEffect(() => {
+    let user = JSON.parse(localStorage.getItem("login"));
+    if (user) {
+      setCurrentUser(user);
+      // console.log(user);
+    }
+  }, []);
 
   return (
     <Router>
@@ -89,6 +90,7 @@ function App() {
           <Route path="/setting" element={<Setting />} />
           <Route path="/help" element={<FaqsHelp />} />
           <Route path="/myrole" element={<MyRoles />} />
+          <Route path="/requestpage" element={<RequestPage />} />
         </Routes>
       </AuthProvider>
     </Router>

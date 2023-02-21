@@ -2,15 +2,15 @@ import React, { useEffect, useState } from "react";
 import Searchbar from "./mini_components/Searchbar";
 import Topbar from "./mini_components/Topbar";
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
+import godfather from "../assets/images/godfather.png";
 
 import { NavLink, useLocation } from "react-router-dom";
 import SideNav from "./SideNav";
-import axios from 'axios'
+import axios from "axios";
 import SubmissionStatus from "./SubmissionStatus";
 
 const Submission = () => {
-
-  const [active, setActive] = useState(false);
+  const [active, setActive] = useState("");
   const [cards, setcards] = useState();
 
   const [query, setQuery] = useState("");
@@ -54,7 +54,7 @@ const Submission = () => {
 
   useEffect(() => {
     getProjects();
-  }, [])
+  }, []);
 
   return (
     <>
@@ -69,7 +69,6 @@ const Submission = () => {
               <Searchbar setQuery={setQuery} query={query} handleSearch={handleSearch} />
               <h5 className="purple_title">Projects</h5>
               {cards?.map((item, index) => {
-
                 // ========= calculate total charcters =============
                 var char = 0;
                 var all = new Array();
@@ -79,21 +78,23 @@ const Submission = () => {
                     char = char + i.characters.length;
                     var length = i.characters.length;
                     for (i = 0; i < length; i++) {
-                      all[i] = char
+                      all[i] = char;
                     }
 
                     for (i = 0; i < all.length; i++) {
-                      if (all[i] > a)
-                        a = all[i]
+                      if (all[i] > a) a = all[i];
                     }
-                  })
+                  });
                 }
 
                 return (
                   <>
                     <div className="audition_accordion mb-3 ">
                       <div className="aa1 border p-2">
-                        <div key={index} className="aa_head d-flex justify-content-between">
+                        <div
+                          key={index}
+                          className="aa_head d-flex justify-content-between"
+                        >
                           <p>{item.basicInfo.name}</p>
                           <div>
                             <span>Roles : </span>
@@ -104,21 +105,23 @@ const Submission = () => {
                             <span>{a}</span>
                           </div>
                           <div className="aa_icon">
-                            {active ? (
-                              <BsChevronUp onClick={() => setActive(!active)} />
+                            {active === index.toString() ? (
+                              <BsChevronUp onClick={() => setActive("")} />
                             ) : (
-                              <BsChevronDown onClick={() => setActive(!active)} />
+                              <BsChevronDown
+                                onClick={() => setActive(index.toString())}
+                              />
                             )}
                           </div>
                         </div>
 
-                        {active && (
+                        {active === index.toString() && (
                           <SubmissionStatus id={item._id} />
                         )}
                       </div>
                     </div>
                   </>
-                )
+                );
               })}
             </div>
           </div>
