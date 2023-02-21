@@ -6,7 +6,6 @@ const JobApplication = require('../db/JobApplication')
 const User = require('../db/User');
 const { response } = require("express");
 
-
 // API for change status of jobapplication using default _id
 
 router.put("/Select/:_id", (req, res) => {
@@ -28,13 +27,13 @@ router.put("/Select/:_id", (req, res) => {
 
 // API for change status of jobapplication using userId
 
-router.put("/SelectuserId/:userId", (req, res) => {
+router.put("/SelectuserId/:_id", (req, res) => {
     const data = req.body;
     // console.log(data)
     const d =  data.select 
     // console.log(d)
 
-    JobApplication.findOneAndUpdate({userId:req.params.userId}, {
+    JobApplication.findOneAndUpdate({_id:req.params._id}, {
         $set: {
              status:d,
         },

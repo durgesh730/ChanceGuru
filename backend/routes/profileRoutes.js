@@ -219,7 +219,6 @@ router.put("/basicinfo", jwtAuth, (req, res) => {
 });
 
 //to set talent of user  or change
-
 router.put("/talent", jwtAuth, async (req, res) => {
   const {
     type,
