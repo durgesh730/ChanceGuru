@@ -195,6 +195,18 @@ router.get("/reqToApp/:userId",(req,res)=>{
   })
 })
 
+// To get requests
+router.get("/getRequests/:userId",(req,res)=>{
+  let userId = req.params.userId;
+  ReqToApp.find({talentId:userId,isRequested:true})
+  .then((response)=>{
+    res.json(response)
+  })
+  .catch((err)=>{
+    res.status(400).json(err)
+  })
+})
+
 //To change the basicinfo of user
 
 router.put("/basicinfo", jwtAuth, (req, res) => {
