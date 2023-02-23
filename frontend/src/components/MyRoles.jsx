@@ -6,6 +6,7 @@ import axios from "axios";
 
 const MyRoles = () => {
   const [activeCard, setActiveCard] = useState(1);
+  const [card, setcard] = useState([]);
   const [totalApplied, settotalApplied] = useState(0);
   const [directSelect, setdirectSelect] = useState(0);
   const [directScheduled, setdirectScheduled] = useState(0);
@@ -28,7 +29,8 @@ const MyRoles = () => {
         },
       })
       .then((res) =>  {
-        console.log(res.data)
+        console.log(res.data);
+        setcard((res.data).filter(item => (item.status == "selected")));
         settotalApplied(res.data.length);
         (res.data).forEach(item => {
 
@@ -195,11 +197,11 @@ const MyRoles = () => {
             <div className="col-lg-4 recent_main">
               <h1>Recents</h1>
 
-              {Array.from({ length: 3 }).map((item, index) => (
-                <RoleRecentCard index={index} activeCard={activeCard} />
+              {Array.from(card).map((item, index) => (
+                <RoleRecentCard index={index} card={card} activeCard={activeCard} />
               ))}
               <div className="d-flex justify-content-center align-items-center">
-                {Array.from({ length: 3 }).map((item, index) => (
+                {Array.from(card).map((item, index) => (
                   <div
                     className={
                       activeCard === index + 1 ? "dot dot_active" : "dot"
