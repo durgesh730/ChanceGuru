@@ -19,7 +19,7 @@ const Modal = ({ setModel, info, setProfile, roles }) => {
             },}
             )
             .then((res) => {
-                console.log(res);
+                // console.log(res);
                 setModel(false);
                 alert("You have successfully applied for this role")
             })

@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import Searchbar from "./mini_components/Searchbar";
 import Topbar from "./mini_components/Topbar";
 import {
-  Await,
-  json,
-  NavLink,
-  useLocation,
-  useNavigate,
+    Await,
+    json,
+    NavLink,
+    useLocation,
+    useNavigate,
 } from "react-router-dom";
 import { BsChevronDown, BsPhone } from "react-icons/bs";
 import godfather from "../assets/images/godfather.png";
@@ -16,9 +16,34 @@ import axios from "axios";
 
 
 const BrowseProfile = () => {
-  const [query, setQuery] = useState("");
-  const [profileData, setProfileData] = useState();
-  const [searchData, setsearchData] = useState([]);
+    const [query, setQuery] = useState("");
+    const [profileData, setProfileData] = useState();
+    const [select, setSelect] = useState('');
+
+
+    const setGet = (e) => {
+        const { name, value } = e.target
+
+        setSelect(() => {
+            return {
+                ...select,
+                [name]: value
+            }
+        })
+    }
+
+    const handleSelect = async () => {
+        const data = await fetch(`http://localhost:5000/profile/SelectData?role=${select.select}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        const res = await data.json();
+        if (res) {
+            setProfileData(res);
+        }
+    };
 
     const handleSearch = async () => {
         const data = await fetch(`http://localhost:5000/profile/ProData?fullname=${query}`, {
@@ -30,7 +55,6 @@ const BrowseProfile = () => {
         const res = await data.json();
         if (res) {
             setProfileData(res);
-            console.log(res);
         }
     };
 
@@ -44,7 +68,6 @@ const BrowseProfile = () => {
             },
         });
         const res = await data.json();
-        console.log(res);
         if (res) {
             setProfileData(res);
         }
@@ -70,9 +93,8 @@ const BrowseProfile = () => {
     useEffect(() => {
         GetProfiledata();
         GetUserData();
-    }, [setProfileData]);
+    }, []);
     const location = useLocation();
-    console.log(location);
 
     return (
         <div>
@@ -104,13 +126,17 @@ const BrowseProfile = () => {
                         </button>
                     </div>
                 </div>
-                <div className="filter d-flex justify-content-between align-item-center">
+
+                <div className="filter d-flex justify-content-between align-item-center  ">
                     <p>Search Results</p>
-                    <button className="bg-light p-2 border-0">
-                        Filter
-                        <BsChevronDown className="mx-1" />
-                    </button>
+                    <select value={select.select} name="select" className="bg-light p-1 border-0" onClick={handleSelect} onChange={setGet} >
+                        <option selected>Filter</option>
+                        <option>Main Role Hero</option>
+                        <option>Supporting Actor</option>
+                        <option>Main Role Villan</option>
+                    </select>
                 </div>
+
                 <div className="b_table">
                     <table>
                         <thead>
@@ -124,21 +150,21 @@ const BrowseProfile = () => {
                                 return (
                                     <tr key={index}>
                                         <td>
-                                            <img src={godfather} />
+                                            <img src={item.photos[0] ? item.photos[0].link : ""} />
                                             {item.basicInfo.fullname}
                                         </td>
                                         <td>
-                                            {item.rolePref.length !== 0 ? 
-                                            item.rolePref?.map((i) => {
-                                                return <><span>{i.role}</span><br/></>;
-                                            }):
-                                            "No role preferences found"
+                                            {item.rolePref.length !== 0 ?
+                                                item.rolePref?.map((i) => {
+                                                    return <><span>{i.role}</span><br /></>;
+                                                }) :
+                                                "No role preferences found"
                                             }
                                         </td>
                                         <td> {item.basicInfo.address ? item.basicInfo.address : "No address"} </td>
                                         <td>61 502648952</td>
                                         <td>
-                                            <NavLink to={"/browseprofile/:nickdavolt"} state={{user:item , card : [] ,  index :0 , btn : 0 }} exact>
+                                            <NavLink to={"/browseprofile/:nickdavolt"} state={{ user: item, card: [], index: 0, btn: 0 }} exact>
                                                 <button>View Profile</button>
                                             </NavLink>
                                         </td>
