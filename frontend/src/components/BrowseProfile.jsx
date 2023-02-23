@@ -19,7 +19,7 @@ const BrowseProfile = () => {
     const [query, setQuery] = useState("");
     const [profileData, setProfileData] = useState();
     const [select, setSelect] = useState('');
-
+    const [searchData, setsearchData] = useState([]);
 
     const setGet = (e) => {
         const { name, value } = e.target
@@ -68,6 +68,7 @@ const BrowseProfile = () => {
             },
         });
         const res = await data.json();
+        setsearchData(res);
         if (res) {
             setProfileData(res);
         }
