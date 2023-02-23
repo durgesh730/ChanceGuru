@@ -139,7 +139,7 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
             objDiv.scrollTop = objDiv.scrollHeight;
         }
         console.log(objDiv);
-    }, [loading]);
+    }, [loading, messages]);
 
     const typingHandler = (e) => {
         setNewMessage(e.target.value);
