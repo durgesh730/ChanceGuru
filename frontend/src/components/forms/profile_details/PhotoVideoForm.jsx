@@ -2,6 +2,9 @@ import React from "react";
 import { useState, useEffect } from "react";
 import "../forms.css";
 import axios from "axios";
+import AWS from 'aws-sdk';
+import { Buffer } from 'buffer';
+
 
 
 const PhotoVideoForm = ({ display, toggleForm }) => {
@@ -33,7 +36,7 @@ const PhotoVideoForm = ({ display, toggleForm }) => {
         show = { display: "none" };
     }
 
-    const [file, setFile] = useState();
+
     const [photoURL, setphotoURL] = useState([{
         link: ""
     }]);
@@ -111,7 +114,7 @@ const PhotoVideoForm = ({ display, toggleForm }) => {
     const handleVideoSubmit = (e) => {
         e.preventDefault();
         const data = videoURL;
-        axios.put('http://localhost:5000/profile/video', videoURL ,
+        axios.put('http://localhost:5000/profile/video', videoURL,
             {
                 headers: {
                     "Authorization": `Bearer ${localStorage.getItem("token")}`
@@ -137,10 +140,10 @@ const PhotoVideoForm = ({ display, toggleForm }) => {
             })
             .then((response) => {
                 if (response.data !== null) {
-                    if(response.data.photos.length !== 0){
+                    if (response.data.photos.length !== 0) {
                         setphotoURL(response.data.photos);
                     }
-                    if(response.data.videos.length !== 0){
+                    if (response.data.videos.length !== 0) {
                         setvideoURL(response.data.videos);
                     }
                 }
@@ -153,7 +156,45 @@ const PhotoVideoForm = ({ display, toggleForm }) => {
         handleShow();
     }, [])
 
+    //s3 bucket image upload
+    AWS.config.update({
+        accessKeyId: 'AKIAUXONWQ3HERXZEX5M',
+        secretAccessKey: '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',
+        region: 'ap-south-1',
+        signatureVersion: 'v4',
+    });
 
+    const [imageUrl, setImageUrl] = useState('');
+    const [file, setFile] = useState([null]);
+
+    const handleFileInputChange = (e) => {
+        setFile(e.target.files);
+    }
+
+    const handleFileUpload = async () => {
+        if (!file) {
+            return;
+        }
+        const s3 = new AWS.S3();
+        for (let i = 0; i < file.length; i++) {
+            const files = file[i];
+            // const str = files.toString('base64');
+            // let base64data = Buffer.from(str,'base64')
+            const params = {
+                Bucket: 'image-orders-bucket',
+                Key: `${Date.now()}.${files.name}`,
+                Body: files,
+                ContentEncoding: "base64",
+                ContentType: file.type,
+
+            };
+            const { Location } = await s3.upload(params).promise();
+            setImageUrl(Location);
+            console.log('uploading to s3', Location);
+        }
+
+        alert("Upload successful");
+    }
     return (
         <>
             {" "}
@@ -184,7 +225,14 @@ const PhotoVideoForm = ({ display, toggleForm }) => {
                         </div>
                         <form id="photo-form" onSubmit={handlePhotoSubmit}>
                             <div className="d-flex">
-                                <input  type="button" className="full-width-btn" value="Upload Photo" />
+                                <input type="file" multiple="true" accept="image/*" id="finput" onChange={handleFileInputChange} />
+
+                                <input type="button" className="full-width-btn" value="Upload Photo" onClick={handleFileUpload} />
+
+                                {imageUrl && (
+                                    <img src={imageUrl} className="photoUpload" alt="" />
+                                )}
+
                                 <p className="mx-1"></p>
                                 <input onClick={addFields} type="button" className="full-width-btn" value="Add Photo Link" />
                             </div>
@@ -201,10 +249,10 @@ const PhotoVideoForm = ({ display, toggleForm }) => {
                                     </>
                                 )
                             })}
-                            {/* <input type="file" multiple="false" accept="image/*" id="finput" onChange={upload} /> */}
+                            {/* <input type="file" multiple="true" accept="image/*" id="finput" onChange={handleFileInputChange} /> */}
 
-                                {/* <img src={file} className="photoUpload" alt="" />
-                                <canvas id="canv1"></canvas> */}
+                            {/* <img src={file} className="photoUpload" alt="" /> */}
+                            <canvas id="canv1"></canvas>
                             <div className="row">
                                 <input
                                     type="submit"

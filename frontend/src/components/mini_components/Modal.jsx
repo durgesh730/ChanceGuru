@@ -12,12 +12,11 @@ const Modal = ({ setModel, info, setProfile, roles }) => {
                 pId: info._id,
                 roleId: rId,
                 charId: chrId,
-                status: "applied",
-            }, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
-                },
-            }
+                status : "applied",
+                seekerId:info.seekerId,
+            },{ headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },}
             )
             .then((res) => {
                 // console.log(res);

@@ -1,12 +1,11 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
 
 const SubViewProfile = ({display , index, card, msg }) => {
-    // console.log(card)
     const [user, setUser] = useState();
     const [d, setd] = useState(1);
-    // console.log(cards)
+
     const getuserData = () => {
         axios
             .get(`http://localhost:5000/profile/${card[index]?.userId}`)

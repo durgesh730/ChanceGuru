@@ -30,9 +30,9 @@ const Topbar = (props) => {
 
   function toggleProfileOptions() {
     if (profileHeight == 0) {
-      setProfileHeight(192);
+      setProfileHeight(270);
       setDim(1);
-      document.getElementById("profileOption").style.height = "192px";
+      document.getElementById("profileOption").style.height = "fit-content";
     } else {
       setProfileHeight(0);
       setDim(0);
@@ -64,7 +64,7 @@ const Topbar = (props) => {
   const user = JSON.parse(localStorage.getItem("login"));
 
   const [active, setActive] = useState("home");
-  console.log(active);
+  // console.log(active);
 
   return (
     <>
@@ -139,6 +139,7 @@ const Topbar = (props) => {
               )}
             </span>
           </Link>
+          <Link to="/chat" >
           <span
             className={
               active === "chat"
@@ -153,6 +154,8 @@ const Topbar = (props) => {
               <img className="topbar-icons" src={chat} alt="" />
             )}
           </span>
+          </Link>
+          
           {/*
                         <Link to="/projectcreation"> */}
           <span
@@ -216,6 +219,12 @@ const Topbar = (props) => {
               <ul>
                 <li>
                   <Link to="/profiledetails">My Profile</Link>
+                </li>
+                <li>
+                  <NavLink to="/requestpage">My Requests</NavLink>
+                </li>
+                <li>
+                  <NavLink to="/myrole">My Roles</NavLink>
                 </li>
                 <li>
                   <NavLink to="/setting">Account Settings</NavLink>

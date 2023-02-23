@@ -2,6 +2,9 @@ import React from "react";
 import { useState , useEffect } from "react";
 import axios from "axios";
 import "../forms.css";
+import form_group from "../../../assets/images/form_group.svg";
+import form_group_1 from "../../../assets/images/form-group-1.png";
+import form_group_2 from "../../../assets/images/form-group-2.png";
 
 const TalentDetailsForm = ({ display , toggle , getFunction}) => {
     let show = {};
@@ -25,11 +28,10 @@ const TalentDetailsForm = ({ display , toggle , getFunction}) => {
         allowances: "",
         travelling: "",
     });
-    
+
     const handleInputChange = (e) => {
         setTalentDetails({ ...talentDetails, [e.target.name]: e.target.value });
     };
-
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -42,7 +44,7 @@ const TalentDetailsForm = ({ display , toggle , getFunction}) => {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${localStorage.getItem("token")}`,
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
             body: JSON.stringify({
                 type, height, weight, bodyType, skinTone,
@@ -102,98 +104,110 @@ const TalentDetailsForm = ({ display , toggle , getFunction}) => {
                                     <option>Director</option>
                                 </select>
                             </div>
-                            <input
-                                name="height"
-                                value={talentDetails.height}
-                                onChange={handleInputChange}
-                                type="text"
-                                className="form-control"
-                                placeholder="Height"
-                            />
-                            <input
-                                name="weight"
-                                value={talentDetails.weight}
-                                onChange={handleInputChange}
-                                type="text"
-                                className="form-control"
-                                placeholder="Weight"
-                            />
-                            <select
-                                name="bodyType"
-                                onChange={handleInputChange}
-                                value={talentDetails.bodyType}
-                                className="form-control form-select"
-                            >
-                                <option value="" disabled selected>
-                                    Body Type
-                                </option>
-                                <option>Body1</option>
-                                <option>body2</option>
-                            </select>
-                            <select
-                                name="skinTone"
-                                onChange={handleInputChange}
-                                value={talentDetails.skinTone}
-                                className="form-control form-select"
-                            >
-                                <option value="" disabled selected>
-                                    Skin Tone
-                                </option>
-                                <option>skin1</option>
-                                <option>skin2</option>
-                            </select>
-                            <select
-                                name="eyeColour"
-                                onChange={handleInputChange}
-                                value={talentDetails.eyeColour}
-                                className="form-control form-select"
-                            >
-                                <option value="" disabled selected>
-                                    Eye Color
-                                </option>
-                                <option>Blue</option>
-                                <option>Brown</option>
-                                <option>Green</option>
-                            </select>
-                            <select
-                                name="hairColour"
-                                onChange={handleInputChange}
-                                value={talentDetails.hairColour}
-                                className="form-control form-select"
-                            >
-                                <option value="" disabled selected>
-                                    Hair Color
-                                </option>
-                                <option>Black</option>
-                                <option>Brown</option>
-                                <option>Blonde</option>
-                            </select>
-                            <select
-                                name="hairStyle"
-                                onChange={handleInputChange}
-                                value={talentDetails.hairStyle}
-                                className="form-control form-select"
-                            >
-                                <option value="" disabled selected>
-                                    Hair Style
-                                </option>
-                                <option>Bob Cut</option>
-                                <option>Long Straight</option>
-                                <option>Curly</option>
-                            </select>
-                            <select
-                                name="beardStyle"
-                                onChange={handleInputChange}
-                                value={talentDetails.beardStyle}
-                                className="form-control form-select"
-                            >
-                                <option value="" disabled selected>
-                                    Beard Style
-                                </option>
-                                <option>Sharp Cut</option>
-                                <option>Dense Long</option>
-                                <option>None</option>
-                            </select>
+                            <div style={{ position: "relative" }}>
+                                <div className="form_group">
+                                    <p>Body</p>
+                                    <img src={form_group} alt="" />
+                                </div>
+                                <input
+                                    name="height"
+                                    value={talentDetails.height}
+                                    onChange={handleInputChange}
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Height"
+                                />
+                                <input
+                                    name="weight"
+                                    value={talentDetails.weight}
+                                    onChange={handleInputChange}
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Weight"
+                                />
+                                <select
+                                    name="bodyType"
+                                    onChange={handleInputChange}
+                                    value={talentDetails.bodyType}
+                                    className="form-control form-select"
+                                >
+                                    <option value="" disabled selected>
+                                        Body Type
+                                    </option>
+                                    <option>Body1</option>
+                                    <option>body2</option>
+                                </select>
+                                <select
+                                    name="skinTone"
+                                    onChange={handleInputChange}
+                                    value={talentDetails.skinTone}
+                                    className="form-control form-select"
+                                >
+                                    <option value="" disabled selected>
+                                        Skin Tone
+                                    </option>
+                                    <option>skin1</option>
+                                    <option>skin2</option>
+                                </select>
+                            </div>
+                            <div style={{ position: "relative" }}>
+                                <div className="form_group">
+                                    <p>Face & Head</p>
+                                    <img src={form_group} alt="" />
+                                </div>
+                                <select
+                                    name="eyeColour"
+                                    onChange={handleInputChange}
+                                    value={talentDetails.eyeColour}
+                                    className="form-control form-select"
+                                >
+                                    <option value="" disabled selected>
+                                        Eye Color
+                                    </option>
+                                    <option>Blue</option>
+                                    <option>Brown</option>
+                                    <option>Green</option>
+                                </select>
+                                <select
+                                    name="hairColour"
+                                    onChange={handleInputChange}
+                                    value={talentDetails.hairColour}
+                                    className="form-control form-select"
+                                >
+                                    <option value="" disabled selected>
+                                        Hair Color
+                                    </option>
+                                    <option>Black</option>
+                                    <option>Brown</option>
+                                    <option>Blonde</option>
+                                </select>
+                                <select
+                                    name="hairStyle"
+                                    onChange={handleInputChange}
+                                    value={talentDetails.hairStyle}
+                                    className="form-control form-select"
+                                >
+                                    <option value="" disabled selected>
+                                        Hair Style
+                                    </option>
+                                    <option>Bob Cut</option>
+                                    <option>Long Straight</option>
+                                    <option>Curly</option>
+                                </select>
+                                <select
+                                    name="beardStyle"
+                                    onChange={handleInputChange}
+                                    value={talentDetails.beardStyle}
+                                    className="form-control form-select"
+                                >
+                                    <option value="" disabled selected>
+                                        Beard Style
+                                    </option>
+                                    <option>Sharp Cut</option>
+                                    <option>Dense Long</option>
+                                    <option>None</option>
+                                </select>
+                            </div>
                             <select
                                 name="language"
                                 onChange={handleInputChange}

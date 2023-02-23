@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link , useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import "./style.css";
 import logo from "../assets/images/logo1.svg";
@@ -17,6 +17,7 @@ const Login = () => {
                 navigate("/seekerdashboard");
             }
         }
+        else { navigate("/"); }
     }, [])
     return (
         <>
@@ -34,10 +35,10 @@ const Login = () => {
                             </div>
                             <div className="web1-tagline">One Place for Both Talent and Talent Seeker</div>
                             <div className="web1-buttons d-flex flex-column">
-                                <Link to="/signup" state={{talent : true}} >
+                                <Link to="/signup" state={{ talent: true }} >
                                     <button className="btn btn-talents">Sign up as Talents</button>
                                 </Link>
-                                <Link to="/signup" state={{talent:false}}>
+                                <Link to="/signup" state={{ talent: false }}>
                                     <button className="btn btn-seekers">Sign up as Seekers</button>
                                 </Link>
                             </div>
