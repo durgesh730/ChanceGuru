@@ -18,6 +18,7 @@ const Card2 = ({ card }) => {
           .then((res) => {
             if(res.data !== null){
               setApply(res.data)
+              // console.log(res.data);
             }
           })
           .catch((err) => {

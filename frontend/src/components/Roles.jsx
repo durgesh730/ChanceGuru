@@ -441,20 +441,24 @@ const Roles = ({ display }) => {
                         <>
                           <div>
                             <span> {item.role} </span>
-                            {
-                              item ? (item.characters?.map((not, i) => {
-                                return (
-                                  <div class="card">
-                                    <div class="card-body">
-                                      <h5 class="card-title">{not.name}</h5>
-                                      <h6 class="card-subtitle mb-2 text-muted">{not.age}</h6>
-                                      <h6 class="card-subtitle mb-2 text-muted">{not.gender}</h6>
-                                      <p class="card-text">{not.desc ? not.desc : "Not available"}</p>
+                            <div className="d-flex overflow-auto my-2 ">
+                              {
+                                item ? (item.characters?.map((not, i) => {
+                                  return (
+                                    <div class="Card mx-1 ">
+                                      <div class="Card-body">
+                                        <div className="cardone" >
+                                        <h5 class="card-title">{not.name}</h5>
+                                        <h6 class="card-subtitle mb-2 text-muted">{not.age}</h6>
+                                        <h6 class="card-subtitle mb-2 text-muted">{not.gender}</h6>
+                                        <p class="card-text">{not.desc ? not.desc : "Not available"}</p>
+                                          </div>
+                                      </div>
                                     </div>
-                                  </div>
-                                )
-                              })) : (" ")
-                            }
+                                  )
+                                })) : (" ")
+                              }
+                            </div>
                           </div>
                         </>
                       )

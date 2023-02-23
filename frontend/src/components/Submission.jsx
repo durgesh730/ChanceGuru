@@ -12,8 +12,8 @@ const Submission = () => {
 
   const [active, setActive] = useState(false);
   const [cards, setcards] = useState();
-
   const [query, setQuery] = useState("");
+  const [store, setStore] = useState()
 
   const handleSearch = async () => {
     const data = await fetch(`http://localhost:5000/profile/searchData?name=${query}`, {
@@ -26,21 +26,22 @@ const Submission = () => {
     if (res) {
       setcards(res);
     }
+  }; 
+
+  const handleApplied = async (id) => {
+    const data = await fetch(`http://localhost:5000/project/Seekers/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const res = await data.json();
+    if(res !== null){
+      setStore(res);
+    }
   };
-
-  // const getProjects = () => {
-  //   axios
-  //     .get("http://localhost:5000/project/allProjectsSeekers")
-  //     .then((res) => {
-  //       setcards(res.data)
-  //       console.log(res.data)
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     })
-  // }
-
-  const getProjects = (e) => {
+ 
+  const getProjects = async(e) => {
     axios.get('http://localhost:5000/project/allProjectsSeekers', {
             headers: {
                 "Authorization": `Bearer ${localStorage.getItem("token")}`
@@ -48,7 +49,9 @@ const Submission = () => {
         }
     ).then((res) => {
       setcards(res.data)
-      console.log(res.data);
+      res.data.forEach(async element => {
+        let name = await handleApplied(element._id);
+      });
     });
 };
 
@@ -69,7 +72,7 @@ const Submission = () => {
               <Searchbar setQuery={setQuery} query={query} handleSearch={handleSearch} />
               <h5 className="purple_title">Projects</h5>
               {cards?.map((item, index) => {
-
+                  // setStore(item._id)
                 // ========= calculate total charcters =============
                 var char = 0;
                 var all = new Array();
@@ -91,18 +94,25 @@ const Submission = () => {
 
                 return (
                   <>
-                    <div className="audition_accordion mb-3 ">
+                    <div key={index} className="audition_accordion mb-3 ">
                       <div className="aa1 border p-2">
-                        <div key={index} className="aa_head d-flex justify-content-between">
+                        <div  className="aa_head d-flex justify-content-between">
                           <p>{item.basicInfo.name}</p>
                           <div>
                             <span>Roles : </span>
                             <span>{item.roles.length}</span>
                           </div>
+
                           <div>
                             <span>Character : </span>
                             <span>{a}</span>
                           </div>
+
+                          <div>
+                            <span>Applied by: </span>
+                            <span>{store?.length}</span>
+                          </div>
+
                           <div className="aa_icon">
                             {active ? (
                               <BsChevronUp onClick={() => setActive(!active)} />

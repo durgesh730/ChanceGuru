@@ -36,7 +36,7 @@ const UserProfile = (props) => {
 
     })
       .then(res => {
-        console.log(res.data);
+        // console.log(res.data);
 
       })
       .catch(err => {
@@ -66,7 +66,7 @@ const UserProfile = (props) => {
       body: JSON.stringify({ select: rejected })
     })
     const res = await data.json();
-    console.log(res);
+    // console.log(res);
   };
 
   const handleShortlist = async () => {
@@ -78,7 +78,7 @@ const UserProfile = (props) => {
       body: JSON.stringify({ select: shortlist })
     })
     const res = await data.json();
-    console.log(res);
+    // console.log(res);
   };
 
   const handleSchedule = async () => {
@@ -90,7 +90,7 @@ const UserProfile = (props) => {
       body: JSON.stringify({ select: schedule })
     })
     const res = await data.json();
-    console.log(res);
+    // console.log(res);
   };
 
   return (

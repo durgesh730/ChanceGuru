@@ -11,13 +11,28 @@ const Card2 = ({ card }) => {
   const id = card._id
 
   const [apply, setApply] = useState([]);
+  const [photos, setPhotos] = useState()
 
-  const getuserId = () => {
+  const userName = async (id) => {
+    const data = await fetch(`http://localhost:5000/profile/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+    const res = await data.json();
+    setPhotos(res.photos)
+  }
+
+  const getuserId = async () => {
     axios
       .get(`http://localhost:5000/application/project/${id}`)
       .then((res) => {
-        if(res.data !== null){
+        if (res.data !== null) {
           setApply(res.data)
+          res.data.forEach(async element => {
+            let name = await userName(element.userId);
+          });
         }
       })
       .catch((err) => {
@@ -45,9 +60,13 @@ const Card2 = ({ card }) => {
             <span className="h4" >{apply.length}</span>
           </div>
           <div className="many_images">
-            <img src={image} alt="img" />
-            <img src={image} alt="img" />
-            <img src={image} alt="img" />
+            {
+              photos?.map((item, i) => {
+                return (
+                  <img src={item.link} alt="img" />
+                )
+              })
+            }
             <span>+20</span>
           </div>
         </div>

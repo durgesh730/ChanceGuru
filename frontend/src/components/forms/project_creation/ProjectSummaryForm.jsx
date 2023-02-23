@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from 'axios';
 import magnifyingIcon from "../../../assets/icons/find-my-friend.svg";
 import maskIcon from "../../../assets/icons/mask.svg";
@@ -8,14 +8,23 @@ const ProjectSummaryForm = ({ display, values }) => {
     const navigate = useNavigate();
     const basicInfo = values.basicInfo;
     const roles = values.formFields;
+    const [showset, setShow] = useState(false)
 
-    // console.log(roles[0].role)
+    // console.log(values)
 
     let show = {};
     if (display) {
         show = { display: "block" };
     } else {
         show = { display: "none" };
+    }
+
+    const handleshow = (i) => {
+        if (showset === false) {
+            setShow(true)
+        } else {
+            setShow(false)
+        }
     }
 
     const publishProject = () => {
@@ -86,34 +95,36 @@ const ProjectSummaryForm = ({ display, values }) => {
                         <img src={maskIcon} />
                         <span>Roles Aggregate</span>
                     </div>
-                    <div className="form-desc">Lead (03)</div>
+                    {/* <div className="form-desc">Lead (03)</div> */}
                 </div>
                 <form id="form1">
-                    <input type="text" className="form-control" placeholder="MacDuff : Male, 20-30" />
-                    <textarea
-                        name=""
-                        id="bio"
-                        className="form-control text-area"
-                        rows="4"
-                        placeholder="Details..."
-                        maxLength="250"
-                    ></textarea>
-                    <input type="text" className="form-control" placeholder="Lady MacDuff: Female, 20-30" />
                     {
                         roles.map((item, index) => {
                             return (
                                 <>
-                                    <div className="d-flex" >
-                                        <label className="label-desc">{item.role}(01)</label>
+                                    <div className="row" >
+                                        <span className="label-desc">{item.role}(01)</span>
+                                        {item.characters?.map((data, index) => {
+                                            return (
+                                                <>
+                                                    <span className=" char my-2" onClick={() => { handleshow() }} >{data.name}</span>
+                                                    <textarea
+                                                        style={showset ? { display: `block` } : { display: `none` }}
+                                                        name=""
+                                                        id="bio"
+                                                        className="form-control text-area"
+                                                        rows="4"
+                                                        value={data.details}
+                                                        maxLength="250"
+                                                    ></textarea>
+                                                </>
+                                            )
+                                        })}
                                     </div>
                                 </>
                             )
                         })
                     }
-                    
-                    {/* <input type="text" className="form-control" placeholder="Ross : Male, 30-40" />
-                    <label className="label-desc">Chorus/ Ensemble (01)</label>
-                    <input type="text" className="form-control" placeholder="Thanes : Male, 20-30" /> */}
 
                     <div className="row">
                         <input type="button" className="col-4 cancel-btn btn btn-lg btn-block my-2" value="Cancel" />
