@@ -246,4 +246,5 @@ router.get("/getCharacter/:roleId",(req,res)=>{
     })
 })
 
+
 module.exports = router;
