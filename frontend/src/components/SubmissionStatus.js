@@ -38,7 +38,7 @@ const SubmissionStatus = ({a , project , id }) => {
 
                 <div>
                     <span>Applied by : </span>
-                    <span>{cards.length}</span>
+                    <span>{cards?.length}</span>
                 </div>
 
                 <div className="aa_icon">
