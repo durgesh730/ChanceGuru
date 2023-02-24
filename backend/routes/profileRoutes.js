@@ -22,6 +22,17 @@ router.get("/", jwtAuth, (req, res) => {
     });
 });
 
+// API used for user seeker image
+router.get("/seekersImage/:id", async (req, res) => {
+  try {
+    const user = await User.findOne({_id:req.params.id})
+    res.json(user);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Some error occured");
+  }
+});
+
 // API used for user phone number and email
 router.get("/Users", async (req, res) => {
   try {
