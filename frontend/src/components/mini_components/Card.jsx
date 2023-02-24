@@ -19,7 +19,7 @@ const Card = ({ card, profile ,setClicked }) => {
     var Difference_In_Time = date2.getTime() - date1.getTime();
     var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
     let a = Math.round(Difference_In_Days);
-    // console.log(a)
+    // console.log(card._id)
 
 
 
@@ -28,6 +28,7 @@ const Card = ({ card, profile ,setClicked }) => {
             .get(`http://localhost:5000/projects/getroles/${card.id}`)
             .then((res) => {
                 setroles(res.data.data);
+
             })
             .catch((err) => {
                 // console.log(err);

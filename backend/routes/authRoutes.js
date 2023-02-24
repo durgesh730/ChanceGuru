@@ -34,7 +34,7 @@ router.post("/signup", (req, res) => {
 
 //For login pass email and password through the body it will return token and type of user if exists else it will return user not exists.
 router.post("/login", (req, res, next) => {
-  console.log(req.body)
+  // console.log(req.body)
   passport.authenticate(
     "local",
     { session: false },

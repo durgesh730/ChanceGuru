@@ -525,3 +525,13 @@ div.lI div.actionButtons {
   background-color: #fff;
   opacity: 1;
 }
+
+.Card-body{
+  border: 1px solid black;
+  padding: 1rem;
+  border-radius: .5rem;
+}
+
+.char{
+  cursor: pointer;
+}

@@ -5,6 +5,18 @@ const Project = require("../db/Project");
 const JobApplication = require('../db/JobApplication')
 const User = require('../db/User');
 
+//Get project form project id
+
+router.get("/oneproject/:id" , (req , res) => {
+    Project.findOne({_id : req.params.id})
+        .then(job =>{
+            res.json(job);
+        })
+        .catch(err => {
+            res.status(400).json(err);
+        })
+})
+
 // API for change status of jobapplication using default _id
 
 router.put("/Select/:_id/:inc", (req, res) => {
@@ -14,7 +26,8 @@ router.put("/Select/:_id/:inc", (req, res) => {
             JobApplication.findOneAndUpdate({ _id: req.params._id }, {
                 $set: {
                     status: "selected",
-                    value: (req.params.inc == 1) ? job.value + 5 : job.value + 100
+                    value: (req.params.inc == 1) ? job.value + 5 : job.value + 100,
+                    updatedAt: new Date(),
                 },
             }, { returnOriginal: false })
                 .then((response) => {
@@ -39,7 +52,8 @@ router.put("/Shortlist/:_id/:inc", (req, res) => {
             JobApplication.findOneAndUpdate({ _id: req.params._id }, {
                 $set: {
                     status: "shortlisted",
-                    value: (req.params.inc == 1) ? job.value + 100 : job.value + 1000
+                    value: (req.params.inc == 1) ? job.value + 100 : job.value + 1000 ,
+                    updatedAt: new Date(),
                 },
             }, { returnOriginal: false })
                 .then((response) => {
@@ -60,7 +74,8 @@ router.put("/Schedule/:_id/:inc", (req, res) => {
             JobApplication.findOneAndUpdate({ _id: req.params._id }, {
                 $set: {
                     status: "scheduled",
-                    value: job.value == 5 ? job.value + 1000 : job.value + 500
+                    value: job.value == 5 ? job.value + 1000 : job.value + 500 ,
+                    updatedAt: new Date(),
                 },
             }, { returnOriginal: false })
                 .then((response) => {
@@ -84,7 +99,8 @@ router.put("/Reject/:_id", (req, res) => {
             JobApplication.findOneAndUpdate({ _id: req.params._id }, {
                 $set: {
                     status: "rejected",
-                    value: (job.value - 1)
+                    value: (job.value - 1) ,
+                    updatedAt: new Date(),
                 },
             }, { returnOriginal: false })
                 .then((response) => {
@@ -245,5 +261,6 @@ router.get("/getCharacter/:roleId",(req,res)=>{
         res.status(400).json(err);
     })
 })
+
 
 module.exports = router;

@@ -35,6 +35,12 @@ const SubmissionStatus = ({a , project , id }) => {
                     <span>Character : </span>
                     <span>{a}</span>
                 </div>
+
+                <div>
+                    <span>Applied by : </span>
+                    <span>{cards?.length}</span>
+                </div>
+
                 <div className="aa_icon">
                     {active ? (
                         <BsChevronUp onClick={() => setActive(!active)} />

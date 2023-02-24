@@ -35,7 +35,6 @@ const ApplicantDetails = () => {
             },
         })
         const res = await data.json();
-        // console.log(res)
         setProjectDetails(res)
 
     }
@@ -81,7 +80,6 @@ const ApplicantDetails = () => {
         })
         const json = await data.json();
         setData(json)
-        // console.log(json);
     }
 
     useEffect(() => {
@@ -133,7 +131,6 @@ const ApplicantDetails = () => {
                     <img src={promotion} className="promotion" alt="" />
                     {
                         projectDetails?.map((items, i) => {
-                            // console.log(items.basicInfo.name)
                             return (
                                 <>
                                     <span key={i} className="projectTitle">
@@ -213,7 +210,7 @@ const ApplicantDetails = () => {
 
                     <div className="statusContainer">
                         {
-                            console.log(shortListCount,waitingCount,rejectedCount)
+                            // console.log(shortListCount,waitingCount,rejectedCount)
                         }
                         <div highlighted={activeStatus === "shortlist" ? "true" : "false"} className='shortlisted' onClick={() => setActiveStatus("shortlist")} >
                             <img src={list} alt="" />
@@ -243,7 +240,6 @@ const ApplicantDetails = () => {
                             {
 
                                 Data?.map((Data, i) => {
-                                    console.log(Data)
                                     if (activeChar._id == Data.charId) {
                                         if (activeStatus === "shortlist") {
                                             if (Data.status === activeStatus || Data.status === "selected") {

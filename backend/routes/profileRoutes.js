@@ -37,6 +37,19 @@ router.get("/Users", async (req, res) => {
   }
 });
 
+// API for search data on browser Profile by fullname {"rolePref.role":"Main Role Hero"}
+router.get("/SelectData", async (req, res) => {
+    // console.log(req.query.role.select)
+    const keyword = req.query.role
+        ?
+        { "rolePref.role": { $regex: req.query.role, $options: "i" } } //case insensitive
+
+        : {};
+    const users = await Profile.find(keyword);
+    res.send(users);
+});
+
+
 // API for search data on browser Profile by fullname
 router.get("/ProData", async (req, res) => {
   const keyword = req.query.fullname
