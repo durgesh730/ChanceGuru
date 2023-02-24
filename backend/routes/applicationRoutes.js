@@ -4,7 +4,7 @@ const JobApplicant = require("../db/JobApplication");
 const JobApplication = require("../db/JobApplication");
 const router = express.Router();
 
-// To find pid
+// To find from pid
 router.get("/project/:_id", (req, res) => {
   JobApplicant.find({ pId: req.params._id })
     .then((response) => {

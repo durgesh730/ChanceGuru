@@ -37,7 +37,10 @@ let schema = new mongoose.Schema(
     seekerId:{
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-    }
+    },
+    updatedAt: {
+      type: String,
+  }
   },
   { collation: { locale: "en" } }
 );
