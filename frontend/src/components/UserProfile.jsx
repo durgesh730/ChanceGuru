@@ -121,6 +121,7 @@ const UserProfile = () => {
     } else if(card[index] === "rejected"){
       setRejected(true);
     }
+   console.log(card[index])
   }, [])
   
   return (
