@@ -67,7 +67,7 @@ router.get("/searchData", async (req, res) => {
 
 // data of profiles
 router.get("/profileData", (req, res) => {
-  Profile.find(req.params.id)
+  Profile.find(req.query.id?{userId:req.query.id}:{})
     .then((response) => {
       res.json(response);
     })

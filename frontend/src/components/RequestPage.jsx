@@ -12,12 +12,12 @@ const RequestPage = () => {
 
     applyReqs?.map((item, index) => {
       axios
-        .get(`http://localhost:5000/project/UserId/${item.seekerId}`)
+        .get(`http://localhost:5000/profile/profileData?id=${item.seekerId}`)
         .then((res) => {
           if (res !== null) {
             setReqUsers(oldUsers => [...oldUsers, res.data])
           }
-          // console.log(res.data)
+          console.log(res.data)
         })
         .catch((err) => {
           console.log(err);
@@ -49,10 +49,10 @@ const RequestPage = () => {
     let arr = []
     for (let index = 0; index < len; index++) {
 
-      const seekerName = reqUsers[index][0].username;
+      const seekerName = reqUsers[index][0].basicInfo.fullname;
       let requestTime = new Date(requests[index].RequestSendAt);
-      console.log(typeof(requestTime))
-      requestTime = `${requestTime.getDate()}-${requestTime.getMonth()<10?`0${requestTime.getMonth()}`:requestTime.getMonth()}-${requestTime.getFullYear()}`
+      console.log(typeof (requestTime))
+      requestTime = `${requestTime.getDate()}-${requestTime.getMonth() + 1 < 10 ? `0${requestTime.getMonth() + 1}` : requestTime.getMonth()}-${requestTime.getFullYear()}`
       let mapObj = {
         seeker: seekerName,
         requestTime: requestTime
@@ -61,7 +61,7 @@ const RequestPage = () => {
 
     }
     console.log(arr)
-    if(arr.length != 0){
+    if (arr.length != 0) {
 
       setReqUserMap(arr)
     }
@@ -81,38 +81,38 @@ const RequestPage = () => {
       <div className="requestPage d-flex justify-content-center">
         <div className="b_table mt-5">
           {
-            reqUserMap.length > 0 ?(
+            reqUserMap.length > 0 ? (
               <table>
-            <thead>
-              <td>Request ID</td>
-              <td>Seeker Name</td>
-              <td>Time</td>
-              <td></td>
-            </thead>
-            <tbody>
-              {
-                reqUserMap?.map((item, index) => {
-                  return (
+                <thead>
+                  <td>Request ID</td>
+                  <td>Seeker Name</td>
+                  <td>Time</td>
+                  <td></td>
+                </thead>
+                <tbody>
+                  {
+                    reqUserMap?.map((item, index) => {
+                      return (
 
-                    <tr>
-                      <td>{index+1}</td>
-                      <td>{item.seeker}</td>
-                      <td>{item.requestTime}</td>
-                      <td>
-                        <NavLink to="">
-                          <button>View Profile</button>
-                        </NavLink>
-                      </td>
-                    </tr>
-                  )
-                })
-              }
-            </tbody>
-          </table>
+                        <tr>
+                          <td>{index + 1}</td>
+                          <td>{item.seeker}</td>
+                          <td>{item.requestTime}</td>
+                          <td>
+                            <NavLink to={"/browseprofile/:nickdavolt"} state={{ user: item, card: [], index: 0, btn: 0 }} exact>
+                              <button>View Profile</button>
+                            </NavLink>
+                          </td>
+                        </tr>
+                      )
+                    })
+                  }
+                </tbody>
+              </table>
             )
-            :"You currently have no requests"
+              : "You currently have no requests"
           }
-          
+
         </div>
       </div>
     </>
