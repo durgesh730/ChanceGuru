@@ -4,14 +4,14 @@ import ChatContext from "./chat-context";
 
 const ChatProvider = (props) => {
   const [user, setUser] = useState();
-  const [selectedChat, setSelectedChat] = useState();
   const [chats, setChats] = useState([]);
+
+  const [selectedChat, setSelectedChat] = useState();
   const [notification, setNotification] = useState([]);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    
     const user = JSON.parse(localStorage.getItem("login"));
     user.token = localStorage.getItem("token");
     setUser(user);

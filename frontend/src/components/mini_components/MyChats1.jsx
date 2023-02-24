@@ -6,7 +6,6 @@ import axios from "axios";
 import ChatContext from "../Context/chat-context";
 import { getSender } from "../config/ChatLogics";
 
-
 import UserListItem from "../userAvatar/UserListItem";
 
 const MyChats1 = ({ fetchAgain }) => {
@@ -28,11 +27,14 @@ const MyChats1 = ({ fetchAgain }) => {
         config
       );
       setChats(data);
+
       console.log(data, "fetching all users chats in my chats");
     } catch (error) {
       console.log(error.message);
     }
   };
+
+  //adding first chat
   // console.log(selectedChat, user, chats)
 
   useEffect(() => {
@@ -50,14 +52,6 @@ const MyChats1 = ({ fetchAgain }) => {
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingChat, setLoadingChat] = useState(false);
-
-
-
-
-
-  
-
-  
 
   const handleSearch = async (searchValue) => {
     console.log(searchValue);
@@ -92,7 +86,6 @@ const MyChats1 = ({ fetchAgain }) => {
       //console.log(data, 'searchQuerry keyword response data');
     } catch (error) {
       console.log(error.message);
-      
     }
   };
 
@@ -104,6 +97,7 @@ const MyChats1 = ({ fetchAgain }) => {
       setSearchResult([]);
     }
   }
+  // setSelectedChat(chats[0]);
 
   const accessChatCreateChat = async (userId) => {
     //console.log(userId); id of selected user
@@ -131,12 +125,18 @@ const MyChats1 = ({ fetchAgain }) => {
       console.log(data, "access new/existing chat response data");
 
       setLoadingChat(false);
-      
     } catch (error) {
       console.log(error.message);
-      
     }
   };
+
+  useEffect(() => {
+    setSelectedChat(chats[0]);
+    console.log("called");
+  }, [chats]);
+
+  // console.log("chats", chats[0].latestMessage.content.length);
+  console.log("selected", selectedChat);
 
   return (
     <>
@@ -187,7 +187,11 @@ const MyChats1 = ({ fetchAgain }) => {
                   </figure>
                   <div>
                     <h6>{getSender(loggedUser, chat.users)}</h6>
-                    <p>In this respect, your platform shou…</p>
+                    <p>
+                      {chat.latestMessage.content.length > 45
+                        ? chat.latestMessage.content.substring(0, 45) + "..."
+                        : chat.latestMessage.content}
+                    </p>
                   </div>
                 </div>
               ))
