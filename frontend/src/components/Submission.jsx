@@ -16,13 +16,17 @@ const Submission = () => {
   const [query, setQuery] = useState("");
 
   const handleSearch = async () => {
-    const data = await fetch(`http://localhost:5000/profile/searchData?name=${query}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const data = await fetch(
+      `http://localhost:5000/profile/searchData?name=${query}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     const res = await data.json();
+
     if (res) {
       setcards(res);
     }
@@ -39,22 +43,29 @@ const Submission = () => {
   //       console.log(err);
   //     })
   // }
+  const url = "http://localhost:5000/project/allProjectsSeekers";
+  // const url = "http://localhost:5000/project/searchData?name=";
 
   const getProjects = (e) => {
-    axios.get('http://localhost:5000/project/allProjectsSeekers', {
-      headers: {
-        "Authorization": `Bearer ${localStorage.getItem("token")}`
-      }
-    }
-    ).then((res) => {
-      setcards(res.data)
-      console.log(res.data);
-    });
+    axios
+      .get(url, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      .then((res) => {
+        setcards(res.data);
+        console.log("proj");
+        console.log(res.data);
+      });
   };
 
   useEffect(() => {
     getProjects();
   }, []);
+
+  console.log("Cards");
+  console.log(cards);
 
   return (
     <>
@@ -66,10 +77,14 @@ const Submission = () => {
           </div>
           <div className="col-lg-10">
             <div className="px-4">
-              <Searchbar setQuery={setQuery} query={query} handleSearch={handleSearch} />
+              <Searchbar
+                setQuery={setQuery}
+                query={query}
+                handleSearch={handleSearch}
+              />
               <h5 className="purple_title">Projects</h5>
               {cards?.map((item, index) => {
-                console.log(item)
+                console.log(item);
                 // ========= calculate total charcters =============
                 var char = 0;
                 var all = new Array();
