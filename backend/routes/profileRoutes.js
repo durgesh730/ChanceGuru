@@ -22,6 +22,17 @@ router.get("/", jwtAuth, (req, res) => {
     });
 });
 
+// API used for user seeker image
+router.get("/seekersImage/:id", async (req, res) => {
+  try {
+    const user = await User.findOne({_id:req.params.id})
+    res.json(user);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Some error occured");
+  }
+});
+
 // API used for user phone number and email
 router.get("/Users", async (req, res) => {
   try {
@@ -80,7 +91,7 @@ router.get("/searchData", async (req, res) => {
 
 // data of profiles
 router.get("/profileData", (req, res) => {
-  Profile.find(req.params.id)
+  Profile.find(req.query.id?{userId:req.query.id}:{})
     .then((response) => {
       res.json(response);
     })
@@ -200,6 +211,18 @@ router.post("/ReqToApp", jwtAuth, (req, res) => {
 router.get("/reqToApp/:userId",(req,res)=>{
   let userId = req.params.userId;
   ReqToApp.find({talentId:userId})
+  .then((response)=>{
+    res.json(response)
+  })
+  .catch((err)=>{
+    res.status(400).json(err)
+  })
+})
+
+// To get requests
+router.get("/getRequests/:userId",(req,res)=>{
+  let userId = req.params.userId;
+  ReqToApp.find({talentId:userId,isRequested:true})
   .then((response)=>{
     res.json(response)
   })
