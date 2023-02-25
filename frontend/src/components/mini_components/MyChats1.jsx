@@ -188,7 +188,9 @@ const MyChats1 = ({ fetchAgain }) => {
                   <div>
                     <h6>{getSender(loggedUser, chat.users)}</h6>
                     <p>
-                      {chat.latestMessage.content.length > 45
+                      {chat === "undefined"
+                        ? ""
+                        : chat.latestMessage.content.length > 45
                         ? chat.latestMessage.content.substring(0, 45) + "..."
                         : chat.latestMessage.content}
                     </p>
