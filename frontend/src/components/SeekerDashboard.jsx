@@ -8,16 +8,21 @@ import "./style.css";
 const SeekerDashboard = () => {
   const [query, setQuery] = useState("");
   const [card, setcard] = useState();
+  const [searchData, setsearchData] = useState([]);
+
   // console.log(card[0].basicInfo.name)
 
   const handleSearch = async () => {
-    const data = await fetch(`http://localhost:5000/profile/searchSeekerData?name=${query}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    });
+    const data = await fetch(
+      `http://localhost:5000/profile/searchSeekerData?name=${query}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
     const res = await data.json();
     if (res) {
       setcard(res);
@@ -39,6 +44,7 @@ const SeekerDashboard = () => {
 
     if (response !== null) {
       setcard(response);
+      setsearchData(response);
     }
   };
 
@@ -51,13 +57,34 @@ const SeekerDashboard = () => {
     let path = `/projectcreation`;
     navigate(path);
   };
+
   return (
     <>
       <Topbar />
       <div className="container">
         <div className="row">
-          <div className="col-lg-8">
-            <Searchbar setQuery={setQuery} query={query} handleSearch={handleSearch} />
+          <div className="col-lg-8 searchBox">
+            <Searchbar
+              setQuery={setQuery}
+              query={query}
+              handleSearch={handleSearch}
+            />
+            <div
+              className="searchDropdown"
+              style={query === "" ? { border: "none" } : {}}
+            >
+              {searchData
+                .filter((item, index) => {
+                  const searchTerm = query.toLowerCase();
+                  const name = item.basicInfo.name.toLowerCase();
+                  return searchTerm && name.startsWith(searchTerm);
+                })
+                .map((item, index) => (
+                  <div onClick={() => setQuery(item.basicInfo.name)}>
+                    {item.basicInfo.name}
+                  </div>
+                ))}
+            </div>
           </div>
           <div className="col-lg-4">
             <button
