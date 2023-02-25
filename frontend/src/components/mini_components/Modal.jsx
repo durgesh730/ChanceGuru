@@ -48,9 +48,7 @@ const Modal = ({ setModel, info, setProfile, roles }) => {
             Your profile is weak to apply for this role.
           </div>
         ) : (
-          <div className="modal-header">
-            Your profile is weak to apply for this role.
-          </div>
+          ""
         )}
 
         <div className="modal-body">
