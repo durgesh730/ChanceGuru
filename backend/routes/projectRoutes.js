@@ -140,6 +140,17 @@ router.get("/allProjects", jwtAuth, (req, res) => {
         })
 })
 
+router.get("/getOnlySeekersProject/:seekerId",(req,res)=>{
+    let seekerId = req.params.seekerId;
+    Project.find({seekerId:seekerId})
+        .then((response) => {
+            res.json(response);
+        })
+        .catch((err) => {
+            res.status(400).json(err);
+        })
+})
+
 
 router.get("/projectDetails/:_id", (req, res) => {
     Project.find({ _id: req.params._id })
