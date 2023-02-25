@@ -498,6 +498,7 @@ const Roles = ({ display }) => {
                               : " "}
                           </div>
                         </div> */}
+                          <span className="purple_title"> {item.role} </span>
 
                           <div className="scroll_x ">
                             <div className="container-fluid experience_container">
