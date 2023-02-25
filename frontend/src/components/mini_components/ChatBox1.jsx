@@ -242,6 +242,7 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
     setReportModal(1);
   };
 
+  console.log("SelectedUser", selectedChat);
   return (
     <>
       {selectedChat ? (

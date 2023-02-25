@@ -1605,7 +1605,7 @@ div.css-18dcxwc {
   box-shadow: 0 0 6px 0 rgba(180, 180, 180, 0.5);
   /* width: 292px; */
   /* height: 600px; */
-  height: calc(100% - 200px) !important;
+  height: calc(100% - 80px) !important;
 }
 .chat_page h4 {
   font-size: 18px;
@@ -1645,7 +1645,7 @@ div.css-18dcxwc {
 }
 .myChat_users {
   width: 100%;
-  height: calc(600px - 200px);
+  height: calc(600px - 80px);
   overflow-y: scroll;
   margin: 0;
   padding: 0;
@@ -1680,7 +1680,7 @@ div.css-18dcxwc {
 .chatBox_main {
   /* box-shadow: 0 0 6px 0 rgba(180, 180, 180, 0.5); */
   /* height: 600px; */
-  height: calc(600px - 200px);
+  height: calc(600px - 80px);
 }
 .cb_top {
   width: 100%;
