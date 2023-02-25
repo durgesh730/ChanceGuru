@@ -187,11 +187,11 @@ const MyChats1 = ({ fetchAgain }) => {
                   </figure>
                   <div>
                     <h6>{getSender(loggedUser, chat.users)}</h6>
-                    <p>
+                    {/* <p>
                       {chat.latestMessage.content.length > 45
                         ? chat.latestMessage.content.substring(0, 45) + "..."
                         : chat.latestMessage.content}
-                    </p>
+                    </p> */}
                   </div>
                 </div>
               ))
