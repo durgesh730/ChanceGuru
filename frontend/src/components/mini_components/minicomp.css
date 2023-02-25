@@ -229,7 +229,7 @@
   line-height: 25px;
   font-weight: 600;
   margin-bottom: 10px;
-  height: 50px;
+  /* height: 50px; */
   overflow: hidden;
 }
 
@@ -281,8 +281,18 @@
 
 .grid-wrapper .child_cards:hover .card-footer,
 .grid-wrapper .child_cards:hover .card-author,
-.grid-wrapper .child_cards:hover .card-desc {
+.grid-wrapper .child_cards:hover .card-desc,
+.grid-wrapper .child_cards:hover .card_date * {
   color: #fff;
+}
+
+.card_date h6 {
+  font-size: 12px;
+  color: #444;
+}
+.card_date p {
+  font-size: 12px;
+  color: #8443e5;
 }
 
 /* Topbar profile options */
@@ -526,12 +536,12 @@ div.lI div.actionButtons {
   opacity: 1;
 }
 
-.Card-body{
+.Card-body {
   border: 1px solid black;
   padding: 1rem;
-  border-radius: .5rem;
+  border-radius: 0.5rem;
 }
 
-.char{
+.char {
   cursor: pointer;
 }
