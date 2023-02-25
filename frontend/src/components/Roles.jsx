@@ -94,22 +94,22 @@ const Roles = ({ display }) => {
 
   //console.log("Roles array: ", roles)
 
-  function handleAddCharacter(e){
+  function handleAddCharacter(e) {
     e.preventDefault()
-    setToEdit({name:"Character Name",age:"",gender:"",indexInChars:activeRole.characters.length})
+    setToEdit({ name: "Character Name", age: "", gender: "", indexInChars: activeRole.characters.length })
   }
 
-  let name,value;
-  const handleEditChange = (e) =>{
+  let name, value;
+  const handleEditChange = (e) => {
     name = e.target.name;
     value = e.target.value;
 
-    setToEdit({...toEdit,[name]:value})
+    setToEdit({ ...toEdit, [name]: value })
   }
 
-  function handleCharacterUpdateForm(e){
+  function handleCharacterUpdateForm(e) {
     e.preventDefault()
-    
+
     let prevChars = chars
     let indexInChars = toEdit.indexInChars
     delete toEdit.indexInChars
@@ -117,11 +117,11 @@ const Roles = ({ display }) => {
 
     console.log(prevChars)
 
-    setActiveRole({...activeRole,prevChars})
+    setActiveRole({ ...activeRole, prevChars })
     console.log(activeRole)
 
-    setProjectDetails({...projectDetails,activeRole})
-    
+    setProjectDetails({ ...projectDetails, activeRole })
+
     axios.put('http://localhost:5000/project/changeRoles', {
       project: projectDetails
     },
@@ -148,7 +148,7 @@ const Roles = ({ display }) => {
     summToggle = document.getElementById("summ-toggle");
   }
 
-  
+
 
   // //console.log(charForm)
 
@@ -157,20 +157,28 @@ const Roles = ({ display }) => {
     if (cur_form == "roles") {
       rolesForm.style.display = "block";
       charForm.style.display = "none";
-      // summForm.style.display = "none";
+      summForm.style.display = "none";
       rolesToggle.classList.add("active-toggle");
       charToggle.classList.remove("active-toggle");
       summToggle.classList.remove("active-toggle");
 
-    } else {
+    } else if (cur_form == "char") {
       charForm.style.display = "block";
       rolesForm.style.display = "none";
-      // summForm.style.display = "none";
-      rolesToggle.classList.remove("active-toggle");
-      charToggle.classList.add("active-toggle");
+      summForm.style.display = "none";
+      rolesToggle.classList.add("active-toggle");
+      charToggle.classList.remove("active-toggle");
       summToggle.classList.remove("active-toggle");
 
+    } else if (cur_form == "summary") {
+      charForm.style.display = "none";
+      rolesForm.style.display = "none";
+      summForm.style.display = "block";
+      rolesToggle.classList.remove("active-toggle");
+      charToggle.classList.remove("active-toggle");
+      summToggle.classList.add("active-toggle");
     }
+
   };
 
   let show = {};
@@ -333,13 +341,18 @@ const Roles = ({ display }) => {
                     <p className="mx-1"></p>
 
                   </div>
-                  {
-                    chars.map((item, index) => {
-                      return (
-                        <CharacterCard index={index} cardData={item} toEdit={toEdit}  setToEdit={setToEdit}  />
-                      )
-                    })
-                  }
+
+                  <div className="d-flex overflow-auto " >
+                    {
+                      chars.map((item, index) => {
+                        return (
+                          <CharacterCard index={index} cardData={item} toEdit={toEdit} setToEdit={setToEdit} />
+                        )
+                      })
+                    }
+
+                  </div>
+
                   <input
                     type="submit"
                     className="full-width-btn"
@@ -371,6 +384,7 @@ const Roles = ({ display }) => {
                         <option value="male">Male</option>
                         <option value="female">Female</option>
                       </select>
+
                       <textarea
                         name="desc"
                         id=""
@@ -379,8 +393,12 @@ const Roles = ({ display }) => {
                         placeholder="Details..."
                         maxlength="250"
                         value={toEdit.desc}
+
                         onChange={handleEditChange}
                       ></textarea>
+                      {console.log(toEdit)}
+
+
                       <select
                         className="form-control form-select"
                         id="exampleFormControlSelect1"
@@ -415,9 +433,39 @@ const Roles = ({ display }) => {
 
 
                 </form>
-                <div className="summary" style={{ display: "none" }}>
-                  Summary render
-                </div>
+
+                <form id="summ-form" className="summary" style={{ display: "none" }}>
+                  {
+                    projectDetails.roles?.map((item, index) => {
+                      return (
+                        <>
+                          <div>
+                            <span> {item.role} </span>
+                            <div className="d-flex overflow-auto my-2 ">
+                              {
+                                item ? (item.characters?.map((not, i) => {
+                                  return (
+                                    <div class="Card mx-1 ">
+                                      <div class="Card-body">
+                                        <div className="cardone" >
+                                        <h5 class="card-title">{not.name}</h5>
+                                        <h6 class="card-subtitle mb-2 text-muted">{not.age}</h6>
+                                        <h6 class="card-subtitle mb-2 text-muted">{not.gender}</h6>
+                                        <p class="card-text">{not.desc ? not.desc : "Not available"}</p>
+                                          </div>
+                                      </div>
+                                    </div>
+                                  )
+                                })) : (" ")
+                              }
+                            </div>
+                          </div>
+                        </>
+                      )
+                    })
+                  }
+                </form>
+
               </div>
             </div>
           }{" "}

@@ -3,31 +3,30 @@ import { useState, useEffect } from "react";
 import Modal from "./Modal";
 import axios from "axios";
 
-const Card = ({ card, setClicked }) => {
+const Card = ({ card, profile, image ,setClicked }) => {
     const basicInfo = card.basicInfo;
     const role = card.roles;
     const create = card.createAt;
-    // console.log(create)
+    // console.log(profile)
     const [model, setModel] = useState(false);
     const [roles, setroles] = useState([]);
+  
 
     const current = new Date().toUTCString();
     var date1 = new Date(create);
     var date2 = new Date(current);
-    // console.log(utcStr);
+    // console.log(image);
 
     var Difference_In_Time = date2.getTime() - date1.getTime();
     var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
     let a = Math.round(Difference_In_Days);
-    // console.log(a)
-
-
 
     const getRoles = () => {
         axios
             .get(`http://localhost:5000/projects/getroles/${card.id}`)
             .then((res) => {
                 setroles(res.data.data);
+
             })
             .catch((err) => {
                 // console.log(err);
@@ -44,7 +43,7 @@ const Card = ({ card, setClicked }) => {
             <div className="card-desc">{basicInfo.desc}</div>
             <div className="card-author d-flex align-items-center">
                 <img
-                    src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80"
+                    src={image?.link}
                     alt=""
                     style={{ width: "50px", height: "50px", objectFit: "cover" }}
                 />
@@ -67,7 +66,7 @@ const Card = ({ card, setClicked }) => {
                 Apply
             </button>
 
-            {model && <Modal setModel={setModel} info={card} roles={role} />}
+            {model && <Modal setModel={setModel} setProfile={profile} info={card} roles={role} />}
         </li>
     );
 };

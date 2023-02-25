@@ -12,8 +12,6 @@ const ApplicantRowCard = ({ Data, applied }) => {
     const [select, setSelect] = useState('selected')
     const [rejected, setRejected] = useState('rejected')
 
-    console.log(Data)
-
     const [User, SetUser] = useState([]);
     const fetchData = async () => {
         const data = await fetch(`http://localhost:5000/profile/${id}`, {
@@ -101,7 +99,7 @@ const ApplicantRowCard = ({ Data, applied }) => {
                 return (
                     <>
                         <div>
-                            <img src={kamal} alt="" style={{ width: '4rem' }} />
+                            <img src={items.photos[0]?.link} alt="" style={{ width: '4rem' }} />
                             <span key={i} className="applicantName">
                                 {items.basicInfo.fullname}
                             </span>

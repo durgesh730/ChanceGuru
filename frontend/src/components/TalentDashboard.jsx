@@ -11,7 +11,8 @@ import { BsChevronDown, BsPhone } from "react-icons/bs";
 const TalentDashboard = () => {
     const auth = useContext(AuthContext);
     const [cards, setcards] = useState();
-
+    const [image, setImage] = useState();
+    const [userImg, setuserImg] = useState();
     const [query, setQuery] = useState("");
 
     const handleSearch = async () => {
@@ -35,11 +36,31 @@ const TalentDashboard = () => {
         roles: 0,
     });
 
-    const getProjects = () => {
+    const getImage = (id) => {
         axios
-            .get("http://localhost:5000/project/allProjects")
+            .get(`http://localhost:5000/profile/seekersImage/${id}`)
             .then((res) => {
+                setImage(res.data);
+            })
+            .catch((err) => {
+            });
+    };
+
+
+    const getProjects = async () => {
+        axios
+            .get("http://localhost:5000/project/allProjects",
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    }
+                }
+            )
+            .then(async (res) => {
                 setcards(res.data);
+                res.data.forEach(async element => {
+                   const image = await getImage(element.seekerId);
+                });
             })
             .catch((err) => {
                 console.log(err);
@@ -60,7 +81,9 @@ const TalentDashboard = () => {
                 },
             })
             .then((response) => {
+                // console.log(response.data)
                 if (response.data !== null) {
+                    setuserImg(response.data)
                     profileCompletion(response.data);
                 }
             })
@@ -72,8 +95,8 @@ const TalentDashboard = () => {
     // Profile Strength Score
     const profileCompletion = (data) => {
         // console.log(data);
-        const profilePerc = calculatePercentage(data.basicInfo);
-        const talentPerc = calculatePercentage(data.talent);
+        const profilePerc = data.basicInfo ? calculatePercentage(data.basicInfo) : 0;
+        const talentPerc = data.talent ? calculatePercentage(data.talent) : 0 ;
         const photoPerc = data.photos.length === 0 ? 0 : 50;
         const videoPerc = data.videos.length === 0 ? 0 : 50;
         const eduPerc = data.education.length === 0 ? 0 : 50;
@@ -118,23 +141,23 @@ const TalentDashboard = () => {
                 <div className="talent-heading d-flex justify-content-between">
                     <div className="">Suggestions</div>
                     <div className="filter d-flex justify-content-between align-item-center">
-                    <button className="bg-light p-2 border-0">
-                        Filter
-                        <BsChevronDown className="mx-1" />
-                    </button>
-                </div>
+                        <button className="bg-light p-2 border-0">
+                            Filter
+                            <BsChevronDown className="mx-1" />
+                        </button>
+                    </div>
                 </div>
 
                 <div className="container-fluid">
                     <div className="row">
                         <ul className="grid-wrapper">
                             {cards?.map((card) => (
-                                <Card card={card} setClicked={auth.setClicked} />
+                                <Card card={card} profile={profileStrength} image={image} setClicked={auth.setClicked} />
                             ))}{" "}
                             <li className="side_div" style={auth.clicked ? {} : { display: "none" }}>
                                 <div className="sd_1">
                                     <div className="sd_upper d-flex justify-content-center align-items-center flex-column mb-3">
-                                        <img src={cardImg} alt="" />
+                                        <img src={userImg?.photos[0]?.link} alt="" />
                                         <p>{user.username}</p>
                                         <div>
                                             <h6>Profile Strength :</h6>

@@ -3,22 +3,39 @@ const jwtAuth = require("../lib/jwtAuth");
 const router = express.Router();
 const Project = require("../db/Project");
 const JobApplication = require('../db/JobApplication')
-const User = require('../db/User')
+const User = require('../db/User');
 
+//Get project form project id
+
+router.get("/oneproject/:id" , (req , res) => {
+    Project.findOne({_id : req.params.id})
+        .then(job =>{
+            res.json(job);
+        })
+        .catch(err => {
+            res.status(400).json(err);
+        })
+})
 
 // API for change status of jobapplication using default _id
 
-router.put("/Select/:_id", (req, res) => {
-    const data = req.body;
-    const d =  data.select 
+router.put("/Select/:_id/:inc", (req, res) => {
 
-    JobApplication.findOneAndUpdate({_id:req.params._id}, {
-        $set: {
-             status:d,
-        },
-    })
-        .then((response) => {
-            res.json(response);
+    JobApplication.findOne({ _id: req.params._id })
+        .then(job => {
+            JobApplication.findOneAndUpdate({ _id: req.params._id }, {
+                $set: {
+                    status: "selected",
+                    value: (req.params.inc == 1) ? job.value + 5 : job.value + 100,
+                    updatedAt: new Date(),
+                },
+            }, { returnOriginal: false })
+                .then((response) => {
+                    res.json(response);
+                })
+                .catch((err) => {
+                    res.status(400).json(err);
+                })
         })
         .catch((err) => {
             res.status(400).json(err);
@@ -27,86 +44,81 @@ router.put("/Select/:_id", (req, res) => {
 
 // API for change status of jobapplication using userId
 
-router.put("/SelectuserId/:userId", (req, res) => {
-    const data = req.body;
-    console.log(data)
-    const d =  data.select 
-    console.log(d)
 
-    JobApplication.findOneAndUpdate({userId:req.params.userId}, {
-        $set: {
-             status:d,
-        },
-    })
-        .then((response) => {
-            res.json(response);
+router.put("/Shortlist/:_id/:inc", (req, res) => {
+
+    JobApplication.findOne({ _id: req.params._id })
+        .then(job => {
+            JobApplication.findOneAndUpdate({ _id: req.params._id }, {
+                $set: {
+                    status: "shortlisted",
+                    value: (req.params.inc == 1) ? job.value + 100 : job.value + 1000 ,
+                    updatedAt: new Date(),
+                },
+            }, { returnOriginal: false })
+                .then((response) => {
+                    res.json(response);
+                })
+                .catch((err) => {
+                    res.status(400).json(err);
+                })
         })
         .catch((err) => {
             res.status(400).json(err);
         })
 })
+
+router.put("/Schedule/:_id/:inc", (req, res) => {
+    JobApplication.findOne({ _id: req.params._id })
+        .then(job => {
+            JobApplication.findOneAndUpdate({ _id: req.params._id }, {
+                $set: {
+                    status: "scheduled",
+                    value: job.value == 5 ? job.value + 1000 : job.value + 500 ,
+                    updatedAt: new Date(),
+                },
+            }, { returnOriginal: false })
+                .then((response) => {
+                    res.json(response);
+                })
+                .catch((err) => {
+                    res.status(400).json(err);
+                })
+        })
+        .catch((err) => {
+            res.status(400).json(err);
+        })
+})
+
 
 // API for change status of jobapplication 
 
 router.put("/Reject/:_id", (req, res) => {
-    const data = req.body;
-    const d =  data.rejected 
-
-    JobApplication.findOneAndUpdate({_id:req.params._id}, {
-        $set: {
-             status:d,
-        },
-    })
-        .then((response) => {
-            res.json(response);
+    JobApplication.findOne({ _id: req.params._id })
+        .then(job => {
+            JobApplication.findOneAndUpdate({ _id: req.params._id }, {
+                $set: {
+                    status: "rejected",
+                    value: (job.value - 1) ,
+                    updatedAt: new Date(),
+                },
+            }, { returnOriginal: false })
+                .then((response) => {
+                    res.json(response);
+                })
+                .catch((err) => {
+                    res.status(400).json(err);
+                })
         })
-        .catch((err) => {
+        .catch((res) => {
             res.status(400).json(err);
         })
 })
 
 
 
-// API for change status of jobapplication
 
-router.put("/Select/:_id", (req, res) => {
-    const data = req.body;
-    const d =  data.select 
-
-    JobApplication.findOneAndUpdate({_id:req.params._id}, {
-        $set: {
-             status:d,
-        },
-    })
-        .then((response) => {
-            res.json(response);
-        })
-        .catch((err) => {
-            res.status(400).json(err);
-        })
-})
-
-// API for change status of jobapplication
-
-router.put("/Reject/:_id", (req, res) => {
-    const data = req.body;
-    const d =  data.rejected 
-
-    JobApplication.findOneAndUpdate({_id:req.params._id}, {
-        $set: {
-             status:d,
-        },
-    })
-        .then((response) => {
-            res.json(response);
-        })
-        .catch((err) => {
-            res.status(400).json(err);
-        })
-})
-
-
-router.get("/allProjectsSeekers",jwtAuth,(req, res) => {
+router.get("/allProjectsSeekers", jwtAuth, (req, res) => {
     const user = req.user;
     Project.find({ seekerId: user._id })
         .then((response) => {
@@ -118,7 +130,7 @@ router.get("/allProjectsSeekers",jwtAuth,(req, res) => {
 })
 
 //TO get all the sekers projects 
-router.get("/allProjects", jwtAuth , (req, res) => {
+router.get("/allProjects", jwtAuth, (req, res) => {
     Project.find()
         .then((response) => {
             res.json(response);
@@ -129,10 +141,10 @@ router.get("/allProjects", jwtAuth , (req, res) => {
 })
 
 
-router.get("/projectDetails/:_id",(req, res) => {
-    Project.find({_id: req.params._id})
+router.get("/projectDetails/:_id", (req, res) => {
+    Project.find({ _id: req.params._id })
         .then((response) => {
-            
+
             res.json(response);
         })
         .catch((err) => {
@@ -141,8 +153,8 @@ router.get("/projectDetails/:_id",(req, res) => {
 })
 
 
-router.get("/Seekers/:pId",(req, res) => {
-    JobApplication.find({pId: req.params.pId})
+router.get("/Seekers/:pId", (req, res) => {
+    JobApplication.find({ pId: req.params.pId })
         .then((response) => {
             res.json(response);
             // console.log(response)
@@ -153,8 +165,8 @@ router.get("/Seekers/:pId",(req, res) => {
 })
 
 
-router.get("/UserId/:id",(req, res) => {
-    User.find({_id:req.params.id})
+router.get("/UserId/:id", (req, res) => {
+    User.find({ _id: req.params.id })
         .then((response) => {
             res.json(response);
             // console.log(response)
@@ -193,14 +205,14 @@ router.get("/getProject/:id", (req, res) => {
 router.post("/", jwtAuth, (req, res) => {
     const user = req.user;
     const data = req.body;
-    if(user.type === "user"){
+    if (user.type === "user") {
         res.status(203).send("User can't add project , you should register as seeker")
         return;
     };
     const project = new Project({
         seekerId: user._id,
         basicInfo: data.basicInfo,
-        roles : data.roles
+        roles: data.roles
     })
     project
         .save()
@@ -223,17 +235,32 @@ router.put("/changeRoles", jwtAuth, (req, res) => {
             roles: data.project.roles,
         },
     })
-    .then((response) => {
-        res.json(response);
+        .then((response) => {
+            res.json(response);
 
-    })
-    .catch((err) => {
-        // console.log(err)
-        res.status(400).json(err);
-    })
+        })
+        .catch((err) => {
+            // console.log(err)
+            res.status(400).json(err);
+        })
 })
 
 
+
+// To get just one character using character Id
+router.get("/getCharacter/:roleId",(req,res)=>{
+    let roleId = req.params.roleId;
+    Project.find(
+        { roles : { $elemMatch : { _id:roleId } } },
+        { basicInfo:1,roles : { $elemMatch : { _id:roleId } } }
+        )
+    .then((response)=>{
+        res.json(response);
+    })
+    .catch((err)=>{
+        res.status(400).json(err);
+    })
+})
 
 
 module.exports = router;

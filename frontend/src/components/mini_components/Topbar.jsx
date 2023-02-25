@@ -30,9 +30,9 @@ const Topbar = (props) => {
 
   function toggleProfileOptions() {
     if (profileHeight == 0) {
-      setProfileHeight(192);
+      setProfileHeight(270);
       setDim(1);
-      document.getElementById("profileOption").style.height = "192px";
+      document.getElementById("profileOption").style.height = "fit-content";
     } else {
       setProfileHeight(0);
       setDim(0);
@@ -64,7 +64,7 @@ const Topbar = (props) => {
   const user = JSON.parse(localStorage.getItem("login"));
 
   const [active, setActive] = useState("home");
-  console.log(active);
+  // console.log(active);
 
   return (
     <>
@@ -139,6 +139,7 @@ const Topbar = (props) => {
               )}
             </span>
           </Link>
+          <Link to="/chat" >
           <span
             className={
               active === "chat"
@@ -153,6 +154,8 @@ const Topbar = (props) => {
               <img className="topbar-icons" src={chat} alt="" />
             )}
           </span>
+          </Link>
+          
           {/*
                         <Link to="/projectcreation"> */}
           <span
@@ -218,6 +221,12 @@ const Topbar = (props) => {
                   <Link to="/profiledetails">My Profile</Link>
                 </li>
                 <li>
+                  <NavLink to="/requestpage">My Requests</NavLink>
+                </li>
+                <li>
+                  <NavLink to="/myrole">My Roles</NavLink>
+                </li>
+                <li>
                   <NavLink to="/setting">Account Settings</NavLink>
                 </li>
                 <li>
@@ -233,8 +242,8 @@ const Topbar = (props) => {
           {/* </Link> */}
           {/* <div className={modal || dim ? `dim blur_black` : "blur_black"}></div> */}
           {modal && (
-            <div className="userSub_modal">
-              <div className="modal_child shadow">
+            <div className="userSub_modal my-4 ">
+              <div className="modal_child shadow ">
                 <div className="d-flex justify-content-start align-items-center m-3">
                   <h1 className="purple_title m-0" style={{ fontSize: "30px" }}>
                     Logout Confirmation

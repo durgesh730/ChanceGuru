@@ -1,13 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from 'axios';
 import magnifyingIcon from "../../../assets/icons/find-my-friend.svg";
 import maskIcon from "../../../assets/icons/mask.svg";
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-const ProjectSummaryForm = ({ display  , values }) => {
+const ProjectSummaryForm = ({ display, values }) => {
     const navigate = useNavigate();
     const basicInfo = values.basicInfo;
     const roles = values.formFields;
+    const [showset, setShow] = useState(false)
+
+    // console.log(values)
+
     let show = {};
     if (display) {
         show = { display: "block" };
@@ -15,17 +19,25 @@ const ProjectSummaryForm = ({ display  , values }) => {
         show = { display: "none" };
     }
 
+    const handleshow = (i) => {
+        if (showset === false) {
+            setShow(true)
+        } else {
+            setShow(false)
+        }
+    }
+
     const publishProject = () => {
         axios
-            .post("http://localhost:5000/project" , {basicInfo : basicInfo , roles : roles} ,  {
+            .post("http://localhost:5000/project", { basicInfo: basicInfo, roles: roles }, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 }
             })
             .then((res) => {
-                if(res.status == 203){
+                if (res.status == 203) {
                     alert(res.data)
-                }else{
+                } else {
                     alert("Project Published Successfully");
                     navigate("seekerdashboard");
                     console.log(res)
@@ -83,28 +95,42 @@ const ProjectSummaryForm = ({ display  , values }) => {
                         <img src={maskIcon} />
                         <span>Roles Aggregate</span>
                     </div>
-                    <div className="form-desc">Lead (03)</div>
+                    {/* <div className="form-desc">Lead (03)</div> */}
                 </div>
                 <form id="form1">
-                    <input type="text" className="form-control" placeholder="MacDuff : Male, 20-30" />
-                    <textarea
-                        name=""
-                        id="bio"
-                        className="form-control text-area"
-                        rows="4"
-                        placeholder="Details..."
-                        maxLength="250"
-                    ></textarea>
-                    <input type="text" className="form-control" placeholder="Lady MacDuff: Female, 20-30" />
-                    <label className="label-desc">Supporting Actor (01)</label>
-                    <input type="text" className="form-control" placeholder="Ross : Male, 30-40" />
-                    <label className="label-desc">Chorus/ Ensemble (01)</label>
-                    <input type="text" className="form-control" placeholder="Thanes : Male, 20-30" />
+                    {
+                        roles.map((item, index) => {
+                            return (
+                                <>
+                                    <div className="row" >
+                                        <span className="label-desc">{item.role}(01)</span>
+                                        {item.characters?.map((data, index) => {
+                                            return (
+                                                <>
+                                                    <span className=" char my-2" onClick={() => { handleshow() }} >{data.name}</span>
+                                                    <textarea
+                                                        style={showset ? { display: `block` } : { display: `none` }}
+                                                        name=""
+                                                        id="bio"
+                                                        className="form-control text-area"
+                                                        rows="4"
+                                                        value={data.details}
+                                                        maxLength="250"
+                                                    ></textarea>
+                                                </>
+                                            )
+                                        })}
+                                    </div>
+                                </>
+                            )
+                        })
+                    }
+
                     <div className="row">
                         <input type="button" className="col-4 cancel-btn btn btn-lg btn-block my-2" value="Cancel" />
                         <p className="col-1"></p>
                         <input
-                            onClick={()=>{publishProject()}}
+                            onClick={() => { publishProject() }}
                             type="button"
                             className="col-7 save-btn btn btn-lg btn-block my-2"
                             value="Save and Publish"
