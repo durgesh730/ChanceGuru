@@ -285,7 +285,7 @@ const Roles = ({ display }) => {
                   </div>
                 </div>
 
-                <div className="form-container">
+                <div className="form-container" style={{ paddingBottom: "0" }}>
                   <div>
                     <form id="roles-form" onSubmit={handleRoleUpdateForm}>
                       <button
@@ -384,7 +384,10 @@ const Roles = ({ display }) => {
                       </div>
                     </div>
 
-                    <div className="form-container">
+                    <div
+                      className="form-container"
+                      style={{ paddingBottom: "0" }}
+                    >
                       <div style={{ width: "444px" }} className="formChild">
                         <input
                           type="submit"
