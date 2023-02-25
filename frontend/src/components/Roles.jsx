@@ -193,12 +193,14 @@ const Roles = ({ display }) => {
   // let width = box.offsetWidth;
   // console.log(box.offsetWidth);
 
-  const prevCon = () => {
+  const prevCon = (e) => {
+    e.preventDefault();
     let width = slideDiv.current.offsetWidth;
     slideDiv.current.scrollLeft = slideDiv.current.scrollLeft - width;
     console.log(slideDiv);
   };
-  const nextCon = () => {
+  const nextCon = (e) => {
+    e.preventDefault();
     let width = slideDiv.current.offsetWidth;
     slideDiv.current.scrollLeft = slideDiv.current.scrollLeft + width;
   };
