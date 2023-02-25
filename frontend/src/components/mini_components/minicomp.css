@@ -137,13 +137,15 @@
   margin: 0;
 }
 .grid-wrapper .child_cards {
+  list-style-type: none;
+}
+.grid-wrapper .child_cards a {
   width: 290px;
   height: 170px;
   position: relative;
   font-size: 24px;
   border-radius: 5px;
   box-shadow: 0 0 6px 0 rgba(158, 158, 158, 0.5);
-  list-style-type: none;
   padding: 20px 15px 10px;
   border-bottom: 3px solid var(--color_p2);
   display: flex;
@@ -224,15 +226,6 @@
   color: #b8e986;
 }
 
-.card-title {
-  font-size: 20px;
-  line-height: 25px;
-  font-weight: 600;
-  margin-bottom: 10px;
-  /* height: 50px; */
-  overflow: hidden;
-}
-
 .card-desc {
   font-size: 14px;
   color: #a3a3a3;
@@ -266,23 +259,23 @@
   color: #fff;
 }
 
-.grid-wrapper .child_cards:hover .card-apply {
+.grid-wrapper .child_cards a:hover .card-apply {
   display: block;
   background-color: var(--color_p3);
   color: #fff;
   transition: 0.3s;
 }
 
-.grid-wrapper .child_cards:hover {
+.grid-wrapper .child_cards a:hover {
   background-color: var(--color_p2);
   transition: 0.3s;
   color: #fff;
 }
 
-.grid-wrapper .child_cards:hover .card-footer,
-.grid-wrapper .child_cards:hover .card-author,
-.grid-wrapper .child_cards:hover .card-desc,
-.grid-wrapper .child_cards:hover .card_date * {
+.grid-wrapper .child_cards a:hover .card-footer,
+.grid-wrapper .child_cards a:hover .card-author,
+.grid-wrapper .child_cards a:hover .card-desc,
+.grid-wrapper .child_cards a:hover .card_date * {
   color: #fff;
 }
 
@@ -408,32 +401,51 @@ div .profile-options ul li a:hover {
 }
 
 .modal-container {
-  background-color: #fff;
-  width: 50%;
-  padding: 30px;
-  font-weight: bold;
-  font-size: 20px;
-  overflow: auto;
-  height: 90vh;
-}
+  padding: 28px;
 
+  width: 658px;
+  height: 434px;
+  margin: 85px 16px 102px 5px;
+  padding: 19px 19.8px 24px 24px;
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
+}
+.modal-body::-webkit-scrollbar {
+  display: none;
+}
 .modal-header {
   color: #ff8484;
   text-align: center;
-  display: block;
-  margin-bottom: 20px;
+  font-size: 18px;
+  font-weight: bold;
 }
 
 .modal-body {
   border: solid 1px #ddd;
-  padding: 0 20px;
+  padding: 15px 37px;
+  margin: 10px !important;
+  width: 603px;
+  height: 275px;
+  overflow-y: scroll;
 }
 
 .modal-name,
-.role-name,
-.total-roles {
+.role-name {
   color: var(--color_p2);
   font-weight: bold;
+  font-size: 18px;
+}
+.total-roles button {
+  width: 132px;
+  height: 45px;
+  padding: 14px 47px 13px;
+  border-radius: 6px;
+  background-color: #e8e8e8 !important;
+  font-size: 14px;
+  color: #bcbcbc !important;
 }
 
 .role-name {
@@ -442,6 +454,8 @@ div .profile-options ul li a:hover {
 
 .char-name {
   color: var(--color_p2);
+  font-size: 18px;
+
   font-weight: bold;
 }
 .modal-name {
@@ -452,12 +466,12 @@ div .profile-options ul li a:hover {
   margin-top: 20px;
 }
 
-.modal-roles > div {
+.modal-roles > div:not(:first-child) {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 3px solid;
   margin-bottom: 10px;
+  margin: 27px 0 !important;
 }
 
 .apply-btn,
