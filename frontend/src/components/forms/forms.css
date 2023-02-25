@@ -49,15 +49,13 @@ input {
 }
 
 .form-container {
-  /* margin: auto; */
-  padding: 0;
-  width: 100%;
-  margin: 0;
+  margin: auto;
+  padding: 20px;
+  padding-bottom: 50px;
+  max-width: 500px;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
 }
-
 .formChild {
   overflow-y: scroll;
   scroll-behavior: smooth;

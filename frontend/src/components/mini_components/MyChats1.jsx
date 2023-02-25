@@ -133,9 +133,9 @@ const MyChats1 = ({ fetchAgain }) => {
   useEffect(() => {
     setSelectedChat(chats[0]);
     console.log("called");
-  }, [chats]);
+  }, [fetchChats]);
 
-  // console.log("chats", chats[0].latestMessage.content.length);
+  // console.log("chats", chats[0].latestMessage.content);
   console.log("selected", selectedChat);
 
   return (
