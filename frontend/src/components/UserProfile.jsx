@@ -112,15 +112,16 @@ const UserProfile = () => {
   };
 
   useEffect(() => {
-    if(card[index].status === "selected"){
+    if(card[index]?.status === "selected"){
       setSelected(true);
-    }else if(card[index].status === "scheduled"){
+    }else if(card[index]?.status === "scheduled"){
       setScheduled(true);
-    }else if(card[index].status === "shortlisted"){
+    }else if(card[index]?.status === "shortlisted"){
       setShortlisted(true);
     } else if(card[index] === "rejected"){
       setRejected(true);
     }
+   console.log(card[index])
   }, [])
   
   return (
