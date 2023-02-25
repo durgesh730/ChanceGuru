@@ -168,7 +168,7 @@ const BrowseProfile = () => {
                 return (
                   <tr key={index}>
                     <td>
-                      <img src={item.photos[0] ? item.photos[0].link : ""} />
+                      {/* <img src={item.photos[0] ? item.photos[0].link : ""} /> */}
                       {item.basicInfo.fullname}
                     </td>
                     <td>
