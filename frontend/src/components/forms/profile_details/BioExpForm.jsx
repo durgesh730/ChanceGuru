@@ -1,6 +1,7 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
+import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
 
 const BioExpForm = ({ display, toggleForm }) => {
   let bioForm = document.getElementById("bio-form");
@@ -8,6 +9,7 @@ const BioExpForm = ({ display, toggleForm }) => {
   let bioToggle = document.getElementById("bio-toggle");
   let expToggle = document.getElementById("exp-toggle");
   const [profileData, setprofileData] = useState({});
+  const [experience, setExperience] = useState()
   const toggle = (cur_form) => {
     if (cur_form == "bio") {
       bioForm.style.display = "block";
@@ -75,10 +77,14 @@ const BioExpForm = ({ display, toggleForm }) => {
   const handleExpSubmit = (e) => {
     e.preventDefault();
     const data = expData;
+    console.log(e.target)
+    
+    let newExp = [...experience,data]
+    setExperience([...experience,data])
     axios
       .put(
         "http://localhost:5000/profile/portfolio/exp",
-        expData,
+        newExp,
 
         {
           headers: {
@@ -88,6 +94,14 @@ const BioExpForm = ({ display, toggleForm }) => {
       )
       .then((res) => {
         alert("Experience Details data saved!");
+        setExpData({
+          workedIn: "",
+          workedAs: "",
+          startDate: "",
+          endDate: "",
+          aboutWork: "",
+        })
+        document.getElementsByClassName("ExpformData")[0].style.display="none"
         console.log(res);
         if (res) {
           toggleForm("photo");
@@ -109,7 +123,7 @@ const BioExpForm = ({ display, toggleForm }) => {
             setBioData({ bio: response.data.portfolio.bio });
           }
           if (response.data.portfolio.experience.length !== 0) {
-            setExpData(response.data.portfolio.experience[0]);
+            setExperience(response.data.portfolio.experience);
           }
           console.log(response.data);
         }
@@ -123,6 +137,23 @@ const BioExpForm = ({ display, toggleForm }) => {
     handleShow();
   }, []);
 
+  const slideDiv = useRef("");
+  const prevCon = (e) => {
+    e.preventDefault();
+    let width = slideDiv.current.offsetWidth;
+    slideDiv.current.scrollLeft = slideDiv.current.scrollLeft - width;
+    console.log(slideDiv);
+  };
+  const nextCon = (e) => {
+    e.preventDefault();
+    let width = slideDiv.current.offsetWidth;
+    slideDiv.current.scrollLeft = slideDiv.current.scrollLeft + width;
+  };
+
+  const handleAddExperience = (e)=>{
+    e.preventDefault()
+    e.target.nextElementSibling.style.display = "block"
+  }
   return (
     <>
       {
@@ -158,6 +189,7 @@ const BioExpForm = ({ display, toggleForm }) => {
                 handleBioSubmit(e);
               }}
             >
+              
               <textarea
                 name="bio"
                 value={bioData.bio}
@@ -190,11 +222,45 @@ const BioExpForm = ({ display, toggleForm }) => {
               style={{ display: "none" }}
               onSubmit={handleExpSubmit}
             >
+              <div className="scroll_x ">
+                      <div className="container-fluid experience_container">
+                        <div className="ec_child" ref={slideDiv}>
+                          {experience?.map((item, index) => {
+                            return (
+                              
+                              <div>
+                                <span class="experienceComp" style={{ fontWeight: "700", color: "#6c54a6" }}>
+                                  {item.workedIn}
+                                </span>
+                                <br />
+                                <span class="experiencePos" style={{ fontSize: "13px" }}>
+                                  {item.workedAs} | {item.startDate} - {item.endDate}
+                                </span>
+                                <p class="experienceDesc" style={{ fontSize: "12px" }}>
+                                  {item.aboutWork}
+                                </p>
+                              </div>
+                            );
+                          })}
+                        </div>
+                        <div className="controllers">
+                          <button onClick={prevCon}>
+                            <BsChevronCompactLeft />
+                          </button>
+                          <button onClick={nextCon}>
+                            <BsChevronCompactRight />
+                          </button>
+                        </div>
+                      </div>
+                </div>
               <input
                 type="submit"
                 className="full-width-btn"
                 value="Add Experience"
+                onClick={handleAddExperience}
               />
+              <div className="ExpformData" style={{display:"none"}} >
+
               <input
                 name="workedIn"
                 value={expData.workedIn}
@@ -250,6 +316,8 @@ const BioExpForm = ({ display, toggleForm }) => {
                   value="Save"
                 />
               </div>
+              </div>
+
             </form>
           </div>
         </div>
