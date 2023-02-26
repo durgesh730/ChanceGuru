@@ -226,9 +226,7 @@ const PhotoVideoForm = ({ display, toggleForm }) => {
 
                                 <input type="button" className="full-width-btn" value="Upload Photo" onClick={handleFileUpload} />
 
-                                {imageUrl && (
-                                    <img src={imageUrl} className="photoUpload" alt="" />
-                                )}
+                               
 
                                 <p className="mx-1"></p>
                                 <input onClick={addFields} type="button" className="full-width-btn" value="Add Photo Link" />
