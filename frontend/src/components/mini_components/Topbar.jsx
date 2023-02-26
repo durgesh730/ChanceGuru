@@ -181,6 +181,7 @@ const Topbar = (props) => {
           <Link
             to={user.type === "user" ? "/talentdashboard" : "/seekerdashboard"}
             onClick={() => auth.setActive("home")}
+            state={null}
           >
             <span
               className={
