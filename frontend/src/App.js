@@ -53,7 +53,7 @@ function App() {
   return (
     <Router>
       <AuthProvider
-        value={{ currentUser, timeActive, setTimeActive, setClicked, clicked }}
+        value={{ currentUser, timeActive, setTimeActive, setClicked, clicked, active,setActive }}
       >
         <Routes>
           <Route
