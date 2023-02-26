@@ -8,7 +8,7 @@ import ahome from "../../assets/icons/144-home copy.svg";
 import directorchair from "../../assets/icons/director-chair.svg";
 import clapperboard from "../../assets/icons/clapperboard.svg";
 import thumbsup from "../../assets/icons/Group 156.svg";
-import notification from "../../assets/icons/211-notification.svg";
+import notification from "../../assets/icons/211-notification.png";
 import chat from "../../assets/icons/045-chat-1.svg";
 import profile from "../../assets/icons/profile1.svg";
 import mask from "../../assets/icons/Group 110.svg";
@@ -20,6 +20,8 @@ import amask from "../../assets/icons/active-mask.svg";
 import anotification from "../../assets/icons/active-notification.svg";
 import role from "../../assets/images/role.png";
 import arole from "../../assets/images/active-role.png";
+import requests from "../../assets/icons/requests.png";
+import arequests from "../../assets/icons/active-requests.png";
 import axios from "axios";
 
 import AuthContext from "../AuthContext";
@@ -262,9 +264,9 @@ const Topbar = (props) => {
                     onClick={() => auth.setActive("mask")}
                   >
                     {active === "mask" ? (
-                      <img className="topbar-icons" src={amask} alt="" />
+                      <img className="topbar-icons" src={arole} alt="" />
                     ) : (
-                      <img className="topbar-icons" src={mask} alt="" />
+                      <img className="topbar-icons" src={role} alt="" />
                     )}
                   </span>
                 </Link>
@@ -291,12 +293,33 @@ const Topbar = (props) => {
               )}
             </span>
           </Link>
+          {
+            user.type !== "seeker"
+            &&
+            <Link to="/requestpage">
+            <span
+              className={
+                active === "request"
+                  ? `nav_active topbar-icons-container`
+                  : "topbar-icons-container"
+              }
+              onClick={() => auth.setActive("request")}
+            >
+              {active === "request" ? (
+                <img className="topbar-icons" src={arequests} alt="" />
+              ) : (
+                <img className="topbar-icons" src={requests} alt="" />
+              )}
+            </span>
+          </Link>
+          }
+          
 
           {/*
                         <Link to="/projectcreation"> */}
           <span
             className="topbar-icons-container n_icon"
-            onClick={toggleNotifOption}
+            onClick={()=>{toggleNotifOption();auth.setActive("notification")}}
           >
             {active === "notification" ? (
               <img className="topbar-icons" src={anotification} alt="" />
@@ -370,15 +393,21 @@ const Topbar = (props) => {
             <span className="top-profile-name">{user.username}</span>
             <div className="profile-options" id="profileOption">
               <ul>
-                <li>
+                {
+                  user.type !== "seeker"?
+                  (
+                    <>
+                    <li>
                   <Link to="/profiledetails">My Profile</Link>
                 </li>
-                <li>
-                  <NavLink to="/requestpage">My Requests</NavLink>
-                </li>
-                <li>
-                  <NavLink to="/myrole">My Roles</NavLink>
-                </li>
+                
+                
+                    </>
+                  )
+                  :(
+                    <></>
+                  )
+                }
                 <li>
                   <NavLink to="/setting">Account Settings</NavLink>
                 </li>
