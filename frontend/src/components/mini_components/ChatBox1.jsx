@@ -9,7 +9,9 @@ import ChatContext from "../Context/chat-context";
 
 import io from "socket.io-client";
 import ScrollableChat1 from "./ScrollableChat1";
-
+import Picker from "emoji-picker-react";
+import emojiIcon from "../../assets/icons/emoji.png";
+import { MdOutlineEmojiEmotions } from "react-icons/md";
 //const ENDPOINT = "http://localhost:5000"; //development
 const ENDPOINT = "http://localhost:5000";
 var socket, selectedChatCompare;
@@ -243,6 +245,15 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
   };
 
   console.log("SelectedUser", selectedChat);
+
+  const [inputStr, setInputStr] = useState("");
+  const [showPicker, setShowPicker] = useState(false);
+
+  const onEmojiClick = (event, emojiObject) => {
+    setNewMessage((prevInput) => prevInput + emojiObject.emoji);
+    setShowPicker(false);
+  };
+
   return (
     <>
       {selectedChat ? (
@@ -316,6 +327,22 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
                 value={newMessage}
                 onChange={typingHandler}
               />
+
+              <MdOutlineEmojiEmotions
+                className="emoji-icon mx-2"
+                src={emojiIcon}
+                style={showPicker ? { color: "#8443e5" } : { color: "#9f9ec1" }}
+                onClick={() => setShowPicker((val) => !val)}
+              />
+              <div className="picker-container">
+                {showPicker && (
+                  <Picker
+                    pickerStyle={{ width: "100%" }}
+                    onEmojiClick={onEmojiClick}
+                  />
+                )}
+              </div>
+
               <button onClick={sendMessage}>Send</button>
             </div>
           </div>
