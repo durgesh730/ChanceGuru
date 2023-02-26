@@ -34,13 +34,9 @@ router.get("/seekersImage/:id", async (req, res) => {
 });
 
 // API used for user phone number and email
-router.get("/Users", async (req, res) => {
+router.get("/Users/:id", async (req, res) => {
   try {
-    const user = await User.aggregate([
-      {
-        $match: { type: "user" },
-      },
-    ]);
+    const user = await User.findOne({_id:req.params.id})
     res.json(user);
   } catch (error) {
     console.error(error.message);
