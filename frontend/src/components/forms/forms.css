@@ -245,3 +245,36 @@ td {
 .form_group img {
   width: 100%;
 }
+
+
+.summary-info.row div span{
+  display: inline-block;
+  
+}
+
+.summary-info.row div{
+  margin-bottom: 16px;
+}
+.summary-info.row div span.titleSpan{
+  margin-right: 26px;
+  width: 76px;
+  font-size: 16px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: normal;
+  text-align: left;
+  color: #aeaab4;
+}
+
+.summary-info.row div span.contentSpan{
+  font-size: 14px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.71;
+  letter-spacing: normal;
+  text-align: left;
+  color: #444;
+}

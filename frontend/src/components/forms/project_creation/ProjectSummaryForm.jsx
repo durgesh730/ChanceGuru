@@ -19,11 +19,13 @@ const ProjectSummaryForm = ({ display, values }) => {
         show = { display: "none" };
     }
 
-    const handleshow = (i) => {
-        if (showset === false) {
-            setShow(true)
-        } else {
-            setShow(false)
+    const handleshow = (e) => {
+        let displayProp = e.target.nextElementSibling.style.display
+        if(displayProp == "block"){
+            e.target.nextElementSibling.style.display = "none"
+        }
+        else{
+            e.target.nextElementSibling.style.display = "block"
         }
     }
 
@@ -39,7 +41,7 @@ const ProjectSummaryForm = ({ display, values }) => {
                     alert(res.data)
                 } else {
                     alert("Project Published Successfully");
-                    navigate("seekerdashboard");
+                    navigate("/seekerdashboard");
                     console.log(res)
                 }
             })
@@ -61,32 +63,34 @@ const ProjectSummaryForm = ({ display, values }) => {
                         <span>Company Information</span>
                     </div>
                     <div className="summary-info row">
-                        <table className="table table-borderless">
-                            <tbody>
-                                <tr>
-                                    <td className="summary-name">{basicInfo.company}</td>
-                                    <td className="summary-desc">
-                                        {basicInfo.address}, {basicInfo.city}, {basicInfo.state}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td className="summary-name">Contact</td>
-                                    <td className="summary-desc">{basicInfo.contact}</td>
-                                </tr>
-                                <tr>
-                                    <td className="summary-name">Email</td>
-                                    <td className="summary-desc">{basicInfo.email}</td>
-                                </tr>
-                                <tr>
-                                    <td className="summary-name">Facebook</td>
-                                    <td className="summary-desc">{basicInfo.facebook}</td>
-                                </tr>
-                                <tr>
-                                    <td className="summary-name">Instagram</td>
-                                    <td className="summary-desc">{basicInfo.instagram}</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div>
+                            <span className="titleSpan">Company</span>
+                            <span className="contentSpan">
+                                {basicInfo.company + " "}
+                                {basicInfo.address}, {basicInfo.city}, {basicInfo.state}
+                            </span>
+                        </div>
+
+                        <div>
+                            <span className="titleSpan">Contact</span>
+                            <span className="contentSpan">{basicInfo.phone}</span>
+                        </div>
+
+                        <div>
+                            <span className="titleSpan">Email</span>
+                            <span className="contentSpan">{basicInfo.email}</span>
+                        </div>
+
+                        <div>
+                            <span className="titleSpan">Facebook</span>
+                            <span className="contentSpan">{basicInfo.facebook}</span>
+                        </div>
+
+                        <div>
+                            <span className="titleSpan">Instagram</span>
+                            <span className="contentSpan">{basicInfo.instagram}</span>
+                        </div>
+                        
                     </div>
                 </div>
                 <hr />
@@ -107,9 +111,9 @@ const ProjectSummaryForm = ({ display, values }) => {
                                         {item.characters?.map((data, index) => {
                                             return (
                                                 <>
-                                                    <span className=" char my-2" onClick={() => { handleshow() }} >{data.name}</span>
+                                                    <span className=" char my-2" onClick={handleshow} >{data.name}</span>
                                                     <textarea
-                                                        style={showset ? { display: `block` } : { display: `none` }}
+                                                        style={{ display: `none` }}
                                                         name=""
                                                         id="bio"
                                                         className="form-control text-area"
