@@ -154,6 +154,19 @@ const BioExpForm = ({ display, toggleForm }) => {
     e.preventDefault()
     e.target.nextElementSibling.style.display = "block"
   }
+  const handleCancelExperience = (e)=>{
+    e.preventDefault()
+    setExpData({
+      workedIn: "",
+      workedAs: "",
+      startDate: "",
+      endDate: "",
+      aboutWork: "",
+    })
+    document.getElementsByClassName("ExpformData")[0].style.display="none"
+
+
+  }
   return (
     <>
       {
@@ -308,6 +321,7 @@ const BioExpForm = ({ display, toggleForm }) => {
                   type="button"
                   className="col-4 cancel-btn btn btn-lg btn-block my-2"
                   value="Cancel"
+                  onClick={handleCancelExperience}
                 />
                 <p className="col-1"></p>
                 <input
