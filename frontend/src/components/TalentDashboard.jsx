@@ -89,7 +89,7 @@ const TalentDashboard = () => {
 
     useEffect(() => {
         getProjects();
-    }, [setcards]);
+    }, [setcards,location.state]);
 
     const user = JSON.parse(localStorage.getItem("login"));
 

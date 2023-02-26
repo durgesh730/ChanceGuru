@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { RiLogoutBoxRLine } from "react-icons/ri";
 
@@ -22,11 +22,15 @@ import role from "../../assets/images/role.png";
 import arole from "../../assets/images/active-role.png";
 import axios from "axios";
 
+import AuthContext from "../AuthContext";
 const Topbar = (props) => {
   const [profileHeight, setProfileHeight] = useState(0);
   const [notifHeight, setnotifHeight] = useState(0);
   const [dim, setDim] = useState(0);
   const [projects, setProjects] = useState();
+  
+  const auth = useContext(AuthContext)
+  const active = auth.active
 
   const navigate = useNavigate();
 
@@ -65,8 +69,7 @@ const Topbar = (props) => {
 
   const user = JSON.parse(localStorage.getItem("login"));
 
-  const [active, setActive] = useState("home");
-  // console.log(active);
+
 
   const [jobs, setJobs] = useState();
   const [jobProjects, setJobProjects] = useState([]);
@@ -177,7 +180,8 @@ const Topbar = (props) => {
         <div className="topbar-nav">
           <Link
             to={user.type === "user" ? "/talentdashboard" : "/seekerdashboard"}
-            onClick={() => setActive("home")}
+            onClick={() => auth.setActive("home")}
+            state={null}
           >
             <span
               className={
@@ -193,53 +197,84 @@ const Topbar = (props) => {
               )}
             </span>
           </Link>
-          <Link to="/submission" onClick={() => setActive("chair")}>
-            <span
-              className={
-                active === "chair"
-                  ? `nav_active topbar-icons-container`
-                  : "topbar-icons-container"
-              }
-            >
-              {active === "chair" ? (
-                <img className="topbar-icons" src={achair} alt="" />
-              ) : (
-                <img className="topbar-icons" src={directorchair} alt="" />
-              )}
-            </span>
-          </Link>
-          <Link to="/rolesdashboard">
-            <span
-              className={
-                active === "mask"
-                  ? `nav_active topbar-icons-container`
-                  : "topbar-icons-container"
-              }
-              onClick={() => setActive("mask")}
-            >
-              {active === "mask" ? (
-                <img className="topbar-icons" src={amask} alt="" />
-              ) : (
-                <img className="topbar-icons" src={mask} alt="" />
-              )}
-            </span>
-          </Link>
+          {
+            user.type === "seeker" ? (
+              <>
+                <Link to="/submission" onClick={() => auth.setActive("chair")}>
+                  <span
+                    className={
+                      active === "chair"
+                        ? `nav_active topbar-icons-container`
+                        : "topbar-icons-container"
+                    }
+                  >
+                    {active === "chair" ? (
+                      <img className="topbar-icons" src={achair} alt="" />
+                    ) : (
+                      <img className="topbar-icons" src={directorchair} alt="" />
+                    )}
+                  </span>
+                </Link>
 
-          <Link to="/browseprofile" onClick={() => setActive("fingers")}>
-            <span
-              className={
-                active === "fingers"
-                  ? `nav_active topbar-icons-container`
-                  : "topbar-icons-container"
-              }
-            >
-              {active === "fingers" ? (
-                <img className="topbar-icons" src={afingers} alt="" />
-              ) : (
-                <img className="topbar-icons" src={thumbsup} alt="" />
-              )}
-            </span>
-          </Link>
+                <Link to="/rolesdashboard">
+                  <span
+                    className={
+                      active === "mask"
+                        ? `nav_active topbar-icons-container`
+                        : "topbar-icons-container"
+                    }
+                    onClick={() => auth.setActive("mask")}
+                  >
+                    {active === "mask" ? (
+                      <img className="topbar-icons" src={amask} alt="" />
+                    ) : (
+                      <img className="topbar-icons" src={mask} alt="" />
+                    )}
+                  </span>
+                </Link>
+                <Link to="/browseprofile" onClick={() => auth.setActive("fingers")}>
+                  <span
+                    className={
+                      active === "fingers"
+                        ? `nav_active topbar-icons-container`
+                        : "topbar-icons-container"
+                    }
+                  >
+                    {active === "fingers" ? (
+                      <img className="topbar-icons" src={afingers} alt="" />
+                    ) : (
+                      <img className="topbar-icons" src={thumbsup} alt="" />
+                    )}
+                  </span>
+                </Link>
+              </>
+
+            ) 
+          :
+          (
+            <Link to="/myrole">
+                  <span
+                    className={
+                      active === "mask"
+                        ? `nav_active topbar-icons-container`
+                        : "topbar-icons-container"
+                    }
+                    onClick={() => auth.setActive("mask")}
+                  >
+                    {active === "mask" ? (
+                      <img className="topbar-icons" src={amask} alt="" />
+                    ) : (
+                      <img className="topbar-icons" src={mask} alt="" />
+                    )}
+                  </span>
+                </Link>
+          )
+        }
+          
+          
+          
+
+          
           <Link to="/chat">
             <span
               className={
@@ -247,7 +282,7 @@ const Topbar = (props) => {
                   ? `nav_active topbar-icons-container`
                   : "topbar-icons-container"
               }
-              onClick={() => setActive("chat")}
+              onClick={() => auth.setActive("chat")}
             >
               {active === "chat" ? (
                 <img className="topbar-icons" src={achat} alt="" />
