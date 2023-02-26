@@ -1,53 +1,50 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import Topbar from "./mini_components/Topbar";
 import annouce from "../assets/icons/noun-announce-4868354.svg";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import CharacterCard from "./mini_components/CharacterCard";
-
-
+import { RiDeleteBin5Line } from "react-icons/ri";
+import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
 
 const Roles = ({ display }) => {
-
-  let rolesForm, charForm, summForm, rolesToggle, charToggle, summToggle
+  let rolesForm, charForm, summForm, rolesToggle, charToggle, summToggle;
 
   const location = useLocation();
   const [projectDetails, setProjectDetails] = useState(location.state);
   const [roles, setRoles] = useState(projectDetails.roles);
 
   // for character form
-  const [activeRole, setActiveRole] = useState(roles[0])
-  const [chars, setChars] = useState(activeRole.characters)
-  const [toEdit, setToEdit] = useState({})
+  const [activeRole, setActiveRole] = useState(roles[0]);
+  const [chars, setChars] = useState(activeRole.characters);
+  const [toEdit, setToEdit] = useState({});
   //console.log("Active Role is: ", activeRole)
   //console.log("Active characters are: ", chars)
 
   useEffect(() => {
-    setChars(activeRole.characters)
+    setChars(activeRole.characters);
     //console.log("Active Role is: ", activeRole)
     //console.log("Active characters are: ", chars)
-  }, [activeRole])
-
+  }, [activeRole]);
 
   // Total roles count to set in the project details card
-  var totalRolesCount = 0
+  var totalRolesCount = 0;
   function setTotalRoleCount() {
-    let count = 0
+    let count = 0;
     for (let index = 0; index < [...roles].length; index++) {
       const element = [...roles][index];
-      count += element.characters.length
+      count += element.characters.length;
     }
-    totalRolesCount = count
+    totalRolesCount = count;
   }
 
   // useEffect for re calculating total characters after adding roles
   useEffect(() => {
-    setTotalRoleCount()
+    setTotalRoleCount();
+  }, [roles]);
 
-  }, [roles])
-
-  setTotalRoleCount()
+  setTotalRoleCount();
 
   const changeHandler = (e) => {
     setProjectDetails({ ...projectDetails, [e.target.name]: e.target.value });
@@ -57,46 +54,52 @@ const Roles = ({ display }) => {
   // };
 
   function handleAddRole(e) {
-    e.preventDefault()
+    e.preventDefault();
     let obj = { role: "Add Role", characters: [] };
     setRoles([...roles, obj]);
-
   }
 
   const handleFormChange = (e, index, attrToChange) => {
     let data = [...roles];
     if (attrToChange === "roleName") {
-
       data[index].role = e.target.value;
     }
     setRoles(data);
   };
 
-
   const handleRoleUpdateForm = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     // //console.log("Submitting edited form");
-    setProjectDetails({ ...projectDetails, roles })
-    axios.put('http://localhost:5000/project/changeRoles', {
-      project: projectDetails
-    },
-      {
-        headers: {
-          "Authorization": `Bearer ${localStorage.getItem("token")}`
+    setProjectDetails({ ...projectDetails, roles });
+    axios
+      .put(
+        "http://localhost:5000/project/changeRoles",
+        {
+          project: projectDetails,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
-      }
-    ).then((res) => {
-      alert(`${res.data.basicInfo.name} Roles Updated suceessfully`)
-      //console.log("data added");
-      //console.log(res)
-    })
-  }
+      )
+      .then((res) => {
+        alert(`${res.data.basicInfo.name} Roles Updated suceessfully`);
+        //console.log("data added");
+        //console.log(res)
+      });
+  };
 
   //console.log("Roles array: ", roles)
 
   function handleAddCharacter(e) {
-    e.preventDefault()
-    setToEdit({ name: "Character Name", age: "", gender: "", indexInChars: activeRole.characters.length })
+    e.preventDefault();
+    setToEdit({
+      name: "Character Name",
+      age: "",
+      gender: "",
+      indexInChars: activeRole.characters.length,
+    });
   }
 
   let name, value;
@@ -104,40 +107,42 @@ const Roles = ({ display }) => {
     name = e.target.name;
     value = e.target.value;
 
-    setToEdit({ ...toEdit, [name]: value })
-  }
+    setToEdit({ ...toEdit, [name]: value });
+  };
 
   function handleCharacterUpdateForm(e) {
-    e.preventDefault()
+    e.preventDefault();
 
-    let prevChars = chars
-    let indexInChars = toEdit.indexInChars
-    delete toEdit.indexInChars
-    prevChars[indexInChars] = toEdit
+    let prevChars = chars;
+    let indexInChars = toEdit.indexInChars;
+    delete toEdit.indexInChars;
+    prevChars[indexInChars] = toEdit;
 
-    console.log(prevChars)
+    console.log(prevChars);
 
-    setActiveRole({ ...activeRole, prevChars })
-    console.log(activeRole)
+    setActiveRole({ ...activeRole, prevChars });
+    console.log(activeRole);
 
-    setProjectDetails({ ...projectDetails, activeRole })
+    setProjectDetails({ ...projectDetails, activeRole });
 
-    axios.put('http://localhost:5000/project/changeRoles', {
-      project: projectDetails
-    },
-      {
-        headers: {
-          "Authorization": `Bearer ${localStorage.getItem("token")}`
+    axios
+      .put(
+        "http://localhost:5000/project/changeRoles",
+        {
+          project: projectDetails,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
-      }
-    ).then((res) => {
-      alert(`${res.data.basicInfo.name} Roles Updated suceessfully`)
-      //console.log("data added");
-      //console.log(res)
-    })
-
+      )
+      .then((res) => {
+        alert(`${res.data.basicInfo.name} Roles Updated suceessfully`);
+        //console.log("data added");
+        //console.log(res)
+      });
   }
-
 
   function getAllForms() {
     rolesForm = document.getElementById("roles-form");
@@ -148,12 +153,10 @@ const Roles = ({ display }) => {
     summToggle = document.getElementById("summ-toggle");
   }
 
-
-
   // //console.log(charForm)
 
   const toggle = (cur_form) => {
-    getAllForms()
+    getAllForms();
     if (cur_form == "roles") {
       rolesForm.style.display = "block";
       charForm.style.display = "none";
@@ -161,15 +164,13 @@ const Roles = ({ display }) => {
       rolesToggle.classList.add("active-toggle");
       charToggle.classList.remove("active-toggle");
       summToggle.classList.remove("active-toggle");
-
     } else if (cur_form == "char") {
       charForm.style.display = "block";
       rolesForm.style.display = "none";
       summForm.style.display = "none";
-      rolesToggle.classList.add("active-toggle");
-      charToggle.classList.remove("active-toggle");
+      rolesToggle.classList.remove("active-toggle");
+      charToggle.classList.add("active-toggle");
       summToggle.classList.remove("active-toggle");
-
     } else if (cur_form == "summary") {
       charForm.style.display = "none";
       rolesForm.style.display = "none";
@@ -178,7 +179,6 @@ const Roles = ({ display }) => {
       charToggle.classList.remove("active-toggle");
       summToggle.classList.add("active-toggle");
     }
-
   };
 
   let show = {};
@@ -187,6 +187,23 @@ const Roles = ({ display }) => {
   } else {
     show = { display: "none" };
   }
+
+  const slideDiv = useRef("");
+
+  // let width = box.offsetWidth;
+  // console.log(box.offsetWidth);
+
+  const prevCon = (e) => {
+    e.preventDefault();
+    let width = slideDiv.current.offsetWidth;
+    slideDiv.current.scrollLeft = slideDiv.current.scrollLeft - width;
+    console.log(slideDiv);
+  };
+  const nextCon = (e) => {
+    e.preventDefault();
+    let width = slideDiv.current.offsetWidth;
+    slideDiv.current.scrollLeft = slideDiv.current.scrollLeft + width;
+  };
 
   return (
     <div className="roleCreation ">
@@ -198,15 +215,15 @@ const Roles = ({ display }) => {
               <img className="announcesvg" src={annouce} alt="" />
             </div>
             <div className="col-lg-9">
-
               <>
-                <span class="project-name">{projectDetails.basicInfo.name}</span>{" "}
+                <span class="project-name">
+                  {projectDetails.basicInfo.name}
+                </span>{" "}
                 <br />
                 <span class="project-desc">
                   {projectDetails.basicInfo.desc}
                 </span>
               </>
-
             </div>
           </div>
 
@@ -221,7 +238,6 @@ const Roles = ({ display }) => {
                 {projectDetails.basicInfo.address}
               </span>
             </>
-
           </div>
 
           <div className="count">
@@ -240,232 +256,296 @@ const Roles = ({ display }) => {
           {" "}
           {
             <div className="roleUpdate form-body">
-              <div
-                className="form-toggle d-flex justify-content-between"
-                style={show}
-              >
-                <div
-                  className="toggle-option active-toggle"
-                  onClick={() => {
-                    toggle("roles");
-                  }}
-                  id="roles-toggle"
-                >
-                  Roles
-                </div>
-                <div
-                  className="toggle-option"
-                  onClick={() => {
-                    toggle("char");
-                  }}
-                  id="char-toggle"
-                >
-                  Characters
-                </div>
-                <div
-                  className="toggle-option"
-                  onClick={() => {
-                    toggle("summary");
-                  }}
-                  id="summ-toggle"
-                >
-                  Summary
-                </div>
-              </div>
-
-
-              <div className="form-container ">
-
-                <form id="roles-form" onSubmit={handleRoleUpdateForm} >
-                  <button
-                    // type="submit"
-                    className="full-width-btn cursor-pointer"
-                    value="Add Roles"
-                    onClick={handleAddRole}
-                  >Add Role</button>
-
-
-
-
-                  {roles.map((item, index) => {
-                    return (
-                      <>
-                        <div key={index} className="my-2">
-                          <input className="px-2" type="text" name="role" id="role" value={item.role}
-                            placeholder={item.role} onChange={(e) => {
-                              handleFormChange(e, index, "roleName");
-                            }} />
-                        </div>
-                      </>
-                    )
-                  })}
-
-
-                  <div className="row">
-                    <input
-                      type="submit"
-                      className="col-4 cancel-btn btn btn-lg btn-block my-2"
-                      value="Cancel"
-                    />
-                    <p className="col-1"></p>
-                    <input
-                      // type="submit"
-                      className="col-7 save-btn btn btn-lg btn-block my-2"
-                      value="Save"
-                    />
+              <div className="roleChild">
+                <div className="form-toggle d-flex " style={show}>
+                  <div
+                    className="toggle-option active-toggle"
+                    onClick={() => {
+                      toggle("roles");
+                    }}
+                    id="roles-toggle"
+                  >
+                    Roles
                   </div>
-                </form>
-
-
-                <form id="char-form" style={{ display: "none" }} onSubmit={handleCharacterUpdateForm} >
-                  <div className="charList row">
-
-
-                    {roles.map((item, index) => {
-                      return (
-                        <>
-                          <div
-                            className="col-lg-3  btn btn-sm btn-block my-2"
-                            onClick={() => { setToEdit({}); setActiveRole(item) }}
-                            style={{ color: activeRole === item ? "#8443e5" : "initial" }}
-                          >
-                            {item.role}
-                          </div>
-                        </>
-                      )
-                    })}
-
+                  <div
+                    className="toggle-option"
+                    onClick={() => {
+                      toggle("char");
+                    }}
+                    id="char-toggle"
+                  >
+                    Characters
                   </div>
-
-                  <div className="d-flex">
-                    <p className="mx-1"></p>
-
+                  <div
+                    className="toggle-option"
+                    onClick={() => {
+                      toggle("summary");
+                    }}
+                    id="summ-toggle"
+                  >
+                    Summary
                   </div>
+                </div>
 
-                  <div className="d-flex overflow-auto " >
-                    {
-                      chars.map((item, index) => {
+                <div className="form-container" style={{ paddingBottom: "0" }}>
+                  <div>
+                    <form id="roles-form" onSubmit={handleRoleUpdateForm}>
+                      <button
+                        // type="submit"
+                        className="full-width-btn cursor-pointer"
+                        value="Add Roles"
+                        onClick={handleAddRole}
+                      >
+                        Add Role
+                      </button>
+
+                      {roles.map((item, index) => {
                         return (
-                          <CharacterCard index={index} cardData={item} toEdit={toEdit} setToEdit={setToEdit} />
-                        )
-                      })
-                    }
+                          <>
+                            <div key={index} className="role_boxes">
+                              <input
+                                type="text"
+                                name="role"
+                                id="role"
+                                value={item.role}
+                                placeholder={item.role}
+                                onChange={(e) => {
+                                  handleFormChange(e, index, "roleName");
+                                }}
+                              />
+                              <RiDeleteBin5Line />
+                            </div>
+                          </>
+                        );
+                      })}
 
-                  </div>
-
-                  <input
-                    type="submit"
-                    className="full-width-btn"
-                    value="Add Another Character"
-                    onClick={handleAddCharacter}
-                  />
-                  {
-                    JSON.stringify(toEdit) !== '{}' &&
-                    <>
-
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Character Name"
-                        name="name"
-                        value={toEdit.name}
-                        onChange={handleEditChange}
-                      />
-                      <select
-                        className="form-control form-select"
-                        id="exampleFormControlSelect1"
-                        name="gender"
-                        value={toEdit.gender}
-                        onChange={handleEditChange}
-                      >
-                        <option value="chorus" disabled>
-                          Gender
-                        </option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                      </select>
-
-                      <textarea
-                        name="desc"
-                        id=""
-                        className="form-control text-area"
-                        rows="5"
-                        placeholder="Details..."
-                        maxlength="250"
-                        value={toEdit.desc}
-
-                        onChange={handleEditChange}
-                      ></textarea>
-                      {console.log(toEdit)}
-
-
-                      <select
-                        className="form-control form-select"
-                        id="exampleFormControlSelect1"
-                        value={toEdit.age}
-                        onChange={handleEditChange}
-                        name="age"
-                      >
-                        <option value="" disabled>
-                          Age
-                        </option>
-                        <option value="19">19</option>
-                        <option value="20">20</option>
-                        <option value="21">21</option>
-                        <option value="22">22</option>
-                      </select>
-                      <div className="row">
+                      <div className="d-flex justify-content-between mt-5">
                         <input
-                          type="submit"
-                          className="col-4 cancel-btn btn btn-lg btn-block my-2"
+                          type="button"
+                          className="cancel-btn btn btn-lg btn-block"
                           value="Cancel"
                         />
                         <p className="col-1"></p>
                         <input
-                          type="submit"
-                          className="col-7 save-btn btn btn-lg btn-block my-2"
+                          type="button"
+                          className="save-btn btn btn-lg btn-block"
                           value="Save"
                         />
                       </div>
-                    </>
-                  }
+                    </form>
+                  </div>
+                </div>
+                <div>
+                  <form
+                    id="char-form"
+                    style={{ display: "none" }}
+                    onSubmit={handleCharacterUpdateForm}
+                  >
+                    <div className="charList ">
+                      {roles.map((item, index) => {
+                        return (
+                          <>
+                            <div
+                              className={
+                                activeRole === item ? "hihlightedCharList" : ""
+                              }
+                              onClick={() => {
+                                setToEdit({});
+                                setActiveRole(item);
+                              }}
+                            >
+                              {item.role}
+                            </div>
+                          </>
+                        );
+                      })}
+                    </div>
 
+                    <div className="scroll_x ">
+                      <div className="container-fluid experience_container">
+                        <div className="ec_child" ref={slideDiv}>
+                          {chars.map((item, index) => {
+                            return (
+                              <CharacterCard
+                                index={index}
+                                cardData={item}
+                                toEdit={toEdit}
+                                setToEdit={setToEdit}
+                              />
+                            );
+                          })}
+                        </div>
+                        <div className="controllers">
+                          <button onClick={prevCon}>
+                            <BsChevronCompactLeft />
+                          </button>
+                          <button onClick={nextCon}>
+                            <BsChevronCompactRight />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
 
+                    <div
+                      className="form-container"
+                      style={{ paddingBottom: "0" }}
+                    >
+                      <div style={{ width: "444px" }} className="formChild">
+                        <input
+                          type="submit"
+                          className="full-width-btn"
+                          value="Add Another Character"
+                          onClick={handleAddCharacter}
+                        />
+                        {JSON.stringify(toEdit) !== "{}" && (
+                          <>
+                            <input
+                              type="text"
+                              className="form-control"
+                              placeholder="Character Name"
+                              name="name"
+                              value={toEdit.name}
+                              onChange={handleEditChange}
+                            />
+                            <select
+                              className="form-control form-select"
+                              id="exampleFormControlSelect1"
+                              name="gender"
+                              value={toEdit.gender}
+                              onChange={handleEditChange}
+                            >
+                              <option value="chorus" disabled>
+                                Gender
+                              </option>
+                              <option value="male">Male</option>
+                              <option value="female">Female</option>
+                            </select>
 
-                </form>
+                            <textarea
+                              name="desc"
+                              id=""
+                              className="form-control text-area"
+                              rows="5"
+                              placeholder="Details..."
+                              maxlength="250"
+                              value={toEdit.desc}
+                              onChange={handleEditChange}
+                            ></textarea>
+                            {console.log(toEdit)}
 
-                <form id="summ-form" className="summary" style={{ display: "none" }}>
-                  {
-                    projectDetails.roles?.map((item, index) => {
+                            <select
+                              className="form-control form-select"
+                              id="exampleFormControlSelect1"
+                              value={toEdit.age}
+                              onChange={handleEditChange}
+                              name="age"
+                            >
+                              <option value="" disabled>
+                                Age
+                              </option>
+                              <option value="19">19</option>
+                              <option value="20">20</option>
+                              <option value="21">21</option>
+                              <option value="22">22</option>
+                            </select>
+                            <div className="d-flex justify-content-between mt-5">
+                              <input
+                                type="submit"
+                                className="cancel-btn btn btn-lg btn-block my-2"
+                                value="Cancel"
+                              />
+                              <input
+                                type="submit"
+                                className=" save-btn btn btn-lg btn-block my-2"
+                                value="Save"
+                              />
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  </form>
+
+                  <form
+                    id="summ-form"
+                    className="summary"
+                    style={{ display: "none" }}
+                  >
+                    {projectDetails.roles?.map((item, index) => {
                       return (
                         <>
-                          <div>
-                            <span> {item.role} </span>
-                            <div className="d-flex overflow-auto my-2 ">
-                              {
-                                item ? (item.characters?.map((not, i) => {
+                          {/* <div>
+                          <span className="purple_title"> {item.role} </span>
+                          <div className="d-flex overflow-auto my-2 ">
+                            {item
+                              ? item.characters?.map((not, i) => {
                                   return (
                                     <div class="Card mx-1 ">
                                       <div class="Card-body">
-                                        <div className="cardone" >
-                                        <h5 class="card-title">{not.name}</h5>
-                                        <h6 class="card-subtitle mb-2 text-muted">{not.age}</h6>
-                                        <h6 class="card-subtitle mb-2 text-muted">{not.gender}</h6>
-                                        <p class="card-text">{not.desc ? not.desc : "Not available"}</p>
-                                          </div>
+                                        <div className="cardone">
+                                          <h5 class="card-title">{not.name}</h5>
+                                          <h6 class="card-subtitle mb-2 text-muted">
+                                            {not.age}
+                                          </h6>
+                                          <h6 class="card-subtitle mb-2 text-muted">
+                                            {not.gender}
+                                          </h6>
+                                          <p class="card-text">
+                                            {not.desc
+                                              ? not.desc
+                                              : "Not available"}
+                                          </p>
+                                        </div>
                                       </div>
                                     </div>
-                                  )
-                                })) : (" ")
-                              }
+                                  );
+                                })
+                              : " "}
+                          </div>
+                        </div> */}
+                          <span className="purple_title"> {item.role} </span>
+
+                          <div className="scroll_x ">
+                            <div className="container-fluid experience_container">
+                              <div className="ec_child" ref={slideDiv}>
+                                {item
+                                  ? item.characters?.map((not, i) => {
+                                      return (
+                                        <div className="summaryChild">
+                                          <span className="w-100 d-flex align-items-center">
+                                            <h5 class="card-title">
+                                              {not.name}{" "}
+                                              {not.gender
+                                                ? ":" + not.gender
+                                                : ""}
+                                              {not.age ? "," + not.age : ""}
+                                            </h5>
+                                          </span>
+                                          <p class="card-text">
+                                            {not.desc
+                                              ? not.desc
+                                              : "Not available"}
+                                          </p>
+                                        </div>
+                                      );
+                                    })
+                                  : " "}
+                              </div>
+                              <div className="controllers">
+                                <button onClick={prevCon}>
+                                  <BsChevronCompactLeft />
+                                </button>
+                                <button onClick={nextCon}>
+                                  <BsChevronCompactRight />
+                                </button>
+                              </div>
                             </div>
                           </div>
                         </>
-                      )
-                    })
-                  }
-                </form>
-
+                      );
+                    })}
+                  </form>
+                </div>
               </div>
             </div>
           }{" "}

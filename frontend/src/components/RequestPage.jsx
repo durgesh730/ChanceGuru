@@ -50,12 +50,14 @@ const RequestPage = () => {
     for (let index = 0; index < len; index++) {
 
       const seekerName = reqUsers[index][0].basicInfo.fullname;
+      const seekerId = reqUsers[index][0].userId;
       let requestTime = new Date(requests[index].RequestSendAt);
       console.log(typeof (requestTime))
       requestTime = `${requestTime.getDate()}-${requestTime.getMonth() + 1 < 10 ? `0${requestTime.getMonth() + 1}` : requestTime.getMonth()}-${requestTime.getFullYear()}`
       let mapObj = {
         seeker: seekerName,
-        requestTime: requestTime
+        requestTime: requestTime,
+        seekerId:seekerId
       }
       arr.push(mapObj)
 
@@ -99,8 +101,8 @@ const RequestPage = () => {
                           <td>{item.seeker}</td>
                           <td>{item.requestTime}</td>
                           <td>
-                            <NavLink to={"/browseprofile/:nickdavolt"} state={{ user: item, card: [], index: 0, btn: 0 }} exact>
-                              <button>View Profile</button>
+                            <NavLink to={`/talentdashboard`} state={{seekerId:item.seekerId}} exact>
+                              <button>View Projects</button>
                             </NavLink>
                           </td>
                         </tr>

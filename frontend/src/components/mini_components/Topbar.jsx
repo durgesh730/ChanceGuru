@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { RiLogoutBoxRLine } from "react-icons/ri";
 
@@ -20,11 +20,13 @@ import amask from "../../assets/icons/active-mask.svg";
 import anotification from "../../assets/icons/active-notification.svg";
 import role from "../../assets/images/role.png";
 import arole from "../../assets/images/active-role.png";
+import axios from "axios";
 
 const Topbar = (props) => {
   const [profileHeight, setProfileHeight] = useState(0);
   const [notifHeight, setnotifHeight] = useState(0);
   const [dim, setDim] = useState(0);
+  const [projects, setProjects] = useState();
 
   const navigate = useNavigate();
 
@@ -65,6 +67,105 @@ const Topbar = (props) => {
 
   const [active, setActive] = useState("home");
   // console.log(active);
+
+  const [jobs, setJobs] = useState();
+  const [jobProjects, setJobProjects] = useState([]);
+  const [jobUsers, setJobUsers] = useState([]);
+
+  const dataFetchedRef = useRef(false);
+  const [userProjectMap, setUserProjectMap] = useState([]);
+
+  const getProjects = async () => {
+    const res = await fetch(
+      "http://localhost:5000/project/allProjectsSeekers",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    const response = await res.json();
+
+    if (response !== null) {
+      setProjects(response);
+    }
+  };
+
+  const getJobApplications = async () => {
+    const res = await fetch("http://localhost:5000/application/allJobsSeeker", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    const response = await res.json();
+
+    setJobs(response);
+
+    getUsers(response);
+    getJobProjects(response);
+  };
+
+  function getUsers(jobs) {
+    jobs?.map((job, index) => {
+      axios
+        .get(`http://localhost:5000/project/UserId/${job.userId}`)
+        .then((res) => {
+          if (res !== null) {
+            setJobUsers((oldUsers) => [...oldUsers, res.data]);
+          }
+          // console.log(res.data)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    });
+  }
+
+  function getJobProjects(jobs) {
+    jobs?.map((job, index) => {
+      axios
+        .get(`http://localhost:5000/project/projectDetails/${job.pId}`)
+        .then((res) => {
+          if (res !== null) {
+            setJobProjects((oldProjects) => [...oldProjects, res.data]);
+          }
+          // console.log(res.data)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    });
+  }
+
+  useEffect(() => {
+    if (dataFetchedRef.current) return;
+    dataFetchedRef.current = true;
+    getProjects();
+    getJobApplications();
+  }, []);
+
+  useEffect(() => {
+    if (jobUsers.length == 0 || jobProjects.length == 0) {
+      return;
+    }
+    let len = jobProjects.length === jobUsers.length ? jobProjects.length : 0;
+    let arr = new Set();
+    for (let index = 0; index < len; index++) {
+      const userName = jobUsers[index][0].username;
+      const projectName = jobProjects[index][0].basicInfo.name;
+      let mapObj = {
+        user: userName,
+        project: projectName,
+      };
+      arr.add(`${mapObj.user} has applied to project ${mapObj.project}`);
+    }
+    console.log(arr);
+    setUserProjectMap([...arr]);
+  }, [jobUsers, jobProjects]);
 
   return (
     <>
@@ -139,23 +240,23 @@ const Topbar = (props) => {
               )}
             </span>
           </Link>
-          <Link to="/chat" >
-          <span
-            className={
-              active === "chat"
-                ? `nav_active topbar-icons-container`
-                : "topbar-icons-container"
-            }
-            onClick={() => setActive("chat")}
-          >
-            {active === "chat" ? (
-              <img className="topbar-icons" src={achat} alt="" />
-            ) : (
-              <img className="topbar-icons" src={chat} alt="" />
-            )}
-          </span>
+          <Link to="/chat">
+            <span
+              className={
+                active === "chat"
+                  ? `nav_active topbar-icons-container`
+                  : "topbar-icons-container"
+              }
+              onClick={() => setActive("chat")}
+            >
+              {active === "chat" ? (
+                <img className="topbar-icons" src={achat} alt="" />
+              ) : (
+                <img className="topbar-icons" src={chat} alt="" />
+              )}
+            </span>
           </Link>
-          
+
           {/*
                         <Link to="/projectcreation"> */}
           <span
@@ -169,14 +270,32 @@ const Topbar = (props) => {
             )}
             <div className="notif-options" id="notifOption">
               <div>
-                <div>
-                  <img src="" alt="pfp" />
-                  <p>
-                    You have successfully created the project "Shakespeare's
-                    Macbeth"
-                  </p>
-                </div>
-                <hr />
+                {projects?.slice(0, 2).map((project, index) => {
+                  return (
+                    <>
+                      <div>
+                        <img src="" alt="pfp" />
+                        <p>
+                          You have successfully created the project{" "}
+                          {project.basicInfo.name}
+                        </p>
+                      </div>
+                      <hr />
+                    </>
+                  );
+                })}
+                {userProjectMap?.slice(0, 2).map((item) => {
+                  return (
+                    <>
+                      <div className="d-flex align-items-center">
+                        <img src="" alt="pfp" className="me-4 shadow-sm" />
+                        <p>{item}</p>
+                      </div>
+                      <hr />
+                    </>
+                  );
+                })}
+                {/* <hr />
                 <div>
                   <img src="" alt="pfp" />
                   <p>
@@ -192,8 +311,7 @@ const Topbar = (props) => {
                     You have successfully created the project "Shakespeare's
                     Macbeth"
                   </p>
-                </div>
-                <hr />
+                </div> */}
                 <div className="d-flex justify-content-center align-items-center view_all">
                   <NavLink to="/notification">
                     <p>View All</p>

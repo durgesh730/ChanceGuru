@@ -1,4 +1,4 @@
-import React, { useState , useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Topbar from "./mini_components/Topbar";
 import pfp from "../assets/images/Mask Group 29.png";
 import { NavLink, useLocation } from "react-router-dom";
@@ -111,19 +111,39 @@ const UserProfile = () => {
     console.log(res);
   };
 
+
+  var [first, setfirst] = useState(0)
+  const handleNext = () => {
+    if (first >= 0) {
+      first = first + 1
+      setfirst(first);
+      console.log(first)
+    }
+  }
+
+  const handlePre = () => {
+    if (first >=1 ) {
+      first = first - 1;
+      setfirst(first);
+      console.log(first)
+    }
+  }
+
+  console.log(first)
+
   useEffect(() => {
-    if(card[index]?.status === "selected"){
+    if (card[index]?.status === "selected") {
       setSelected(true);
-    }else if(card[index]?.status === "scheduled"){
+    } else if (card[index]?.status === "scheduled") {
       setScheduled(true);
-    }else if(card[index]?.status === "shortlisted"){
+    } else if (card[index]?.status === "shortlisted") {
       setShortlisted(true);
-    } else if(card[index] === "rejected"){
+    } else if (card[index] === "rejected") {
       setRejected(true);
     }
-   console.log(card[index])
+    console.log(card[index])
   }, [])
-  
+
   return (
     <>
       <div className={modal ? `dim` : ""}>
@@ -133,19 +153,48 @@ const UserProfile = () => {
         <div className="container-fluid my-3  userPfp ">
           <div className="row">
             <div className="left_pfp col-lg-3 col-md-3 col-12 shadow">
-              <figure>
-                <img src={pfp} alt="" className="w-100" />
+
+              <figure className="d-flex justify-content-center">
+
+                <i class="fa-solid fa-less-than" onClick={handlePre} ></i>
+                {
+                  userData.photos.map((item, index) => {
+                    return (
+                      <>
+                        {(index === first) ? <img src={item.link} alt="" className="w-100" /> : ("")}
+                      </>
+                    )
+                  })
+                }
+                <i class="fa-sharp fa-solid fa-greater-than" onClick={handleNext} ></i>
               </figure>
+
               <div className="small_img">
                 <figure>
-                  <img src={pfp} className="m-1" alt="" />
-                  <img src={pfp} className="m-1" alt="" />
-                  <img src={pfp} className="m-1" alt="" />
-                  <img src={pfp} className="m-1" alt="" />
-                  <img src={pfp} className="m-1" alt="" />
-                  <img src={pfp} className="m-1" alt="" />
-                  <img src={pfp} className="m-1" alt="" />
-                  <img src={pfp} className="m-1" alt="" />
+                  {
+                    userData.photos?.map((img, i) => {
+                      return (
+                        (i > 0) ? <img src={img.link} className="m-1" alt="" /> : ("")
+                      )
+                    })
+                  }
+                  <span> + 5</span>
+                </figure>
+                <figure className="d-flex" >
+                  {
+                    userData.videos?.map((img, i) => {
+                      // console.log(img.link)
+                      return (
+                        <>
+                          <div className="mx-2">
+                            <video target="_blank" width="35" height='40' controls>
+                              <source src={img.link} type="video/mp4" />
+                            </video>
+                          </div>
+                        </>
+                      )
+                    })
+                  }
                   <span> + 5</span>
                 </figure>
               </div>
@@ -160,7 +209,7 @@ const UserProfile = () => {
                     </div>
                     <div>
                       <div className="tag">
-                        {selected ? "Selected" : ""}{rejected ? "Rejected" : ""}{ sheduled ? "Scheduled" : ""}{ shortlisted ? "Shortlisted" : ""}
+                        {selected ? "Selected" : ""}{rejected ? "Rejected" : ""}{sheduled ? "Scheduled" : ""}{shortlisted ? "Shortlisted" : ""}
                       </div>
                       {d == 1 &&
                         <button className={`${selected || rejected || shortlisted || sheduled ? "d-none" : ""}`} onClick={() => { setModal(true); setmodalData({ msg: " to Shortlist the ", btn: "Shortlist", num: 1 }) }} style={{ color: "#16bac5", borderColor: "#16bac5" }}>
@@ -174,13 +223,13 @@ const UserProfile = () => {
                         </button>
                         :
                         <>
-                          <button className={` ${selected || rejected  ? "d-none" : ""} ${(d==1 ^ (shortlisted || sheduled || selected || rejected)) ? "" : "d-none"}`} onClick={() => { setModal(true); setmodalData({ msg: " to Select the ", btn: "Select", num: 0 }) }} style={{ color: "#6cc592", borderColor: "#6cc592" }}>
+                          <button className={` ${selected || rejected ? "d-none" : ""} ${(d == 1 ^ (shortlisted || sheduled || selected || rejected)) ? "" : "d-none"}`} onClick={() => { setModal(true); setmodalData({ msg: " to Select the ", btn: "Select", num: 0 }) }} style={{ color: "#6cc592", borderColor: "#6cc592" }}>
                             Select
                           </button>
                           <button className={`${selected || rejected || (sheduled || shortlisted && d == 1) ? "d-none" : ""}`} onClick={() => { setModal(true); setmodalData({ msg: " to send a Schedule to ", btn: "Schedule", num: 2 }) }}>
                             Schedule
                           </button>
-                          <button className={` ${selected || rejected  ? "d-none" : ""} ${(d==1 ^ (shortlisted || sheduled || selected || rejected)) ? "" : "d-none"}`} onClick={() => { setModal(true); setmodalData({ msg: " Reject the", btn: "Reject", num: 3 }) }} style={{ color: "#b8d0eb", borderColor: "#b8d0eb" }} >
+                          <button className={` ${selected || rejected ? "d-none" : ""} ${(d == 1 ^ (shortlisted || sheduled || selected || rejected)) ? "" : "d-none"}`} onClick={() => { setModal(true); setmodalData({ msg: " Reject the", btn: "Reject", num: 3 }) }} style={{ color: "#b8d0eb", borderColor: "#b8d0eb" }} >
                             Reject
                           </button>
                         </>

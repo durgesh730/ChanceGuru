@@ -21,12 +21,11 @@ const ApplicantRowCard = ({ Data, applied }) => {
             },
         })
         const json = await data.json();
-        console.log(json)
         SetUser([json])
     }
 
     const handleSelect = async () => {
-        const data = await fetch(`http://localhost:5000/project/Select/${_id}`, {
+        const data = await fetch(`http://localhost:5000/project/Select/${_id}/${2}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -46,6 +45,7 @@ const ApplicantRowCard = ({ Data, applied }) => {
             body: JSON.stringify({ rejected })
         })
         const res = await data.json();
+        console.log(res)
     }
 
 
