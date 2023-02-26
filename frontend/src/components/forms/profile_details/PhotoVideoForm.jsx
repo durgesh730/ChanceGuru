@@ -5,8 +5,6 @@ import axios from "axios";
 import AWS from 'aws-sdk';
 import { Buffer } from 'buffer';
 
-
-
 const PhotoVideoForm = ({ display, toggleForm }) => {
     let photoForm = document.getElementById("photo-form");
     let vidForm = document.getElementById("vid-form");
@@ -27,8 +25,6 @@ const PhotoVideoForm = ({ display, toggleForm }) => {
         }
     };
 
-
-
     let show = {};
     if (display) {
         show = { display: "block" };
@@ -45,15 +41,7 @@ const PhotoVideoForm = ({ display, toggleForm }) => {
         link: ""
     }]);
 
-    // const upload = (e) => {
-    //     e.preventDefault();
-    //     var imgcanvas = document.getElementById("canv1");
-    //     var fileinput = document.getElementById("finput");
-    //     var image = new SimpleImage(fileinput);
-    //     image.drawTo(imgcanvas);
-    //     console.log(e.target.files);
-    //     setFile(URL.createObjectURL(e.target.files[0]));
-    // }
+  
     const handlePhotoInputChange = (e, index) => {
         let data = [...photoURL];
         data[index].link = e.target.value;
@@ -164,7 +152,9 @@ const PhotoVideoForm = ({ display, toggleForm }) => {
         signatureVersion: 'v4',
     });
 
-    const [imageUrl, setImageUrl] = useState('');
+    const [imageUrl, setImageUrl] = useState([{
+        link: ""
+    }]);
     const [file, setFile] = useState([null]);
 
     const handleFileInputChange = (e) => {
@@ -175,25 +165,32 @@ const PhotoVideoForm = ({ display, toggleForm }) => {
         if (!file) {
             return;
         }
+
         const s3 = new AWS.S3();
+        const formData = new FormData();
+        const urls = [];
+
         for (let i = 0; i < file.length; i++) {
+            formData.append("images",file[i]);
             const files = file[i];
-            // const str = files.toString('base64');
-            // let base64data = Buffer.from(str,'base64')
             const params = {
                 Bucket: 'image-orders-bucket',
                 Key: `${Date.now()}.${files.name}`,
                 Body: files,
                 ContentEncoding: "base64",
                 ContentType: file.type,
-
             };
             const { Location } = await s3.upload(params).promise();
-            setImageUrl(Location);
-            console.log('uploading to s3', Location);
+            urls.push(Location);
+            var obj = { link: urls[i] };
+            setImageUrl([...imageUrl , obj]);
+            let data = [...photoURL];
+            data[i].link = urls[i];
+            setphotoURL([...photoURL,obj]);
+            //setphotoURL([...photoURL, obj]);
+            console.log('uploading to s3', urls[i]);
         }
-
-        alert("Upload successful");
+       console.log(photoURL)
     }
     return (
         <>

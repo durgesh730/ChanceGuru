@@ -7,6 +7,7 @@ import { AiFillCheckCircle } from "react-icons/ai";
 import cardImg from "../assets/images/rectangle-13.png";
 import AuthContext from "./AuthContext";
 import { BsChevronDown, BsPhone } from "react-icons/bs";
+import { useLocation } from "react-router-dom";
 
 const TalentDashboard = () => {
     const auth = useContext(AuthContext);
@@ -14,6 +15,8 @@ const TalentDashboard = () => {
     const [image, setImage] = useState();
     const [userImg, setuserImg] = useState();
     const [query, setQuery] = useState("");
+    const location = useLocation()
+
 
     const handleSearch = async () => {
         const data = await fetch(`http://localhost:5000/profile/searchData?name=${query}`, {
@@ -48,28 +51,45 @@ const TalentDashboard = () => {
 
 
     const getProjects = async () => {
-        axios
-            .get("http://localhost:5000/project/allProjects",
-                {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem("token")}`,
-                    }
-                }
-            )
-            .then(async (res) => {
-                setcards(res.data);
-                res.data.forEach(async element => {
-                   const image = await getImage(element.seekerId);
+        if (location.state) {
+            console.log(location.state.seekerId)
+            axios.get(`http://localhost:5000/project/getOnlySeekersProject/${location.state.seekerId}`)
+                .then(async (res) => {
+                    setcards(res.data);
+                    res.data.forEach(async element => {
+                        const image = await getImage(element.seekerId);
+                    });
+                })
+                .catch((err) => {
+                    console.log(err);
                 });
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+        }
+        else {
+
+
+            axios
+                .get("http://localhost:5000/project/allProjects",
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem("token")}`,
+                        }
+                    }
+                )
+                .then(async (res) => {
+                    setcards(res.data);
+                    res.data.forEach(async element => {
+                        const image = await getImage(element.seekerId);
+                    });
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
     };
 
     useEffect(() => {
         getProjects();
-    }, [setcards]);
+    }, [setcards,location.state]);
 
     const user = JSON.parse(localStorage.getItem("login"));
 
@@ -96,7 +116,7 @@ const TalentDashboard = () => {
     const profileCompletion = (data) => {
         // console.log(data);
         const profilePerc = data.basicInfo ? calculatePercentage(data.basicInfo) : 0;
-        const talentPerc = data.talent ? calculatePercentage(data.talent) : 0 ;
+        const talentPerc = data.talent ? calculatePercentage(data.talent) : 0;
         const photoPerc = data.photos.length === 0 ? 0 : 50;
         const videoPerc = data.videos.length === 0 ? 0 : 50;
         const eduPerc = data.education.length === 0 ? 0 : 50;

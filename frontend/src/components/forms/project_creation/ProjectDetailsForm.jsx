@@ -144,7 +144,7 @@ const ProjectDetailsForm = ({ display , functions }) => {
                         onChange={handleInputChange}
                         required
                     />
-                    <div className="row">
+                    <div className="d-flex justify-content-between">
                         <input type="button" className="col-4 cancel-btn btn btn-lg btn-block my-2" value="Reset" />
                         <p className="col-1"></p>
                         <input type="submit" className="col-7 save-btn btn btn-lg btn-block my-2" value="Save" />

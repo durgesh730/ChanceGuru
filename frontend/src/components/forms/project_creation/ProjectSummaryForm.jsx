@@ -126,7 +126,7 @@ const ProjectSummaryForm = ({ display, values }) => {
                         })
                     }
 
-                    <div className="row">
+                    <div className="d-flex justify-content-between">
                         <input type="button" className="col-4 cancel-btn btn btn-lg btn-block my-2" value="Cancel" />
                         <p className="col-1"></p>
                         <input
