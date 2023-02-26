@@ -245,3 +245,8 @@ td {
 .form_group img {
   width: 100%;
 }
+
+#finput{
+  padding-right: 20px;
+    padding-top: 20px;
+}

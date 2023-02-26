@@ -64,25 +64,6 @@ const Login = () => {
     const getOtp = (e) => {
         e.preventDefault();
         setErrorMsg("");
-
-        if (validatePassword()) {
-            // Create a new user with email and password using firebase
-            createUserWithEmailAndPassword(authentication, values.email, values.pass)
-                .then(() => {
-                    sendEmailVerification(authentication.currentUser)
-                        .then(() => {
-                            setTimeActive(true);
-                            // navigate("/emailverify");
-                        })
-                        .catch((err) => alert(err.message));
-                })
-                .catch((err) => {
-                    setErrorMsg(err.message);
-                });
-        } else {
-            return;
-        }
-
         setValues({
             username: "",
             email: "",
@@ -104,7 +85,8 @@ const Login = () => {
                         type: location.state.talent ? "user" : "seeker"
                     }).then(() => {
                         alert(`Welcome ${location.state.talent ? "Talent" : "Seeker"} User. Your sign up data has been saved! Please verify your email.`);
-                        navigate("/verification");
+                       
+                        navigate("/emailverify");
                     }).catch((err) => {
                         console.log(err);
                     });
@@ -113,6 +95,27 @@ const Login = () => {
                     console.log(error);
                 });
         }
+        if (validatePassword()) {
+            // Create a new user with email and password using firebase
+            createUserWithEmailAndPassword(authentication, values.email, values.pass)
+                .then(() => {
+                    sendEmailVerification(authentication.currentUser)
+                        .then(() => {
+                            setTimeActive(true);
+                             navigate("/verification");
+                        })
+                        .catch((err) => alert(err.message));
+                })
+                .catch((err) => {
+                    setErrorMsg(err.message);
+                });
+        } else {
+            return;
+        }
+
+     
+
+    
     };
 
     return (
