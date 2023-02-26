@@ -60,6 +60,8 @@ const Roles = ({ display }) => {
   }
 
   const handleFormChange = (e, index, attrToChange) => {
+    e.preventDefault();
+
     let data = [...roles];
     if (attrToChange === "roleName") {
       data[index].role = e.target.value;
@@ -188,23 +190,36 @@ const Roles = ({ display }) => {
     show = { display: "none" };
   }
 
-  const slideDiv = useRef("");
+  const slideDiv1 = useRef("");
 
   // let width = box.offsetWidth;
   // console.log(box.offsetWidth);
 
   const prevCon = (e) => {
     e.preventDefault();
-    let width = slideDiv.current.offsetWidth;
-    slideDiv.current.scrollLeft = slideDiv.current.scrollLeft - width;
-    console.log(slideDiv);
+    let width = slideDiv1.current.offsetWidth;
+    slideDiv1.current.scrollLeft = slideDiv1.current.scrollLeft - width;
+    console.log(slideDiv1);
   };
   const nextCon = (e) => {
     e.preventDefault();
-    let width = slideDiv.current.offsetWidth;
-    slideDiv.current.scrollLeft = slideDiv.current.scrollLeft + width;
+    let width = slideDiv1.current.offsetWidth;
+    slideDiv1.current.scrollLeft = slideDiv1.current.scrollLeft + width;
   };
 
+  const prevController = (e) => {
+    let slidingDiv = e.target.parentElement.parentElement.previousSibling;
+    let width = slidingDiv.offsetWidth;
+    slidingDiv.scrollLeft = slidingDiv.scrollLeft - width;
+
+    // console.log(e.target.parentElement.previousSibling.offsetWidth);
+  };
+  const nextController = (e) => {
+    let slidingDiv = e.target.parentElement.parentElement.previousSibling;
+    let width = slidingDiv.offsetWidth;
+    slidingDiv.scrollLeft = slidingDiv.scrollLeft + width;
+    console.log(slidingDiv.children.length);
+  };
   return (
     <div className="roleCreation ">
       <Topbar />
@@ -335,146 +350,148 @@ const Roles = ({ display }) => {
                     </form>
                   </div>
                 </div>
-                <div>
-                  <form
-                    id="char-form"
-                    style={{ display: "none" }}
-                    onSubmit={handleCharacterUpdateForm}
-                  >
-                    <div className="charList ">
-                      {roles.map((item, index) => {
-                        return (
-                          <>
-                            <div
-                              className={
-                                activeRole === item ? "hihlightedCharList" : ""
-                              }
-                              onClick={() => {
-                                setToEdit({});
-                                setActiveRole(item);
-                              }}
-                            >
-                              {item.role}
-                            </div>
-                          </>
-                        );
-                      })}
-                    </div>
-
-                    <div className="scroll_x ">
-                      <div className="container-fluid experience_container">
-                        <div className="ec_child" ref={slideDiv}>
-                          {chars.map((item, index) => {
-                            return (
-                              <CharacterCard
-                                index={index}
-                                cardData={item}
-                                toEdit={toEdit}
-                                setToEdit={setToEdit}
-                              />
-                            );
-                          })}
-                        </div>
-                        <div className="controllers">
-                          <button onClick={prevCon}>
-                            <BsChevronCompactLeft />
-                          </button>
-                          <button onClick={nextCon}>
-                            <BsChevronCompactRight />
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div
-                      className="form-container"
-                      style={{ paddingBottom: "0" }}
-                    >
-                      <div style={{ width: "444px" }} className="formChild">
-                        <input
-                          type="submit"
-                          className="full-width-btn"
-                          value="Add Another Character"
-                          onClick={handleAddCharacter}
-                        />
-                        {JSON.stringify(toEdit) !== "{}" && (
-                          <>
-                            <input
-                              type="text"
-                              className="form-control"
-                              placeholder="Character Name"
-                              name="name"
-                              value={toEdit.name}
-                              onChange={handleEditChange}
-                            />
-                            <select
-                              className="form-control form-select"
-                              id="exampleFormControlSelect1"
-                              name="gender"
-                              value={toEdit.gender}
-                              onChange={handleEditChange}
-                            >
-                              <option value="chorus" disabled>
-                                Gender
-                              </option>
-                              <option value="male">Male</option>
-                              <option value="female">Female</option>
-                            </select>
-
-                            <textarea
-                              name="desc"
-                              id=""
-                              className="form-control text-area"
-                              rows="5"
-                              placeholder="Details..."
-                              maxlength="250"
-                              value={toEdit.desc}
-                              onChange={handleEditChange}
-                            ></textarea>
-                            {console.log(toEdit)}
-
-                            <select
-                              className="form-control form-select"
-                              id="exampleFormControlSelect1"
-                              value={toEdit.age}
-                              onChange={handleEditChange}
-                              name="age"
-                            >
-                              <option value="" disabled>
-                                Age
-                              </option>
-                              <option value="19">19</option>
-                              <option value="20">20</option>
-                              <option value="21">21</option>
-                              <option value="22">22</option>
-                            </select>
-                            <div className="d-flex justify-content-between mt-5">
-                              <input
-                                type="submit"
-                                className="cancel-btn btn btn-lg btn-block my-2"
-                                value="Cancel"
-                              />
-                              <input
-                                type="submit"
-                                className=" save-btn btn btn-lg btn-block my-2"
-                                value="Save"
-                              />
-                            </div>
-                          </>
-                        )}
-                      </div>
-                    </div>
-                  </form>
-
-                  <form
-                    id="summ-form"
-                    className="summary"
-                    style={{ display: "none" }}
-                  >
-                    {projectDetails.roles?.map((item, index) => {
+                <form
+                  id="char-form"
+                  style={{ display: "none" }}
+                  onSubmit={handleCharacterUpdateForm}
+                >
+                  <div className="charList ">
+                    {roles.map((item, index) => {
                       return (
                         <>
-                          {/* <div>
+                          <div
+                            className={
+                              activeRole === item ? "hihlightedCharList" : ""
+                            }
+                            onClick={() => {
+                              setToEdit({});
+                              setActiveRole(item);
+                            }}
+                          >
+                            {item.role}
+                          </div>
+                        </>
+                      );
+                    })}
+                  </div>
+
+                  <div className="scroll_x ">
+                    <div className="container-fluid experience_container">
+                      <div className="ec_child" ref={slideDiv1}>
+                        {chars.map((item, index) => {
+                          return (
+                            <CharacterCard
+                              index={index}
+                              cardData={item}
+                              toEdit={toEdit}
+                              setToEdit={setToEdit}
+                            />
+                          );
+                        })}
+                      </div>
+                      <div className="controllers">
+                        <button onClick={prevCon}>
+                          <BsChevronCompactLeft />
+                        </button>
+                        <button onClick={nextCon}>
+                          <BsChevronCompactRight />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    className="form-container"
+                    style={{ paddingBottom: "0" }}
+                  >
+                    <div style={{ width: "444px" }} className="formChild">
+                      <input
+                        type="submit"
+                        className="full-width-btn"
+                        value="Add Another Character"
+                        onClick={handleAddCharacter}
+                      />
+                      {JSON.stringify(toEdit) !== "{}" && (
+                        <>
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Character Name"
+                            name="name"
+                            value={toEdit.name}
+                            onChange={handleEditChange}
+                          />
+                          <select
+                            className="form-control form-select"
+                            id="exampleFormControlSelect1"
+                            name="gender"
+                            value={toEdit.gender}
+                            onChange={handleEditChange}
+                          >
+                            <option value="chorus" disabled>
+                              Gender
+                            </option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                          </select>
+
+                          <textarea
+                            name="desc"
+                            id=""
+                            className="form-control text-area"
+                            rows="5"
+                            placeholder="Details..."
+                            maxlength="250"
+                            value={toEdit.desc}
+                            onChange={handleEditChange}
+                          ></textarea>
+                          {console.log(toEdit)}
+
+                          <select
+                            className="form-control form-select"
+                            id="exampleFormControlSelect1"
+                            value={toEdit.age}
+                            onChange={handleEditChange}
+                            name="age"
+                          >
+                            <option value="" disabled>
+                              Age
+                            </option>
+                            <option value="19">19</option>
+                            <option value="20">20</option>
+                            <option value="21">21</option>
+                            <option value="22">22</option>
+                          </select>
+                          <div className="d-flex justify-content-between mt-5">
+                            <input
+                              type="submit"
+                              className="cancel-btn btn btn-lg btn-block my-2"
+                              value="Cancel"
+                            />
+                            <input
+                              type="submit"
+                              className=" save-btn btn btn-lg btn-block my-2"
+                              value="Save"
+                            />
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </form>
+
+                <form
+                  id="summ-form"
+                  className="summary"
+                  style={{ display: "none" }}
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                  }}
+                >
+                  {projectDetails.roles?.map((item, index) => {
+                    return (
+                      <>
+                        {/* <div>
                           <span className="purple_title"> {item.role} </span>
                           <div className="d-flex overflow-auto my-2 ">
                             {item
@@ -503,49 +520,57 @@ const Roles = ({ display }) => {
                               : " "}
                           </div>
                         </div> */}
-                          <span className="purple_title"> {item.role} </span>
-
-                          <div className="scroll_x ">
-                            <div className="container-fluid experience_container">
-                              <div className="ec_child" ref={slideDiv}>
-                                {item
-                                  ? item.characters?.map((not, i) => {
-                                      return (
-                                        <div className="summaryChild">
-                                          <span className="w-100 d-flex align-items-center">
-                                            <h5 class="card-title">
-                                              {not.name}{" "}
-                                              {not.gender
-                                                ? ":" + not.gender
-                                                : ""}
-                                              {not.age ? "," + not.age : ""}
-                                            </h5>
-                                          </span>
-                                          <p class="card-text">
-                                            {not.desc
-                                              ? not.desc
-                                              : "Not available"}
-                                          </p>
-                                        </div>
-                                      );
-                                    })
-                                  : " "}
-                              </div>
-                              <div className="controllers">
-                                <button onClick={prevCon}>
-                                  <BsChevronCompactLeft />
-                                </button>
-                                <button onClick={nextCon}>
-                                  <BsChevronCompactRight />
-                                </button>
-                              </div>
+                        <div className="purple_head">
+                          <span> {item.role} </span>
+                          <span>
+                            {"("}
+                            {item.characters.length}
+                            {")"}
+                          </span>
+                        </div>
+                        <div className="scroll_x ">
+                          <div className="container-fluid experience_container">
+                            <div className="ec_child">
+                              {item
+                                ? item.characters?.map((not, i) => {
+                                    return (
+                                      <div className="summaryChild">
+                                        <span className="w-100 d-flex align-items-center">
+                                          <h5 class="card-title">
+                                            {not.name}{" "}
+                                            {not.gender ? ":" + not.gender : ""}
+                                            {not.age ? "," + not.age : ""}
+                                          </h5>
+                                        </span>
+                                        <p class="card-text">
+                                          {not.desc
+                                            ? not.desc
+                                            : "Not available"}
+                                        </p>
+                                      </div>
+                                    );
+                                  })
+                                : " "}
+                            </div>
+                            <div className="controllers">
+                              <button>
+                                <BsChevronCompactLeft
+                                  onClick={(e) => prevController(e)}
+                                />
+                              </button>
+                              <button>
+                                {" "}
+                                <BsChevronCompactRight
+                                  onClick={(e) => nextController(e)}
+                                />
+                              </button>
                             </div>
                           </div>
-                        </>
-                      );
-                    })}
-                  </form>
-                </div>
+                        </div>
+                      </>
+                    );
+                  })}
+                </form>
               </div>
             </div>
           }{" "}
