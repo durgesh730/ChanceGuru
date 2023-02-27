@@ -243,7 +243,7 @@ const RoleDescForm = ({ display, functions }) => {
                     <div>
                         <textarea
                             
-                            name="desc"
+                            name="details"
                             id=""
                             className="form-control text-area"
                             rows="5"
@@ -257,7 +257,7 @@ const RoleDescForm = ({ display, functions }) => {
                         <select className="form-control form-select" value={toEdit.age}
                               onChange={handleEditChange}
                               name="age">
-                            <option value={toEdit.age} disabled selected>
+                            <option value="" disabled>
                                 Age
                             </option>
                             <option value="19">19</option>
