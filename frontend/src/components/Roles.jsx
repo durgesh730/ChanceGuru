@@ -339,6 +339,7 @@ const Roles = ({ display }) => {
                           type="button"
                           className="cancel-btn btn btn-lg btn-block"
                           value="Cancel"
+                          onClick={(e)=> e.preventDefault}
                         />
                         <p className="col-1"></p>
                         <input
@@ -467,6 +468,7 @@ const Roles = ({ display }) => {
                               type="submit"
                               className="cancel-btn btn btn-lg btn-block my-2"
                               value="Cancel"
+                              onClick={(e) => {e.preventDefault(); setToEdit({})}}
                             />
                             <input
                               type="submit"
