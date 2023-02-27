@@ -3,6 +3,7 @@ import {
   signInWithEmailAndPassword,
   sendEmailVerification,
   updateProfile,
+  sendPasswordResetEmail
 } from "firebase/auth";
 import React, { useState, useEffect } from "react";
 import "./style.css";
@@ -21,6 +22,21 @@ const Login = () => {
   });
   const [errorMsg, setErrorMsg] = useState("");
   const { setTimeActive } = useAuthValue();
+
+
+  const handleForgotPassword = (e) => {
+    e.preventDefault();
+    console.log(values.email);
+        sendPasswordResetEmail(authentication, values.email)
+          .then(() => {
+           alert("Reset password email has been sent");
+          
+           setValues.email ="";
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            }
 
   const handleSubmission = (e) => {
     e.preventDefault();
@@ -62,10 +78,12 @@ const Login = () => {
               }
             })
             .catch((err) => setErrorMsg(err.message));
+            
         }
       })
       .catch((err) => {
         console.log(err);
+        
       });
   };
 
@@ -144,6 +162,7 @@ const Login = () => {
               Login
             </button>
             <div className="alternate-option text-center">
+              <u onClick={handleForgotPassword}>Forgot Password?</u> <br />
               Don’t have an account{" "}
               <div className="web1-buttons d-flex flex-column mt-3">
                 <Link to="/signup" state={{ talent: true }}>

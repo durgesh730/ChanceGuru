@@ -19,11 +19,11 @@ const VerifyEmail = () => {
     useEffect(() => {
         const interval = setInterval(() => {
             currentUser
-                ?.reload()
-                .then(() => {
+                ?.then(() => {
                     if (currentUser?.emailVerified) {
                         clearInterval(interval);
-                        navigate("/");
+                    
+                        navigate("/login");
                     }
                 })
                 .catch((err) => {
