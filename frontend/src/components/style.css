@@ -1115,7 +1115,14 @@ div.css-18dcxwc {
   -webkit-text-stroke: 0.3px #444;
   color: #444444;
 }
-
+.summaryChild p {
+  margin-top: 13px;
+  height: 75px;
+  overflow-y: scroll;
+}
+.summaryChild p::-webkit-scrollbar {
+  display: none;
+}
 .summaryChild p,
 .card-text {
   font-size: 12px;
@@ -1243,7 +1250,7 @@ div.css-18dcxwc {
 .side_nav {
   /* position: fixed; */
   background-color: #402c87;
-  height: 100vh;
+  min-height: calc(100vh - 80px);
   padding: 30px 15px !important;
   display: flex;
   flex-direction: column;
@@ -1289,7 +1296,8 @@ div.css-18dcxwc {
   border: solid 1px #d1d1d1;
   padding: 10px;
   margin-right: 10px;
-  height: 120px;
+  height: 150px;
+
   /* width: 50% !important; */
 }
 .experience_container .controllers button:nth-child(1) {
@@ -1297,22 +1305,34 @@ div.css-18dcxwc {
   top: 50%;
   left: 0;
   transform: translate(0%, -50%);
-  height: 100%;
   border: none;
   background-color: #fff;
-  padding: 0 10px;
   font-size: 20px;
+  z-index: 3;
+  cursor: default;
 }
 .experience_container .controllers button:nth-child(2) {
   position: absolute;
   top: 50%;
   right: 0;
   transform: translate(0%, -50%);
-  height: 100%;
   border: none;
   background-color: #fff;
-  padding: 0 10px;
-  font-size: 20px;
+  cursor: default;
+}
+.experience_container .controllers button svg {
+  position: relative;
+  height: 100%;
+  font-size: 30px;
+  height: 100%;
+  z-index: 0;
+  cursor: pointer;
+}
+.experience_container .controllers button svg path {
+  position: absolute;
+}
+.experience_container .controllers button svg:hover {
+  color: #8443e5;
 }
 
 /* ==============================Notification============================== */
@@ -1715,6 +1735,7 @@ div.css-18dcxwc {
   justify-content: space-between;
   align-items: center;
   padding: 5px 10px;
+  position: relative;
 }
 .cb_msgSend input {
   width: 100%;
@@ -1849,4 +1870,29 @@ div.css-18dcxwc {
 }
 .searchedChat:hover {
   background-color: #c0abf5;
+}
+
+.picker-container {
+  position: absolute;
+  width: 100%;
+  bottom: 100%;
+  right: 1px;
+}
+
+aside.emoji-picker-react {
+  width: 100% !important;
+  transition: all 1s;
+}
+.emoji-picker-react .emoji button {
+  width: 50px;
+}
+.emoji-icon {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+.purple_head {
+  font-size: 20px;
+  color: #8443e5;
+  margin: 20px 35px;
 }

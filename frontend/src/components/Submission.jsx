@@ -17,11 +17,12 @@ const Submission = () => {
 
   const handleSearch = async () => {
     const data = await fetch(
-      `http://localhost:5000/profile/searchData?name=${query}`,
+      `http://localhost:5000/profile/searchSeekerData?name=${query}`,
       {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       }
     );
