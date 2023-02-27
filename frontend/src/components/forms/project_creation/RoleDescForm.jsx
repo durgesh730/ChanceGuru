@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
+import CharacterCard from "../../mini_components/CharacterCard";
 
 const RoleDescForm = ({ display, functions }) => {
     const formFields = functions.formFields;
     const setformFields = functions.setformFields;
     const roleData = functions.formFields;
-    const [active, setactive] = useState(functions.formFields[0].role);
+    console.log(roleData)
+    const [active, setactive] = useState(roleData[0].role);
     const [showchar, setshowchar] = useState([]);
     const [charData, setcharData] = useState({
         name: "",
@@ -19,6 +22,8 @@ const RoleDescForm = ({ display, functions }) => {
     } else {
         show = { display: "none" };
     }
+
+    const [toEdit, setToEdit] = useState({});
 
     const updateChar = (id) => {
         let bool = false;
@@ -71,6 +76,25 @@ const RoleDescForm = ({ display, functions }) => {
         setformFields(functions.formFields)
     }, [])
 
+    const slideDiv = useRef("");
+
+    // let width = box.offsetWidth;
+    // console.log(box.offsetWidth);
+
+    const prevCon = (e) => {
+        e.preventDefault();
+        let width = slideDiv.current.offsetWidth;
+        slideDiv.current.scrollLeft = slideDiv.current.scrollLeft - width;
+        console.log(slideDiv);
+    };
+    const nextCon = (e) => {
+        e.preventDefault();
+        let width = slideDiv.current.offsetWidth;
+        slideDiv.current.scrollLeft = slideDiv.current.scrollLeft + width;
+    };
+
+    
+
     return (
         <>
             {" "}
@@ -94,33 +118,33 @@ const RoleDescForm = ({ display, functions }) => {
                             })}
                         </div>
 
-                        <div>
-                            <table className="charTable" style={{ display: `${showchar?.length == 0 ? "none" : ""}` }} >
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Gender</th>
-                                    <th>Details</th>
-                                    <th>Age</th>
-                                </tr>
-                                {
-                                    showchar?.map(e => {
-                                        return (
-                                            <>
-                                                <tr>
-                                                    <td>{e.name}</td>
-                                                    <td>{e.details}</td>
-                                                    <td>{e.gender}</td>
-                                                    <td>{e.age}</td>
-                                                </tr>
-                                            </>
-                                        )
-                                    })
-                                }
-                            </table>
+                        <div className="scroll_x ">
+                      <div className="container-fluid experience_container">
+                        <div className="ec_child" ref={slideDiv}>
+                          {showchar.map((item, index) => {
+                            return (
+                              <CharacterCard
+                                index={index}
+                                cardData={item}
+                                toEdit={toEdit}
+                                setToEdit={setToEdit}
+                              />
+                            );
+                          })}
                         </div>
+                        <div className="controllers">
+                          <button onClick={prevCon}>
+                            <BsChevronCompactLeft />
+                          </button>
+                          <button onClick={nextCon}>
+                            <BsChevronCompactRight />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
                         <div>
 
-                            <input type="button" className="full-width-btn" value="Add Another formFields" />
+                            <input type="button" className="full-width-btn" value="Add Another Character" />
                             <input type="text" onChange={(e) => { setcharData({ ...charData, name: e.target.value }) }} className="form-control" placeholder="formFields Name" />
                             <select onChange={(e) => { setcharData({ ...charData, gender: e.target.value }) }} className="form-control form-select">
                                 <option value="" disabled selected>
