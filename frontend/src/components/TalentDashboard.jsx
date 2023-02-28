@@ -12,7 +12,6 @@ import { useLocation } from "react-router-dom";
 const TalentDashboard = () => {
     const auth = useContext(AuthContext);
     const [cards, setcards] = useState();
-    const [image, setImage] = useState();
     const [userImg, setuserImg] = useState();
     const [query, setQuery] = useState("");
     const location = useLocation()
@@ -39,26 +38,12 @@ const TalentDashboard = () => {
         roles: 0,
     });
 
-    const getImage = (id) => {
-        axios
-            .get(`http://localhost:5000/profile/seekersImage/${id}`)
-            .then((res) => {
-                setImage(res.data);
-            })
-            .catch((err) => {
-            });
-    };
-
-
     const getProjects = async () => {
         if (location.state) {
             console.log(location.state.seekerId)
             axios.get(`http://localhost:5000/project/getOnlySeekersProject/${location.state.seekerId}`)
                 .then(async (res) => {
                     setcards(res.data);
-                    res.data.forEach(async element => {
-                        const image = await getImage(element.seekerId);
-                    });
                 })
                 .catch((err) => {
                     console.log(err);
@@ -77,9 +62,6 @@ const TalentDashboard = () => {
                 )
                 .then(async (res) => {
                     setcards(res.data);
-                    res.data.forEach(async element => {
-                        const image = await getImage(element.seekerId);
-                    });
                 })
                 .catch((err) => {
                     console.log(err);
@@ -172,7 +154,7 @@ const TalentDashboard = () => {
                     <div className="row">
                         <ul className="grid-wrapper">
                             {cards?.map((card) => (
-                                <Card card={card} profile={profileStrength} image={image} setClicked={auth.setClicked} />
+                                <Card card={card} profile={profileStrength} setClicked={auth.setClicked} />
                             ))}{" "}
                             <li className="side_div" style={auth.clicked ? {} : { display: "none" }}>
                                 <div className="sd_1">
