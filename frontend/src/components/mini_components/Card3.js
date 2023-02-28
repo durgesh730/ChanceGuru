@@ -9,6 +9,9 @@ const Card2 = ({ card }) => {
   const name = card.basicInfo.name;
   const id = card._id;
 
+ var str = card.createAt;
+ let result = str?.slice(4, 15);
+
   const [apply, setApply] = useState([]);
 
   const getuserId = () => {
@@ -39,9 +42,11 @@ const Card2 = ({ card }) => {
             <span>{apply.length} Roles</span>
             <div className="card_date">
               <h6>Posted On</h6>
-              <p>11/12/2018</p>
+              <p>{result?(result):"Not available"}</p>
             </div>
           </div>
+
+          <button className="btn btn-outline-primary" >Durgesh</button>
         </div>
 
         {model && <Modal setModel={setModel} info={card} />}

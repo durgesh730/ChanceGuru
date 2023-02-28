@@ -14,7 +14,7 @@ const Roles = ({ display }) => {
   const location = useLocation();
   const [projectDetails, setProjectDetails] = useState(location.state);
   const [roles, setRoles] = useState(projectDetails.roles);
-
+  
   // for character form
   const [activeRole, setActiveRole] = useState(roles[0]);
   const [chars, setChars] = useState(activeRole.characters);
@@ -120,10 +120,10 @@ const Roles = ({ display }) => {
     delete toEdit.indexInChars;
     prevChars[indexInChars] = toEdit;
 
-    console.log(prevChars);
+    // console.log(prevChars);
 
     setActiveRole({ ...activeRole, prevChars });
-    console.log(activeRole);
+    // console.log(activeRole);
 
     setProjectDetails({ ...projectDetails, activeRole });
 
@@ -199,7 +199,7 @@ const Roles = ({ display }) => {
     e.preventDefault();
     let width = slideDiv1.current.offsetWidth;
     slideDiv1.current.scrollLeft = slideDiv1.current.scrollLeft - width;
-    console.log(slideDiv1);
+    // console.log(slideDiv1);
   };
   const nextCon = (e) => {
     e.preventDefault();
@@ -218,7 +218,7 @@ const Roles = ({ display }) => {
     let slidingDiv = e.target.parentElement.parentElement.previousSibling;
     let width = slidingDiv.offsetWidth;
     slidingDiv.scrollLeft = slidingDiv.scrollLeft + width;
-    console.log(slidingDiv.children.length);
+    // console.log(slidingDiv.children.length);
   };
   return (
     <div className="roleCreation ">
