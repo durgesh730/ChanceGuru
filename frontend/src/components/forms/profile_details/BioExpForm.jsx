@@ -79,8 +79,13 @@ const BioExpForm = ({ display, toggleForm }) => {
     const data = expData;
     console.log(e.target)
     
-    let newExp = [...experience,data]
-    setExperience([...experience,data])
+    let newExp = experience?[...experience,data]:[data]
+    if(experience){
+      setExperience([...experience,data])
+    }
+    else{
+      setExperience([data])
+    }
     axios
       .put(
         "http://localhost:5000/profile/portfolio/exp",
@@ -235,7 +240,7 @@ const BioExpForm = ({ display, toggleForm }) => {
               style={{ display: "none" }}
               onSubmit={handleExpSubmit}
             >
-              <div className="scroll_x ">
+              {experience?(<div className="scroll_x ">
                       <div className="container-fluid experience_container">
                         <div className="ec_child" ref={slideDiv}>
                           {experience?.map((item, index) => {
@@ -265,7 +270,7 @@ const BioExpForm = ({ display, toggleForm }) => {
                           </button>
                         </div>
                       </div>
-                </div>
+                </div>):""}
               <input
                 type="submit"
                 className="full-width-btn"

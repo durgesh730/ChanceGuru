@@ -38,20 +38,20 @@ const UserProfile = () => {
   const d = location.state.btn;
 
   const handleApplyReq = () => {
-    axios.post('http://localhost:5000/profile/ReqToApp', { talentId: userData.userId }, {
-
+    axios.put('http://localhost:5000/profile/ReqToApp',{talentId: location.state.user.userId},{
+      
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-
+    },
+      
     })
-      .then(res => {
-        console.log(res.data);
-        setModal(false);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    .then(res => {
+      console.log(res.data);
+     
+    })
+    .catch(err => {
+      console.log(err);
+    });
   };
 
 
