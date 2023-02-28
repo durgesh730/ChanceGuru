@@ -809,6 +809,7 @@ div.topNavbar {
   font-style: normal;
   letter-spacing: normal;
   text-align: center;
+  width: 200px;
 }
 .leadRoles span,
 div.statusContainer > div span {
@@ -827,10 +828,10 @@ div.statusContainer > div span {
 .topNavbar span[highlighted="true"]::after {
   content: "";
   position: absolute;
-  left: -20%;
+  left: 0;
   top: 27px;
   height: 4px;
-  width: 141%;
+  width: 100%;
   background-color: #6c54a6;
 }
 span.lead {
