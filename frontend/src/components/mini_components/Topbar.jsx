@@ -157,22 +157,28 @@ const Topbar = (props) => {
 
   useEffect(() => {
     if (jobUsers.length == 0 || jobProjects.length == 0) {
-      return;
+      return
     }
     let len = jobProjects.length === jobUsers.length ? jobProjects.length : 0;
-    let arr = new Set();
+    let arr = new Set()
+    let imgArr = new Set()
+
     for (let index = 0; index < len; index++) {
+
       const userName = jobUsers[index][0].username;
       const projectName = jobProjects[index][0].basicInfo.name;
+      const image = jobUsers[index][0].link;
+
       let mapObj = {
         user: userName,
         project: projectName,
-      };
-      arr.add(`${mapObj.user} has applied to project ${mapObj.project}`);
+      }
+      arr.add({ notification: `${mapObj.user} has applied to project ${mapObj.project}`, img: image })
     }
-    console.log(arr);
-    setUserProjectMap([...arr]);
-  }, [jobUsers, jobProjects]);
+    console.log(arr)
+    setUserProjectMap([...arr])
+
+  }, [jobUsers, jobProjects])
 
   useEffect(() => {
     setLoggedUser(JSON.parse(localStorage.getItem("login")));
@@ -344,7 +350,7 @@ const Topbar = (props) => {
                   return (
                     <>
                       <div>
-                        <img src={loggedUser.link} alt="pfp" />
+                        <img src={loggedUser.link === undefined ? profile : loggedUser.link} alt="pfp" />
                         <p>
                           You have successfully created the project{" "}
                           {project.basicInfo.name}
@@ -358,8 +364,9 @@ const Topbar = (props) => {
                   return (
                     <>
                       <div className="d-flex align-items-center">
-                        <img src="" alt="pfp" className="me-4 shadow-sm" />
-                        <p>{item}</p>
+                        <img src={item.img === undefined ? profile : item.img} alt="pfp" className="me-4 shadow-sm" />
+
+                        <p>{item.notification}</p>
                       </div>
                       <hr />
                     </>

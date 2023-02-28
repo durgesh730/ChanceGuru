@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Topbar from "./mini_components/Topbar";
 import { IoLogoDesignernews, IoMdNotifications } from "react-icons/io";
 import Searchbar from "./mini_components/Searchbar";
+import profile from "../assets/icons/profile1.svg";
 
 import axios from "axios"
 
@@ -15,6 +16,8 @@ const Notification = () => {
 
   const dataFetchedRef = useRef(false);
   const [userProjectMap, setUserProjectMap] = useState([]);
+  const [loggedUser, setLoggedUser] = useState("");
+
 
   const getProjects = async () => {
     const res = await fetch(
@@ -107,21 +110,22 @@ const Notification = () => {
 
       const userName = jobUsers[index][0].username;
       const projectName = jobProjects[index][0].basicInfo.name;
-      const image = jobProjects[index][0].basicInfo.link;
+      const image = jobUsers[index][0].link;
 
       let mapObj = {
         user: userName,
         project: projectName,
       }
-      arr.add(`${mapObj.user} has applied to project ${mapObj.project}`)
-      imgArr.add(image)
+      arr.add({ notification: `${mapObj.user} has applied to project ${mapObj.project}`, img: image })
     }
-    console.log(imgArr);
-
     console.log(arr)
     setUserProjectMap([...arr])
 
   }, [jobUsers, jobProjects])
+
+  useEffect(() => {
+    setLoggedUser(JSON.parse(localStorage.getItem("login")));
+  }, []);
 
   console.log("userProjectMap", jobUsers)
 
@@ -141,8 +145,8 @@ const Notification = () => {
             projects?.map((project, index) => {
               return (
                 <>
-                  <div className="d-flex align-items-center">
-                    <img src="" alt="pfp" className="me-4 shadow-sm" />
+                  <div className="notificationDiv d-flex align-items-center">
+                    <img src={loggedUser.link === undefined ? profile : loggedUser.link} alt="pfp" className="me-4 shadow-sm" />
                     <p>
                       You have successfully created the project {project.basicInfo.name}
                     </p>
@@ -156,10 +160,10 @@ const Notification = () => {
             userProjectMap?.map((item) => {
               return (
                 <>
-                  <div className="d-flex align-items-center">
-                    <img src="" alt="pfp" className="me-4 shadow-sm" />
+                  <div className="notificationDiv d-flex align-items-center">
+                    <img src={item.img === undefined ? profile : item.img} alt="pfp" className="me-4 shadow-sm" />
                     <p>
-                      {item}
+                      {item.notification}
                     </p>
                   </div>
                   <hr />
