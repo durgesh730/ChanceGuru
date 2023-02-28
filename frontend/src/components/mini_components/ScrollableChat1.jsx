@@ -1,11 +1,19 @@
 import React, { useContext } from "react";
 
-
 import ChatContext from "../Context/chat-context";
-import userImg from "../../assets/images/kamal.jpeg";
+import { getSenderLink } from "../config/ChatLogics";
+import profile from "../../assets/icons/profile1.svg";
+import { BsCheckAll } from 'react-icons/bs';
 
-const ScrollableChat1 = ({ messages }) => {
-  const { user } = useContext(ChatContext);
+
+
+const ScrollableChat1 = ({ messages, loggedUser }) => {
+  const { user, selectedChat } = useContext(ChatContext);
+
+  // console.log("messages", messages[0].chat.users);
+  // console.log("selectedChatChatspage", selectedChat.users);
+  console.log("loggedin", loggedUser)
+  // console.log(getSenderLink(loggedUser, selectedChat.users))
 
   return (
     <>
@@ -17,9 +25,19 @@ const ScrollableChat1 = ({ messages }) => {
             }
           >
             <figure>
-              <img src={userImg} />
+
+              <img src={
+                message.sender._id === user._id ?
+                  loggedUser.link : selectedChat.users[1]["link"] === undefined ? profile :
+                    getSenderLink(loggedUser, selectedChat.users)
+              }
+              />
             </figure>
-            <p>{message.content}</p>
+            <p>{message.content}
+              {message.sender._id === user._id ?
+                <BsCheckAll />
+                : ""}
+            </p>
           </div>
         ))}
 

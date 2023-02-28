@@ -61,6 +61,10 @@ const BrowseProfile = () => {
       setProfileData(res);
     }
   };
+  useEffect(() => {
+    handleSearch();
+  }, [query])
+
 
   const GetProfiledata = async () => {
     const data = await fetch("http://localhost:5000/profile/profileData", {
@@ -127,7 +131,7 @@ const BrowseProfile = () => {
                   return searchTerm && name.startsWith(searchTerm);
                 })
                 .map((item, index) => (
-                  <div onClick={() => setQuery(item.basicInfo.fullname)}>
+                  <div onClick={() => { setQuery(item.basicInfo.fullname) }}>
                     {item.basicInfo.fullname}
                   </div>
                 ))}

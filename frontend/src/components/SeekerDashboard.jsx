@@ -28,6 +28,9 @@ const SeekerDashboard = () => {
       setcard(res);
     }
   };
+  useEffect(() => {
+    handleSearch();
+  }, [query])
 
   const getProjects = async () => {
     const res = await fetch(
@@ -80,7 +83,7 @@ const SeekerDashboard = () => {
                   return searchTerm && name.startsWith(searchTerm);
                 })
                 .map((item, index) => (
-                  <div onClick={() => setQuery(item.basicInfo.name)}>
+                  <div onClick={() => { setQuery(item.basicInfo.name); handleSearch() }}>
                     {item.basicInfo.name}
                   </div>
                 ))}
