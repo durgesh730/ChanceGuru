@@ -557,3 +557,8 @@ div.lI div.actionButtons {
 .char {
   cursor: pointer;
 }
+
+.charactersList:hover{
+  background-color: #523aa8;
+  color: white;
+}

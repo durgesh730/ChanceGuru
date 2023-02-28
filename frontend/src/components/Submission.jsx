@@ -56,17 +56,12 @@ const Submission = () => {
       })
       .then((res) => {
         setcards(res.data);
-        console.log("proj");
-        console.log(res.data);
       });
   };
 
   useEffect(() => {
     getProjects();
   }, []);
-
-  console.log("Cards");
-  console.log(cards);
 
   return (
     <>
@@ -85,7 +80,7 @@ const Submission = () => {
               />
               <h5 className="purple_title">Projects</h5>
               {cards?.map((item, index) => {
-                console.log(item);
+                // console.log(item , 'durgesh');
                 // ========= calculate total charcters =============
                 var char = 0;
                 var all = new Array();
@@ -108,7 +103,7 @@ const Submission = () => {
                   <>
                     <div className="audition_accordion mb-3 ">
                       <div className="aa1 border p-2">
-                        <SubmissionStatus a={a} project={item} id={item._id} />
+                        <SubmissionStatus a={a} project={item} ArrayData = {cards} id={item._id} />
                       </div>
                     </div>
                   </>

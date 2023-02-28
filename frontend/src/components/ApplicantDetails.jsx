@@ -183,7 +183,7 @@ const ApplicantDetails = () => {
 
                             projectDetails?.map((items, ind) => items.roles.map((i, index) => {
                                 return (
-                                    <span highlighted={active === index ? "true" : "false"} className='lead' onClick={() => { setActive(index); setLeadRoles(i.characters); setActiveChar(i.characters[0]) }} >{i.role + ` (${i.characters.length})`}</span>
+                                    <span highlighted={active === index ? "true" : "false"}  onClick={() => { setActive(index); setLeadRoles(i.characters); setActiveChar(i.characters[0]) }} >{i.role + ` (${i.characters.length})`}</span>
                                 )
                             })
                             )

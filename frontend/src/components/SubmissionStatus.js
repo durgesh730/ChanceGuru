@@ -3,11 +3,15 @@ import SubViewProfile from './SubViewProfile';
 import axios from 'axios'
 import StatusSide from './StatusSide';
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
-import godfather from "../assets/images/godfather.png";
 
-const SubmissionStatus = ({a , project , id }) => {
+const SubmissionStatus = ({ a, ArrayData, project, id }) => {
     const [active, setActive] = useState(false);
     const [cards, setcards] = useState();
+    
+    const [Newactive, setNewActive] = useState(0);
+    const [leadRoles, setLeadRoles] = useState([])
+    const [activeChar, setActiveChar] = useState({})
+
     const getuserId = () => {
         axios
             .get(`http://localhost:5000/project/Seekers/${id}`)
@@ -19,9 +23,16 @@ const SubmissionStatus = ({a , project , id }) => {
             })
     }
 
-  useEffect(() => {
-    getuserId();
-  }, []);
+    useEffect(() => {
+        if (project.roles) {
+            setLeadRoles(project.roles[0].characters)
+            setActiveChar(project.roles[0].characters[0])
+        }
+    }, [project])
+
+    useEffect(() => {
+        getuserId();
+    }, []);
 
     return (
         <>
@@ -52,6 +63,33 @@ const SubmissionStatus = ({a , project , id }) => {
             {active &&
                 <div className="aa_body">
                     <hr />
+
+                    <tr>
+                        <div className="charList ">
+                            {project.roles.map((i, x) => {
+                                return (
+                                    <>
+                                        <div highlighted={Newactive === x ? "true" : "false"} className='lead' onClick={() => { setNewActive(x); setLeadRoles(i.characters); setActiveChar(i.characters[0]) }} >{i.role}</div>
+                                    </>
+                                )
+                            })}
+                        </div>
+                    </tr>
+                    <hr />
+
+                    <tr>
+                        <div className=" charList ">
+                            {leadRoles.map((p, index)=>{
+                                return (
+                                    <>
+                                        <div key={index} className="charactersList"  highlighted={activeChar === p ? "true" : "false"} onClick={() => setActiveChar(p)}>{p.name}</div>
+                                    </>
+                                )
+                            })}
+                        </div>
+                    </tr>
+                    <hr />
+
                     <div className="b_table">
                         <table>
                             <thead>
@@ -63,20 +101,23 @@ const SubmissionStatus = ({a , project , id }) => {
                             <tbody>
 
                                 {cards?.map((item, index) => {
-                                    return (
-                                        <>
-                                            {
-                                                item.status === "applied" ? (
-                                                    <tr>
-                                                        <StatusSide roleId={item.roleId} charId={item.charId} project={project} userId={item.userId} />
-                                                        <td>{item.status}</td>
-                                                        <SubViewProfile display={'/submission'} index={index} card={cards} msg={'View Profile'} />
-                                                    </tr>
-                                                )
-                                                    : ("")
-                                            }
-                                        </>
-                                    )
+                                    if (activeChar._id == item.charId) {
+                                        return (
+                                            <>
+                                                {
+                                                    item.status === "applied" ? (
+                                                        <tr>
+                                                            <StatusSide roleId={item.roleId} charId={item.charId} project={project} userId={item.userId} />
+                                                            <td>{item.status}</td>
+                                                            <SubViewProfile display={'/submission'} index={index} card={cards} msg={'View Profile'} />
+                                                        </tr>
+                                                    )
+                                                        : ("")
+                                                }
+                                            </>
+                                        )
+
+                                    }
                                 })
                                 }
                             </tbody>
