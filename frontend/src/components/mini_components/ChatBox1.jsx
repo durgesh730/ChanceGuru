@@ -25,6 +25,8 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
   const [istyping, setIsTyping] = useState(false);
   const [loadingChat, setLoadingChat] = useState(false);
   const [reportModal, setReportModal] = useState(0);
+  const [loggedUser, setLoggedUser] = useState();
+
 
   const {
     selectedChat,
@@ -246,13 +248,17 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
 
   console.log("SelectedUser", selectedChat);
 
-  const [inputStr, setInputStr] = useState("");
   const [showPicker, setShowPicker] = useState(false);
 
   const onEmojiClick = (event, emojiObject) => {
     setNewMessage((prevInput) => prevInput + emojiObject.emoji);
     setShowPicker(false);
   };
+
+
+  useEffect(() => {
+    setLoggedUser(JSON.parse(localStorage.getItem("login")));
+  }, [fetchAgain]);
 
   return (
     <>
@@ -289,7 +295,7 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
               <h5>Loading.......</h5>
             ) : (
               <div className="msg_Div" ref={msgDiv}>
-                <ScrollableChat1 messages={messages} />
+                <ScrollableChat1 messages={messages} loggedUser={loggedUser} />
               </div>
             )}
 

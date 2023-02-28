@@ -14,7 +14,7 @@ const Notification = () => {
   const [jobUsers, setJobUsers] = useState([])
 
   const dataFetchedRef = useRef(false);
-  const [userProjectMap,setUserProjectMap] = useState([]);
+  const [userProjectMap, setUserProjectMap] = useState([]);
 
   const getProjects = async () => {
     const res = await fetch(
@@ -46,16 +46,16 @@ const Notification = () => {
       }
     );
     const response = await res.json();
-    
+
     setJobs(response)
-   
+
     getUsers(response)
     getJobProjects(response)
 
   }
 
-  function getUsers(jobs){
-    
+  function getUsers(jobs) {
+
     jobs?.map((job, index) => {
       axios
         .get(`http://localhost:5000/project/UserId/${job.userId}`)
@@ -72,7 +72,7 @@ const Notification = () => {
     })
   }
 
-  function getJobProjects(jobs){
+  function getJobProjects(jobs) {
     jobs?.map((job, index) => {
 
       axios.get(`http://localhost:5000/project/projectDetails/${job.pId}`)
@@ -94,29 +94,37 @@ const Notification = () => {
     getProjects()
     getJobApplications()
   }, [])
-  
-  useEffect(()=>{
-    if(jobUsers.length == 0 || jobProjects.length == 0){
+
+  useEffect(() => {
+    if (jobUsers.length == 0 || jobProjects.length == 0) {
       return
     }
-    let len = jobProjects.length === jobUsers.length ? jobProjects.length:0;
+    let len = jobProjects.length === jobUsers.length ? jobProjects.length : 0;
     let arr = new Set()
+    let imgArr = new Set()
+
     for (let index = 0; index < len; index++) {
-      
+
       const userName = jobUsers[index][0].username;
       const projectName = jobProjects[index][0].basicInfo.name;
+      const image = jobProjects[index][0].basicInfo.link;
+
       let mapObj = {
-        user:userName,
-        project:projectName 
+        user: userName,
+        project: projectName,
       }
-     arr.add(`${mapObj.user} has applied to project ${mapObj.project}`)
-      
+      arr.add(`${mapObj.user} has applied to project ${mapObj.project}`)
+      imgArr.add(image)
     }
+    console.log(imgArr);
+
     console.log(arr)
     setUserProjectMap([...arr])
-    
-  },[jobUsers,jobProjects])
-  
+
+  }, [jobUsers, jobProjects])
+
+  console.log("userProjectMap", jobUsers)
+
   return (
     <>
       <Topbar />
@@ -145,8 +153,8 @@ const Notification = () => {
             })
           }
           {
-            userProjectMap?.map((item)=>{
-              return(
+            userProjectMap?.map((item) => {
+              return (
                 <>
                   <div className="d-flex align-items-center">
                     <img src="" alt="pfp" className="me-4 shadow-sm" />

@@ -2,11 +2,14 @@ import React, { useEffect, useState, useContext } from "react";
 import { CiSearch } from "react-icons/ci";
 import userImg from "../../assets/images/kamal.jpeg";
 
+
 import axios from "axios";
 import ChatContext from "../Context/chat-context";
-import { getSender } from "../config/ChatLogics";
+import { getSender, getSenderLink } from "../config/ChatLogics";
 
 import UserListItem from "../userAvatar/UserListItem";
+import profile from "../../assets/icons/profile1.svg";
+
 
 const MyChats1 = ({ fetchAgain }) => {
   const [loggedUser, setLoggedUser] = useState();
@@ -135,8 +138,8 @@ const MyChats1 = ({ fetchAgain }) => {
     console.log("called");
   }, [chats]);
 
-  // console.log("chats", chats[0].latestMessage.content);
-  console.log("selected", selectedChat);
+  // console.log("chats", getSender(loggedUser, chats[5].users));
+  // console.log("chats", chats[5].users[1].link);
 
   return (
     <>
@@ -183,18 +186,29 @@ const MyChats1 = ({ fetchAgain }) => {
                   }
                 >
                   <figure>
-                    <img src={userImg} />
+                    <img
+                      src={
+                        chat.users[1]["link"] === undefined
+                          ? profile
+                          : getSenderLink(loggedUser, chat.users)
+                      }
+                    />
                   </figure>
-                  <div>
-                    <h6>{getSender(loggedUser, chat.users)}</h6>
+                  <div className="w-100">
+                    <div className="user_unseenDiv">
+                      <h6>{getSender(loggedUser, chat.users)} </h6>
+                      <span style={
+                        activeChat === i ? { display: "none" } : { display: "grid" }} > 10</span>
+                    </div>
                     <p>
                       {chat["latestMessage"] === undefined
                         ? ""
                         : chat.latestMessage.content.length > 45
-                        ? chat.latestMessage.content.substring(0, 45) + "..."
-                        : chat.latestMessage.content}
+                          ? chat.latestMessage.content.substring(0, 45) + "..."
+                          : chat.latestMessage.content}
                     </p>
                   </div>
+
                 </div>
               ))
             ) : (

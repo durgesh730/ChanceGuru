@@ -61,6 +61,10 @@ const BrowseProfile = () => {
       setProfileData(res);
     }
   };
+  useEffect(() => {
+    handleSearch();
+  }, [query])
+
 
   const [userData, setUserData] = useState();
 
@@ -101,6 +105,8 @@ const BrowseProfile = () => {
   }, []);
   const location = useLocation();
 
+  console.log("profileData", profileData)
+
   return (
     <div>
       <Topbar />
@@ -123,7 +129,7 @@ const BrowseProfile = () => {
                   return searchTerm && name.startsWith(searchTerm);
                 })
                 .map((item, index) => (
-                  <div onClick={() => setQuery(item.basicInfo.fullname)}>
+                  <div onClick={() => { setQuery(item.basicInfo.fullname) }}>
                     {item.basicInfo.fullname}
                   </div>
                 ))}
@@ -174,13 +180,13 @@ const BrowseProfile = () => {
                     <td>
                       {item.rolePref.length !== 0
                         ? item.rolePref?.map((i) => {
-                            return (
-                              <>
-                                <span>{i.role}</span>
-                                <br />
-                              </>
-                            );
-                          })
+                          return (
+                            <>
+                              <span>{i.role}</span>
+                              <br />
+                            </>
+                          );
+                        })
                         : "No role preferences found"}
                     </td>
                     <td>

@@ -59,7 +59,7 @@ input {
 .formChild {
   overflow-y: scroll;
   scroll-behavior: smooth;
-  height: 190px;
+  /* height: 190px; */
 }
 .form-head {
   color: #6c54a6;

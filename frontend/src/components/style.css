@@ -424,6 +424,7 @@ a:hover {
   height: 100%;
 }
 .roleChild {
+  min-height: calc(100% - 50px);
   margin: 25px 30px 0 22px;
   padding: 23.5px 31px 23px 29px;
   border-radius: 6px;
@@ -1001,7 +1002,7 @@ div.css-18dcxwc {
   /* margin: 3px; */
 }
 .userPfp {
-  height: calc(100vh - 120px);
+  /* height: calc(100vh - 120px); */
   z-index: 1;
 }
 .right_pfp {
@@ -1012,11 +1013,10 @@ div.css-18dcxwc {
   /* height: calc(100vh - 80px); */
 }
 .child_user {
-  height: calc(100vh - 120px);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: calc(100vh - 120px);
+  min-height: 100%;
 }
 .right_pfp * {
   margin: 0;
@@ -1370,6 +1370,10 @@ div.css-18dcxwc {
 .notif-options div div:hover {
   background-color: #f2edf8;
 }
+.notif-options div div img {
+  height: 45px;
+  width: 45px;
+}
 .notif-options div div p {
   font-size: 14px;
   font-weight: 600;
@@ -1668,6 +1672,20 @@ div.css-18dcxwc {
   margin: 0;
   padding: 0;
 }
+.user_unseenDiv {
+  display: flex;
+  justify-content: space-between;
+}
+.user_unseenDiv span {
+  background-color: #8443e5;
+  color: #fff;
+  border-radius: 50%;
+  height: 20px;
+  width: 20px;
+  font-size: 10px;
+  display: grid;
+  place-content: center;
+}
 .myChat_users::-webkit-scrollbar {
   display: none;
 }
@@ -1764,6 +1782,7 @@ div.css-18dcxwc {
   width: 43px;
   height: 43px;
   margin-right: 10px;
+  background-color: #8443e5;
 }
 .cb_chats_msg p {
   background-color: #fff;
@@ -1795,6 +1814,7 @@ div.css-18dcxwc {
   flex-direction: row-reverse;
   margin: 10px 0;
 }
+
 .cb_chats_msg2 img {
   width: 43px;
   height: 43px;
@@ -1810,6 +1830,14 @@ div.css-18dcxwc {
   color: #888;
   line-height: 20px;
   word-wrap: break-word;
+  position: relative;
+}
+.cb_chats_msg2 p svg {
+  font-size: 20px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  color: #afaaaa;
 }
 .cb_chats_msg2 p::before {
   content: "";
@@ -1895,4 +1923,45 @@ aside.emoji-picker-react {
   font-size: 20px;
   color: #8443e5;
   margin: 20px 35px;
+}
+
+.bubbleDiv {
+  position: relative;
+}
+.bubbleDiv h6 {
+  position: absolute;
+  margin: 0;
+  top: 0;
+  right: 0;
+  background-color: #8443e5;
+  display: grid;
+  place-items: center;
+  font-size: 10px;
+  height: 20px;
+  width: 20px;
+  color: #fff;
+  border-radius: 50%;
+}
+.bubbleColorChange h6 {
+  background-color: #fff;
+  color: #8443e5;
+  box-shadow: 0 0 8px 1px rgba(140, 138, 138, 0.5);
+}
+.userImage_main {
+  position: relative;
+}
+.userImage_main img {
+  width: 100%;
+  height: 400px;
+}
+
+.imageUser {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  color: #fff;
+  font-size: 40px;
+  top: 50%;
+  opacity: 0.7;
 }

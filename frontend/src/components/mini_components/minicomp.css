@@ -69,6 +69,7 @@
 
 .topbar-profile {
   background-color: var(--color_p4);
+  box-shadow: 0 0 3px rgb(200, 200, 200);
 }
 
 .top-profile-name {
@@ -140,7 +141,7 @@
   list-style-type: none;
 }
 .grid-wrapper .child_cards a {
-  width: 290px;
+  width: 100%;
   height: 170px;
   position: relative;
   font-size: 24px;

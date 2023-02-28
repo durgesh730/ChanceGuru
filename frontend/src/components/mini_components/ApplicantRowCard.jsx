@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { NavLink } from 'react-router-dom';
 import kamal from "../../assets/images/kamal.jpeg"
 
 
@@ -91,27 +92,38 @@ const ApplicantRowCard = ({ Data, applied }) => {
     }
 
 
+    console.log("user", User)
+
+
     return (
-        <div className="lI" >
+        <div >
             {/* <div> */}
 
             {User?.map((items, i) => {
                 return (
                     <>
-                        <div>
-                            <img src={items.photos[0]?.link} alt="" style={{ width: '4rem' }} />
-                            <span key={i} className="applicantName">
-                                {items.basicInfo.fullname}
-                            </span>
-                        </div>
-                        <div style={{marginLeft:"-100px"}} >
-                            <span className="applicantStatus">{getLastUpdate(items.updatedAt)}</span>
-                        </div>
-                        <div className="actionButtons" >
-                            <button onClick={handleSelect} >Select</button>
-                            <button onClick={handleReject} >Reject</button>
-                        </div>
+                        <NavLink
+                            to={"/browseprofile/:nickdavolt"}
+                            state={{ user: items, card: [], index: 0, btn: 0 }}
+                            exact
+                        >
+                            <div className="lI" >
 
+                                <div>
+                                    <img src={items.photos[0]?.link} alt="" style={{ width: '4rem' }} />
+                                    <span key={i} className="applicantName">
+                                        {items.basicInfo.fullname}
+                                    </span>
+                                </div>
+                                <div style={{ marginLeft: "-100px" }} >
+                                    <span className="applicantStatus">{getLastUpdate(items.updatedAt)}</span>
+                                </div>
+                                <div className="actionButtons" >
+                                    <button onClick={handleSelect} >Select</button>
+                                    <button onClick={handleReject} >Reject</button>
+                                </div>
+                            </div>
+                        </NavLink>
                     </>
                 )
             })}

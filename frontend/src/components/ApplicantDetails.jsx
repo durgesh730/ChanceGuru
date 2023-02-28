@@ -19,9 +19,9 @@ const ApplicantDetails = () => {
     const [activeChar, setActiveChar] = useState({})
     const [activeStatus, setActiveStatus] = useState("shortlist")
 
-    const [shortListCount,setShortListCount] = useState(0)
-    const [waitingCount,setWaitingCount] = useState(0)
-    const [rejectedCount,setRejectedCount] = useState(0)
+    const [shortListCount, setShortListCount] = useState(0)
+    const [waitingCount, setWaitingCount] = useState(0)
+    const [rejectedCount, setRejectedCount] = useState(0)
 
     var applied = leadRoles.map((Data) => { return Data._id });
     var check = applied[0]
@@ -87,14 +87,14 @@ const ApplicantDetails = () => {
         setWaitingCount(0)
         setRejectedCount(0)
         Data?.map((item) => {
-            if(item.status === "shortlist" || item.status === "selected"){
+            if (item.status === "shortlist" || item.status === "selected") {
                 setShortListCount(prevCount => prevCount += 1)
-                
+
             }
-            else if(item.status === "scheduled" || item.status === "applied"){
+            else if (item.status === "scheduled" || item.status === "applied") {
                 setWaitingCount(prevCount => prevCount += 1)
             }
-            else if(item.status === "rejected"){
+            else if (item.status === "rejected") {
                 setRejectedCount(prevCount => prevCount += 1)
             }
 
