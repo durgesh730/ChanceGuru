@@ -1404,6 +1404,10 @@ div.css-18dcxwc {
 .notif-options hr {
   margin: 0 27px;
 }
+.notificationDiv img {
+  height: 45px;
+  width: 45px;
+}
 
 .next_bottom {
   /* width: 100%; */
