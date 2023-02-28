@@ -3,13 +3,16 @@ import { useState, useEffect } from "react";
 import Modal from "./Modal";
 import axios from "axios";
 
-const Card = ({ card, profile, image, setClicked }) => {
+const Card = ({ card, profile, setClicked }) => {
+
   const basicInfo = card.basicInfo;
   const role = card.roles;
   const create = card.createAt;
-  // console.log(profile)
+  const id = card.seekerId;
+
   const [model, setModel] = useState(false);
   const [roles, setroles] = useState([]);
+  const [image, setImage] = useState();
 
   const current = new Date().toUTCString();
   var date1 = new Date(create);
@@ -31,8 +34,20 @@ const Card = ({ card, profile, image, setClicked }) => {
       });
   };
 
+  const getImage = () => {
+    axios
+      .get(`http://localhost:5000/profile/seekersImage/${id}`)
+      .then((res) => {
+        setImage(res.data);
+      })
+      .catch((err) => {
+      });
+  };
+
+
   useEffect(() => {
     getRoles();
+    getImage();
   }, []);
 
   return (

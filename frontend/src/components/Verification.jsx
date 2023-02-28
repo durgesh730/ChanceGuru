@@ -1,10 +1,18 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthValue } from "./AuthContext";
-
 import "./style.css";
 import backimg from "../assets/images/kamal.jpeg";
 import logo from "../assets/images/logo1.svg";
+
+import { authentication } from "./firebase-config";
+import {
+    createUserWithEmailAndPassword,
+    RecaptchaVerifier,
+    signInWithPhoneNumber,
+    sendEmailVerification,
+    updateProfile,
+} from "firebase/auth";
 
 const Login = () => {
     const [Otp, setOtp] = useState("");
@@ -16,6 +24,9 @@ const Login = () => {
         let otp = e.target.value;
         setOtp(otp);
     };
+
+  
+    
 
     const verifyOtp = (e) => {
         e.preventDefault();
@@ -81,7 +92,7 @@ const Login = () => {
                                 <b>Verify Mobile Number</b>
                             </p>
                             <span className="secondary-text">
-                                Enter the OPT recived on the registerd mobile number <b>{}</b>
+                                Enter the OTP recived on the registerd mobile number <b>{}</b>
                             </span>
                         </div>
                         <input
@@ -103,9 +114,9 @@ const Login = () => {
                         </div>
                         <input type="submit" className="submit-btn btn btn-lg btn-block my-2" value="Verify" />
                         <div className="alternate-option my-5 text-center">
-                            Didn’t recived OTP?{" "}
+                            Didn’t received OTP?{" "}
                             <b>
-                                <u>Resend</u>
+                                <u >Resend</u>
                             </b>
                         </div>
                     </form>

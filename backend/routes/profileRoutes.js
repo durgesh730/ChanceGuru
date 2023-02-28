@@ -34,13 +34,9 @@ router.get("/seekersImage/:id", async (req, res) => {
 });
 
 // API used for user phone number and email
-router.get("/Users", async (req, res) => {
+router.get("/Users/:id", async (req, res) => {
   try {
-    const user = await User.aggregate([
-      {
-        $match: { type: "user" },
-      },
-    ]);
+    const user = await User.findOne({_id:req.params.id})
     res.json(user);
   } catch (error) {
     console.error(error.message);
@@ -180,6 +176,7 @@ router.put("/ReqToApp", jwtAuth, (req, res) => {
     }
   )
     .then((response) => {
+      console.log(response)
       res.json(response);
     })
     .catch((err) => {
@@ -358,7 +355,7 @@ router.put("/portfolio/exp", jwtAuth, (req, res) => {
   Profile.findOne({ userId: user._id }).then((r) => {
     d.bio = r.portfolio.bio;
     d.experience = data;
-
+    console.log(d)
     Profile.findOneAndUpdate(
       { userId: user._id },
       {

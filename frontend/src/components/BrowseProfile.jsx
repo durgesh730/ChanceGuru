@@ -9,9 +9,9 @@ import {
   useNavigate,
 } from "react-router-dom";
 import { BsChevronDown, BsPhone } from "react-icons/bs";
-import godfather from "../assets/images/godfather.png";
 
 import axios from "axios";
+import Contect from "./Contect";
 
 const BrowseProfile = () => {
   const [query, setQuery] = useState("");
@@ -66,8 +66,6 @@ const BrowseProfile = () => {
   }, [query])
 
 
-  const [userData, setUserData] = useState();
-
   const GetProfiledata = async () => {
     const data = await fetch("http://localhost:5000/profile/profileData", {
       method: "GET",
@@ -82,17 +80,6 @@ const BrowseProfile = () => {
     }
   };
 
-  const GetUserData = async () => {
-    const data = await fetch("http://localhost:5000/profile/Users", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const res = await data.json();
-    setUserData(res);
-  };
-
   let navigate = useNavigate();
   const routeChange = () => {
     let path = `/projectcreation`;
@@ -101,12 +88,27 @@ const BrowseProfile = () => {
 
   useEffect(() => {
     GetProfiledata();
-    GetUserData();
   }, []);
   const location = useLocation();
 
-  console.log("profileData", profileData)
+  function viewProfileClicked(item) {
+    console.log(item)
 
+    axios.post('http://localhost:5000/profile/ReqToApp', { talentId: item.userId }, {
+
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+
+    })
+        .then(res => {
+            console.log(res.data);
+
+        })
+        .catch(err => {
+            console.log(err);
+        });
+}
   return (
     <div>
       <Topbar />
@@ -195,11 +197,12 @@ const BrowseProfile = () => {
                         ? item.basicInfo.address
                         : "No address"}{" "}
                     </td>
-                    <td>61 502648952</td>
+                     <td> <Contect  index ={index} userId = {item.userId} /> </td>
                     <td>
                       <NavLink
                         to={"/browseprofile/:nickdavolt"}
                         state={{ user: item, card: [], index: 0, btn: 0 }}
+                        onClick={() => viewProfileClicked(item)}
                         exact
                       >
                         <button>View Profile</button>

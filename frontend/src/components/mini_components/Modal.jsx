@@ -43,9 +43,9 @@ const Modal = ({ setModel, info, setProfile, roles }) => {
           setProfile.talent &&
           setProfile.photo &&
           setProfile.education &&
-          setProfile.role) >= 80 ? (
+          setProfile.roles) <= 80 ? (
           <div className="modal-header">
-            Your profile is weak to apply for this role.
+            Your profile is weak to apply for this roles.
           </div>
         ) : (
           ""
