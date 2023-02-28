@@ -45,8 +45,6 @@ const Card2 = ({ card }) => {
               <p>{result?(result):"Not available"}</p>
             </div>
           </div>
-
-          <button className="btn btn-outline-primary" >Durgesh</button>
         </div>
 
         {model && <Modal setModel={setModel} info={card} />}
