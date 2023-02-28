@@ -120,7 +120,7 @@ const ApplicantRowCard = ({ Data, applied }) => {
                                 </div>
                                 <div className="actionButtons" >
                                     <button onClick={handleSelect} >Select</button>
-                                    <button onClick={handleReject} >Reject</button>
+                                    <button onClick={handleReject} style={{ borderColor: "red", color: "red" }} >Reject</button>
                                 </div>
                             </div>
                         </NavLink>

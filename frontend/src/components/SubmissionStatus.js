@@ -7,7 +7,7 @@ import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 const SubmissionStatus = ({ a, ArrayData, project, id }) => {
     const [active, setActive] = useState(false);
     const [cards, setcards] = useState();
-    
+
     const [Newactive, setNewActive] = useState(0);
     const [leadRoles, setLeadRoles] = useState([])
     const [activeChar, setActiveChar] = useState({})
@@ -64,36 +64,42 @@ const SubmissionStatus = ({ a, ArrayData, project, id }) => {
                 <div className="aa_body">
                     <hr />
 
-                    <tr>
-                        <div className="charList ">
-                            {project.roles.map((i, x) => {
-                                return (
-                                    <>
-                                        <div highlighted={Newactive === x ? "true" : "false"} className='lead' onClick={() => { setNewActive(x); setLeadRoles(i.characters); setActiveChar(i.characters[0]) }} >{i.role}</div>
-                                    </>
-                                )
-                            })}
-                        </div>
-                    </tr>
-                    <hr />
+                    <div className="topNavbar">
 
-                    <tr>
-                        <div className=" charList ">
-                            {leadRoles.map((p, index)=>{
+                        {
+
+                            project.roles.map((i, x) => {
+                                return (
+                                    <span highlighted={Newactive === x ? "true" : "false"} onClick={() => { setActive(x); setLeadRoles(i.characters); setActiveChar(i.characters[0]) }} >{i.role + ` (${i.characters.length})`}</span>
+                                )
+                            })
+
+                        }
+                    </div>
+                    <hr className='mt-1' />
+
+
+
+                    <div className="leadRoles" style={{ dispay: "flex", flexDirection: "row", justifyContent: "space-between" }} >
+                        {
+                            leadRoles.map((p, index) => {
+
                                 return (
                                     <>
-                                        <div key={index} className="charactersList"  highlighted={activeChar === p ? "true" : "false"} onClick={() => setActiveChar(p)}>{p.name}</div>
+                                        <span key={index} highlighted={activeChar === p ? "true" : "false"} onClick={() => setActiveChar(p)} >{p.name}</span>
                                     </>
                                 )
-                            })}
-                        </div>
-                    </tr>
-                    <hr />
+                            }
+                            )
+                        }
+
+                    </div>
+                    <hr className='my-3' />
 
                     <div className="b_table">
                         <table>
                             <thead>
-                                <td>Applocant Name</td>
+                                <td>Applicant Name</td>
                                 <td>Applied For</td>
                                 <td>Status</td>
                                 <td></td>
