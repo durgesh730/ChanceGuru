@@ -177,7 +177,6 @@ const Topbar = (props) => {
     }
     console.log(arr)
     setUserProjectMap([...arr])
-
   }, [jobUsers, jobProjects])
 
   useEffect(() => {
@@ -342,7 +341,7 @@ const Topbar = (props) => {
             ) : (
               <img className="topbar-icons " src={notification} alt="" />
             )}
-            <h6>10</h6>
+            {auth.notificationCount !== 0?<h6>{auth.notificationCount}</h6>:""}
 
             <div className="notif-options" id="notifOption">
               <div>
@@ -371,7 +370,8 @@ const Topbar = (props) => {
                       <hr />
                     </>
                   );
-                })}
+                })
+                }
                 {/* <hr />
                 <div>
                   <img src="" alt="pfp" />
@@ -390,7 +390,7 @@ const Topbar = (props) => {
                   </p>
                 </div> */}
                 <div className="d-flex justify-content-center align-items-center view_all">
-                  <NavLink to="/notification">
+                  <NavLink to="/notification" onClick={() => auth.setNotificationCount(0)} >
                     <p>View All</p>
                   </NavLink>
                 </div>
