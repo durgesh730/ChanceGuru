@@ -7,7 +7,7 @@ const ChatProvider = (props) => {
   const [chats, setChats] = useState([]);
 
   const [selectedChat, setSelectedChat] = useState();
-  const [notification, setNotification] = useState([]);
+  const [unreadChat, setUnreadChat] = useState();
 
   const navigate = useNavigate();
 
@@ -31,8 +31,8 @@ const ChatProvider = (props) => {
           setSelectedChat,
           chats,
           setChats,
-          notification,
-          setNotification,
+          unreadChat, 
+          setUnreadChat,
         }}
       >
         {props.children}

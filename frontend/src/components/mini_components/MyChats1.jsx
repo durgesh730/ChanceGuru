@@ -14,7 +14,7 @@ import profile from "../../assets/icons/profile1.svg";
 const MyChats1 = ({ fetchAgain }) => {
   const [loggedUser, setLoggedUser] = useState();
 
-  const { selectedChat, setSelectedChat, user, chats, setChats } =
+  const { selectedChat, setSelectedChat, user, chats, setChats,unreadChat, setUnreadChat } =
     useContext(ChatContext);
   //const {getSender}=useHelper();
 
@@ -178,7 +178,12 @@ const MyChats1 = ({ fetchAgain }) => {
               )
             )}
             {chats ? (
-              chats.map((chat, i) => (
+              chats.map((chat, i) => {
+                chat.unreadCount = 0;
+                if(unreadChat == chat._id){
+                  chat.unreadCount++
+                }
+                return(
                 <div
                   onClick={() => (setSelectedChat(chat), setactiveChat(i))}
                   className={
@@ -197,8 +202,8 @@ const MyChats1 = ({ fetchAgain }) => {
                   <div className="w-100">
                     <div className="user_unseenDiv">
                       <h6>{getSender(loggedUser, chat.users)} </h6>
-                      <span style={
-                        activeChat === i ? { display: "none" } : { display: "grid" }} > 10</span>
+                      {unreadChat?<span style={
+                        chat.unreadCount === 0 ? { display: "none" } : { display: "grid" }} > {chat.unreadCount} </span> : ""}
                     </div>
                     <p>
                       {chat["latestMessage"] === undefined
@@ -210,7 +215,8 @@ const MyChats1 = ({ fetchAgain }) => {
                   </div>
 
                 </div>
-              ))
+                )
+              })
             ) : (
               <h3>Loading....</h3>
             )}

@@ -32,8 +32,8 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
     selectedChat,
     setSelectedChat,
     user,
-    notification,
-    setNotification,
+    unreadChat, 
+    setUnreadChat,
     chats,
     setChats,
   } = useContext(ChatContext);
@@ -131,16 +131,13 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
 
   useEffect(() => {
     socket.on("message_recieved", (newMessageRecieved) => {
+      console.log(selectedChatCompare._id,newMessageRecieved.chat)
       if (
         !selectedChatCompare ||
         selectedChatCompare._id !== newMessageRecieved.chat
       ) {
         // if chat is not selected or doesn't match current chat
-        if (!notification.includes(newMessageRecieved)) {
-          setNotification([newMessageRecieved, ...notification]);
-          setFetchAgain(!fetchAgain); //updating our chats in our my chats on newMessageRecieved
-          //   console.log(notification, "notification bell-icon check");
-        }
+        setUnreadChat(newMessageRecieved.chat)
       } else {
         console.log(newMessageRecieved);
         setMessages((messages) => [...messages, newMessageRecieved]);
