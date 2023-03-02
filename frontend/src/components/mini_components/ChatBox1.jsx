@@ -130,8 +130,8 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
   //console.log(notification, 'notification Bellicon');
 
   useEffect(() => {
-    socket.on("message_recieved", (newMessageRecieved) => {
-      console.log(selectedChatCompare._id,newMessageRecieved.chat)
+    socket.off("message_recieved").on("message_recieved", (newMessageRecieved) => {
+      console.log("New message",newMessageRecieved)
       if (
         !selectedChatCompare ||
         selectedChatCompare._id !== newMessageRecieved.chat
@@ -142,9 +142,8 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
         console.log(newMessageRecieved);
         setMessages((messages) => [...messages, newMessageRecieved]);
       }
-      socket.off("message_recieved");
     });
-  }, [socket]);
+  });
 
   useEffect(() => {
     var objDiv = document.querySelector(".msg_Div");

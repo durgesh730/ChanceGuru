@@ -17,7 +17,6 @@ const MyChats1 = ({ fetchAgain }) => {
   const { selectedChat, setSelectedChat, user, chats, setChats,unreadChat, setUnreadChat } =
     useContext(ChatContext);
   //const {getSender}=useHelper();
-
   const fetchChats = async () => {
     // console.log(user._id);
     try {
@@ -137,7 +136,7 @@ const MyChats1 = ({ fetchAgain }) => {
     setSelectedChat(chats[0]);
     console.log("called");
   }, [chats]);
-
+  
   // console.log("chats", getSender(loggedUser, chats[5].users));
   // console.log("chats", chats[5].users[1].link);
 

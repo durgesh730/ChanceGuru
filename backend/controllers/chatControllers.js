@@ -14,7 +14,6 @@ const accessChat = asyncHandler(async (req, res) => {
   }
 
   var isChat = await Chat.find({
-    isGroupChat: false,
     $and: [
       { users: { $elemMatch: { $eq: req.user._id } } },
       { users: { $elemMatch: { $eq: userId } } },
@@ -35,7 +34,6 @@ const accessChat = asyncHandler(async (req, res) => {
   } else {//as per schema
     var chatData = {
       chatName: "sender", //just any string data
-      isGroupChat: false,
       users: [req.user._id, userId], //both users
     };
     //console.log(chatData,'chatdata');
@@ -64,7 +62,6 @@ const fetchChats = asyncHandler(async (req, res) => {
 
     Chat.find({ users: { $elemMatch: { $eq: req.user._id } } })
       .populate("users", "-password")
-      .populate("groupAdmin", "-password")
       .populate("latestMessage")
       .sort({ updatedAt: -1 })
       .then(async (results) => {
