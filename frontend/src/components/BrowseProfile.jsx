@@ -9,7 +9,7 @@ import {
   useNavigate,
 } from "react-router-dom";
 import { BsChevronDown, BsPhone } from "react-icons/bs";
-
+import profile from "../assets/icons/profile1.svg";
 import axios from "axios";
 import Contect from "./Contect";
 
@@ -96,19 +96,19 @@ const BrowseProfile = () => {
 
     axios.post('http://localhost:5000/profile/ReqToApp', { talentId: item.userId }, {
 
-        headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
 
     })
-        .then(res => {
-            console.log(res.data);
+      .then(res => {
+        console.log(res.data);
 
-        })
-        .catch(err => {
-            console.log(err);
-        });
-}
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
   return (
     <div>
       <Topbar />
@@ -175,9 +175,9 @@ const BrowseProfile = () => {
               {profileData?.map((item, index) => {
                 return (
                   <tr key={index}>
-                    <td>
-                      <img src={item.photos ? item.photos[0]?.link : ""} />
-                      {item.basicInfo.fullname}
+                    <td className="d-flex justify-content-start align-items-center">
+                      <img src={item.photos[0]?.link ? item.photos[0]?.link : profile} />
+                      <p>{item.basicInfo.fullname}</p>
                     </td>
                     <td>
                       {item.rolePref.length !== 0
@@ -197,7 +197,7 @@ const BrowseProfile = () => {
                         ? item.basicInfo.address
                         : "No address"}{" "}
                     </td>
-                     <td> <Contect  index ={index} userId = {item.userId} /> </td>
+                    <td> <Contect index={index} userId={item.userId} /> </td>
                     <td>
                       <NavLink
                         to={"/browseprofile/:nickdavolt"}

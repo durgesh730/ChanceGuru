@@ -9,7 +9,7 @@ import {
 } from "firebase/auth";
 import PhoneInput from "react-phone-number-input";
 import { useAuthValue } from "./AuthContext";
-import { useNavigate , useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import "react-phone-number-input/style.css";
 import "./style.css";
@@ -28,7 +28,7 @@ const Login = () => {
         email: "",
         pass: "",
         repass: "",
-        uType:""
+        uType: ""
     });
 
 
@@ -57,9 +57,9 @@ const Login = () => {
         );
     };
 
-    const { username,email,pass,uType} = values;
+    const { username, email, pass, uType } = values;
     const uTypeValue = uType;
-    
+
 
     const getOtp = (e) => {
         e.preventDefault();
@@ -77,7 +77,7 @@ const Login = () => {
             signInWithPhoneNumber(authentication, phone, appVerifier)
                 .then((confirmationResult) => {
                     window.confirmationResult = confirmationResult;
-                    axios.post("http://localhost:5000/auth/signup",{
+                    axios.post("http://localhost:5000/auth/signup", {
                         username: username,
                         email: email,
                         pass: pass,
@@ -85,7 +85,7 @@ const Login = () => {
                         type: location.state.talent ? "user" : "seeker"
                     }).then(() => {
                         alert(`Welcome ${location.state.talent ? "Talent" : "Seeker"} User. Your sign up data has been saved! Please verify your email.`);
-                       
+
                         navigate("/emailverify");
                     }).catch((err) => {
                         console.log(err);
@@ -102,7 +102,7 @@ const Login = () => {
                     sendEmailVerification(authentication.currentUser)
                         .then(() => {
                             setTimeActive(true);
-                             navigate("/verification");
+                            navigate("/verification");
                         })
                         .catch((err) => alert(err.message));
                 })
@@ -113,17 +113,17 @@ const Login = () => {
             return;
         }
 
-     
 
-    
+
+
     };
 
     return (
         <>
             <div className="login-container row">
-                <div className="left-side col-5">
+                <div className="left-side col-lg-5">
                     <div className="top-left d-flex align-items-center">
-                        <i onClick={()=>{ navigate("/");}} className="bi bi-arrow-left"></i>
+                        <i onClick={() => { navigate("/"); }} className="bi bi-arrow-left"></i>
                         <p className="px-3 m-0">Signup</p>
                     </div>
                     <img className="login-img" src={backimg} alt="" />
@@ -141,7 +141,7 @@ const Login = () => {
                         </div>
                     </div>
                 </div>
-                <div className="right-side col-7 d-flex align-items-center justify-content-center">
+                <div className="right-side col-lg-7 d-flex align-items-center justify-content-center">
                     {/* Signup Form */}
                     <form onSubmit={getOtp} className="form-container" id="signup-form">
                         <img src={logo} alt="" className="form-logo w-50" />
@@ -188,7 +188,7 @@ const Login = () => {
                             defaultCountry=""
                         />
                         <div style={{ position: "relative", display: "flex" }}>
-                            <select defaultValue={location.state.talent ? "user" : "seeker"} className="form-control my-2" disabled={true} > 
+                            <select defaultValue={location.state.talent ? "user" : "seeker"} className="form-control my-2" disabled={true} >
                                 <option value="user" >Talent</option>
                                 <option value="seeker">Seeker</option>
                             </select>

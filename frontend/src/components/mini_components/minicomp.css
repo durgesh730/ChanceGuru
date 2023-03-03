@@ -22,6 +22,13 @@
   display: flex;
   align-items: center;
 }
+.navToggle {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 20px;
+  display: none;
+}
 .topbar-name {
   color: var(--color_p2);
   font-size: 22px;
@@ -292,8 +299,8 @@
 /* Topbar profile options */
 div.profile-options {
   position: absolute;
-  right: 11px;
-  top: 79px;
+  right: -20%;
+  top: 100%;
   width: 242px;
   max-height: fit-content;
   box-shadow: 0 8px 9px 0 rgba(160, 160, 160, 0.5);
@@ -344,6 +351,7 @@ div .profile-options ul li a:hover {
   width: 300px;
   padding: 50px 0;
   background-color: #402c87;
+  z-index: 9999;
 }
 
 .sidebar-components {
@@ -502,9 +510,13 @@ div .profile-options ul li a:hover {
 div.lI {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  align-items: baseline;
-  padding: 18.5px 32px 16.5px 66px;
+  align-items: center;
+
+  /* margin-left: 60px; */
+  margin-top: 30px;
+}
+div.lI div {
+  width: 33%;
 }
 
 div.lI div img {
@@ -528,6 +540,7 @@ div.lI div.actionButtons button {
   width: 105px;
   background-color: #fff;
   margin-right: 18px;
+  margin-bottom: 5px;
   font-size: 14px;
   font-weight: 600;
   font-stretch: normal;
@@ -542,9 +555,8 @@ div.lI div.actionButtons button {
 }
 
 div.lI div.actionButtons {
-  width: fit-content;
-  height: 35px;
-  display: inline-block;
+  display: flex;
+  width: 30%;
   background-color: #fff;
   opacity: 1;
 }
@@ -559,7 +571,7 @@ div.lI div.actionButtons {
   cursor: pointer;
 }
 
-.charactersList:hover{
+.charactersList:hover {
   background-color: #523aa8;
   color: white;
 }

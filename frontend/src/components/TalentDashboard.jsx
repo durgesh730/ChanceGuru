@@ -71,7 +71,7 @@ const TalentDashboard = () => {
 
     useEffect(() => {
         getProjects();
-    }, [setcards,location.state]);
+    }, [setcards, location.state]);
 
     const user = JSON.parse(localStorage.getItem("login"));
 
@@ -138,7 +138,7 @@ const TalentDashboard = () => {
     return (
         <>
             <Topbar />
-            <div className="container-fluid" style={{ padding: "0 60px" }}>
+            <div className="container-fluid talent_container" style={{ padding: "0 60px" }}>
                 <Searchbar setQuery={setQuery} query={query} handleSearch={handleSearch} />
                 <div className="talent-heading d-flex justify-content-between">
                     <div className="">Suggestions</div>

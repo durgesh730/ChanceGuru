@@ -246,15 +246,14 @@ td {
   width: 100%;
 }
 
-.summary-info.row div span{
+.summary-info.row div span {
   display: inline-block;
-  
 }
 
-.summary-info.row div{
+.summary-info.row div {
   margin-bottom: 16px;
 }
-.summary-info.row div span.titleSpan{
+.summary-info.row div span.titleSpan {
   margin-right: 26px;
   width: 76px;
   font-size: 16px;
@@ -267,7 +266,7 @@ td {
   color: #aeaab4;
 }
 
-.summary-info.row div span.contentSpan{
+.summary-info.row div span.contentSpan {
   font-size: 14px;
   font-weight: normal;
   font-stretch: normal;
@@ -276,9 +275,9 @@ td {
   letter-spacing: normal;
   text-align: left;
   color: #444;
-  }
+}
 
-#finput{
+#finput {
   padding-right: 20px;
-    padding-top: 20px;
+  padding-top: 20px;
 }

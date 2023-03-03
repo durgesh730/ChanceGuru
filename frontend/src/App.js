@@ -35,12 +35,14 @@ import TalentNotification from "./components/TalentNotification";
 import ChatProvider from "./components/Context/ChatProvider";
 
 import ChatPage1 from "./components/ChatPage1";
+import "./components/responsive.css"
+
 
 function App() {
-    const [currentUser, setCurrentUser] = useState(null);
-    const [timeActive, setTimeActive] = useState(false);
-    const [clicked, setClicked] = useState(0);
-    const [active, setActive] = useState("home");
+  const [currentUser, setCurrentUser] = useState(null);
+  const [timeActive, setTimeActive] = useState(false);
+  const [clicked, setClicked] = useState(0);
+  const [active, setActive] = useState("home");
 
   useEffect(() => {
     let user = JSON.parse(localStorage.getItem("login"));
@@ -53,7 +55,7 @@ function App() {
   return (
     <Router>
       <AuthProvider
-        value={{ currentUser, timeActive, setTimeActive, setClicked, clicked, active,setActive }}
+        value={{ currentUser, timeActive, setTimeActive, setClicked, clicked, active, setActive }}
       >
         <Routes>
           <Route
@@ -92,14 +94,14 @@ function App() {
           <Route path="/browseprofile/:user" element={<UserProfile />} />
           <Route path="/submission" element={<Submission />} />
           <Route path="/audition" element={<Audition />} />
-          <Route path="/notification" element={currentUser?.type ==="seeker"?<Notification />:<TalentNotification/>} />
+          <Route path="/notification" element={currentUser?.type === "seeker" ? <Notification /> : <TalentNotification />} />
           <Route path="/setting" element={<Setting />} />
           <Route path="/help" element={<FaqsHelp />} />
           <Route path="/myrole" element={<MyRoles />} />
           <Route path="/requestpage" element={<RequestPage />} />
           <Route path="/roles" element={<Roles />} />
           <Route path="/applicantdetails" element={<ApplicantDetails />} />
-          
+
           <Route
             path="/chat"
             element={

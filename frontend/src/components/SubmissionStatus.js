@@ -70,7 +70,7 @@ const SubmissionStatus = ({ a, ArrayData, project, id }) => {
 
                             project.roles.map((i, x) => {
                                 return (
-                                    <span highlighted={Newactive === x ? "true" : "false"} onClick={() => { setActive(x); setLeadRoles(i.characters); setActiveChar(i.characters[0]) }} >{i.role + ` (${i.characters.length})`}</span>
+                                    <span highlighted={Newactive === x ? "true" : "false"} onClick={() => { setNewActive(x); setLeadRoles(i.characters); setActiveChar(i.characters[0]) }} >{i.role + ` (${i.characters.length})`}</span>
                                 )
                             })
 

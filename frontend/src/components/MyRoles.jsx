@@ -1,4 +1,4 @@
-import React, { useState , useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Topbar from "./mini_components/Topbar";
 import RoleRecentCard from "./RoleRecentCard";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -23,67 +23,67 @@ const MyRoles = () => {
 
   const getApplications = () => {
     axios.
-      get("http://localhost:5000/application/allJobsUser" , {
+      get("http://localhost:5000/application/allJobsUser", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       })
-      .then((res) =>  {
+      .then((res) => {
         console.log(res.data);
         setcard((res.data).filter(item => (item.status == "selected")));
         settotalApplied(res.data.length);
         (res.data).forEach(item => {
 
-          if(item.value == 10){
+          if (item.value == 10) {
             setdirectSelect(directSelect + 1);
           }
 
-          if(item.value == 1005 || item.value == 1004 || item.value == 1105){
+          if (item.value == 1005 || item.value == 1004 || item.value == 1105) {
             setdirectScheduled((prev) => prev + 1);
           }
 
-          if(item.value == 5){
+          if (item.value == 5) {
             setfirstWaiting((prev) => prev + 1);
           }
-          let a = [105 , 104 , 205 , 605 , 604 , 705 ]
-          if(a.includes(item.value)){
+          let a = [105, 104, 205, 605, 604, 705]
+          if (a.includes(item.value)) {
             setpreaudition((prev) => prev + 1);
           }
 
-          if(item.value == 4){
+          if (item.value == 4) {
             setfirstreject((prev) => prev + 1);
           }
 
-          if(item.value == 104){
-            setsecondreject((prev) => prev + 1);  
+          if (item.value == 104) {
+            setsecondreject((prev) => prev + 1);
           }
 
-          if(item.value == 105){
+          if (item.value == 105) {
             setshortlisted((prev) => prev + 1);
           }
 
-          if(item.value == 205){
+          if (item.value == 205) {
             setsecondselect((prev) => prev + 1);
           }
 
-          if(item.value == 605 || item.value == 604 || item.value == 705 ){
+          if (item.value == 605 || item.value == 604 || item.value == 705) {
             setsecondAudition((prev) => prev + 1)
           }
 
-          if(item.value == 705 || item.select == 1105){
+          if (item.value == 705 || item.select == 1105) {
             setthirdSelect((prev) => prev + 1)
           }
 
-          if(item.value == 605 || item.value == 1005){
+          if (item.value == 605 || item.value == 1005) {
             setscheduled((prev) => prev + 1);
           }
 
-          if(item.value == 604 || item.value == 1004){
+          if (item.value == 604 || item.value == 1004) {
             setthirdReject((prev) => prev + 1);
           }
         })
       })
-      .catch((err)=> {
+      .catch((err) => {
         console.log(err);
       })
   }
@@ -91,49 +91,52 @@ const MyRoles = () => {
   useEffect(() => {
     getApplications();
   }, [])
-  
+
   return (
     <>
       <Topbar />
       <div className="role_main">
         <div className="container-fluid">
           <div className="row">
-            <div className="col-lg-8">
+            <div className="col-lg-8 pe-3">
               <h1>My Roles</h1>
+
               <div className="long_Cards">
                 <div className="firstDiv --1">
                   <p>Total Roles Applied</p>
                   <h3>{totalApplied}</h3>
                 </div>
-                <div className="c--2">
-                  <span>
-                    <p>Selected</p>
-                    <h3>{directSelect}</h3>
-                  </span>
-                </div>
-                <div className="c--2">
-                  <span>
-                    <p>Selected for Audition</p>
-                    <h3>{directScheduled}</h3>
-                  </span>
-                </div>
-                <div className="c--3">
-                  <span>
-                    <p>Selected for Pre- Audition</p>
-                    <h3>{preaudition}</h3>
-                  </span>
-                </div>
-                <div className="c--3">
-                  <span>
-                    <p>Waiting List</p>
-                    <h3>{firstWaiting}</h3>
-                  </span>
-                </div>
-                <div className="c--4">
-                  <span>
-                    <p>Not Selected</p>
-                    <h3>{firstreject}</h3>
-                  </span>
+                <div className="w-100 d-flex justify-content-around">
+                  <div >
+                    <span>
+                      <p>Selected</p>
+                      <h3>{directSelect}</h3>
+                    </span>
+                  </div>
+                  <div >
+                    <span>
+                      <p>Selected for Audition</p>
+                      <h3>{directScheduled}</h3>
+                    </span>
+                  </div>
+                  <div >
+                    <span>
+                      <p>Selected for Pre- Audition</p>
+                      <h3>{preaudition}</h3>
+                    </span>
+                  </div>
+                  <div >
+                    <span>
+                      <p>Waiting List</p>
+                      <h3>{firstWaiting}</h3>
+                    </span>
+                  </div>
+                  <div className="border-0">
+                    <span>
+                      <p>Not Selected</p>
+                      <h3>{firstreject}</h3>
+                    </span>
+                  </div>
                 </div>
               </div>
 
@@ -142,30 +145,32 @@ const MyRoles = () => {
                   <p>Total Pre-Auditions</p>
                   <h3>{preaudition}</h3>
                 </div>
+                <div className="w-100 d-flex justify-content-around">
 
-                <div>
-                  <span>
-                    <p>Selected</p>
-                    <h3>{secondselect}</h3>
-                  </span>
-                </div>
-                <div>
-                  <span>
-                    <p>Selected for Audition</p>
-                    <h3>{secondAudition}</h3>
-                  </span>
-                </div>
-                <div>
-                  <span>
-                    <p>Waiting List</p>
-                    <h3>{shortlisted}</h3>
-                  </span>
-                </div>
-                <div>
-                  <span className="border-0">
-                    <p>Not Selected</p>
-                    <h3>{secondreject}</h3>
-                  </span>
+                  <div>
+                    <span>
+                      <p>Selected</p>
+                      <h3>{secondselect}</h3>
+                    </span>
+                  </div>
+                  <div>
+                    <span>
+                      <p>Selected for Audition</p>
+                      <h3>{secondAudition}</h3>
+                    </span>
+                  </div>
+                  <div>
+                    <span>
+                      <p>Waiting List</p>
+                      <h3>{shortlisted}</h3>
+                    </span>
+                  </div>
+                  <div className="border-0">
+                    <span >
+                      <p>Not Selected</p>
+                      <h3>{secondreject}</h3>
+                    </span>
+                  </div>
                 </div>
               </div>
 
@@ -174,23 +179,26 @@ const MyRoles = () => {
                   <p>Total Auditions</p>
                   <h3>{secondAudition + directScheduled}</h3>
                 </div>
-                <div>
-                  <span>
-                    <p>Selected</p>
-                    <h3>{thirdSelect}</h3>
-                  </span>
-                </div>
-                <div>
-                  <span>
-                    <p>Waiting List</p>
-                    <h3>{scheduled}</h3>
-                  </span>
-                </div>
-                <div>
-                  <span className="border-0">
-                    <p>Not Selected</p>
-                    <h3>{thirdReject}</h3>
-                  </span>
+                <div className="w-100 d-flex justify-content-around">
+
+                  <div>
+                    <span>
+                      <p>Selected</p>
+                      <h3>{thirdSelect}</h3>
+                    </span>
+                  </div>
+                  <div>
+                    <span>
+                      <p>Waiting List</p>
+                      <h3>{scheduled}</h3>
+                    </span>
+                  </div>
+                  <div className="border-0">
+                    <span>
+                      <p>Not Selected</p>
+                      <h3>{thirdReject}</h3>
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>

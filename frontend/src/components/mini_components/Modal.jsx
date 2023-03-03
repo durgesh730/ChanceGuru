@@ -119,7 +119,6 @@ const Modal = ({ setModel, info, setProfile, roles }) => {
           >
             Cancel
           </button>
-          <span className="mx-3"></span>
           <button onClick={handleProfile} className="update-btn">
             Update-Profile
           </button>
