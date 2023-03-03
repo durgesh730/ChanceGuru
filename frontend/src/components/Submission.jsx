@@ -27,7 +27,7 @@ const Submission = () => {
       }
     );
     const res = await data.json();
-
+    
     if (res) {
       setcards(res);
     }
@@ -51,10 +51,12 @@ const Submission = () => {
     axios
       .get(url, {
         headers: {
+           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       })
       .then((res) => {
+        console.log(res.data, "jhgfd")
         setcards(res.data);
       });
   };

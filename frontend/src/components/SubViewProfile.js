@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 
-const SubViewProfile = ({display , index, card, msg }) => {
+const SubViewProfile = ({display , index, project, card, msg }) => {
     const [user, setUser] = useState();
     const [d, setd] = useState(1);
 
@@ -40,7 +40,7 @@ const SubViewProfile = ({display , index, card, msg }) => {
         <>
             <td style={{display: display}}>
                 <div className="d-flex justify-content-center align-items-center">
-                    <NavLink to={"/browseprofile/:nickdavolt"}  state={{user, card, index , btn : d }} exact>
+                    <NavLink to={"/browseprofile/:nickdavolt"}  state={{user, card, index , project ,btn : d }} exact>
                         <button>{msg}</button>
                     </NavLink>
                 </div>

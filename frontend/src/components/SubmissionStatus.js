@@ -115,7 +115,7 @@ const SubmissionStatus = ({ a, ArrayData, project, id }) => {
                                                         <tr>
                                                             <StatusSide roleId={item.roleId} charId={item.charId} project={project} userId={item.userId} />
                                                             <td>{item.status}</td>
-                                                            <SubViewProfile display={'/submission'} index={index} card={cards} msg={'View Profile'} />
+                                                            <SubViewProfile display={'/submission'} index={index} project={project} card={cards} msg={'View Profile'} />
                                                         </tr>
                                                     )
                                                         : ("")

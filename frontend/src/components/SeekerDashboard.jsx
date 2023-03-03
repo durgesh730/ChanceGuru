@@ -9,8 +9,9 @@ const SeekerDashboard = () => {
   const [query, setQuery] = useState("");
   const [card, setcard] = useState();
   const [searchData, setsearchData] = useState([]);
-
-  // console.log(card[0].basicInfo.name)
+  
+  const type = localStorage.getItem('type');
+  console.log(type);
 
   const handleSearch = async () => {
     const data = await fetch(

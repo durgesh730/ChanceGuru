@@ -5,6 +5,21 @@ const Project = require("../db/Project");
 const JobApplication = require('../db/JobApplication')
 const User = require('../db/User');
 
+
+router.put("/Datetime/:id", async (req, res) => {
+    try {
+      const newData = {};
+      if (req.body) {
+        newData.DateTime = req.body;
+      }
+      const userData = await Project.findOneAndUpdate({ _id: req.params.id},{ $push: newData }, { new: true } );
+      res.json({ userData });
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).send("Some error occured");
+    }
+  });
+
 //Get project form project id
 
 router.get("/oneproject/:id" , (req , res) => {
