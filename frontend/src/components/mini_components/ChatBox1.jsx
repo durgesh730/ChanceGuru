@@ -32,8 +32,6 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
     selectedChat,
     setSelectedChat,
     user,
-    unreadChat, 
-    setUnreadChat,
     chats,
     setChats,
   } = useContext(ChatContext);
@@ -91,6 +89,7 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
 
         //setNewMessage("");
         data.users = selectedChat.users;
+        data.chat = selectedChat;
         // console.log("Emit new message data: ", data);
         socket.emit("new_message", selectedChat._id, data);
 
@@ -134,12 +133,22 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
       console.log("New message",newMessageRecieved)
       if (
         !selectedChatCompare ||
-        selectedChatCompare._id !== newMessageRecieved.chat
+        selectedChatCompare._id !== newMessageRecieved.chat._id
       ) {
         // if chat is not selected or doesn't match current chat
-        setUnreadChat(newMessageRecieved.chat)
+        newMessageRecieved.chat.unreadCount++
+        let newChats = chats.map((item,i)=>{
+          if(item._id == newMessageRecieved.chat._id){
+            item.unReadBy = newMessageRecieved.chat.unReadBy
+            item.unreadCount += 1
+
+            console.log("Item Changed",item)
+          }
+          return item
+        })
+        console.log(newChats)
+        setChats(newChats)
       } else {
-        console.log(newMessageRecieved);
         setMessages((messages) => [...messages, newMessageRecieved]);
       }
     });
@@ -150,7 +159,6 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
     if (objDiv) {
       objDiv.scrollTop = objDiv.scrollHeight;
     }
-    console.log(objDiv);
   }, [loading, messages]);
 
   const typingHandler = (e) => {
@@ -184,7 +192,7 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
   useEffect(() => {
     // msgDiv.current.scrollTop = msgDiv.current.scrollHeight;
     // msgDiv.current.lastElementChild.scrollIntoView();
-    console.log(msgDiv.current);
+    // console.log(msgDiv.current);
   }, [selectedChat]);
 
   //   msgDiv.scrollTop = msgDiv.scrollHeight;
@@ -242,7 +250,7 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
     setReportModal(1);
   };
 
-  console.log("SelectedUser", selectedChat);
+  // console.log("SelectedUser", selectedChat);
 
   const [showPicker, setShowPicker] = useState(false);
 

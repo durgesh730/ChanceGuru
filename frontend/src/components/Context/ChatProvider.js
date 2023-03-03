@@ -7,7 +7,7 @@ const ChatProvider = (props) => {
   const [chats, setChats] = useState([]);
 
   const [selectedChat, setSelectedChat] = useState();
-  const [unreadChat, setUnreadChat] = useState();
+
 
   const navigate = useNavigate();
 
@@ -16,9 +16,16 @@ const ChatProvider = (props) => {
     user.token = localStorage.getItem("token");
     setUser(user);
 
+
     if (!user) navigate("/");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate]);
+  useEffect(()=>{
+    if(chats && chats.length > 0){
+
+      localStorage.setItem("userChats",JSON.stringify(chats))
+    }
+  },[chats])
 
   //console.log(chats, 'chats context')
   return (
@@ -31,8 +38,6 @@ const ChatProvider = (props) => {
           setSelectedChat,
           chats,
           setChats,
-          unreadChat, 
-          setUnreadChat,
         }}
       >
         {props.children}

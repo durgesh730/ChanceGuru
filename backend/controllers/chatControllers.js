@@ -1,3 +1,4 @@
+const { response } = require("express");
 const asyncHandler = require("express-async-handler");
 const Chat = require("../db/chatModel");
 const User = require("../db/User");
@@ -29,6 +30,7 @@ const accessChat = asyncHandler(async (req, res) => {
   });
 
   if (isChat.length > 0) {
+    isChat[0].unReadBy = isChat[0].users[0]._id == req.user_id?isChat[0].users[1]:isChat[0].users[0]
     res.send(isChat[0]);
     //1on1chat
   } else {//as per schema
@@ -42,7 +44,7 @@ const accessChat = asyncHandler(async (req, res) => {
       const createdChat = await Chat.create(chatData);
       //console.log(createdChat, 'created and stored newChat')
 
-      const fullChat = await Chat.findOne({ _id: createdChat._id }).populate("users", "-password");
+      const fullChat = await Chat.findOne({ _id: createdChat._id }).populate("users", "-password").populate("unReadBy");
       //console.log(fullChat, 'sending the created chat after populating both the user data inside the users[]');
 
       res.status(200).json(fullChat);
@@ -71,6 +73,13 @@ const fetchChats = asyncHandler(async (req, res) => {
           select: "name email",
         });
 
+        results.map((item)=>{
+
+          let anotherUser = item.users[0]._id == req.user._id ? item.users[1]:item.users[0]
+          item.unReadBy = anotherUser
+        })
+        
+        console.log(results)
         res.status(200).send(results);
         //console.log(results);
       });
@@ -81,5 +90,24 @@ const fetchChats = asyncHandler(async (req, res) => {
 });
 
 
+const updateUnRead = asyncHandler(async (req,res)=>{
+  let {item} = req.body
+  try{
 
-module.exports = { accessChat, fetchChats};
+    Chat.findOneAndUpdate({_id:item._id},
+      {$set:{
+        unreadCount:item.unreadCount
+      }}
+      )
+      .then((response)=>{
+        console.log("UpdateUnReadCount:\n",response)
+        res.json(response)
+      })
+    }
+    catch (error){
+      console.log(error.message)
+    }
+})
+
+
+module.exports = { accessChat, fetchChats,updateUnRead};
