@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import AuthContext from "../AuthContext";
 import ChatContext from "./chat-context";
+
 
 const ChatProvider = (props) => {
   const [user, setUser] = useState();
@@ -8,6 +10,7 @@ const ChatProvider = (props) => {
 
   const [selectedChat, setSelectedChat] = useState();
 
+  const {chatUnReadCount,setChatUnReadCount} = useContext(AuthContext)
 
   const navigate = useNavigate();
 
@@ -38,6 +41,8 @@ const ChatProvider = (props) => {
           setSelectedChat,
           chats,
           setChats,
+          chatUnReadCount,
+          setChatUnReadCount,
         }}
       >
         {props.children}

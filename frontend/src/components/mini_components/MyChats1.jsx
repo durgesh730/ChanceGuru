@@ -14,7 +14,7 @@ import profile from "../../assets/icons/profile1.svg";
 const MyChats1 = ({ fetchAgain }) => {
   const [loggedUser, setLoggedUser] = useState();
 
-  const { selectedChat, setSelectedChat, user, chats, setChats, } =
+  const { selectedChat, setSelectedChat, user, chats, setChats, chatUnReadCount,setChatUnReadCount } =
     useContext(ChatContext);
   //const {getSender}=useHelper();
   const fetchChats = async () => {
@@ -151,6 +151,7 @@ const MyChats1 = ({ fetchAgain }) => {
     setactiveChat(i)
 
     let newChats = chats
+    setChatUnReadCount(prev => prev - newChats[i].unreadCount)
     newChats[i].unreadCount = 0
     setChats(newChats)
   }

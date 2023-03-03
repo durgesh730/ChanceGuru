@@ -109,5 +109,25 @@ const updateUnRead = asyncHandler(async (req,res)=>{
     }
 })
 
+const getUnReadCount = asyncHandler(async (req,res)=>{
+  try{
+    
+    Chat.find({ users: { $elemMatch: { $eq: req.user._id } },unreadCount:{$gt:0} })
+    .then((response)=>{
+      
+      let unreadCnt = 0
+      response.map((item)=>{
+        unreadCnt += item.unreadCount
+      })
+      console.log(unreadCnt)
+      res.json(unreadCnt)
 
-module.exports = { accessChat, fetchChats,updateUnRead};
+    })
+  }
+  catch (error){
+    console.log(error)
+    res.json(error.message)
+  }
+})
+
+module.exports = { accessChat, fetchChats,updateUnRead, getUnReadCount};

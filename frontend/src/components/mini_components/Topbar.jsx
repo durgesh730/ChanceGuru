@@ -180,11 +180,33 @@ const Topbar = (props) => {
     });
   }
 
+  const getUnReadCount = async () => {
+    // console.log(user._id);
+    try {
+      const config = {
+        headers: { Authorization: `Bearer ${user.token}` },
+      };
+
+      await axios.get(
+        "http://localhost:5000/api/chat/getUnreadCount",
+        config
+      )
+      .then((response)=>{
+        console.log(response)
+        auth.setChatUnReadCount(response.data)
+
+      });
+      
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
   useEffect(() => {
     if (dataFetchedRef.current) return;
     dataFetchedRef.current = true;
     getProjects();
     getJobApplications();
+    getUnReadCount()
   }, []);
 
   useEffect(() => {
@@ -337,7 +359,7 @@ const Topbar = (props) => {
                 <img className="topbar-icons" src={chat} alt="" />
               )}
 
-              <h6>10</h6>
+              {auth.chatUnReadCount != 0 && <h6>{auth.chatUnReadCount}</h6>}
             </span>
           </Link>
           {
