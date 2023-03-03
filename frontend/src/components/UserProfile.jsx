@@ -23,6 +23,8 @@ const UserProfile = () => {
   const [rejected, setRejected] = useState(false);
   const [sheduled, setScheduled] = useState(false);
   const [shortlisted, setShortlisted] = useState(false);
+  const [Inter, setInter] = useState({ date: "", time: "", interview: "", location: "" });
+  // const [datalocation , setDatalocation] = useState();
 
   const setall = () => {
     setSelected(false);
@@ -33,20 +35,55 @@ const UserProfile = () => {
   const location = useLocation();
 
   const userData = location.state.user;
+  console.log(userData, "userdata")
   const index = location.state.index;
   const card = location.state.card;
   const d = location.state.btn;
+  const DateTime = location.state.project
+
+  var id = 0;
+  var userId = 0;
+  card?.map((item) => {
+    id = item._id;
+    userId = item.userId
+    console.log(item.charId, "charId")
+    // console.log
+  })
+
+  console.log(id, "id")
+
+  const setVal = (e) => {
+    const { value, name } = e.target;
+
+    setInter(() => {
+      return {
+        ...Inter,
+        [name]: value
+      }
+    })
+  }
+
+  const handleInterview = async () => {
+    const { date, time, interview, location } = Inter;
+    const data = await fetch(`http://localhost:5000/application/DateTime/${id}`, {
+      method: "Put",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ date: date, time: time, interview: interview, location: location })
+    })
+    const res = await data.json();
+    console.log(res, "hii dugeh")
+  }
 
   const handleApplyReq = () => {
     axios.post('http://localhost:5000/profile/ReqToApp', { talentId: userData.userId }, {
-
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
 
     })
       .then(res => {
-        console.log(res.data);
         setModal(false);
       })
       .catch(err => {
@@ -54,6 +91,17 @@ const UserProfile = () => {
       });
   };
 
+  // const GetLocationByUserId = async () => {
+  //   const data = await fetch(`http://localhost:5000/application/DateLocation/${userId}`, {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //   })
+  //   const res = await data.json();
+  //   console.log(res)
+  //   setDatalocation(res)
+  // };
 
   const handleSelect = async () => {
     const data = await fetch(`http://localhost:5000/project/Select/${card[index]._id}/${d}`, {
@@ -66,7 +114,6 @@ const UserProfile = () => {
     setall();
     setSelected(true);
     setModal(false);
-    console.log(res)
   };
 
   const handleReject = async () => {
@@ -80,7 +127,7 @@ const UserProfile = () => {
     setall();
     setRejected(true);
     setModal(false);
-    console.log(res);
+    // console.log(res);
   };
 
   const handleShortlist = async () => {
@@ -91,7 +138,7 @@ const UserProfile = () => {
       },
     })
     const res = await data.json();
-    console.log(res);
+    // console.log(res);
     setall();
     setShortlisted(true);
     setModal(false);
@@ -108,7 +155,6 @@ const UserProfile = () => {
     setall();
     setScheduled(true);
     setModal(false);
-    console.log(res);
   };
 
 
@@ -117,19 +163,19 @@ const UserProfile = () => {
     if (first >= 0) {
       first = first + 1
       setfirst(first);
-      console.log(first)
+      // console.log(first)
     }
   }
 
   const handlePre = () => {
-    if (first >=1 ) {
+    if (first >= 1) {
       first = first - 1;
       setfirst(first);
-      console.log(first)
+      // console.log(first)
     }
   }
 
-  console.log(first)
+  // console.log(first)
 
   useEffect(() => {
     if (card[index]?.status === "selected") {
@@ -141,8 +187,12 @@ const UserProfile = () => {
     } else if (card[index] === "rejected") {
       setRejected(true);
     }
-    console.log(card[index])
+    // console.log(card[index])
   }, [])
+
+  // useEffect(()=>{
+  //   GetLocationByUserId()
+  // }, [])
 
   return (
     <>
@@ -208,6 +258,8 @@ const UserProfile = () => {
                       <p>Actor</p>
                     </div>
                     <div>
+
+
                       <div className="tag">
                         {selected ? "Selected" : ""}{rejected ? "Rejected" : ""}{sheduled ? "Scheduled" : ""}{shortlisted ? "Shortlisted" : ""}
                       </div>
@@ -216,6 +268,29 @@ const UserProfile = () => {
                           Shortlist
                         </button>
                       }
+
+                      {card?.map((item, i) => {
+                        console.log(item, 'hii')
+                        return (
+                          <>
+                            {item.status === "scheduled"?
+                                (item.audition?.map((sub, i) => {
+                                  return (
+                                      <>
+                                          <div>
+                                              <span className="mx-1" >{sub.date}</span>
+                                              <span className="mx-1" >{sub.time}</span>
+                                              <span className="mx-1" >{sub.location}</span>
+                                              <span className="mx-1" >{sub.interviewer}</span>
+                                          </div>
+                                      </>
+                                  )
+                              }))
+                              : ("")}
+                          </>
+                        )
+                      })}
+
 
                       {d == 0 ?
                         <button onClick={() => { setModal(true); setmodalData({ msg: " send a Request to ", btn: "Send", num: 4 }) }}>
@@ -297,6 +372,54 @@ const UserProfile = () => {
       {modal && (
         <div className="userSub_modal">
           <div className="modal_child shadow">
+
+            <div className="d-flex my-4 " >
+
+              <div className="my-2" >
+                <div>
+                  <label>Location</label> <br />
+                  <input type='time' name="time" value={Inter.time} onChange={setVal} ></input>
+                </div>
+
+                <div>
+                  <label>Interviewer Name</label> <br />
+                  <input name="interview" value={Inter.interview} onChange={setVal}  ></input>
+                </div>
+              </div>
+
+              <div className="d-flex my-2 mx-4 " >
+                <div>
+                  <select name="date" value={Inter.date} onChange={setVal}  >
+                    <option selected >Date</option>
+                    {
+                      DateTime?.DateTime?.map((item, i) => {
+                        return (
+                          <>
+                            <option key={i} >{item.date}</option>
+                          </>
+                        )
+                      })
+                    }
+                  </select>
+                </div>
+
+                <div className="mx-2">
+                  <select name="location" value={Inter.location} onChange={setVal}  >
+                    <option selected>Location</option>
+                    {
+                      DateTime?.DateTime?.map((item, i) => {
+                        return (
+                          <>
+                            <option key={i} >{item.location}</option>
+                          </>
+                        )
+                      })
+                    }
+                  </select>
+                </div>
+              </div>
+            </div>
+
             <h1 className="purple_title">Request Confirmation</h1>
             <figure>
               <img src={Thumb} alt="thumb" />
@@ -311,6 +434,7 @@ const UserProfile = () => {
                   handleShortlist();
                 } else if (modalData.num == 2) {
                   handleSchedule();
+                  handleInterview()
                 } else if (modalData.num == 3) {
                   handleReject();
                 } else {

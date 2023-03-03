@@ -181,7 +181,7 @@ const Topbar = (props) => {
 
         <div className="topbar-nav">
           <Link
-            to={user.type === "user" ? "/talentdashboard" : "/seekerdashboard"}
+            to={user.type === "user"  ? "/talentdashboard" : "/seekerdashboard"}
             onClick={() => auth.setActive("home")}
             state={null}
           >
@@ -200,7 +200,7 @@ const Topbar = (props) => {
             </span>
           </Link>
           {
-            user.type === "seeker" ? (
+            user.type === "seeker" || user.type === "admin" ? (
               <>
                 <Link to="/submission" onClick={() => auth.setActive("chair")}>
                   <span
@@ -294,8 +294,8 @@ const Topbar = (props) => {
             </span>
           </Link>
           {
-            user.type !== "seeker"
-            &&
+            user.type === "user"
+            && 
             <Link to="/requestpage">
             <span
               className={

@@ -66,7 +66,10 @@ let schema = new mongoose.Schema(
           }
         ]
       }
-    ]
+    ],
+    DateTime :{
+      type:Array
+    }
   },
   { collation: { locale: "en" } }
 );

@@ -66,7 +66,7 @@ const Login = () => {
                     // data.data.type="talent"
                     data.data.token = localStorage.getItem("token");
                     localStorage.setItem("login", JSON.stringify(data.data));
-                    if (localStorage.getItem("type") == "seeker") {
+                    if (localStorage.getItem("type") == "seeker" || localStorage.getItem("type") == "admin") {
                       navigate("/seekerdashboard");
                     } else if (localStorage.getItem("type") == "user") {
                       navigate("/talentdashboard");
@@ -90,7 +90,7 @@ const Login = () => {
   useEffect(() => {
     let user = localStorage.getItem("login");
     if (localStorage.getItem("login")) {
-      if (user.type == "seeker") {
+      if (user.type == "seeker" || user.type == "admin") {
         navigate("/seekerdashboard");
       } else if (user.type == "user") {
         navigate("/talentdashboard");

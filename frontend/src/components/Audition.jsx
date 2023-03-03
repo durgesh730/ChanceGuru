@@ -11,6 +11,8 @@ const Audition = () => {
 
   const [cards, setcards] = useState();
 
+  // console.log(cards, 'jii')
+
   const [query, setQuery] = useState("");
 
   const handleSearch = async () => {
@@ -22,6 +24,7 @@ const Audition = () => {
       },
     });
     const res = await data.json();
+    // console.log(res)
     if (res) {
       setcards(res);
     }
@@ -59,6 +62,7 @@ const Audition = () => {
               <h5 className="purple_title">Projects</h5>
 
               {cards?.map((item, index) => {
+                
                 // ========= calculate total charcters =============
                 var char = 0;
                 var all = new Array();
