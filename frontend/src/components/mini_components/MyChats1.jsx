@@ -150,7 +150,7 @@ const MyChats1 = ({ fetchAgain }) => {
     setSelectedChat(chat);
     setactiveChat(i)
 
-    let newChats = chats
+    let newChats = [...chats]
     setChatUnReadCount(prev => prev - newChats[i].unreadCount)
     newChats[i].unreadCount = 0
     setChats(newChats)

@@ -70,7 +70,6 @@ const Topbar = (props) => {
     if (localChats && localChats.length > 0) {
       localChats.map(async (item) => {
         console.log(item)
-        if (item.unreadCount != 0) {
           try {
             const config = {
               headers: {
@@ -91,7 +90,7 @@ const Topbar = (props) => {
             console.log(error.message);
           }
         }
-      })
+      )
     }
   }
 
@@ -206,7 +205,11 @@ const Topbar = (props) => {
     dataFetchedRef.current = true;
     getProjects();
     getJobApplications();
-    getUnReadCount()
+    let localUnReadCount = JSON.parse(localStorage.getItem("UnReadNotify"))
+    if( !localUnReadCount ) {getUnReadCount()}
+    else{
+      auth.setChatUnReadCount(localUnReadCount)
+    }
   }, []);
 
   useEffect(() => {
@@ -359,7 +362,7 @@ const Topbar = (props) => {
                 <img className="topbar-icons" src={chat} alt="" />
               )}
 
-              {auth.chatUnReadCount != 0 && <h6>{auth.chatUnReadCount}</h6>}
+              {auth.chatUnReadCount > 0 && <h6>{auth.chatUnReadCount}</h6>}
             </span>
           </Link>
           {

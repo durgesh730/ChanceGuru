@@ -12,7 +12,7 @@ const ScrollableChat1 = ({ messages, loggedUser }) => {
 
   // console.log("messages", messages[0].chat.users);
   // console.log("selectedChatChatspage", selectedChat.users);
-  console.log("loggedin", loggedUser)
+  // console.log("loggedin", loggedUser)
   // console.log(getSenderLink(loggedUser, selectedChat.users))
 
   return (

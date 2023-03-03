@@ -34,6 +34,7 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
     user,
     chats,
     setChats,
+    chatUnReadCount,setChatUnReadCount
   } = useContext(ChatContext);
   // console.log(selectedChat, "selectedChat in chatBox");
 
@@ -142,6 +143,7 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
             item.unReadBy = newMessageRecieved.chat.unReadBy
             item.unreadCount += 1
 
+            setChatUnReadCount(item.unreadCount)
             console.log("Item Changed",item)
           }
           return item

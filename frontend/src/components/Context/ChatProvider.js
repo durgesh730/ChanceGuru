@@ -25,11 +25,15 @@ const ChatProvider = (props) => {
   }, [navigate]);
   useEffect(()=>{
     if(chats && chats.length > 0){
-
+      console.log("Chats have been changed")
       localStorage.setItem("userChats",JSON.stringify(chats))
     }
   },[chats])
 
+  useEffect(() => {
+    localStorage.setItem("UnReadNotify",JSON.stringify(chatUnReadCount))
+  }, [chatUnReadCount])
+  
   //console.log(chats, 'chats context')
   return (
     <div>
