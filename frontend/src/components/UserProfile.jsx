@@ -10,6 +10,7 @@ import UserRole from "./mini_components/userProfile/UserRole";
 import Thumb from "../assets/images/Group 36.png";
 import axios from "axios";
 import SubViewProfile from './SubViewProfile';
+import { BsChevronRight, BsChevronLeft } from 'react-icons/bs';
 
 const UserProfile = () => {
   const [active, setActive] = useState("details");
@@ -77,11 +78,11 @@ const UserProfile = () => {
   }
 
   const handleApplyReq = () => {
-    axios.post('http://localhost:5000/profile/ReqToApp', { talentId: userData.userId }, {
+    axios.put('http://localhost:5000/profile/ReqToApp',{talentId: location.state.user.userId},{
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-
+    },
+      
     })
       .then(res => {
         setModal(false);
@@ -89,6 +90,7 @@ const UserProfile = () => {
       .catch(err => {
         console.log(err);
       });
+    
   };
 
   // const GetLocationByUserId = async () => {
@@ -160,7 +162,7 @@ const UserProfile = () => {
 
   var [first, setfirst] = useState(0)
   const handleNext = () => {
-    if (first >= 0) {
+    if (first < userData.photos.length - 1) {
       first = first + 1
       setfirst(first);
       // console.log(first)
@@ -190,9 +192,6 @@ const UserProfile = () => {
     // console.log(card[index])
   }, [])
 
-  // useEffect(()=>{
-  //   GetLocationByUserId()
-  // }, [])
 
   return (
     <>
@@ -202,51 +201,59 @@ const UserProfile = () => {
         </div>
         <div className="container-fluid my-3  userPfp ">
           <div className="row">
-            <div className="left_pfp col-lg-3 col-md-3 col-12 shadow">
+            <div className="left_pfp col-lg-3 col-md-3 col-12">
+              <div className="shadow child_user mx-2 ">
 
-              <figure className="d-flex justify-content-center">
+                <figure className=" userImage_main">
 
-                <i class="fa-solid fa-less-than" onClick={handlePre} ></i>
-                {
-                  userData.photos.map((item, index) => {
-                    return (
-                      <>
-                        {(index === first) ? <img src={item.link} alt="" className="w-100" /> : ("")}
-                      </>
-                    )
-                  })
-                }
-                <i class="fa-sharp fa-solid fa-greater-than" onClick={handleNext} ></i>
-              </figure>
-
-              <div className="small_img">
-                <figure>
                   {
-                    userData.photos?.map((img, i) => {
-                      return (
-                        (i > 0) ? <img src={img.link} className="m-1" alt="" /> : ("")
-                      )
-                    })
-                  }
-                  <span> + 5</span>
-                </figure>
-                <figure className="d-flex" >
-                  {
-                    userData.videos?.map((img, i) => {
-                      // console.log(img.link)
+                    userData.photos.map((item, index) => {
                       return (
                         <>
-                          <div className="mx-2">
-                            <video target="_blank" width="35" height='40' controls>
-                              <source src={img.link} type="video/mp4" />
-                            </video>
-                          </div>
+                          {(index === first) ? <img src={item.link} alt="" /> : ("")}
                         </>
                       )
                     })
                   }
-                  <span> + 5</span>
+                  <div className="imageUser">
+                    <BsChevronLeft onClick={handlePre} />
+
+                    <BsChevronRight onClick={handleNext} />
+                  </div>
+
                 </figure>
+
+                <div className="small_img">
+                  <figure>
+                    {
+                      userData.photos?.map((img, i) => {
+                        return (
+                          (i > 0) ? <img src={img.link} className="m-1" alt="" /> : ("")
+                        )
+                      })
+                    }
+                    <span> + {userData.photos.length}</span>
+
+                  </figure>
+
+                  <figure className="d-flex" >
+                    {
+                      userData.videos?.map((img, i) => {
+                        // console.log(img.link)
+                        return (
+                          <>
+                            <div className="mx-2">
+                              <video target="_blank" width="35" height='40' controls>
+                                <source src={img.link} type="video/mp4" />
+                              </video>
+                            </div>
+                          </>
+                        )
+                      })
+                    }
+                    <span> + 5</span>
+                  </figure>
+                </div>
               </div>
             </div>
             <div className="right_pfp col-lg-9 col-md-9 col-12">

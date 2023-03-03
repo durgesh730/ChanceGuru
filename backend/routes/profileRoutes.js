@@ -176,6 +176,7 @@ router.put("/ReqToApp", jwtAuth, (req, res) => {
     }
   )
     .then((response) => {
+      console.log(response)
       res.json(response);
     })
     .catch((err) => {
@@ -354,7 +355,7 @@ router.put("/portfolio/exp", jwtAuth, (req, res) => {
   Profile.findOne({ userId: user._id }).then((r) => {
     d.bio = r.portfolio.bio;
     d.experience = data;
-
+    console.log(d)
     Profile.findOneAndUpdate(
       { userId: user._id },
       {

@@ -20,8 +20,8 @@ import amask from "../../assets/icons/active-mask.svg";
 import anotification from "../../assets/icons/active-notification.svg";
 import role from "../../assets/images/role.png";
 import arole from "../../assets/images/active-role.png";
-import requests from "../../assets/icons/requests.png";
-import arequests from "../../assets/icons/active-requests.png";
+import requests from "../../assets/icons/request.png";
+import arequests from "../../assets/icons/active-request.png";
 import axios from "axios";
 
 import AuthContext from "../AuthContext";
@@ -30,7 +30,9 @@ const Topbar = (props) => {
   const [notifHeight, setnotifHeight] = useState(0);
   const [dim, setDim] = useState(0);
   const [projects, setProjects] = useState();
-  
+  const [loggedUser, setLoggedUser] = useState("");
+
+
   const auth = useContext(AuthContext)
   const active = auth.active
 
@@ -155,22 +157,33 @@ const Topbar = (props) => {
 
   useEffect(() => {
     if (jobUsers.length == 0 || jobProjects.length == 0) {
-      return;
+      return
     }
     let len = jobProjects.length === jobUsers.length ? jobProjects.length : 0;
-    let arr = new Set();
+    let arr = new Set()
+    let imgArr = new Set()
+
     for (let index = 0; index < len; index++) {
+
       const userName = jobUsers[index][0].username;
       const projectName = jobProjects[index][0].basicInfo.name;
+      const image = jobUsers[index][0].link;
+
       let mapObj = {
         user: userName,
         project: projectName,
-      };
-      arr.add(`${mapObj.user} has applied to project ${mapObj.project}`);
+      }
+      arr.add({ notification: `${mapObj.user} has applied to project ${mapObj.project}`, img: image })
     }
-    console.log(arr);
-    setUserProjectMap([...arr]);
-  }, [jobUsers, jobProjects]);
+    console.log(arr)
+    setUserProjectMap([...arr])
+
+  }, [jobUsers, jobProjects])
+
+  useEffect(() => {
+    setLoggedUser(JSON.parse(localStorage.getItem("login")));
+  }, []);
+  // console.log(loggedUser.link)
 
   return (
     <>
@@ -251,10 +264,10 @@ const Topbar = (props) => {
                 </Link>
               </>
 
-            ) 
-          :
-          (
-            <Link to="/myrole">
+            )
+              :
+              (
+                <Link to="/myrole">
                   <span
                     className={
                       active === "mask"
@@ -270,19 +283,19 @@ const Topbar = (props) => {
                     )}
                   </span>
                 </Link>
-          )
-        }
-          
-          
-          
+              )
+          }
 
-          
+
+
+
+
           <Link to="/chat">
             <span
               className={
                 active === "chat"
-                  ? `nav_active topbar-icons-container`
-                  : "topbar-icons-container"
+                  ? `nav_active topbar-icons-container bubbleDiv bubbleColorChange`
+                  : "topbar-icons-container bubbleDiv"
               }
               onClick={() => auth.setActive("chat")}
             >
@@ -291,48 +304,53 @@ const Topbar = (props) => {
               ) : (
                 <img className="topbar-icons" src={chat} alt="" />
               )}
+
+              <h6>10</h6>
             </span>
           </Link>
           {
             user.type === "user"
             && 
             <Link to="/requestpage">
-            <span
-              className={
-                active === "request"
-                  ? `nav_active topbar-icons-container`
-                  : "topbar-icons-container"
-              }
-              onClick={() => auth.setActive("request")}
-            >
-              {active === "request" ? (
-                <img className="topbar-icons" src={arequests} alt="" />
-              ) : (
-                <img className="topbar-icons" src={requests} alt="" />
-              )}
-            </span>
-          </Link>
+              <span
+                className={
+                  active === "request"
+                    ? `nav_active topbar-icons-container`
+                    : "topbar-icons-container"
+                }
+                onClick={() => auth.setActive("request")}
+              >
+                {active === "request" ? (
+                  <img className="topbar-icons" src={arequests} alt="" />
+                ) : (
+                  <img className="topbar-icons" src={requests} alt="" />
+                )}
+
+              </span>
+            </Link>
           }
-          
+
 
           {/*
                         <Link to="/projectcreation"> */}
           <span
-            className="topbar-icons-container n_icon"
-            onClick={()=>{toggleNotifOption();auth.setActive("notification")}}
+            className="topbar-icons-container n_icon bubbleDiv"
+            onClick={() => { toggleNotifOption(); auth.setActive("notification") }}
           >
             {active === "notification" ? (
               <img className="topbar-icons" src={anotification} alt="" />
             ) : (
               <img className="topbar-icons " src={notification} alt="" />
             )}
+            <h6>10</h6>
+
             <div className="notif-options" id="notifOption">
               <div>
                 {projects?.slice(0, 2).map((project, index) => {
                   return (
                     <>
                       <div>
-                        <img src="" alt="pfp" />
+                        <img src={loggedUser.link === undefined ? profile : loggedUser.link} alt="pfp" />
                         <p>
                           You have successfully created the project{" "}
                           {project.basicInfo.name}
@@ -346,8 +364,9 @@ const Topbar = (props) => {
                   return (
                     <>
                       <div className="d-flex align-items-center">
-                        <img src="" alt="pfp" className="me-4 shadow-sm" />
-                        <p>{item}</p>
+                        <img src={item.img === undefined ? profile : item.img} alt="pfp" className="me-4 shadow-sm" />
+
+                        <p>{item.notification}</p>
                       </div>
                       <hr />
                     </>
@@ -385,28 +404,29 @@ const Topbar = (props) => {
           >
             <span className="topbar-icons-container">
               <img
-                className="topbar-icons topbar-profile"
-                src={profile}
+                className="topbar-icons topbar-profile p-0"
+                src={loggedUser.link}
                 alt=""
+
               />
             </span>
             <span className="top-profile-name">{user.username}</span>
             <div className="profile-options" id="profileOption">
               <ul>
                 {
-                  user.type !== "seeker"?
-                  (
-                    <>
-                    <li>
-                  <Link to="/profiledetails">My Profile</Link>
-                </li>
-                
-                
-                    </>
-                  )
-                  :(
-                    <></>
-                  )
+                  user.type !== "seeker" ?
+                    (
+                      <>
+                        <li>
+                          <Link to="/profiledetails">My Profile</Link>
+                        </li>
+
+
+                      </>
+                    )
+                    : (
+                      <></>
+                    )
                 }
                 <li>
                   <NavLink to="/setting">Account Settings</NavLink>

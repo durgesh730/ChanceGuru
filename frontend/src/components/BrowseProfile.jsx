@@ -61,6 +61,10 @@ const BrowseProfile = () => {
       setProfileData(res);
     }
   };
+  useEffect(() => {
+    handleSearch();
+  }, [query])
+
 
   const GetProfiledata = async () => {
     const data = await fetch("http://localhost:5000/profile/profileData", {
@@ -87,6 +91,24 @@ const BrowseProfile = () => {
   }, []);
   const location = useLocation();
 
+  function viewProfileClicked(item) {
+    console.log(item)
+
+    axios.post('http://localhost:5000/profile/ReqToApp', { talentId: item.userId }, {
+
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+
+    })
+        .then(res => {
+            console.log(res.data);
+
+        })
+        .catch(err => {
+            console.log(err);
+        });
+}
   return (
     <div>
       <Topbar />
@@ -109,7 +131,7 @@ const BrowseProfile = () => {
                   return searchTerm && name.startsWith(searchTerm);
                 })
                 .map((item, index) => (
-                  <div onClick={() => setQuery(item.basicInfo.fullname)}>
+                  <div onClick={() => { setQuery(item.basicInfo.fullname) }}>
                     {item.basicInfo.fullname}
                   </div>
                 ))}
@@ -180,6 +202,7 @@ const BrowseProfile = () => {
                       <NavLink
                         to={"/browseprofile/:nickdavolt"}
                         state={{ user: item, card: [], index: 0, btn: 0 }}
+                        onClick={() => viewProfileClicked(item)}
                         exact
                       >
                         <button>View Profile</button>
