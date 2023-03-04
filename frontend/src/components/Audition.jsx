@@ -10,9 +10,7 @@ const Audition = () => {
   const location = useLocation();
 
   const [cards, setcards] = useState();
-
-  // console.log(cards, 'jii')
-
+  const type = localStorage.getItem('type');
   const [query, setQuery] = useState("");
 
   const handleSearch = async () => {
@@ -24,11 +22,24 @@ const Audition = () => {
       },
     });
     const res = await data.json();
-    // console.log(res)
     if (res) {
       setcards(res);
     }
   };
+
+  const getAdminProjects = async ()=>{
+    const data = await fetch('http://localhost:5000/project/getProjectForAdmin', {
+      method:"GET",
+      headers:{
+       "Content-Type":"application/json",
+      },
+    })
+    const re = await data.json();
+    console.log(re, "submi")
+    if(re !== null){
+      setcards(re);
+    }
+}
 
   const getProjects = () => {
     axios.get("http://localhost:5000/project/allProjectsSeekers", {
@@ -44,8 +55,13 @@ const Audition = () => {
       });
   };
 
+ 
   useEffect(() => {
-    getProjects();
+    if(type === 'seeker'){
+      getProjects();
+    }else if(type ==='admin'){
+      getAdminProjects();
+    }
   }, []);
 
   return (

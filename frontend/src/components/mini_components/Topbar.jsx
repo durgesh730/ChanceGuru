@@ -288,8 +288,9 @@ const Topbar = (props) => {
 
 
 
-
-          <Link to="/chat">
+         {
+           user.type !== 'admin'?
+          (<Link to="/chat">
             <span
               className={
                 active === "chat"
@@ -306,7 +307,9 @@ const Topbar = (props) => {
 
               <h6>10</h6>
             </span>
-          </Link>
+          </Link>):("")
+             }
+
           {
             user.type === "user"
             && 

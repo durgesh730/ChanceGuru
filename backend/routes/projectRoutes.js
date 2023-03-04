@@ -6,6 +6,15 @@ const JobApplication = require('../db/JobApplication')
 const User = require('../db/User');
 
 
+// API for search Project by name project name
+router.get("/SearchProjectForAdmin", async (req, res) => {
+    const keyword = req.query.name
+      ? { "basicInfo.name": { $regex: req.query.name, $options: "i" } } //case insensitive
+      : {};
+    const users = await Project.find(keyword)
+    res.send(users);
+  });
+
 router.put("/Datetime/:id", async (req, res) => {
     try {
       const newData = {};
@@ -130,12 +139,20 @@ router.put("/Reject/:_id", (req, res) => {
         })
 })
 
-
-
-
 router.get("/allProjectsSeekers", jwtAuth, (req, res) => {
     const user = req.user;
     Project.find({ seekerId: user._id })
+        .then((response) => {
+            res.json(response);
+        })
+        .catch((err) => {
+            res.status(400).json(err);
+        })
+})
+
+//TO get all the sekers projects for admin Page
+router.get("/getProjectForAdmin", (req, res) => {
+    Project.find(req.params.id)
         .then((response) => {
             res.json(response);
         })

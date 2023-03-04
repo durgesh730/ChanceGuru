@@ -2,16 +2,17 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import Modal from "./Modal";
 import { Link } from "react-router-dom";
-import image from "../../assets/images/godfather.png";
 import axios from "axios";
 
 const Card2 = ({ card }) => {
   const [model, setModel] = useState(false);
   const name = card.basicInfo.name;
   const id = card._id;
+  console.log(card.basicInfo.name, "card")
+  console.log(card)
 
   const [apply, setApply] = useState([]);
-  const [photos, setPhotos] = useState();
+  const [photos, setPhotos] = useState([]);
 
   const userName = async (id) => {
     const data = await fetch(`http://localhost:5000/profile/${id}`, {
@@ -21,7 +22,10 @@ const Card2 = ({ card }) => {
       },
     });
     const res = await data.json();
-    setPhotos(res.photos);
+     console.log(res, "phots")
+    if (res !== null) {
+      setPhotos(res.photos);
+    }
   };
 
   const getuserId = async () => {
@@ -41,35 +45,43 @@ const Card2 = ({ card }) => {
   };
 
   useEffect(() => {
+    // userName();
     getuserId();
+    
+    // setPhotos()
   }, []);
 
+ 
+
   return (
-    <li className="child_cards">
-      <Link to={"/applicantdetails"} state={card._id}>
-        <div className="card-title">
-          ‘{name}’
-          <div className=" card-author my-1">
-            <span>{card.roles.length} Roles</span>
+    // <>
+      <li className="child_cards">
+        <Link to={"/applicantdetails"} state={card._id}>
+          <div className="card-title">
+            ‘{name}’
+            <div className=" card-author my-1">
+              <span>{card.roles.length} Roles</span>
+            </div>
           </div>
-        </div>
 
-        <div className="card-author d-flex align-items-center justify-content-between my-3 ">
-          <div className="d-flex flex-column  my-1 ">
-            <div className="posted-by">Applied by</div>
-            <span className="h4">{apply.length}</span>
+          <div className="card-author d-flex align-items-center justify-content-between my-3 ">
+            <div className="d-flex flex-column  my-1 ">
+              <div className="posted-by">Applied by</div>
+              <span className="h4">{apply.length}</span>
+            </div>
+            <div className="many_images">
+              {console.log(photos, "a gya")}
+              {photos?.map((item, i) => {
+                console.log(item.link)
+                return <img key={i} src={item.link} alt="img" />;
+              })}
+              <span>+20</span>
+            </div>
           </div>
-          <div className="many_images">
-            {photos?.map((item, i) => {
-              return <img src={item.link} alt="img" />;
-            })}
-            <span>+20</span>
-          </div>
-        </div>
 
-        {model && <Modal setModel={setModel} info={card} />}
-      </Link>
-    </li>
+          {model && <Modal setModel={setModel} info={card} />}
+        </Link>
+      </li>
   );
 };
 

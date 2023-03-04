@@ -12,7 +12,7 @@ import SubmissionStatus from "./SubmissionStatus";
 const Submission = () => {
   const [active, setActive] = useState("");
   const [cards, setcards] = useState();
-
+  const type = localStorage.getItem('type');
   const [query, setQuery] = useState("");
 
   const handleSearch = async () => {
@@ -27,26 +27,26 @@ const Submission = () => {
       }
     );
     const res = await data.json();
-    
     if (res) {
       setcards(res);
     }
   };
 
-  // const getProjects = () => {
-  //   axios
-  //     .get("http://localhost:5000/project/allProjectsSeekers")
-  //     .then((res) => {
-  //       setcards(res.data)
-  //       console.log(res.data)
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     })
-  // }
-  const url = "http://localhost:5000/project/allProjectsSeekers";
-  // const url = "http://localhost:5000/project/searchData?name=";
+  const getAdminProjects = async ()=>{
+    const data = await fetch('http://localhost:5000/project/getProjectForAdmin', {
+      method:"GET",
+      headers:{
+       "Content-Type":"application/json",
+      },
+    })
+    const re = await data.json();
+    console.log(re, "submi")
+    if(re !== null){
+      setcards(re);
+    }
+}
 
+  const url = "http://localhost:5000/project/allProjectsSeekers";
   const getProjects = (e) => {
     axios
       .get(url, {
@@ -56,13 +56,16 @@ const Submission = () => {
         },
       })
       .then((res) => {
-        console.log(res.data, "jhgfd")
         setcards(res.data);
       });
   };
 
   useEffect(() => {
-    getProjects();
+    if(type === 'seeker'){
+      getProjects();
+    }else if(type ==='admin'){
+      getAdminProjects();
+    }
   }, []);
 
   return (
