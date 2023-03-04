@@ -4,6 +4,37 @@ const JobApplicant = require("../db/JobApplication");
 const JobApplication = require("../db/JobApplication");
 const router = express.Router();
 
+
+
+router.put("/DateTime/:id", async (req, res) => {
+  const { time, date, interview, location } = req.body;
+  console.log(req.body)
+  try {
+    const newData = {};
+    if (time) {
+      newData.time = time;
+    }
+    if (date) {
+      newData.date = date;
+    }
+    if (time) {
+      newData.interviewer = interview;
+    }
+    if (location) {
+      newData.location = location;
+    }
+
+    console.log(newData)
+    const userData = await JobApplicant.findOneAndUpdate({ _id: req.params.id }, { $push: {audition:newData} }, { new: true });
+    res.json({ userData });
+    console.log(userData)
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Some error occured");
+  }
+}
+);
+
 // To find from pid
 router.get("/project/:_id", (req, res) => {
   JobApplicant.find({ pId: req.params._id })
@@ -84,7 +115,7 @@ router.get("/allJobsUser", jwtAuth, (req, res) => {
   const user = req.user;
   JobApplicant.find({ userId: user._id })
     .then((response) => {
-        // console.log(response);
+      // console.log(response);
       res.json(response);
     })
     .catch((err) => {

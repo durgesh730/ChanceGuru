@@ -10,7 +10,20 @@ const SeekerDashboard = () => {
     const [card, setcard] = useState([]);
     const [query, setQuery] = useState("");
     const [searchData, setsearchData] = useState([]);
+    const type = localStorage.getItem('type');
 
+    const getAdminProjects = async () => {
+        const data = await fetch('http://localhost:5000/project/getProjectForAdmin', {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+        const re = await data.json();
+        if (re !== null) {
+            setcard(re);
+        }
+    }
 
     const getProjects = async () => {
         const res = await fetch("http://localhost:5000/project/allProjectsSeekers", {
@@ -22,12 +35,7 @@ const SeekerDashboard = () => {
         });
         const ok = await res.json();
         setcard(ok);
-        // console.log(ok)
     }
-
-    useEffect(() => {
-        getProjects();
-    }, [setcard])
 
     let navigate = useNavigate();
     const routeChange = () => {
@@ -52,9 +60,44 @@ const SeekerDashboard = () => {
             setsearchData(res)
         }
     };
+
+    
+    const handleSearchForAdmin = async () => {
+        const data = await fetch(
+            `http://localhost:5000/project/SearchProjectForAdmin?name=${query}`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+        const res = await data.json();
+        if (res) {
+            setcard(res);
+            setsearchData(res)
+        }
+    };
+
     useEffect(() => {
-        handleSearch();
+        if(type === 'seeker'){
+            handleSearch();
+        }else if(type === 'admin'){
+            handleSearchForAdmin();
+        }
     }, [query])
+
+    useEffect(() => {
+        if (type === 'seeker') {
+            getProjects();
+        } else if (type === 'admin') {
+            getAdminProjects();
+        }
+    }, [setcard])
+
+    useEffect(() => {
+        getAdminProjects();
+    }, [])
 
     return (
         <>

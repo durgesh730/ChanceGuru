@@ -41,6 +41,8 @@ function App() {
     const [timeActive, setTimeActive] = useState(false);
     const [clicked, setClicked] = useState(0);
     const [active, setActive] = useState("home");
+    const [notificationCount,setNotificationCount] = useState(4)
+
 
     const [chatUnReadCount,setChatUnReadCount] = useState(0)
 
@@ -55,7 +57,7 @@ function App() {
   return (
     <Router>
       <AuthProvider
-        value={{ currentUser, timeActive, setTimeActive, setClicked, clicked, active,setActive,chatUnReadCount,setChatUnReadCount }}
+        value={{ currentUser, timeActive, setTimeActive, setClicked, clicked, active,setActive, notificationCount,setNotificationCount, chatUnReadCount,setChatUnReadCount }}
       >
         <Routes>
           <Route

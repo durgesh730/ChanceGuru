@@ -10,7 +10,25 @@ const SeekerDashboard = () => {
   const [card, setcard] = useState();
   const [searchData, setsearchData] = useState([]);
 
-  // console.log(card[0].basicInfo.name)
+  const type = localStorage.getItem('type');
+
+
+  const handleSearchForAdmin = async () => {
+    const data = await fetch(
+      `http://localhost:5000/project/SearchProjectForAdmin?name=${query}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const res = await data.json();
+    if (res) {
+      setcard(res);
+      setsearchData(res)
+    }
+  };
 
   const handleSearch = async () => {
     const data = await fetch(
@@ -26,10 +44,16 @@ const SeekerDashboard = () => {
     const res = await data.json();
     if (res) {
       setcard(res);
+      setsearchData(res);
     }
   };
+
   useEffect(() => {
-    handleSearch();
+    if (type === 'seeker') {
+      handleSearch();
+    } else if (type === 'admin') {
+      handleSearchForAdmin();
+    }
   }, [query])
 
   const getProjects = async () => {
@@ -47,13 +71,37 @@ const SeekerDashboard = () => {
 
     if (response !== null) {
       setcard(response);
-      setsearchData(response);
     }
   };
 
+  // ============= get all seeker Project on Admin Page ==============
+
+  const getAdminProjects = async () => {
+    const data = await fetch('http://localhost:5000/project/getProjectForAdmin', {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    const re = await data.json();
+    console.log(re, "ok")
+    if (re !== null) {
+      setcard(re);
+    }
+  }
+
+
   useEffect(() => {
-    getProjects();
+    if (type === 'seeker') {
+      getProjects();
+    } else if (type === 'admin') {
+      getAdminProjects();
+    }
   }, [setcard]);
+
+  useEffect(() => {
+    getAdminProjects();
+  }, [])
 
   let navigate = useNavigate();
   const routeChange = () => {
@@ -104,8 +152,9 @@ const SeekerDashboard = () => {
         </div>
         <div className="main-container">
           <ul className="grid-wrapper">
-            {card?.map((card, i) => (
-              <Card2 key={i} card={card} />
+            {card?.map((item, i) => (
+              // console.log(card, "jhgfd")
+              <Card2 key={i} card={item} />
             ))}{" "}
           </ul>
         </div>

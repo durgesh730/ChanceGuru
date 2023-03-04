@@ -30,17 +30,31 @@ let schema = new mongoose.Schema(
       default: "applied",
       required: true,
     },
-    value : {
-      type : Number ,
-      default : 5 
+    value: {
+      type: Number,
+      default: 5
     },
-    seekerId:{
+    seekerId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
     },
     updatedAt: {
       type: String,
-  }
+    },
+    audition: {
+        date:{
+          type: String
+        },
+        time:{
+          type:String
+        },
+        location:{
+          type: String
+        },
+        interviewer:{
+          type: String
+        }
+    }  
   },
   { collation: { locale: "en" } }
 );

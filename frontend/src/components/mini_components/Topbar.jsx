@@ -234,7 +234,6 @@ const Topbar = (props) => {
     }
     // console.log(arr)
     setUserProjectMap([...arr])
-
   }, [jobUsers, jobProjects])
 
   useEffect(() => {
@@ -251,7 +250,7 @@ const Topbar = (props) => {
 
         <div className="topbar-nav">
           <Link
-            to={user.type === "user" ? "/talentdashboard" : "/seekerdashboard"}
+            to={user.type === "user"  ? "/talentdashboard" : "/seekerdashboard"}
             onClick={() => auth.setActive("home")}
             state={null}
           >
@@ -270,7 +269,7 @@ const Topbar = (props) => {
             </span>
           </Link>
           {
-            user.type === "seeker" ? (
+            user.type === "seeker" || user.type === "admin" ? (
               <>
                 <Link to="/submission" onClick={() => auth.setActive("chair")}>
                   <span
@@ -346,8 +345,9 @@ const Topbar = (props) => {
 
 
 
-
-          <Link to="/chat">
+         {
+           user.type !== 'admin'?
+          (<Link to="/chat">
             <span
               className={
                 active === "chat"
@@ -364,10 +364,12 @@ const Topbar = (props) => {
 
               {auth.chatUnReadCount > 0 && <h6>{auth.chatUnReadCount}</h6>}
             </span>
-          </Link>
+          </Link>):("")
+             }
+
           {
-            user.type !== "seeker"
-            &&
+            user.type === "user"
+            && 
             <Link to="/requestpage">
               <span
                 className={
@@ -399,7 +401,7 @@ const Topbar = (props) => {
             ) : (
               <img className="topbar-icons " src={notification} alt="" />
             )}
-            <h6>10</h6>
+            {auth.notificationCount !== 0?<h6>{auth.notificationCount}</h6>:""}
 
             <div className="notif-options" id="notifOption">
               <div>
@@ -428,7 +430,8 @@ const Topbar = (props) => {
                       <hr />
                     </>
                   );
-                })}
+                })
+                }
                 {/* <hr />
                 <div>
                   <img src="" alt="pfp" />
@@ -447,7 +450,7 @@ const Topbar = (props) => {
                   </p>
                 </div> */}
                 <div className="d-flex justify-content-center align-items-center view_all">
-                  <NavLink to="/notification">
+                  <NavLink to="/notification" onClick={() => auth.setNotificationCount(0)} >
                     <p>View All</p>
                   </NavLink>
                 </div>

@@ -19,9 +19,9 @@ const SubmissionStatus = ({ a, project, id }) => {
             })
     }
 
-  useEffect(() => {
-    getuserId();
-  }, []);
+    useEffect(() => {
+        getuserId();
+    }, []);
 
     return (
         <>
@@ -52,7 +52,10 @@ const SubmissionStatus = ({ a, project, id }) => {
                                 <td>Applocant Name</td>
                                 <td>Scheduled For</td>
                                 <td>Status</td>
-                                <td></td>
+                                <td>Date</td>
+                                <td>Time</td>
+                                <td>Location</td>
+                                <td>Interviewer Name</td>
                             </thead>
                             <tbody>
 
@@ -64,6 +67,23 @@ const SubmissionStatus = ({ a, project, id }) => {
                                                     <tr>
                                                         <StatusSide roleId={item.roleId} charId={item.charId} project={project} userId={item.userId} />
                                                         <td>{item.status}</td>
+                                                        {
+                                                            item.status === "scheduled" ?
+                                                                    (item.audition?.map((sub, i) => {
+                                                                        console.log(sub, "auditionstaut")
+                                                                        return (
+                                                                            <>
+                                                                                
+                                                                                    <td >{sub.date}</td>
+                                                                                    <td>{sub.time}</td>
+                                                                                    <td>{sub.location}</td>
+                                                                                    <td>{sub.interviewer}</td>
+                                                                                
+                                                                            </>
+                                                                        )
+                                                                    }))
+                                                                 : ("")
+                                                        }                                                        
                                                         <SubViewProfile display={'/audition'} index={index} card={cards} msg={'View Profile'} />
                                                     </tr>
                                                 )
