@@ -286,10 +286,29 @@
 
   /* =======================profile details============================== */
 
+  .talent_container {
+    padding: 10px !important;
+  }
+  .side_toggle_chat {
+    display: none;
+  }
   .sidebar-toggle {
     display: none;
   }
-  .talent_container {
-    padding: 10px !important;
+  .side_chat {
+    display: block !important;
+    position: fixed;
+    top: 70px;
+    left: 0;
+    z-index: 9999;
+    background-color: #fff;
+    width: 0;
+    height: calc(100%) !important;
+  }
+  .myChat_main {
+    height: calc(100vh - 70px);
+  }
+  .myChat_users {
+    height: calc(100vh - 130px);
   }
 }
