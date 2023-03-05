@@ -32,10 +32,9 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
     selectedChat,
     setSelectedChat,
     user,
-    notification,
-    setNotification,
     chats,
     setChats,
+    chatUnReadCount,setChatUnReadCount
   } = useContext(ChatContext);
   // console.log(selectedChat, "selectedChat in chatBox");
 
@@ -91,6 +90,7 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
 
         //setNewMessage("");
         data.users = selectedChat.users;
+        data.chat = selectedChat;
         // console.log("Emit new message data: ", data);
         socket.emit("new_message", selectedChat._id, data);
 
@@ -130,31 +130,37 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
   //console.log(notification, 'notification Bellicon');
 
   useEffect(() => {
-    socket.on("message_recieved", (newMessageRecieved) => {
+    socket.off("message_recieved").on("message_recieved", (newMessageRecieved) => {
+      console.log("New message",newMessageRecieved)
       if (
         !selectedChatCompare ||
-        selectedChatCompare._id !== newMessageRecieved.chat
+        selectedChatCompare._id !== newMessageRecieved.chat._id
       ) {
         // if chat is not selected or doesn't match current chat
-        if (!notification.includes(newMessageRecieved)) {
-          setNotification([newMessageRecieved, ...notification]);
-          setFetchAgain(!fetchAgain); //updating our chats in our my chats on newMessageRecieved
-          //   console.log(notification, "notification bell-icon check");
-        }
+        newMessageRecieved.chat.unreadCount++
+        let newChats = chats.map((item,i)=>{
+          if(item._id == newMessageRecieved.chat._id){
+            item.unReadBy = newMessageRecieved.chat.unReadBy
+            item.unreadCount += 1
+
+            setChatUnReadCount(item.unreadCount)
+            console.log("Item Changed",item)
+          }
+          return item
+        })
+        console.log(newChats)
+        setChats(newChats)
       } else {
-        console.log(newMessageRecieved);
         setMessages((messages) => [...messages, newMessageRecieved]);
       }
-      socket.off("message_recieved");
     });
-  }, [socket]);
+  });
 
   useEffect(() => {
     var objDiv = document.querySelector(".msg_Div");
     if (objDiv) {
       objDiv.scrollTop = objDiv.scrollHeight;
     }
-    console.log(objDiv);
   }, [loading, messages]);
 
   const typingHandler = (e) => {
@@ -188,7 +194,7 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
   useEffect(() => {
     // msgDiv.current.scrollTop = msgDiv.current.scrollHeight;
     // msgDiv.current.lastElementChild.scrollIntoView();
-    console.log(msgDiv.current);
+    // console.log(msgDiv.current);
   }, [selectedChat]);
 
   //   msgDiv.scrollTop = msgDiv.scrollHeight;
@@ -246,7 +252,7 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
     setReportModal(1);
   };
 
-  console.log("SelectedUser", selectedChat);
+  // console.log("SelectedUser", selectedChat);
 
   const [showPicker, setShowPicker] = useState(false);
 

@@ -14,10 +14,9 @@ import profile from "../../assets/icons/profile1.svg";
 const MyChats1 = ({ fetchAgain }) => {
   const [loggedUser, setLoggedUser] = useState();
 
-  const { selectedChat, setSelectedChat, user, chats, setChats } =
+  const { selectedChat, setSelectedChat, user, chats, setChats, chatUnReadCount,setChatUnReadCount } =
     useContext(ChatContext);
   //const {getSender}=useHelper();
-
   const fetchChats = async () => {
     // console.log(user._id);
     try {
@@ -42,13 +41,20 @@ const MyChats1 = ({ fetchAgain }) => {
 
   useEffect(() => {
     setLoggedUser(JSON.parse(localStorage.getItem("login"))); //chatLogics
-    fetchChats();
+    let localChats = JSON.parse(localStorage.getItem("userChats"))
+    if(!localChats || localChats.length <= 0){
+
+      fetchChats();
+    }
+    else{
+      setChats(localChats)
+    }
     // eslint-disable-next-line
   }, [fetchAgain]);
   //fetching chats again witht the updated list of all of our chats...
   //--when we leave a group our updated list of chats needs to be fetched again
 
-  const [activeChat, setactiveChat] = useState(0);
+  const [activeChat, setactiveChat] = useState();
 
   // ====================merging side drawer page===============================
   const [search, setSearch] = useState("");
@@ -57,7 +63,6 @@ const MyChats1 = ({ fetchAgain }) => {
   const [loadingChat, setLoadingChat] = useState(false);
 
   const handleSearch = async (searchValue) => {
-    console.log(searchValue);
     if (!searchValue) {
       // toast({
       //   title: "Please Enter something in search",
@@ -68,7 +73,6 @@ const MyChats1 = ({ fetchAgain }) => {
       // });
       return;
     }
-    console.log(searchResult);
 
     try {
       setLoading(true);
@@ -76,7 +80,6 @@ const MyChats1 = ({ fetchAgain }) => {
       const config = {
         headers: { Authorization: `Bearer ${user.token}` },
       };
-      console.log(config, user);
 
       const { data } = await axios.get(
         `http://localhost:5000/api/user?search=${searchValue}`,
@@ -124,6 +127,7 @@ const MyChats1 = ({ fetchAgain }) => {
       //already existing check clause //newly created chat above the rest
 
       setSelectedChat(data);
+      setactiveChat(0)
 
       console.log(data, "access new/existing chat response data");
 
@@ -134,12 +138,23 @@ const MyChats1 = ({ fetchAgain }) => {
   };
 
   useEffect(() => {
-    setSelectedChat(chats[0]);
-    console.log("called");
-  }, [chats]);
+    // setSelectedChat(chats[0]);
 
+    console.log(chats);
+  }, [chats]);
+  
   // console.log("chats", getSender(loggedUser, chats[5].users));
   // console.log("chats", chats[5].users[1].link);
+
+  function handleChatClick(chat, i){
+    setSelectedChat(chat);
+    setactiveChat(i)
+
+    let newChats = [...chats]
+    setChatUnReadCount(prev => prev - newChats[i].unreadCount)
+    newChats[i].unreadCount = 0
+    setChats(newChats)
+  }
 
   return (
     <>
@@ -178,9 +193,10 @@ const MyChats1 = ({ fetchAgain }) => {
               )
             )}
             {chats ? (
-              chats.map((chat, i) => (
+              chats.map((chat, i) => {
+                return(
                 <div
-                  onClick={() => (setSelectedChat(chat), setactiveChat(i))}
+                  onClick={() => {handleChatClick(chat,i)}}
                   className={
                     activeChat === i ? "active_userChat userChat" : "userChat"
                   }
@@ -197,8 +213,12 @@ const MyChats1 = ({ fetchAgain }) => {
                   <div className="w-100">
                     <div className="user_unseenDiv">
                       <h6>{getSender(loggedUser, chat.users)} </h6>
+                      {
+                        // chat.unReadBy &&
                       <span style={
-                        activeChat === i ? { display: "none" } : { display: "grid" }} > 10</span>
+                        chat.unreadCount === 0 ? { display: "none" } : { display: "grid" }} > {chat.unreadCount} 
+                      </span>
+                      }
                     </div>
                     <p>
                       {chat["latestMessage"] === undefined
@@ -210,7 +230,8 @@ const MyChats1 = ({ fetchAgain }) => {
                   </div>
 
                 </div>
-              ))
+                )
+              })
             ) : (
               <h3>Loading....</h3>
             )}

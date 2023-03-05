@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import AuthContext from "../AuthContext";
 import ChatContext from "./chat-context";
+
 
 const ChatProvider = (props) => {
   const [user, setUser] = useState();
   const [chats, setChats] = useState([]);
 
   const [selectedChat, setSelectedChat] = useState();
-  const [notification, setNotification] = useState([]);
+
+  const {chatUnReadCount,setChatUnReadCount} = useContext(AuthContext)
 
   const navigate = useNavigate();
 
@@ -16,10 +19,21 @@ const ChatProvider = (props) => {
     user.token = localStorage.getItem("token");
     setUser(user);
 
+
     if (!user) navigate("/");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate]);
+  useEffect(()=>{
+    if(chats && chats.length > 0){
+      console.log("Chats have been changed")
+      localStorage.setItem("userChats",JSON.stringify(chats))
+    }
+  },[chats])
 
+  useEffect(() => {
+    localStorage.setItem("UnReadNotify",JSON.stringify(chatUnReadCount))
+  }, [chatUnReadCount])
+  
   //console.log(chats, 'chats context')
   return (
     <div>
@@ -31,8 +45,8 @@ const ChatProvider = (props) => {
           setSelectedChat,
           chats,
           setChats,
-          notification,
-          setNotification,
+          chatUnReadCount,
+          setChatUnReadCount,
         }}
       >
         {props.children}

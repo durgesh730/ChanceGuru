@@ -44,6 +44,8 @@ function App() {
     const [notificationCount,setNotificationCount] = useState(4)
 
 
+    const [chatUnReadCount,setChatUnReadCount] = useState(0)
+
   useEffect(() => {
     let user = JSON.parse(localStorage.getItem("login"));
     if (user) {
@@ -55,7 +57,7 @@ function App() {
   return (
     <Router>
       <AuthProvider
-        value={{ currentUser, timeActive, setTimeActive, setClicked, clicked, active,setActive, notificationCount,setNotificationCount }}
+        value={{ currentUser, timeActive, setTimeActive, setClicked, clicked, active,setActive, notificationCount,setNotificationCount, chatUnReadCount,setChatUnReadCount }}
       >
         <Routes>
           <Route

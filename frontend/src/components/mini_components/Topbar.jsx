@@ -36,6 +36,7 @@ const Topbar = (props) => {
   const auth = useContext(AuthContext)
   const active = auth.active
 
+  const user = JSON.parse(localStorage.getItem("login"));
   const navigate = useNavigate();
 
   function toggleProfileOptions() {
@@ -65,13 +66,43 @@ const Topbar = (props) => {
 
   const [modal, setModal] = useState(false);
 
+  const updateUnReadCount = (localChats) => {
+    if (localChats && localChats.length > 0) {
+      localChats.map(async (item) => {
+        console.log(item)
+          try {
+            const config = {
+              headers: {
+                "Content-type": "application/json",
+                Authorization: `Bearer ${user.token}`,
+              },
+            };
+            await axios.put(
+              `http://localhost:5000/api/chat/updateUnreadCount`,
+              { item },
+              config
+            )
+              .then((response) => {
+                console.log(response)
+              });
+
+          } catch (error) {
+            console.log(error.message);
+          }
+        }
+      )
+    }
+  }
+
   function handleLogout() {
+    let localChats = JSON.parse(localStorage.getItem("userChats"))
+    updateUnReadCount(localChats)
     localStorage.clear();
     navigate("/login");
     console.log("Logout succesfull");
   }
 
-  const user = JSON.parse(localStorage.getItem("login"));
+  
 
 
 
@@ -148,11 +179,37 @@ const Topbar = (props) => {
     });
   }
 
+  const getUnReadCount = async () => {
+    // console.log(user._id);
+    try {
+      const config = {
+        headers: { Authorization: `Bearer ${user.token}` },
+      };
+
+      await axios.get(
+        "http://localhost:5000/api/chat/getUnreadCount",
+        config
+      )
+      .then((response)=>{
+        console.log(response)
+        auth.setChatUnReadCount(response.data)
+
+      });
+      
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
   useEffect(() => {
     if (dataFetchedRef.current) return;
     dataFetchedRef.current = true;
     getProjects();
     getJobApplications();
+    let localUnReadCount = JSON.parse(localStorage.getItem("UnReadNotify"))
+    if( !localUnReadCount ) {getUnReadCount()}
+    else{
+      auth.setChatUnReadCount(localUnReadCount)
+    }
   }, []);
 
   useEffect(() => {
@@ -175,7 +232,7 @@ const Topbar = (props) => {
       }
       arr.add({ notification: `${mapObj.user} has applied to project ${mapObj.project}`, img: image })
     }
-    console.log(arr)
+    // console.log(arr)
     setUserProjectMap([...arr])
   }, [jobUsers, jobProjects])
 
@@ -305,7 +362,7 @@ const Topbar = (props) => {
                 <img className="topbar-icons" src={chat} alt="" />
               )}
 
-              <h6>10</h6>
+              {auth.chatUnReadCount > 0 && <h6>{auth.chatUnReadCount}</h6>}
             </span>
           </Link>):("")
              }
