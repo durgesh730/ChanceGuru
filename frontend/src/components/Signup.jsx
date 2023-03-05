@@ -16,6 +16,7 @@ import "./style.css";
 import backimg from "../assets/images/kamal.jpeg";
 import logo from "../assets/images/logo1.svg";
 import axios from "axios";
+import server from "./server";
 
 const Login = () => {
     const navigate = useNavigate();
@@ -77,7 +78,7 @@ const Login = () => {
             signInWithPhoneNumber(authentication, phone, appVerifier)
                 .then((confirmationResult) => {
                     window.confirmationResult = confirmationResult;
-                    axios.post("http://localhost:5000/auth/signup", {
+                    axios.post(`${server}/auth/signup`, {
                         username: username,
                         email: email,
                         pass: pass,

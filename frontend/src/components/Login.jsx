@@ -12,6 +12,7 @@ import logo from "../assets/images/logo1.svg";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuthValue } from "./AuthContext";
 import axios from "axios";
+import server from "./server";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -43,7 +44,7 @@ const Login = () => {
     console.log(values.email, values.pass);
     setErrorMsg("");
     axios
-      .post("http://localhost:5000/auth/login", {
+      .post(`${server}/auth/login`, {
         email: values.email,
         password: values.pass,
       })
@@ -57,7 +58,7 @@ const Login = () => {
                 localStorage.setItem("token", res.data.token);
                 localStorage.setItem("type", res.data.type);
                 axios
-                  .get("http://localhost:5000/auth/", {
+                  .get(`${server}/auth/` , {
                     headers: {
                       Authorization: `Bearer ${res.data.token}`,
                     },

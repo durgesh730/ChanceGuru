@@ -9,7 +9,7 @@ import { getSender, getSenderLink } from "../config/ChatLogics";
 
 import UserListItem from "../userAvatar/UserListItem";
 import profile from "../../assets/icons/profile1.svg";
-
+import server from '../server';
 
 const MyChats1 = ({ fetchAgain }) => {
   const [loggedUser, setLoggedUser] = useState();
@@ -25,7 +25,7 @@ const MyChats1 = ({ fetchAgain }) => {
       };
 
       const { data } = await axios.get(
-        "http://localhost:5000/api/chat",
+        `${server}/api/chat`,
         config
       );
       setChats(data);
@@ -82,7 +82,7 @@ const MyChats1 = ({ fetchAgain }) => {
       };
 
       const { data } = await axios.get(
-        `http://localhost:5000/api/user?search=${searchValue}`,
+        `${server}/api/user?search=${searchValue}`,
         config
       );
 
@@ -117,7 +117,7 @@ const MyChats1 = ({ fetchAgain }) => {
         },
       };
       const { data } = await axios.post(
-        `http://localhost:5000/api/chat`,
+        `${server}/api/chat`,
         { userId },
         config
       );

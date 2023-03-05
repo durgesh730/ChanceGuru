@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-
+import server from "./server";
 
 const StatusSide = ({ charId, roleId, project, userId }) => {
     const [cards, setcards] = useState([]);
@@ -8,7 +8,7 @@ const StatusSide = ({ charId, roleId, project, userId }) => {
     const [img, setImg] = useState();
     const getuserData = () => {
         axios
-            .get(`http://localhost:5000/project/UserId/${userId}`)
+            .get(`${server}/project/UserId/${userId}`)
             .then((res) => {
                 if (res !== null) {
                     setcards(res.data)
@@ -21,7 +21,7 @@ const StatusSide = ({ charId, roleId, project, userId }) => {
 
     const getProfileImages = () => {
         axios
-            .get(`http://localhost:5000/profile/${userId}`)
+            .get(`${server}/profile/${userId}`)
             .then((res) => {
                 if (res !== null) {
                     setImg(res.data.photos)

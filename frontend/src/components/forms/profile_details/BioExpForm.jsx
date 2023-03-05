@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
+import server from "../../server";
 
 const BioExpForm = ({ display, toggleForm }) => {
   let bioForm = document.getElementById("bio-form");
@@ -58,7 +59,7 @@ const BioExpForm = ({ display, toggleForm }) => {
     const data = bioData;
     axios
       .put(
-        "http://localhost:5000/profile/portfolio",
+        `${server}/profile/portfolio`,
         { bio: bio },
         {
           headers: {
@@ -88,7 +89,7 @@ const BioExpForm = ({ display, toggleForm }) => {
     }
     axios
       .put(
-        "http://localhost:5000/profile/portfolio/exp",
+        `${server}/profile/portfolio/exp`,
         newExp,
 
         {
@@ -117,7 +118,7 @@ const BioExpForm = ({ display, toggleForm }) => {
 
   const handleShow = async () => {
     axios
-      .get(`http://localhost:5000/profile/`, {
+      .get(`${server}/profile/`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

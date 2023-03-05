@@ -3,6 +3,7 @@ import Topbar from "./mini_components/Topbar";
 import RoleRecentCard from "./RoleRecentCard";
 import { Swiper, SwiperSlide } from "swiper/react";
 import axios from "axios";
+import server from "./server";
 
 const MyRoles = () => {
   const [activeCard, setActiveCard] = useState(1);
@@ -23,7 +24,7 @@ const MyRoles = () => {
 
   const getApplications = () => {
     axios.
-      get("http://localhost:5000/application/allJobsUser", {
+      get(`${server}/application/allJobsUser`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

@@ -5,6 +5,7 @@ import { IoLogoDesignernews, IoMdNotifications } from "react-icons/io";
 import Searchbar from "./mini_components/Searchbar";
 
 import axios from "axios"
+import server from "./server";
 
 function TalentNotification() {
     const [jobs, setJobs] = useState()
@@ -20,7 +21,7 @@ function TalentNotification() {
 
     const getJobApplications = async () => {
         const res = await fetch(
-            "http://localhost:5000/application/allJobsUser",
+            `${server}/application/allJobsUser`,
             {
                 method: "GET",
                 headers: {
@@ -42,7 +43,7 @@ function TalentNotification() {
         views?.map((view, index) => {
             console.log(view)
           axios
-            .get(`http://localhost:5000/project/UserId/${view.seekerId}`)
+            .get(`${server}/project/UserId/${view.seekerId}`)
             .then((res) => {
               if (res !== null) {
                 setViewUsers(oldUsers => [...oldUsers, res.data])
@@ -59,7 +60,7 @@ function TalentNotification() {
     function getJobRoles(jobs) {
         jobs?.map((job, index) => {
 
-            axios.get(`http://localhost:5000/project/getCharacter/${job.roleId}`)
+            axios.get(`${server}/project/getCharacter/${job.roleId}`)
                 .then((res) => {
                     
                     console.log(res.data)
@@ -74,7 +75,7 @@ function TalentNotification() {
     }
 
     const getReqToApp = ()=>{
-        axios.get(`http://localhost:5000/profile/reqToApp/${user._id}`)
+        axios.get(`${server}/profile/reqToApp/${user._id}`)
         .then((res)=>{
             console.log(res.data)
             setViews(res.data)

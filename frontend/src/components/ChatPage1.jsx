@@ -3,7 +3,7 @@ import Topbar from "./mini_components/Topbar";
 import MyChats1 from "./mini_components/MyChats1";
 import ChatContext from "./Context/chat-context";
 import ChatBox1 from "./mini_components/ChatBox1";
-
+import server from "./server";
 
 const ChatPage1 = () => {
   const [fetchAgain, setFetchAgain] = useState(false);

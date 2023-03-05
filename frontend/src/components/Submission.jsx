@@ -8,6 +8,7 @@ import { NavLink, useLocation } from "react-router-dom";
 import SideNav from "./SideNav";
 import axios from "axios";
 import SubmissionStatus from "./SubmissionStatus";
+import server from "./server";
 
 const Submission = () => {
   const [active, setActive] = useState("");
@@ -20,7 +21,7 @@ const Submission = () => {
 
   const handleSearch = async () => {
     const data = await fetch(
-      `http://localhost:5000/profile/searchSeekerData?name=${query}`,
+      `${server}/profile/searchSeekerData?name=${query}`,
       {
         method: "GET",
         headers: {
@@ -36,7 +37,7 @@ const Submission = () => {
   };
 
   const getAdminProjects = async ()=>{
-    const data = await fetch('http://localhost:5000/project/getProjectForAdmin', {
+    const data = await fetch(`${server}/project/getProjectForAdmin`, {
       method:"GET",
       headers:{
        "Content-Type":"application/json",
@@ -49,7 +50,7 @@ const Submission = () => {
     }
 }
 
-  const url = "http://localhost:5000/project/allProjectsSeekers";
+  const url = `${server}/project/allProjectsSeekers`;
   const getProjects = (e) => {
     axios
       .get(url, {

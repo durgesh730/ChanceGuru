@@ -3,26 +3,24 @@ import { useState } from "react";
 import Modal from "./Modal";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import server from '../server';
 
 const Card2 = ({ card }) => {
   const [model, setModel] = useState(false);
   const name = card.basicInfo.name;
   const id = card._id;
-  console.log(card.basicInfo.name, "card")
-  console.log(card)
 
   const [apply, setApply] = useState([]);
   const [photos, setPhotos] = useState([]);
 
   const userName = async (id) => {
-    const data = await fetch(`http://localhost:5000/profile/${id}`, {
+    const data = await fetch(`${server}/profile/${id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
     });
     const res = await data.json();
-     console.log(res, "phots")
     if (res !== null) {
       setPhotos(res.photos);
     }
@@ -30,7 +28,7 @@ const Card2 = ({ card }) => {
 
   const getuserId = async () => {
     axios
-      .get(`http://localhost:5000/application/project/${id}`)
+      .get(`${server}/application/project/${id}`)
       .then((res) => {
         if (res.data !== null) {
           setApply(res.data);
@@ -45,10 +43,7 @@ const Card2 = ({ card }) => {
   };
 
   useEffect(() => {
-    // userName();
     getuserId();
-    
-    // setPhotos()
   }, []);
 
  
@@ -70,9 +65,7 @@ const Card2 = ({ card }) => {
               <span className="h4">{apply.length}</span>
             </div>
             <div className="many_images">
-              {console.log(photos, "a gya")}
               {photos?.map((item, i) => {
-                console.log(item.link)
                 return <img key={i} src={item.link} alt="img" />;
               })}
               <span>+20</span>

@@ -11,6 +11,8 @@ import Thumb from "../assets/images/Group 36.png";
 import axios from "axios";
 import SubViewProfile from './SubViewProfile';
 import { BsChevronRight, BsChevronLeft } from 'react-icons/bs';
+import Prevnext from "./mini_components/Prevnext";
+import server from "./server";
 
 const UserProfile = () => {
   const [active, setActive] = useState("details");
@@ -34,24 +36,20 @@ const UserProfile = () => {
     setShortlisted(false);
   }
   const location = useLocation();
-
   const userData = location.state.user;
-  console.log(userData, "userdata")
   const index = location.state.index;
   const card = location.state.card;
   const d = location.state.btn;
-  const DateTime = location.state.project
+  const DateTime = location.state.project;
+  console.log("userData", userData);
 
   var id = 0;
   var userId = 0;
   card?.map((item) => {
     id = item._id;
     userId = item.userId
-    console.log(item.charId, "charId")
-    // console.log
   })
 
-  console.log(id, "id")
 
   const setVal = (e) => {
     const { value, name } = e.target;
@@ -66,7 +64,7 @@ const UserProfile = () => {
 
   const handleInterview = async () => {
     const { date, time, interview, location } = Inter;
-    const data = await fetch(`http://localhost:5000/application/DateTime/${id}`, {
+    const data = await fetch(`${server}/application/DateTime/${id}`, {
       method: "Put",
       headers: {
         "Content-Type": "application/json",
@@ -74,15 +72,15 @@ const UserProfile = () => {
       body: JSON.stringify({ date: date, time: time, interview: interview, location: location })
     })
     const res = await data.json();
-    console.log(res, "hii dugeh")
+    console.log(res)
   }
 
   const handleApplyReq = () => {
-    axios.put('http://localhost:5000/profile/ReqToApp',{talentId: location.state.user.userId},{
+    axios.put(`${server}/profile/ReqToApp`, { talentId: location.state.user.userId }, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-      
+      },
+
     })
       .then(res => {
         setModal(false);
@@ -90,11 +88,11 @@ const UserProfile = () => {
       .catch(err => {
         console.log(err);
       });
-    
+
   };
 
   // const GetLocationByUserId = async () => {
-  //   const data = await fetch(`http://localhost:5000/application/DateLocation/${userId}`, {
+  //   const data = await fetch(`${server}/application/DateLocation/${userId}`, {
   //     method: "GET",
   //     headers: {
   //       "Content-Type": "application/json",
@@ -106,7 +104,7 @@ const UserProfile = () => {
   // };
 
   const handleSelect = async () => {
-    const data = await fetch(`http://localhost:5000/project/Select/${card[index]._id}/${d}`, {
+    const data = await fetch(`${server}/project/Select/${card[index]._id}/${d}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -119,7 +117,7 @@ const UserProfile = () => {
   };
 
   const handleReject = async () => {
-    const data = await fetch(`http://localhost:5000/project/Reject/${card[index]._id}`, {
+    const data = await fetch(`${server}/project/Reject/${card[index]._id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -133,7 +131,7 @@ const UserProfile = () => {
   };
 
   const handleShortlist = async () => {
-    const data = await fetch(`http://localhost:5000/project/Shortlist/${card[index]._id}/${d}`, {
+    const data = await fetch(`${server}/project/Shortlist/${card[index]._id}/${d}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -147,7 +145,7 @@ const UserProfile = () => {
   };
 
   const handleSchedule = async () => {
-    const data = await fetch(`http://localhost:5000/project/Schedule/${card[index]._id}/${d}`, {
+    const data = await fetch(`${server}/project/Schedule/${card[index]._id}/${d}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -162,7 +160,7 @@ const UserProfile = () => {
 
   var [first, setfirst] = useState(0)
   const handleNext = () => {
-    if (first < userData.photos.length - 1) {
+    if (first < userData?.photos.length - 1) {
       first = first + 1
       setfirst(first);
       // console.log(first)
@@ -207,7 +205,7 @@ const UserProfile = () => {
                 <figure className=" userImage_main">
 
                   {
-                    userData.photos.map((item, index) => {
+                    userData?.photos.map((item, index) => {
                       return (
                         <>
                           {(index === first) ? <img src={item.link} alt="" /> : ("")}
@@ -226,19 +224,19 @@ const UserProfile = () => {
                 <div className="small_img">
                   <figure>
                     {
-                      userData.photos?.map((img, i) => {
+                      userData?.photos?.map((img, i) => {
                         return (
                           (i > 0) ? <img src={img.link} className="m-1" alt="" /> : ("")
                         )
                       })
                     }
-                    <span> + {userData.photos.length}</span>
+                    <span> + {userData?.photos.length}</span>
 
                   </figure>
 
                   <figure className="d-flex" >
                     {
-                      userData.videos?.map((img, i) => {
+                      userData?.videos?.map((img, i) => {
                         // console.log(img.link)
                         return (
                           <>
@@ -277,21 +275,20 @@ const UserProfile = () => {
                       }
 
                       {card?.map((item, i) => {
-                        console.log(item, 'hii')
                         return (
                           <>
-                            {item.status === "scheduled"?
-                                (item.audition?.map((sub, i) => {
-                                  return (
-                                      <>
-                                          <div>
-                                              <span className="mx-1" >{sub.date}</span>
-                                              <span className="mx-1" >{sub.time}</span>
-                                              <span className="mx-1" >{sub.location}</span>
-                                              <span className="mx-1" >{sub.interviewer}</span>
-                                          </div>
-                                      </>
-                                  )
+                            {item.status === "scheduled" ?
+                              (item.audition?.map((sub, i) => {
+                                return (
+                                  <>
+                                    <div>
+                                      <span className="mx-1" >{sub.date}</span>
+                                      <span className="mx-1" >{sub.time}</span>
+                                      <span className="mx-1" >{sub.location}</span>
+                                      <span className="mx-1" >{sub.interviewer}</span>
+                                    </div>
+                                  </>
+                                )
                               }))
                               : ("")}
                           </>
@@ -355,18 +352,18 @@ const UserProfile = () => {
                   </div>
                   <hr />
                   <div className="h-100">
-                    {active === "details" && <Details Data={userData.basicInfo} />}
-                    {active === "talent" && <Talents Data={userData.talent} />}
+                    {active === "details" && <Details Data={userData?.basicInfo} />}
+                    {active === "talent" && <Talents Data={userData?.talent} />}
                     {active === "bio" && <BioExperience
-                      Data={userData.portfolio}
+                      Data={userData?.portfolio}
                     />}
                     {active === "education" && <Education
-                      Data={userData
-                      }
+                      Data={userData}
                     />}
                     {active === "role" && <UserRole
                       Data={userData}
                     />}
+                    <Prevnext user={userData} card={card} index={index} d={d} />
                   </div>
                 </div>
               </div>
@@ -451,6 +448,7 @@ const UserProfile = () => {
             </div>
           </div>
         </div>
+
       )}
     </>
   );
