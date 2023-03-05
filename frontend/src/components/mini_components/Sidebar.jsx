@@ -66,6 +66,7 @@ const Sidebar = () => {
         if (toggleSideNav) {
             settoggleSideNav(false);
             document.querySelector(".side_bar").style.display = "block"
+
         }
         else {
             settoggleSideNav(true)

@@ -1648,10 +1648,11 @@ div.css-18dcxwc {
   padding: 33px 27px 24px 27px;
 }
 .myChat_main {
+  display: block;
   box-shadow: 0 0 6px 0 rgba(180, 180, 180, 0.5);
   /* width: 292px; */
   /* height: 600px; */
-  height: calc(100% - 80px) !important;
+  height: calc(100% - 70px) !important;
 }
 .chat_page h4 {
   font-size: 18px;
@@ -1691,7 +1692,7 @@ div.css-18dcxwc {
 }
 .myChat_users {
   width: 100%;
-  height: calc(600px - 80px);
+  height: calc(100vh - 99px);
   overflow-y: scroll;
   margin: 0;
   padding: 0;
@@ -1989,6 +1990,12 @@ aside.emoji-picker-react {
   top: 50%;
   opacity: 0.7;
 }
-.sidebar-toggle {
+.side_toggle_chat {
   display: block;
+  height: calc(100% - 80px) !important;
+}
+
+.side_chat {
+  display: none !important;
+  transition: all 0.3s;
 }
