@@ -114,7 +114,7 @@ const SeekerDashboard = () => {
       <Topbar />
       <div className="container">
         <div className="row">
-          <div className="col-lg-8 searchBox">
+          <div className="col-lg-8 col-12 searchBox">
             <Searchbar
               setQuery={setQuery}
               query={query}
@@ -137,7 +137,7 @@ const SeekerDashboard = () => {
                 ))}
             </div>
           </div>
-          <div className="col-lg-4">
+          <div className="col-lg-4 col-12">
             <button
               className="btn btn-primary create-btn"
               onClick={routeChange}

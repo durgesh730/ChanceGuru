@@ -49,7 +49,7 @@ const SubmissionStatus = ({ a, project, id }) => {
                     <div className="b_table">
                         <table>
                             <thead>
-                                <td>Applocant Name</td>
+                                <td>Applicant Name</td>
                                 <td>Scheduled For</td>
                                 <td>Status</td>
                                 <td>Date</td>

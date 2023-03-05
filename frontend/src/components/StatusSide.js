@@ -48,15 +48,16 @@ const StatusSide = ({ charId, roleId, project, userId }) => {
 
     return (
         <>
-            <td>
+            <td className='d-flex align-items-center'>
                 {
-                   img?.map((item, i)=>{
-                      return (
-                        (i===0)? <img src={item.link} />:("")
-                      )
-                   }) 
+                    img?.map((item, i) => {
+                        return (
+                            (i === 0) ? <img src={item.link} /> : ("")
+                        )
+                    })
                 }
-                {cards[0]?.username}
+
+                <p className='m-0'>{cards[0]?.username}</p>
             </td>
             <td>
                 {character}

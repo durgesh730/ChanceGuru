@@ -1,0 +1,295 @@
+@media screen and (max-width: 468px) {
+  .topbar {
+    position: sticky;
+    height: fit-content;
+    width: 100%;
+    padding: 10px;
+  }
+  .topbar,
+  .topbar-nav {
+    align-items: start;
+    flex-direction: column;
+  }
+  .topbar-nav {
+    display: none;
+  }
+  .topbar-nav {
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    left: 0px;
+    background-color: #fff;
+    margin: 0;
+    box-shadow: 0 2px 4px #aba8a8;
+  }
+  .topbar-name {
+    position: relative;
+    width: 100%;
+    margin-left: 10px;
+  }
+  .navToggle {
+    display: block;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 20px;
+  }
+  .create-btn {
+    margin: 0;
+  }
+  .grid-wrapper {
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: repeat(4, 200px);
+  }
+  .side_div {
+    grid-area: 1/1 / 3/ 2;
+    top: 0;
+  }
+  .grid-wrapper .child_cards a {
+    height: 200px;
+  }
+
+  .notif-options {
+    left: 0;
+    right: auto;
+    width: calc(100vw - 20px);
+    z-index: 2;
+  }
+  div.profile-options {
+    right: auto;
+    width: calc(100vw - 20px);
+  }
+  .search-input button {
+    padding: 0 15px;
+  }
+  .navSideToggle {
+    display: block;
+  }
+  /* ===================browse profile========================= */
+  .b_table thead td {
+    font-size: 12px;
+    width: 0;
+  }
+  .b_table tbody tr td img {
+    width: 43px;
+    height: 43px;
+    margin-right: 5px;
+  }
+  .b_table table tbody td {
+    /* font-family: Muli; */
+    font-size: 10px;
+    padding: 2px;
+    width: 20%;
+  }
+  .b_table table tbody td button {
+    font-size: 8px;
+    width: 100%;
+  }
+
+  /* ==========================chat box================================= */
+  .cb_bottom {
+    padding: 5px;
+  }
+  .cb_chats_msg img {
+    width: 35px;
+    height: 35px;
+  }
+  .cb_chats_msg p {
+    padding: 10px 22px;
+    width: 248px;
+  }
+  .cb_chats_msg2 img {
+    width: 35px;
+    height: 35px;
+  }
+  .cb_chats_msg2 p {
+    padding: 10px 22px;
+    width: 248px;
+  }
+
+  /* ==========================applicant details=============================== */
+  .content-container {
+    flex-direction: column;
+    padding: 10px;
+  }
+  .projCont {
+    width: 100%;
+    margin: auto;
+  }
+  div.applicantDetails {
+    width: 100%;
+    padding-left: 10px;
+  }
+  div.statusContainer {
+    display: flex;
+    margin-left: 0;
+  }
+  div.statusContainer > div {
+    padding: 5px;
+  }
+  .applicantDetails .leadRoles {
+    margin-top: 36.5px;
+  }
+
+  div.lI div.actionButtons {
+    flex-direction: column;
+  }
+  div.lI div span {
+    font-size: 12px;
+  }
+  .leadRoles span,
+  div.statusContainer > div span {
+    font-size: 10px;
+  }
+  .topNavbar span {
+    font-size: 12px;
+  }
+  .topNavbar span[highlighted="true"]::after {
+    top: 30px;
+  }
+  .mt-1 {
+    margin: 1rem;
+  }
+
+  /* ===============user profile========================================== */
+  .horizontal_nav span {
+    font-size: 12px;
+  }
+  .right_pfp {
+    margin-top: 20px;
+  }
+
+  /* ==============================roles======================================= */
+
+  .roleUpdate {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  .flex-container {
+    padding: 10px;
+    flex-direction: column;
+  }
+  .roleChild .form-container {
+    margin: 0;
+  }
+  .apply-btn,
+  .cancel-btn {
+    width: 100%;
+  }
+  .save-btn {
+    width: 100%;
+  }
+  .toggle-option {
+    margin-right: 0;
+  }
+  .char-form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .charList div {
+    margin-right: 5px;
+    width: auto;
+  }
+  .roleChild {
+    width: 100%;
+    min-height: 100%;
+    padding: 10px 5px;
+    margin: 10px 3px;
+  }
+  .form-body {
+    height: auto;
+  }
+  .form-toggle {
+    padding: 0;
+  }
+  .charList {
+    padding: 0;
+  }
+  .charList div {
+    font-size: 10px;
+    padding: 2px 7px;
+  }
+  .experience_container .ec_child div {
+    padding: 5px;
+  }
+  .ec_child {
+    width: 300px;
+  }
+  /* ==================================login====================================== */
+  .login-container {
+    height: auto;
+  }
+  /* ==============================side nav======================================= */
+  .side_nav {
+    width: 30%;
+  }
+  .navSideToggle {
+    position: fixed;
+    top: 30px;
+    transform: translateY(-50%);
+    font-size: 50px;
+    left: -15px;
+    color: #8443e5;
+    z-index: 999999999999;
+  }
+  .subAud {
+    width: 100%;
+    margin-left: 0;
+  }
+  .aa_head {
+    font-size: 12px;
+  }
+
+  /* ====================talent side========================== */
+  .role_main {
+    padding: 10px 10px;
+  }
+  .requestPage {
+    padding: 0 30px;
+  }
+  .modal-container {
+    width: 95%;
+  }
+  .modal-body {
+    border: solid 1px #ddd;
+    padding: 15px 15px;
+    margin: 10px !important;
+    width: 100%;
+  }
+  .modal-footer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+  .modal-footer button {
+    width: 48%;
+  }
+  /* ===========================my roles========================= */
+  .role_main .long_Cards {
+    flex-direction: column;
+    height: fit-content;
+  }
+  .role_main .long_Cards .firstDiv {
+    width: 100%;
+  }
+  .role_main .long_Cards div {
+    flex-direction: column;
+  }
+  .rCard_child button {
+    width: 90%;
+  }
+
+  /* =======================profile details============================== */
+
+  .sidebar-toggle {
+    display: none;
+  }
+  .talent_container {
+    padding: 10px !important;
+  }
+}

@@ -109,13 +109,13 @@ const ApplicantRowCard = ({ Data, applied }) => {
                         >
                             <div className="lI" >
 
-                                <div>
+                                <div className='d-flex align-items-center'>
                                     <img src={items.photos[0]?.link} alt="" style={{ width: '4rem' }} />
                                     <span key={i} className="applicantName">
                                         {items.basicInfo.fullname}
                                     </span>
                                 </div>
-                                <div style={{ marginLeft: "-100px" }} >
+                                <div >
                                     <span className="applicantStatus">{getLastUpdate(items.updatedAt)}</span>
                                 </div>
                                 <div className="actionButtons" >

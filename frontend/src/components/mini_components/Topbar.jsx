@@ -1,6 +1,10 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { RiLogoutBoxRLine } from "react-icons/ri";
+import { AiOutlineClose } from "react-icons/ai";
+import { FaBars } from "react-icons/fa";
+
+
 
 import "./minicomp.css";
 import home from "../../assets/icons/home.svg";
@@ -31,6 +35,7 @@ const Topbar = (props) => {
   const [dim, setDim] = useState(0);
   const [projects, setProjects] = useState();
   const [loggedUser, setLoggedUser] = useState("");
+  const [toggleNav, settoggleNav] = useState(false)
 
 
   const auth = useContext(AuthContext)
@@ -241,11 +246,27 @@ const Topbar = (props) => {
   }, []);
   // console.log(loggedUser.link)
 
+  const handleNavbar = () => {
+    if (toggleNav) {
+      document.querySelector(".topbar-nav").style.display = "none";
+      settoggleNav(false);
+
+    }
+    else {
+      document.querySelector(".topbar-nav").style.display = "flex";
+      settoggleNav(true)
+    }
+  }
+  console.log(toggleNav)
+
   return (
     <>
       <div className="topbar">
         <div className="topbar-name">
           Chance <br /> Guru
+          <span className="navToggle" onClick={handleNavbar}>
+            {toggleNav ? <AiOutlineClose /> : <FaBars />}
+          </span>
         </div>
 
         <div className="topbar-nav">
@@ -459,7 +480,7 @@ const Topbar = (props) => {
           </span>
 
           <span
-            className="d-flex align-items-center cursor-pointer"
+            className="d-flex align-items-center cursor-pointer position-relative"
             onClick={toggleProfileOptions}
           >
             <span className="topbar-icons-container">

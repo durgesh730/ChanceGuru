@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 const SideNav = () => {
   return (
     <>
-      <span className="mb-3">
+      <p className="sidebar-items mt-2">
         <NavLink
           to="/submission"
           className={({ isActive }) =>
@@ -13,8 +13,8 @@ const SideNav = () => {
         >
           Submission
         </NavLink>
-      </span>
-      <span>
+      </p>
+      <p className="sidebar-items">
         <NavLink
           to="/audition"
           className={({ isActive }) =>
@@ -23,7 +23,7 @@ const SideNav = () => {
         >
           Audition
         </NavLink>
-      </span>
+      </p>
     </>
   );
 };

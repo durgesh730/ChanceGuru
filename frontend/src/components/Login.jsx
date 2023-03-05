@@ -27,16 +27,16 @@ const Login = () => {
   const handleForgotPassword = (e) => {
     e.preventDefault();
     console.log(values.email);
-        sendPasswordResetEmail(authentication, values.email)
-          .then(() => {
-           alert("Reset password email has been sent");
-          
-           setValues.email ="";
-                })
-                .catch((err) => {
-                  console.log(err);
-                });
-            }
+    sendPasswordResetEmail(authentication, values.email)
+      .then(() => {
+        alert("Reset password email has been sent");
+
+        setValues.email = "";
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
   const handleSubmission = (e) => {
     e.preventDefault();
@@ -78,12 +78,12 @@ const Login = () => {
               }
             })
             .catch((err) => setErrorMsg(err.message));
-            
+
         }
       })
       .catch((err) => {
         console.log(err);
-        
+
       });
   };
 
@@ -101,7 +101,7 @@ const Login = () => {
   return (
     <>
       <div className="login-container row">
-        <div className="left-side col-5">
+        <div className="left-side col-lg-5">
           <div className="top-left d-flex align-items-center">
             <i
               onClick={() => {
@@ -128,7 +128,7 @@ const Login = () => {
             </div>
           </div>
         </div>
-        <div className="right-side col-7 d-flex align-items-center justify-content-center">
+        <div className="right-side col-lg-7 d-flex align-items-center justify-content-center">
           <form
             onSubmit={handleSubmission}
             action=""
