@@ -158,7 +158,8 @@ const MyChats1 = ({ fetchAgain }) => {
 
   return (
     <>
-      <div className="myChat_main col-lg-3">
+      <div className="myChat_main">
+
         <div className="myChat">
           <div className="searchChat">
             <CiSearch className="search_icon" />
@@ -238,6 +239,7 @@ const MyChats1 = ({ fetchAgain }) => {
           </div>
         </div>
       </div>
+
     </>
   );
 };
