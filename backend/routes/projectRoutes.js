@@ -16,13 +16,17 @@ router.get("/SearchProjectForAdmin", async (req, res) => {
   });
 
 router.put("/Datetime/:id", async (req, res) => {
+    console.log(req.body)
     try {
       const newData = {};
       if (req.body) {
         newData.DateTime = req.body;
       }
+
+      console.log(newData)
       const userData = await Project.findOneAndUpdate({ _id: req.params.id},{ $push: newData }, { new: true } );
       res.json({ userData });
+      
     } catch (error) {
       console.error(error.message);
       res.status(500).send("Some error occured");

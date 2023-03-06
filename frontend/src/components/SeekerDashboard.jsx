@@ -153,7 +153,6 @@ const SeekerDashboard = () => {
         <div className="main-container">
           <ul className="grid-wrapper">
             {card?.map((item, i) => (
-              // console.log(card, "jhgfd")
               <Card2 key={i} card={item} />
             ))}{" "}
           </ul>

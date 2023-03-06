@@ -1,8 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const Modal = ({ setModel, info, setProfile, roles }) => {
+const Modal = ({ setModel, info, setProfile, UserProfileDeatils, roles }) => {
+
+  const [status, setstatus] = useState();
+
+  const length = status?.length;
+
+  var charId = 0;
+  roles?.map((item) => item.characters?.map((i) => {
+    charId = i._id;
+  }))
+
+  const handlestatus = async () => {
+    const data = await fetch(`http://localhost:5000/application/JobDetails/${UserProfileDeatils.userId}/${charId} `, {
+      method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
+      }
+    })
+    const res = await data.json();
+    console.log(res);
+    setstatus(res)
+  }
+
   const navigate = useNavigate();
   const roleApply = (chrId, rId) => {
     axios
@@ -22,7 +44,6 @@ const Modal = ({ setModel, info, setProfile, roles }) => {
         }
       )
       .then((res) => {
-        // console.log(res);
         setModel(false);
         alert("You have successfully applied for this role");
       })
@@ -35,10 +56,13 @@ const Modal = ({ setModel, info, setProfile, roles }) => {
     navigate("/profiledetails");
   }
 
+  useEffect(() => {
+    handlestatus();
+  }, [])
+
   return (
     <div className="modal-background my-4">
       <div className="modal-container">
-        {/* {profile: 100, talent: 100, photo: 100, education: 100, roles: 50} */}
         {(setProfile.profile &&
           setProfile.talent &&
           setProfile.photo &&
@@ -55,7 +79,6 @@ const Modal = ({ setModel, info, setProfile, roles }) => {
           <div className="modal-name">‘{info.basicInfo.name}’</div>
           <div className="secondary-text">Roles</div>
           {roles.map((item, index) => {
-            // console.log(item)
             return (
               <>
                 <div key={index}>
@@ -65,10 +88,11 @@ const Modal = ({ setModel, info, setProfile, roles }) => {
                       {"  "}
                       {`(${item.characters.length})`}
                     </div>
-                    {item.characters.map((e, i) => {
+                    {item.characters.map((e, x) => {
+
                       return (
                         <>
-                          <div key={i}>
+                          <div key={x}>
                             <div className="char-name">{e.name}</div>
                             <div className="total-roles">
                               {(setProfile.profile &&
@@ -76,18 +100,40 @@ const Modal = ({ setModel, info, setProfile, roles }) => {
                                 setProfile.photo &&
                                 setProfile.education &&
                                 setProfile.roles) >= 80 ? (
-                                <button
-                                  style={{
-                                    backgroundColor: "#8443e5",
-                                    color: "white",
-                                  }}
-                                  onClick={() => {
-                                    roleApply(e._id, item._id);
-                                  }}
-                                  className="apply-btn"
-                                >
-                                  Apply
-                                </button>
+
+                                length === 0 ? (
+                                  <button
+                                    style={{
+                                      backgroundColor: "#8443e5",
+                                      color: "white",
+                                    }}
+                                    onClick={() => {
+                                      roleApply(e._id, item._id);
+                                    }}
+                                    className="apply-btn"
+                                  >
+                                    Apply
+                                  </button>) : (
+                                  status?.map((item, i) => {
+
+                                    return (
+                                      item.status === "applied" && e._id || item.status === "shortlisted"  && e._id || item.status === "selected"  && e._id || item.status === "scheduled"  && e._id ? ("") : (
+                                        <button
+                                          style={{
+                                            backgroundColor: "#8443e5",
+                                            color: "white",
+                                          }}
+                                          onClick={() => {
+                                            roleApply(e._id, item._id);
+                                          }}
+                                          className="apply-btn"
+                                        >
+                                          Apply
+                                        </button>
+                                      )
+                                    )
+                                  })
+                                )
                               ) : (
                                 <button
                                   style={{

@@ -40,7 +40,6 @@ const Submission = () => {
       },
     })
     const re = await data.json();
-    console.log(re, "submi")
     if(re !== null){
       setcards(re);
     }

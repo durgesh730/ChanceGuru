@@ -183,7 +183,6 @@ const Topbar = (props) => {
   useEffect(() => {
     setLoggedUser(JSON.parse(localStorage.getItem("login")));
   }, []);
-  // console.log(loggedUser.link)
 
   return (
     <>

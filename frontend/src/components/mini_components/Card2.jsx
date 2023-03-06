@@ -45,10 +45,7 @@ const Card2 = ({ card }) => {
   };
 
   useEffect(() => {
-    // userName();
     getuserId();
-    
-    // setPhotos()
   }, []);
 
  
@@ -70,9 +67,7 @@ const Card2 = ({ card }) => {
               <span className="h4">{apply.length}</span>
             </div>
             <div className="many_images">
-              {console.log(photos, "a gya")}
               {photos?.map((item, i) => {
-                console.log(item.link)
                 return <img key={i} src={item.link} alt="img" />;
               })}
               <span>+20</span>

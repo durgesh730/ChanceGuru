@@ -50,11 +50,11 @@ const StatusSide = ({ charId, roleId, project, userId }) => {
         <>
             <td>
                 {
-                   img?.map((item, i)=>{
-                      return (
-                        (i===0)? <img src={item.link} />:("")
-                      )
-                   }) 
+                    img?.map((item, i) => {
+                        return (
+                            (i === 0) ? <img src={item.link} /> : ("")
+                        )
+                    })
                 }
                 {cards[0]?.username}
             </td>
