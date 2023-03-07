@@ -27,6 +27,7 @@ import arole from "../../assets/images/active-role.png";
 import requests from "../../assets/icons/request.png";
 import arequests from "../../assets/icons/active-request.png";
 import axios from "axios";
+import server from '../server';
 
 import AuthContext from "../AuthContext";
 const Topbar = (props) => {
@@ -83,7 +84,7 @@ const Topbar = (props) => {
               },
             };
             await axios.put(
-              `http://localhost:5000/api/chat/updateUnreadCount`,
+              `${server}/api/chat/updateUnreadCount`,
               { item },
               config
             )
@@ -120,7 +121,7 @@ const Topbar = (props) => {
 
   const getProjects = async () => {
     const res = await fetch(
-      "http://localhost:5000/project/allProjectsSeekers",
+      `${server}/project/allProjectsSeekers`,
       {
         method: "GET",
         headers: {
@@ -137,7 +138,7 @@ const Topbar = (props) => {
   };
 
   const getJobApplications = async () => {
-    const res = await fetch("http://localhost:5000/application/allJobsSeeker", {
+    const res = await fetch(`${server}/application/allJobsSeeker`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -155,7 +156,7 @@ const Topbar = (props) => {
   function getUsers(jobs) {
     jobs?.map((job, index) => {
       axios
-        .get(`http://localhost:5000/project/UserId/${job.userId}`)
+        .get(`${server}/project/UserId/${job.userId}`)
         .then((res) => {
           if (res !== null) {
             setJobUsers((oldUsers) => [...oldUsers, res.data]);
@@ -171,7 +172,7 @@ const Topbar = (props) => {
   function getJobProjects(jobs) {
     jobs?.map((job, index) => {
       axios
-        .get(`http://localhost:5000/project/projectDetails/${job.pId}`)
+        .get(`${server}/project/projectDetails/${job.pId}`)
         .then((res) => {
           if (res !== null) {
             setJobProjects((oldProjects) => [...oldProjects, res.data]);
@@ -192,7 +193,7 @@ const Topbar = (props) => {
       };
 
       await axios.get(
-        "http://localhost:5000/api/chat/getUnreadCount",
+        `${server}/api/chat/getUnreadCount`,
         config
       )
       .then((response)=>{
@@ -257,7 +258,6 @@ const Topbar = (props) => {
       settoggleNav(true)
     }
   }
-  console.log(toggleNav)
 
   return (
     <>

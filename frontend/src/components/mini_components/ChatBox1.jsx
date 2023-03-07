@@ -4,6 +4,7 @@ import { getSender, getSenderFull } from "../config/ChatLogics";
 //import { useHelper } from '../config/helper-hook';
 import { useContext, useEffect, useRef, useState } from "react";
 import axios from "axios";
+import server from '../server';
 
 import ChatContext from "../Context/chat-context";
 
@@ -12,8 +13,8 @@ import ScrollableChat1 from "./ScrollableChat1";
 import Picker from "emoji-picker-react";
 import emojiIcon from "../../assets/icons/emoji.png";
 import { MdOutlineEmojiEmotions } from "react-icons/md";
-//const ENDPOINT = "http://localhost:5000"; //development
-const ENDPOINT = "http://localhost:5000";
+//const ENDPOINT = `${server}`; //development
+const ENDPOINT = `${server}`;
 var socket, selectedChatCompare;
 
 const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
@@ -49,7 +50,7 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
       setLoading(true);
 
       const { data } = await axios.get(
-        `http://localhost:5000/api/message/${selectedChat._id}`,
+        `${server}/api/message/${selectedChat._id}`,
         config
       );
 
@@ -80,7 +81,7 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
         setNewMessage("");
 
         const { data } = await axios.post(
-          "http://localhost:5000/api/message",
+          `${server}/api/message`,
           {
             content: newMessage,
             chatId: selectedChat,
@@ -223,7 +224,7 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
     //     },
     //   };
     //   const { data } = await axios.delete(
-    //     `http://localhost:5000/api/chat`,
+    //     `${server}/api/chat`,
     //     { userId },
     //     config
     //   );

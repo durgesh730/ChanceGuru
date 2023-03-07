@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import server from '../server';
 
 const Modal = ({ setModel, info, setProfile, roles }) => {
   const navigate = useNavigate();
   const roleApply = (chrId, rId) => {
     axios
       .post(
-        "http://localhost:5000/application",
+        `${server}/application`,
         {
           pId: info._id,
           roleId: rId,

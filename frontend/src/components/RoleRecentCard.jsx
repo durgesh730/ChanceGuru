@@ -1,6 +1,7 @@
 import React , {useState , useEffect} from "react";
 import Hurray from "../assets/images/hurray.png";
 import axios from "axios";
+import server from "./server";
 
 const RoleRecentCard = ({ index, card , activeCard }) => {
   const [project, setproject] = useState([]);
@@ -11,7 +12,7 @@ const RoleRecentCard = ({ index, card , activeCard }) => {
   console.log(project);
   const getProject = () => {
     axios
-      .get(`http://localhost:5000/project/oneproject/${card[index].pId}`)
+      .get(`${server}/project/oneproject/${card[index].pId}`)
       .then((res) => {
         setproject(res.data);
         setRole(res.data.roles.filter((role => role._id == card[index].roleId)));

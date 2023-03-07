@@ -4,6 +4,7 @@ import "../forms.css";
 import axios from "axios";
 import AWS from 'aws-sdk';
 import { Buffer } from 'buffer';
+import server from "../../server";
 
 const PhotoVideoForm = ({ display, toggleForm }) => {
     let photoForm = document.getElementById("photo-form");
@@ -63,7 +64,7 @@ const PhotoVideoForm = ({ display, toggleForm }) => {
     const handlePhotoSubmit = (e) => {
         e.preventDefault();
         const data = photoURL;
-        axios.put('http://localhost:5000/profile/photo', {
+        axios.put(`${server}/profile/photo`, {
             photoURL
         },
             {
@@ -102,7 +103,7 @@ const PhotoVideoForm = ({ display, toggleForm }) => {
     const handleVideoSubmit = (e) => {
         e.preventDefault();
         const data = videoURL;
-        axios.put('http://localhost:5000/profile/video', videoURL,
+        axios.put(`${server}/profile/video`, videoURL,
             {
                 headers: {
                     "Authorization": `Bearer ${localStorage.getItem("token")}`
@@ -121,7 +122,7 @@ const PhotoVideoForm = ({ display, toggleForm }) => {
 
     const handleShow = async () => {
         axios
-            .get(`http://localhost:5000/profile/`, {
+            .get(`${server}/profile/`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },

@@ -7,6 +7,7 @@ import axios from "axios";
 import CharacterCard from "./mini_components/CharacterCard";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
+import server from "./server";
 
 const Roles = ({ display }) => {
   let rolesForm, charForm, summForm, rolesToggle, charToggle, summToggle;
@@ -75,7 +76,7 @@ const Roles = ({ display }) => {
     setProjectDetails({ ...projectDetails, roles });
     axios
       .put(
-        "http://localhost:5000/project/changeRoles",
+        `${server}/project/changeRoles`,
         {
           project: projectDetails,
         },
@@ -129,7 +130,7 @@ const Roles = ({ display }) => {
 
     axios
       .put(
-        "http://localhost:5000/project/changeRoles",
+        `${server}/project/changeRoles`,
         {
           project: projectDetails,
         },

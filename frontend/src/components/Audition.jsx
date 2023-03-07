@@ -6,7 +6,7 @@ import SideNav from "./SideNav";
 import axios from "axios";
 import AuditionStatus from "./AuditionStatus";
 import { BsThreeDotsVertical } from "react-icons/bs";
-
+import server from "./server";
 
 const Audition = () => {
   const location = useLocation();
@@ -20,7 +20,7 @@ const Audition = () => {
 
 
   const handleSearch = async () => {
-    const data = await fetch(`http://localhost:5000/profile/searchSeekerData?name=${query}`, {
+    const data = await fetch(`${server}/profile/searchSeekerData?name=${query}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -34,7 +34,7 @@ const Audition = () => {
   };
 
   const getAdminProjects = async ()=>{
-    const data = await fetch('http://localhost:5000/project/getProjectForAdmin', {
+    const data = await fetch(`${server}/project/getProjectForAdmin`, {
       method:"GET",
       headers:{
        "Content-Type":"application/json",
@@ -48,7 +48,7 @@ const Audition = () => {
 }
 
   const getProjects = () => {
-    axios.get("http://localhost:5000/project/allProjectsSeekers", {
+    axios.get(`${server}/project/allProjectsSeekers`, {
       headers: {
         "Authorization": `Bearer ${localStorage.getItem("token")}`
       }

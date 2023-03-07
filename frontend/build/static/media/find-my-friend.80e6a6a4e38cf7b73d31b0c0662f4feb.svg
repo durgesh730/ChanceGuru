@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22.01" viewBox="0 0 22 22.01">
+    <defs>
+        <style>
+            .cls-1{fill:#8443e5}
+        </style>
+    </defs>
+    <g id="find-my-friend" transform="translate(-.12)">
+        <g id="Group_3" data-name="Group 3" transform="translate(.12)">
+            <g id="Group_2" data-name="Group 2">
+                <path id="Path_6" d="M21.64 19.179l-3.985-3.985a.43.43 0 0 0-.6-.6L16 13.536a8.683 8.683 0 0 0 .111-9.544.43.43 0 0 0-.723.465 7.822 7.822 0 1 1-2.456-2.421.43.43 0 0 0 .454-.73 8.679 8.679 0 1 0 .263 14.58l1.051 1.058a.429.429 0 0 0 .607.607l3.979 3.979a1.639 1.639 0 0 0 1.163.48 1.664 1.664 0 0 0 1.187-2.831zm-7.108-3.622l1.135-1.135.779.779-1.135 1.135zm6.492 5.357a.8.8 0 0 1-1.127.008l-3.979-3.979 1.135-1.135 3.979 3.979a.8.8 0 0 1-.008 1.127z" className="cls-1" data-name="Path 6" transform="translate(-.12)"/>
+            </g>
+        </g>
+        <g id="Group_5" data-name="Group 5" transform="translate(14.204 2.417)">
+            <g id="Group_4" data-name="Group 4">
+                <path id="Path_7" d="M328.481 56.351l-.009-.009a.43.43 0 0 0-.61.606l.011.011a.43.43 0 0 0 .608-.608z" className="cls-1" data-name="Path 7" transform="translate(-327.737 -56.214)"/>
+            </g>
+        </g>
+        <g id="Group_7" data-name="Group 7" transform="translate(2.18 2.063)">
+            <g id="Group_6" data-name="Group 6">
+                <path id="Path_8" d="M54.637 47.981a6.619 6.619 0 1 0 6.619 6.619 6.627 6.627 0 0 0-6.619-6.619zm0 12.379A5.759 5.759 0 1 1 60.4 54.6a5.766 5.766 0 0 1-5.763 5.76z" className="cls-1" data-name="Path 8" transform="translate(-48.018 -47.981)"/>
+            </g>
+        </g>
+        <g id="Group_9" data-name="Group 9" transform="translate(4.758 4.242)">
+            <g id="Group_8" data-name="Group 8">
+                <path id="Path_9" d="M113.684 102.555a2.052 2.052 0 0 0 .427-1.255v-.563a2.063 2.063 0 1 0-4.126 0v.563a2.052 2.052 0 0 0 .427 1.255 2.957 2.957 0 0 0-2.4 2.9v.222a.43.43 0 0 0 .43.43h7.221a.43.43 0 0 0 .43-.43v-.222a2.957 2.957 0 0 0-2.409-2.9zm-2.839-1.818a1.2 1.2 0 0 1 2.407 0v.563a1.2 1.2 0 1 1-2.407 0zm-1.967 4.512a2.1 2.1 0 0 1 2.083-1.885h2.175a2.1 2.1 0 0 1 2.083 1.885z" className="cls-1" data-name="Path 9" transform="translate(-108.008 -98.674)"/>
+            </g>
+        </g>
+    </g>
+</svg>

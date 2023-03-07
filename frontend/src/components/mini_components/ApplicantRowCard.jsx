@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom';
 import kamal from "../../assets/images/kamal.jpeg"
-
+import server from '../server';
 
 const ApplicantRowCard = ({ Data, applied }) => {
 
@@ -15,7 +15,7 @@ const ApplicantRowCard = ({ Data, applied }) => {
 
     const [User, SetUser] = useState([]);
     const fetchData = async () => {
-        const data = await fetch(`http://localhost:5000/profile/${id}`, {
+        const data = await fetch(`${server}/profile/${id}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -26,7 +26,7 @@ const ApplicantRowCard = ({ Data, applied }) => {
     }
 
     const handleSelect = async () => {
-        const data = await fetch(`http://localhost:5000/project/Select/${_id}/${2}`, {
+        const data = await fetch(`${server}/project/Select/${_id}/${2}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -38,7 +38,7 @@ const ApplicantRowCard = ({ Data, applied }) => {
     }
 
     const handleReject = async () => {
-        const data = await fetch(`http://localhost:5000/project/Reject/${_id}`, {
+        const data = await fetch(`${server}/project/Reject/${_id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",

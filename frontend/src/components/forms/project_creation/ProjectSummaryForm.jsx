@@ -3,6 +3,7 @@ import axios from 'axios';
 import magnifyingIcon from "../../../assets/icons/find-my-friend.svg";
 import maskIcon from "../../../assets/icons/mask.svg";
 import { useNavigate } from 'react-router-dom';
+import server from "../../server";
 
 const ProjectSummaryForm = ({ display, values }) => {
     const navigate = useNavigate();
@@ -31,7 +32,7 @@ const ProjectSummaryForm = ({ display, values }) => {
 
     const publishProject = () => {
         axios
-            .post("http://localhost:5000/project", { basicInfo: basicInfo, roles: roles }, {
+            .post(`${server}/project`, { basicInfo: basicInfo, roles: roles }, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 }

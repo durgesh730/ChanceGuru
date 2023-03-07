@@ -6,6 +6,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "../forms.css";
 import { useState } from "react";
 import { useEffect } from "react";
+import server from "../../server";
 
 const ProfileDetailsForm = ({
   display,
@@ -65,7 +66,7 @@ const ProfileDetailsForm = ({
     } = profileDetails;
 
     if (bool) {
-      const res = await fetch("http://localhost:5000/profile/basicinfo", {
+      const res = await fetch(`${server}/profile/basicinfo`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -93,7 +94,7 @@ const ProfileDetailsForm = ({
         toggle("talent");
       }
     } else {
-      const res = await fetch("http://localhost:5000/profile/", {
+      const res = await fetch(`${server}/profile/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -126,7 +127,7 @@ const ProfileDetailsForm = ({
 
   const handleShow = async () => {
     axios
-      .get(`http://localhost:5000/profile/`, {
+      .get(`${server}/profile/`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

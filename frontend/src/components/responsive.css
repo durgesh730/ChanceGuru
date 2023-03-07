@@ -152,6 +152,9 @@
   }
 
   /* ===============user profile========================================== */
+  .horizontal_nav{
+    position: relative;
+  }
   .horizontal_nav span {
     font-size: 12px;
   }

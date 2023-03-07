@@ -6,9 +6,7 @@ import time from "../assets/icons/time-left.svg";
 import reject from "../assets/icons/round-delete-button.svg";
 import ApplicantRowCard from './mini_components/ApplicantRowCard';
 import { useLocation } from 'react-router-dom';
-
-
-
+import server from "./server";
 
 const ApplicantDetails = () => {
     const location = useLocation();
@@ -39,7 +37,7 @@ const ApplicantDetails = () => {
     }
 
     const ProjectData = async () => {
-        const data = await fetch(`http://localhost:5000/project/projectDetails/${location.state}`, {
+        const data = await fetch(`${server}/project/projectDetails/${location.state}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -83,7 +81,7 @@ const ApplicantDetails = () => {
 
     const [Data, setData] = useState();
     const fetchData = async () => {
-        const data = await fetch(`http://localhost:5000/project/Seekers/${location.state}`, {
+        const data = await fetch(`${server}/project/Seekers/${location.state}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -151,7 +149,7 @@ const ApplicantDetails = () => {
     })
 
     const Schedule = async () => {
-        const data = await fetch(`http://localhost:5000/project/Datetime/${id}`, {
+        const data = await fetch(`${server}/project/Datetime/${id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -323,9 +321,6 @@ const ApplicantDetails = () => {
                     </div>
 
                     <div className="statusContainer">
-                        {
-                            // console.log(shortListCount,waitingCount,rejectedCount)
-                        }
                         <div highlighted={activeStatus === "shortlist" ? "true" : "false"} className='shortlisted' onClick={() => setActiveStatus("shortlist")} >
                             <img src={list} alt="" />
                             <span number={`${shortListCount}`}   >Short-listed</span>

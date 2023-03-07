@@ -1,27 +1,23 @@
 import React, { useEffect, useState } from "react";
 import Searchbar from "./mini_components/Searchbar";
 import Topbar from "./mini_components/Topbar";
-import {
-  Await,
-  json,
-  NavLink,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { BsChevronDown, BsPhone } from "react-icons/bs";
 import profile from "../assets/icons/profile1.svg";
 import axios from "axios";
 import Contect from "./Contect";
+import server from "./server";
 
 const BrowseProfile = () => {
   const [query, setQuery] = useState("");
   const [profileData, setProfileData] = useState();
   const [select, setSelect] = useState("");
   const [searchData, setsearchData] = useState([]);
+  const location = useLocation();
 
   const setGet = (e) => {
     const { name, value } = e.target;
-
+    
     setSelect(() => {
       return {
         ...select,
@@ -32,7 +28,7 @@ const BrowseProfile = () => {
 
   const handleSelect = async () => {
     const data = await fetch(
-      `http://localhost:5000/profile/SelectData?role=${select.select}`,
+      `${server}/profile/SelectData?role=${select.select}`,
       {
         method: "GET",
         headers: {
@@ -48,7 +44,7 @@ const BrowseProfile = () => {
 
   const handleSearch = async () => {
     const data = await fetch(
-      `http://localhost:5000/profile/ProData?fullname=${query}`,
+      `${server}/profile/ProData?fullname=${query}`,
       {
         method: "GET",
         headers: {
@@ -67,7 +63,7 @@ const BrowseProfile = () => {
 
 
   const GetProfiledata = async () => {
-    const data = await fetch("http://localhost:5000/profile/profileData", {
+    const data = await fetch("${server}/profile/profileData", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -89,12 +85,11 @@ const BrowseProfile = () => {
   useEffect(() => {
     GetProfiledata();
   }, []);
-  const location = useLocation();
 
   function viewProfileClicked(item) {
     console.log(item)
 
-    axios.post('http://localhost:5000/profile/ReqToApp', { talentId: item.userId }, {
+    axios.post(`${server}/profile/ReqToApp`, { talentId: item.userId }, {
 
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,

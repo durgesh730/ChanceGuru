@@ -29,12 +29,12 @@ const Details = ({Data}) => {
           <div className="row">
             <div className="col-lg-3">
               <p>Email</p>
-              <h6>nick_davolt@tesmail.com</h6>
+              <h6>{Data.email ? Data.email : "No email found"}</h6>
             </div>
             <div className="col-lg-3"></div>
             <div className="col-lg-3">
               <p>Phone Contact</p>
-              <h6>+1 263 786 678</h6>
+              <h6>{Data.phone ? Data.phone : "No phone found"}</h6>
             </div>
             <div className="col-lg-3"></div>
           </div>
