@@ -4,7 +4,7 @@ import Modal from "./Modal";
 import axios from "axios";
 import server from '../server';
 
-const Card = ({ card, profile, setClicked }) => {
+const Card = ({ card, profile, UserProfileDeatils , setClicked }) => {
 
   const basicInfo = card.basicInfo;
   const role = card.roles;
@@ -18,7 +18,6 @@ const Card = ({ card, profile, setClicked }) => {
   const current = new Date().toUTCString();
   var date1 = new Date(create);
   var date2 = new Date(current);
-  // console.log(image);
 
   var Difference_In_Time = date2.getTime() - date1.getTime();
   var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
@@ -31,7 +30,7 @@ const Card = ({ card, profile, setClicked }) => {
         setroles(res.data.data);
       })
       .catch((err) => {
-        // console.log(err);
+        console.log(err);
       });
   };
 
@@ -87,6 +86,7 @@ const Card = ({ card, profile, setClicked }) => {
             setProfile={profile}
             info={card}
             roles={role}
+            UserProfileDeatils = {UserProfileDeatils}
           />
         )}
       </a>

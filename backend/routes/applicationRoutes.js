@@ -4,11 +4,22 @@ const JobApplicant = require("../db/JobApplication");
 const JobApplication = require("../db/JobApplication");
 const router = express.Router();
 
-
+// To find from CharId
+router.get("/JobDetails/:UserId/:id", (req, res) => {
+  JobApplicant.find({
+    userId: req.params.UserId,
+    charId: req.params.id
+  }).then((response) => {
+    res.json(response);
+    console.log(response)
+  })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+});
 
 router.put("/DateTime/:id", async (req, res) => {
   const { time, date, interview, location } = req.body;
-  console.log(req.body)
   try {
     const newData = {};
     if (time) {
@@ -23,11 +34,8 @@ router.put("/DateTime/:id", async (req, res) => {
     if (location) {
       newData.location = location;
     }
-
-    console.log(newData)
-    const userData = await JobApplicant.findOneAndUpdate({ _id: req.params.id }, { $push: {audition:newData} }, { new: true });
+    const userData = await JobApplicant.findOneAndUpdate({ _id: req.params.id }, { $push: { audition: newData } }, { new: true });
     res.json({ userData });
-    console.log(userData)
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Some error occured");

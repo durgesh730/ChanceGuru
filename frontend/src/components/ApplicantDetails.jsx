@@ -26,8 +26,6 @@ const ApplicantDetails = () => {
 
 
     var modal = document.getElementById("myModal");
-    var btn = document.getElementById("myBtn");
-    var span = document.getElementsByClassName("close")[0];
 
     function handlemodal() {
         modal.style.display = "block";
@@ -35,6 +33,9 @@ const ApplicantDetails = () => {
     function handlemod() {
         modal.style.display = "none";
     }
+
+
+    // console.log(location.state, "location")
 
     const ProjectData = async () => {
         const data = await fetch(`${server}/project/projectDetails/${location.state}`, {
@@ -45,7 +46,6 @@ const ApplicantDetails = () => {
         })
         const res = await data.json();
         setProjectDetails(res)
-
     }
 
     useEffect(() => {
@@ -124,7 +124,6 @@ const ApplicantDetails = () => {
     }
 
     const [inputList, setinputList] = useState([{ date: '', location: '' }]);
-    // console.log(inputList)
 
     const handleinputchange = (e, index) => {
         const { name, value } = e.target;
@@ -133,7 +132,7 @@ const ApplicantDetails = () => {
         setinputList(list);
     }
 
-    const handleremove = index => {
+    const handleremove = (index) => {
         const list = [...inputList];
         list.splice(index, 1);
         setinputList(list);
@@ -142,9 +141,11 @@ const ApplicantDetails = () => {
     const handleaddclick = () => {
         setinputList([...inputList, { date: '', location: '' }]);
     }
-    
+
+    console.log(inputList)
+
     var id = 0;
-    projectDetails?.map((item, i)=>{
+    projectDetails?.map((item, i) => {
         id = item._id
     })
 
@@ -157,7 +158,8 @@ const ApplicantDetails = () => {
             body: JSON.stringify(inputList)
         })
         const json = await data.json();
-        console.log(json)
+        console.log(json, "json data")
+        modal.style.display = "none";
     }
 
     useEffect(() => {
@@ -229,7 +231,8 @@ const ApplicantDetails = () => {
                             projectDetails?.map((items, i) => {
                                 return (
                                     <>
-                                        <span key={i} number={items.roles.length} className='roles'>Roles</span>
+                                        {/* <span key={i} number={items.roles.length} className='roles'>Roles</span> */}
+                                        <span key={i} className="locationName">{items.basicInfo.address}</span>
                                     </>
                                 )
                             })
@@ -251,31 +254,47 @@ const ApplicantDetails = () => {
                         <div className="row">
                             <div className="col-sm-12">
                                 <h5 className="mt-3 mb-4 fw-bold">Add date and time</h5>
+
+
+                                {
+                                    projectDetails?.map((items) =>items.DateTime?.map((data, i)=>{
+                                         return(
+                                             <> 
+                                              <div key={i} className='my-2'> 
+                                                 <span className='mx-2' >{data.location}</span>
+                                                 <span>{data.date}</span>
+                                              </div>
+                                             </>
+                                         )
+                                    }) )
+                                }
+
+
                                 {
                                     inputList.map((x, i) => {
                                         return (
-                                            <div className="row mb-3">
+                                            <div key={i} className="row mb-3">
                                                 <div class="form-group col-md-3">
                                                     <label >Date</label>
-                                                    <input type="date" name="date" class="form-control" placeholder="Date" onChange={e => handleinputchange(e, i)} />
+                                                    <input value={x.date} type="date" name="date" class="form-control" placeholder="Date" onChange={(e) => handleinputchange(e, i)} required />
                                                 </div>
                                                 <div class="form-group col-md-3 mx-4 ">
                                                     <label >Location</label>
-                                                    <input type="location" name="location" class="form-control" placeholder="Location" onChange={e => handleinputchange(e, i)} />
+                                                    <input type="location" value={x.location} name="location" class="form-control" placeholder="Location" onChange={(e) => handleinputchange(e, i)} required />
                                                 </div>
                                                 <div class="form-group col-md-2 mt-4">
                                                     {
                                                         inputList.length !== 1 &&
                                                         <button className="btn btn-danger mx-1 " onClick={() => handleremove(i)}>Remove</button>
                                                     }
-                                                    {inputList.length - 1 === i &&
+                                                    {
+                                                        inputList.length - 1 === i &&
                                                         <button className="btn btn-success my-2 " onClick={handleaddclick}>Add More</button>
                                                     }
                                                 </div>
                                             </div>
                                         );
                                     })}
-
 
                             </div>
                         </div>
@@ -295,7 +314,7 @@ const ApplicantDetails = () => {
 
                             projectDetails?.map((items, ind) => items.roles.map((i, index) => {
                                 return (
-                                    <span highlighted={active === index ? "true" : "false"} onClick={() => { setActive(index); setLeadRoles(i.characters); setActiveChar(i.characters[0]) }} >{i.role + ` (${i.characters.length})`}</span>
+                                    <span key={ind} highlighted={active === index ? "true" : "false"} onClick={() => { setActive(index); setLeadRoles(i.characters); setActiveChar(i.characters[0]) }} >{i.role + ` (${i.characters.length})`}</span>
                                 )
                             })
                             )
@@ -311,7 +330,7 @@ const ApplicantDetails = () => {
 
                                 return (
                                     <>
-                                        <span highlighted={activeChar === p ? "true" : "false"} onClick={() => setActiveChar(p)} >{p.name}</span>
+                                        <span key={index} highlighted={activeChar === p ? "true" : "false"} onClick={() => setActiveChar(p)} >{p.name}</span>
                                     </>
                                 )
                             }

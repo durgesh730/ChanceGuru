@@ -84,7 +84,6 @@ const TalentDashboard = () => {
                 },
             })
             .then((response) => {
-                // console.log(response.data)
                 if (response.data !== null) {
                     setuserImg(response.data)
                     profileCompletion(response.data);
@@ -155,7 +154,7 @@ const TalentDashboard = () => {
                     <div className="row">
                         <ul className="grid-wrapper">
                             {cards?.map((card) => (
-                                <Card card={card} profile={profileStrength} setClicked={auth.setClicked} />
+                                <Card card={card} profile={profileStrength} UserProfileDeatils={userImg} setClicked={auth.setClicked} />
                             ))}{" "}
                             <li className="side_div" style={auth.clicked ? {} : { display: "none" }}>
                                 <div className="sd_1">
