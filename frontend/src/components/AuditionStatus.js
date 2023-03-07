@@ -54,9 +54,8 @@ const SubmissionStatus = ({ a, project, id }) => {
                                 <td>Applicant Name</td>
                                 <td>Scheduled For</td>
                                 <td>Status</td>
-                                <td>Date</td>
+                                <td>Date-Location</td>
                                 <td>Time</td>
-                                <td>Location</td>
                                 <td>Interviewer Name</td>
                             </thead>
                             <tbody>
@@ -78,7 +77,6 @@ const SubmissionStatus = ({ a, project, id }) => {
                                                                                 
                                                                                     <td >{sub.date}</td>
                                                                                     <td>{sub.time}</td>
-                                                                                    <td>{sub.location}</td>
                                                                                     <td>{sub.interviewer}</td>
                                                                                 
                                                                             </>

@@ -373,56 +373,50 @@ const UserProfile = () => {
       </div>
 
       {/* -------------modal----------------------------- */}
+
+      {
+        console.log(modalData.num, "h")
+      }
+
       {modal && (
         <div className="userSub_modal">
           <div className="modal_child shadow">
 
-            <div className="d-flex my-4 " >
+            {
+              modalData.num === 2 ? (
+                <div className="d-flex my-4 " >
 
-              <div className="my-2" >
-                <div>
-                  <label>Location</label> <br />
-                  <input type='time' name="time" value={Inter.time} onChange={setVal} ></input>
-                </div>
+                  <div className="my-2" >
+                    <div>
+                      <label>Time</label> <br />
+                      <input type='time' name="time" value={Inter.time} onChange={setVal} ></input>
+                    </div>
 
-                <div>
-                  <label>Interviewer Name</label> <br />
-                  <input name="interview" value={Inter.interview} onChange={setVal}  ></input>
-                </div>
-              </div>
+                    <div>
+                      <label>Interviewer Name</label> <br />
+                      <input name="interview" value={Inter.interview} onChange={setVal}  ></input>
+                    </div>
+                  </div>
 
-              <div className="d-flex my-2 mx-4 " >
-                <div>
-                  <select name="date" value={Inter.date} onChange={setVal}  >
-                    <option selected >Date</option>
-                    {
-                      DateTime?.DateTime?.map((item, i) => {
-                        return (
-                          <>
-                            <option key={i} >{item.date}</option>
-                          </>
-                        )
-                      })
-                    }
-                  </select>
+                  <div className="d-flex my-2 mx-4 " >
+                    <div>
+                      <select name="date" value={Inter.date} onChange={setVal}  >
+                        <option selected >Date and Location</option>
+                        {
+                          DateTime?.DateTime?.map((item, i) => {
+                            return (
+                              <>
+                                <option key={i} >{item.date} , {item.location} </option>
+                              </>
+                            )
+                          })
+                        }
+                      </select>
+                    </div>
+                  </div>
                 </div>
-
-                <div className="mx-2">
-                  <select name="location" value={Inter.location} onChange={setVal}  >
-                    <option selected>Location</option>
-                    {
-                      DateTime?.DateTime?.map((item, i) => {
-                        return (
-                          <>
-                            <option key={i} >{item.location}</option>
-                          </>
-                        )
-                      })
-                    }
-                  </select>
-                </div>
-              </div>
-            </div>
+              ) : ("")
+            }
 
             <h1 className="purple_title">Request Confirmation</h1>
             <figure>
