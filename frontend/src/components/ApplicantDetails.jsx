@@ -231,8 +231,7 @@ const ApplicantDetails = () => {
                             projectDetails?.map((items, i) => {
                                 return (
                                     <>
-                                        {/* <span key={i} number={items.roles.length} className='roles'>Roles</span> */}
-                                        <span key={i} className="locationName">{items.basicInfo.address}</span>
+                                        <span key={i} number={items.roles.length} className='roles'>Roles</span>
                                     </>
                                 )
                             })
