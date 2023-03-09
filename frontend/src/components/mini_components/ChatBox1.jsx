@@ -7,34 +7,41 @@ import axios from "axios";
 
 import ChatContext from "../Context/chat-context";
 
-import io from "socket.io-client";
 import ScrollableChat1 from "./ScrollableChat1";
 import Picker from "emoji-picker-react";
 import emojiIcon from "../../assets/icons/emoji.png";
 import { MdOutlineEmojiEmotions } from "react-icons/md";
 //const ENDPOINT = "http://localhost:5000"; //development
-const ENDPOINT = "http://localhost:5000";
-var socket, selectedChatCompare;
+
+import AuthContext from "../AuthContext";
+var selectedChatCompare;
+
 
 const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
   let [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [newMessage, setNewMessage] = useState("");
-  const [socketConnected, setSocketConnected] = useState(false);
-  const [typing, setTyping] = useState(false);
-  const [istyping, setIsTyping] = useState(false);
+
+  const [amItyping, setAmITyping] = useState(false);
+  
   const [loadingChat, setLoadingChat] = useState(false);
   const [reportModal, setReportModal] = useState(0);
   const [loggedUser, setLoggedUser] = useState();
 
 
+  const auth = useContext(AuthContext)
+
+ 
+  
   const {
     selectedChat,
     setSelectedChat,
     user,
     chats,
     setChats,
-    chatUnReadCount,setChatUnReadCount
+    chatUnReadCount,setChatUnReadCount,
+    socket,socketConnected,
+    typing,setTyping
   } = useContext(ChatContext);
   // console.log(selectedChat, "selectedChat in chatBox");
 
@@ -107,15 +114,7 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
     }
   };
 
-  useEffect(() => {
-    socket = io(ENDPOINT);
-    socket.emit("setup", user);
-    socket.on("connected", () => setSocketConnected(true));
-    socket.on("typing", () => setIsTyping(true));
-    socket.on("stop typing", () => setIsTyping(false));
-
-    // eslint-disable-next-line
-  }, []);
+  
 
   useEffect(() => {
     fetchMessages();
@@ -128,6 +127,34 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
   }, [selectedChat]);
 
   //console.log(notification, 'notification Bellicon');
+
+  const updateUnReadCount = (localChats) => {
+    if (localChats && localChats.length > 0) {
+      localChats.map(async (item) => {
+        console.log(item)
+          try {
+            const config = {
+              headers: {
+                "Content-type": "application/json",
+                Authorization: `Bearer ${user.token}`,
+              },
+            };
+            await axios.put(
+              `http://localhost:5000/api/chat/updateUnreadCount`,
+              { item },
+              config
+            )
+              .then((response) => {
+                console.log("The response from topbar65:\n",response)
+              });
+
+          } catch (error) {
+            console.log("The response from topbar65:\n",error.message);
+          }
+        }
+      )
+    }
+  }
 
   useEffect(() => {
     socket.off("message_recieved").on("message_recieved", (newMessageRecieved) => {
@@ -144,6 +171,7 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
             item.unreadCount += 1
 
             setChatUnReadCount(item.unreadCount)
+            updateUnReadCount([item])
             console.log("Item Changed",item)
           }
           return item
@@ -157,6 +185,15 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
   });
 
   useEffect(() => {
+    socket.on("typing", (room) => {
+      setTyping(true)
+    });
+    socket.on("stop typing", (room) => setTyping(false));
+    
+  }, [])
+  
+
+  useEffect(() => {
     var objDiv = document.querySelector(".msg_Div");
     if (objDiv) {
       objDiv.scrollTop = objDiv.scrollHeight;
@@ -166,6 +203,7 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
 
+    setAmITyping(true);
     //typing animation code
     if (!socketConnected) return;
 
@@ -184,6 +222,7 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
       if (timeDiff >= timerLength && typing) {
         socket.emit("stop typing", selectedChat._id);
         setTyping(false);
+        setAmITyping(false)
       }
     }, timerLength);
   };
@@ -274,7 +313,7 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
             <div className="d-flex align-items-center justify-content-between w-100 ">
               <div className="cb_textDiv">
                 <h6> {getSender(user, selectedChat.users)}</h6>
-                {istyping && <p>typing…</p>}
+                {!amItyping && typing && <p>typing…</p>}
               </div>
 
               <div className="dots_div">

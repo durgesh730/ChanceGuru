@@ -83,7 +83,7 @@ const SeekerDashboard = () => {
                   return searchTerm && name.startsWith(searchTerm);
                 })
                 .map((item, index) => (
-                  <div onClick={() => { setQuery(item.basicInfo.name); handleSearch() }}>
+                  <div key={index} onClick={() => { setQuery(item.basicInfo.name); handleSearch() }}>
                     {item.basicInfo.name}
                   </div>
                 ))}
@@ -105,7 +105,7 @@ const SeekerDashboard = () => {
         <div className="main-container">
           <ul className="grid-wrapper">
             {card?.map((card, i) => (
-              <Card2 key={i} card={card} />
+              <Card2 index={i} card={card} />
             ))}{" "}
           </ul>
         </div>

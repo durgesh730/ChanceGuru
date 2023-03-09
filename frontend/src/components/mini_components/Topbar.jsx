@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { RiLogoutBoxRLine } from "react-icons/ri";
 
 import "./minicomp.css";
@@ -25,6 +25,10 @@ import arequests from "../../assets/icons/active-request.png";
 import axios from "axios";
 
 import AuthContext from "../AuthContext";
+
+
+
+
 const Topbar = (props) => {
   const [profileHeight, setProfileHeight] = useState(0);
   const [notifHeight, setnotifHeight] = useState(0);
@@ -32,12 +36,69 @@ const Topbar = (props) => {
   const [projects, setProjects] = useState();
   const [loggedUser, setLoggedUser] = useState("");
 
+  let location = useLocation()
 
   const auth = useContext(AuthContext)
   const active = auth.active
 
+  let {socket,setSocket,setSocketConnected,setIsTyping,chatUnReadCount,setChatUnReadCount} = auth
   const user = JSON.parse(localStorage.getItem("login"));
   const navigate = useNavigate();
+
+  const updateUnReadCount = (localChats) => {
+    if (localChats && localChats.length > 0) {
+      localChats.map(async (item) => {
+        console.log(item)
+          try {
+            const config = {
+              headers: {
+                "Content-type": "application/json",
+                Authorization: `Bearer ${user.token}`,
+              },
+            };
+            await axios.put(
+              `http://localhost:5000/api/chat/updateUnreadCount`,
+              { item },
+              config
+            )
+              .then((response) => {
+                console.log("The response from topbar65:\n",response)
+              });
+
+          } catch (error) {
+            console.log("The response from topbar65:\n",error.message);
+          }
+        }
+      )
+    }
+  }
+
+  useEffect(() => {
+    // setSocket(prev => prev = io(ENDPOINT));
+    socket.emit("setup", user);
+    socket.on("connected", () => setSocketConnected(true));
+    
+
+    socket.off("setNotify").on("setNotify", (chat) => {
+      console.log("Topbar.jsx 55 :",chat)
+      if (location.pathname != "/chat") {
+
+        console.log("Topbar 86 Setting chat unread count")
+        setChatUnReadCount((prev) => {
+          console.log(prev);
+          return prev + 1
+        })
+        updateUnReadCount([chat])
+      }
+    })
+
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("UnReadNotify",JSON.stringify(chatUnReadCount))
+  }, [chatUnReadCount])
+
 
   function toggleProfileOptions() {
     if (profileHeight == 0) {
@@ -66,33 +127,7 @@ const Topbar = (props) => {
 
   const [modal, setModal] = useState(false);
 
-  const updateUnReadCount = (localChats) => {
-    if (localChats && localChats.length > 0) {
-      localChats.map(async (item) => {
-        console.log(item)
-          try {
-            const config = {
-              headers: {
-                "Content-type": "application/json",
-                Authorization: `Bearer ${user.token}`,
-              },
-            };
-            await axios.put(
-              `http://localhost:5000/api/chat/updateUnreadCount`,
-              { item },
-              config
-            )
-              .then((response) => {
-                console.log(response)
-              });
-
-          } catch (error) {
-            console.log(error.message);
-          }
-        }
-      )
-    }
-  }
+  
 
   function handleLogout() {
     let localChats = JSON.parse(localStorage.getItem("userChats"))
@@ -179,37 +214,33 @@ const Topbar = (props) => {
     });
   }
 
-  const getUnReadCount = async () => {
-    // console.log(user._id);
-    try {
-      const config = {
-        headers: { Authorization: `Bearer ${user.token}` },
-      };
+  // const getUnReadCount = async () => {
+  //   // console.log(user._id);
+  //   try {
+  //     const config = {
+  //       headers: { Authorization: `Bearer ${user.token}` },
+  //     };
 
-      await axios.get(
-        "http://localhost:5000/api/chat/getUnreadCount",
-        config
-      )
-      .then((response)=>{
-        console.log(response)
-        auth.setChatUnReadCount(response.data)
+  //     await axios.get(
+  //       "http://localhost:5000/api/chat/getUnreadCount",
+  //       config
+  //     )
+  //     .then((response)=>{
+  //       console.log(response)
+  //       setChatUnReadCount(response.data)
 
-      });
+  //     });
       
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
+  //   } catch (error) {
+  //     console.log(error.message);
+  //   }
+  // };
   useEffect(() => {
     if (dataFetchedRef.current) return;
     dataFetchedRef.current = true;
     getProjects();
     getJobApplications();
-    let localUnReadCount = JSON.parse(localStorage.getItem("UnReadNotify"))
-    if( !localUnReadCount ) {getUnReadCount()}
-    else{
-      auth.setChatUnReadCount(localUnReadCount)
-    }
+    
   }, []);
 
   useEffect(() => {
@@ -362,7 +393,7 @@ const Topbar = (props) => {
                 <img className="topbar-icons" src={chat} alt="" />
               )}
 
-              {auth.chatUnReadCount > 0 && <h6>{auth.chatUnReadCount}</h6>}
+              { chatUnReadCount > 0 && <h6>{chatUnReadCount}</h6>}
             </span>
           </Link>
           {
@@ -406,7 +437,7 @@ const Topbar = (props) => {
                 {projects?.slice(0, 2).map((project, index) => {
                   return (
                     <>
-                      <div>
+                      <div key={index}>
                         <img src={loggedUser.link === undefined ? profile : loggedUser.link} alt="pfp" />
                         <p>
                           You have successfully created the project{" "}
@@ -417,10 +448,10 @@ const Topbar = (props) => {
                     </>
                   );
                 })}
-                {userProjectMap?.slice(0, 2).map((item) => {
+                {userProjectMap?.slice(0, 2).map((item,i) => {
                   return (
                     <>
-                      <div className="d-flex align-items-center">
+                      <div key={i} className="d-flex align-items-center">
                         <img src={item.img === undefined ? profile : item.img} alt="pfp" className="me-4 shadow-sm" />
 
                         <p>{item.notification}</p>

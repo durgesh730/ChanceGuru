@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import image from "../../assets/images/godfather.png";
 import axios from "axios";
 
-const Card2 = ({ card }) => {
+const Card2 = ({ card,index }) => {
   const [model, setModel] = useState(false);
   const name = card.basicInfo.name;
   const id = card._id;
@@ -45,7 +45,7 @@ const Card2 = ({ card }) => {
   }, []);
 
   return (
-    <li className="child_cards">
+    <li key={index} className="child_cards">
       <Link to={"/applicantdetails"} state={card._id}>
         <div className="card-title">
           ‘{name}’
@@ -61,7 +61,7 @@ const Card2 = ({ card }) => {
           </div>
           <div className="many_images">
             {photos?.map((item, i) => {
-              return <img src={item.link} alt="img" />;
+              return <img key={i} src={item.link} alt="img" />;
             })}
             <span>+20</span>
           </div>

@@ -79,7 +79,7 @@ const fetchChats = asyncHandler(async (req, res) => {
           item.unReadBy = anotherUser
         })
         
-        console.log(results)
+
         res.status(200).send(results);
         //console.log(results);
       });
@@ -100,7 +100,7 @@ const updateUnRead = asyncHandler(async (req,res)=>{
       }}
       )
       .then((response)=>{
-        console.log("UpdateUnReadCount:\n",response)
+        // console.log("UpdateUnReadCount:\n",response)
         res.json(response)
       })
     }
