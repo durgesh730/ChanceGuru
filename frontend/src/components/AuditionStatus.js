@@ -70,20 +70,28 @@ const SubmissionStatus = ({ a, project, id }) => {
                                                         <td>{item.status}</td>
                                                         {
                                                             item.status === "scheduled" ?
-                                                                    (item.audition?.map((sub, i) => {
+                                                                (
+                                                                    item.audition?.map((sub, i) => {
                                                                         console.log(sub, "auditionstaut")
                                                                         return (
                                                                             <>
-                                                                                
-                                                                                    <td >{sub.date}</td>
-                                                                                    <td>{sub.time}</td>
-                                                                                    <td>{sub.interviewer}</td>
-                                                                                
+
+                                                                                <td >{sub.date}</td>
+                                                                                <td>{sub.time}</td>
+                                                                                <td>{sub.interviewer}</td>
+
                                                                             </>
                                                                         )
-                                                                    }))
-                                                                 : ("")
-                                                        }                                                        
+                                                                    })
+                                                                )
+                                                                : (
+                                                                    <>
+                                                                        <td >NA</td>
+                                                                        <td>NA</td>
+                                                                        <td>NA</td>
+                                                                    </>
+                                                                )
+                                                        }
                                                         <SubViewProfile display={'/audition'} index={index} card={cards} msg={'View Profile'} />
                                                     </tr>
                                                 )
