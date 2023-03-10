@@ -92,7 +92,7 @@ const UserProfile = () => {
   };
 
   const GetDatetime = async () => {
-    const data = await fetch(`http://localhost:5000/application/DatetimeLocation/${location.state.jobapplicationId}`, {
+    const data = await fetch(`http://localhost:5000/application/DatetimeLocation/${jodId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
