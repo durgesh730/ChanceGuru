@@ -250,7 +250,7 @@ const ApplicantDetails = () => {
                     </div>
                     <div className="card my-4">
                         <div className="card-body">
-                            <button onClick={handlemodal} className="btn btn-primary ">Schedule Audition </button>
+                            <button onClick={handlemodal} className="btn btn-primary" style={{backgroundColor: '#8443e5'}} >Schedule Audition </button>
                         </div>
                     </div>
                 </div>
