@@ -59,7 +59,7 @@ const SeekerDashboard = () => {
 
   const getProjects = async () => {
     const res = await fetch(
-      "${server}/project/allProjectsSeekers",
+      `${server}/project/allProjectsSeekers`,
       {
         method: "GET",
         headers: {
@@ -98,11 +98,11 @@ const SeekerDashboard = () => {
     } else if (type === 'admin') {
       getAdminProjects();
     }
-  }, [setcard]);
+  }, [type]);
 
-  useEffect(() => {
-    getAdminProjects();
-  }, [])
+  // useEffect(() => {
+  //   getAdminProjects();
+  // }, [])
 
   let navigate = useNavigate();
   const routeChange = () => {

@@ -94,11 +94,11 @@ const SeekerDashboard = () => {
         } else if (type === 'admin') {
             getAdminProjects();
         }
-    }, [setcard])
+    }, [type])
 
-    useEffect(() => {
-        getAdminProjects();
-    }, [])
+    // useEffect(() => {
+    //     getAdminProjects();
+    // }, [])
 
     return (
         <>
