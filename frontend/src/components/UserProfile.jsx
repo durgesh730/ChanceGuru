@@ -30,8 +30,7 @@ const UserProfile = () => {
   const [Inter, setInter] = useState({ date: "", time: "", interview: "", location: "" });
   const [ischange, setischange] = useState(location.state.index);
   const [datalocation , setDatalocation] = useState();
-
-
+  
   const setall = () => {
     setSelected(false);
     setRejected(false);
@@ -312,13 +311,13 @@ const UserProfile = () => {
                         </button>
                         :
                         <>
-                          <button className={` ${selected || rejected ? "d-none" : ""} ${(d == 1 ^ (shortlisted || sheduled || selected || rejected)) ? "" : "d-none"}`} onClick={() => { setModal(true); setmodalData({ msg: " to Select the ", btn: "Select", num: 0 }) }} style={{ color: "#6cc592", borderColor: "#6cc592" }}>
+                          <button className={` ${selected || rejected ? "d-none" : ""} ${d == 1 ? "" : "d-none"} ${(shortlisted || sheduled || selected || rejected) ? "" : "d-none"} `} onClick={() => { setModal(true); setmodalData({ msg: " to Select the ", btn: "Select", num: 0 }) }} style={{ color: "#6cc592", borderColor: "#6cc592" }}>
                             Select
                           </button>
-                          <button className={`${selected || rejected || (sheduled || shortlisted && d == 1) ? "d-none" : ""}`} onClick={() => { setModal(true); setmodalData({ msg: " to send a Schedule to ", btn: "Schedule", num: 2 }) }}>
+                          <button className={`${selected || rejected || (sheduled && d == 1) ? "d-none" : ""}`} onClick={() => { setModal(true); setmodalData({ msg: " to send a Schedule to ", btn: "Schedule", num: 2 }) }}>
                             Schedule
                           </button>
-                          <button className={` ${selected || rejected ? "d-none" : ""} ${(d == 1 ^ (shortlisted || sheduled || selected || rejected)) ? "" : "d-none"}`} onClick={() => { setModal(true); setmodalData({ msg: " Reject the", btn: "Reject", num: 3 }) }} style={{ color: "#b8d0eb", borderColor: "#b8d0eb" }} >
+                          <button className={` ${selected || rejected ? "d-none" : ""} ${d == 1 ? "" : "d-none"} ${(shortlisted || sheduled || selected || rejected) ? "" : "d-none"}`} onClick={() => { setModal(true); setmodalData({ msg: " Reject the", btn: "Reject", num: 3 }) }} style={{ color: "#b8d0eb", borderColor: "#b8d0eb" }} >
                             Reject
                           </button>
                         </>
