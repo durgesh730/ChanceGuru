@@ -7,6 +7,7 @@ import reject from "../assets/icons/round-delete-button.svg";
 import ApplicantRowCard from './mini_components/ApplicantRowCard';
 import { useLocation } from 'react-router-dom';
 import server from "./server";
+import { AiFillDelete } from 'react-icons/ai';
 
 const ApplicantDetails = () => {
     const location = useLocation();
@@ -148,6 +149,18 @@ const ApplicantDetails = () => {
         id = item._id
     })
 
+    const handledelete = async (e) => {
+        let x = e.target.getAttribute()
+        const data = await fetch(`${server}/project/Datetime/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+        const res = await data.json();
+        console.log(res)
+    }
+
     const Schedule = async () => {
         const data = await fetch(`${server}/project/Datetime/${id}`, {
             method: "PUT",
@@ -165,8 +178,6 @@ const ApplicantDetails = () => {
         fetchData();
         ProjectData()
     }, [setData])
-
-
 
 
     return (
@@ -243,10 +254,10 @@ const ApplicantDetails = () => {
                         </div>
                     </div>
                 </div>
-{/*============= modal ======================== */}
+                {/*============= modal ======================== */}
 
 
-<div id="myModal" className="modal my-4 ">
+                <div id="myModal" className="modal my-4 ">
                     <div className="modal-content">
 
                         <div className="row">
@@ -255,16 +266,17 @@ const ApplicantDetails = () => {
 
 
                                 {
-                                    projectDetails?.map((items) =>items.DateTime?.map((data, i)=>{
-                                         return(
-                                             <> 
-                                              <div key={i} className='my-2'> 
-                                                 <span className='mx-2' >{data.location}</span>
-                                                 <span>{data.date}</span>
-                                              </div>
-                                             </>
-                                         )
-                                    }) )
+                                    projectDetails?.map((items) => items.DateTime?.map((data, i) => {
+                                        return (
+                                            <>
+                                                <div key={i} className='my-2'>
+                                                    <span className='mx-2' >{data.location}</span>
+                                                    <span>{data.date}</span>
+                                                    <h4 removeData ={''} onClick={() => { handledelete(data._id) }} > <AiFillDelete /> </h4>
+                                                </div>
+                                            </>
+                                        )
+                                    }))
                                 }
 
 
