@@ -78,7 +78,7 @@ const Audition = () => {
               <h5 className="purple_title">Projects</h5>
 
               {cards?.map((item, index) => {
-                
+                console.log(item,"jkhg")
                 // ========= calculate total charcters =============
                 var char = 0;
                 var all = new Array();

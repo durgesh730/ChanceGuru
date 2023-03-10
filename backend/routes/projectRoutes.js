@@ -16,7 +16,7 @@ router.get("/SearchProjectForAdmin", async (req, res) => {
   });
 
 router.put("/Datetime/:id", async (req, res) => {
-    console.log(req.body)
+    // console.log(req.body)
     try {
       const newData = {};
       if (req.body) {

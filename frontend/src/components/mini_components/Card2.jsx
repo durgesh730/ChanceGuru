@@ -8,10 +8,9 @@ const Card2 = ({ card }) => {
   const [model, setModel] = useState(false);
   const name = card.basicInfo.name;
   const id = card._id;
-  console.log(card.basicInfo.name, "card")
-  console.log(card)
 
   const [apply, setApply] = useState([]);
+  console.log(apply, "app")
   const [photos, setPhotos] = useState([]);
 
   const userName = async (id) => {
@@ -22,7 +21,6 @@ const Card2 = ({ card }) => {
       },
     });
     const res = await data.json();
-     console.log(res, "phots")
     if (res !== null) {
       setPhotos(res.photos);
     }

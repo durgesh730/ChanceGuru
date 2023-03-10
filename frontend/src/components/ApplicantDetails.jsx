@@ -60,7 +60,6 @@ const ApplicantDetails = () => {
 
     // for finding total characters in Project by using map
 
-
     var char = 0;
     var all = new Array();
     var a = 0;

@@ -25,7 +25,7 @@ const UserProfile = () => {
   const [sheduled, setScheduled] = useState(false);
   const [shortlisted, setShortlisted] = useState(false);
   const [Inter, setInter] = useState({ date: "", time: "", interview: "", location: "" });
-  // const [datalocation , setDatalocation] = useState();
+  const [datalocation, setDatalocation] = useState();
 
   const setall = () => {
     setSelected(false);
@@ -36,22 +36,19 @@ const UserProfile = () => {
   const location = useLocation();
 
   const userData = location.state.user;
-  console.log(userData, "userdata")
   const index = location.state.index;
   const card = location.state.card;
   const d = location.state.btn;
   const DateTime = location.state.project
+  const jodId = location.state.jobapplicationId
+
 
   var id = 0;
   var userId = 0;
   card?.map((item) => {
     id = item._id;
     userId = item.userId
-    console.log(item.charId, "charId")
-    // console.log
   })
-
-  console.log(id, "id")
 
   const setVal = (e) => {
     const { value, name } = e.target;
@@ -66,7 +63,7 @@ const UserProfile = () => {
 
   const handleInterview = async () => {
     const { date, time, interview, location } = Inter;
-    const data = await fetch(`http://localhost:5000/application/DateTime/${id}`, {
+    const data = await fetch(`http://localhost:5000/application/DateTime/${jodId}`, {
       method: "Put",
       headers: {
         "Content-Type": "application/json",
@@ -74,7 +71,6 @@ const UserProfile = () => {
       body: JSON.stringify({ date: date, time: time, interview: interview, location: location })
     })
     const res = await data.json();
-    console.log(res, "hii dugeh")
   }
 
   const handleApplyReq = () => {
@@ -93,17 +89,16 @@ const UserProfile = () => {
 
   };
 
-  // const GetLocationByUserId = async () => {
-  //   const data = await fetch(`http://localhost:5000/application/DateLocation/${userId}`, {
-  //     method: "GET",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //   })
-  //   const res = await data.json();
-  //   console.log(res)
-  //   setDatalocation(res)
-  // };
+  const GetDatetime = async () => {
+    const data = await fetch(`http://localhost:5000/application/DatetimeLocation/${location.state.jobapplicationId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    const res = await data.json();
+    setDatalocation(res)
+  };
 
   const handleSelect = async () => {
     const data = await fetch(`http://localhost:5000/project/Select/${card[index]._id}/${d}`, {
@@ -129,7 +124,6 @@ const UserProfile = () => {
     setall();
     setRejected(true);
     setModal(false);
-    // console.log(res);
   };
 
   const handleShortlist = async () => {
@@ -140,7 +134,6 @@ const UserProfile = () => {
       },
     })
     const res = await data.json();
-    // console.log(res);
     setall();
     setShortlisted(true);
     setModal(false);
@@ -165,7 +158,6 @@ const UserProfile = () => {
     if (first < userData.photos.length - 1) {
       first = first + 1
       setfirst(first);
-      // console.log(first)
     }
   }
 
@@ -173,11 +165,8 @@ const UserProfile = () => {
     if (first >= 1) {
       first = first - 1;
       setfirst(first);
-      // console.log(first)
     }
   }
-
-  // console.log(first)
 
   useEffect(() => {
     if (card[index]?.status === "selected") {
@@ -189,7 +178,7 @@ const UserProfile = () => {
     } else if (card[index] === "rejected") {
       setRejected(true);
     }
-    // console.log(card[index])
+    GetDatetime();
   }, [])
 
 
@@ -276,27 +265,33 @@ const UserProfile = () => {
                         </button>
                       }
 
-                      {card?.map((item, i) => {
-                        console.log(item, 'hii')
-                        return (
-                          <>
-                            {item.status === "scheduled" ?
-                              (item.audition?.map((sub, i) => {
-                                return (
-                                  <>
-                                    <div>
-                                      <span className="mx-1" >{sub.date}</span>
-                                      <span className="mx-1" >{sub.time}</span>
-                                      <span className="mx-1" >{sub.location}</span>
-                                      <span className="mx-1" >{sub.interviewer}</span>
-                                    </div>
-                                  </>
-                                )
-                              }))
-                              : ("")}
-                          </>
+
+                      {
+                        datalocation?.length !== 1 ? ("") : (
+
+                          datalocation?.map((item, i) => {
+                            console.log(item, "date")
+                            return (
+                              <>
+                                {item.status === "scheduled" ?
+                                  (item.audition?.map((sub, i) => {
+                                    return (
+                                      <>
+                                        <div>
+                                          <span className="mx-1" >{sub.date}</span>
+                                          <span className="mx-1" >{sub.time}</span>
+                                          <span className="mx-1" >{sub.interviewer}</span>
+                                        </div>
+                                      </>
+                                    )
+                                  }))
+                                  : ("")}
+                              </>
+                            )
+                          })
                         )
-                      })}
+                      }
+
 
 
                       {d == 0 ?
@@ -377,9 +372,9 @@ const UserProfile = () => {
 
       {/* -------------modal----------------------------- */}
 
-      {
+      {/* {
         console.log(modalData.num, "h")
-      }
+      } */}
 
       {modal && (
         <div className="userSub_modal">
