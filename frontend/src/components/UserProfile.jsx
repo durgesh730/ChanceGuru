@@ -15,6 +15,7 @@ import Prevnext from "./mini_components/Prevnext";
 import server from "./server";
 
 const UserProfile = () => {
+  const location = useLocation();
   const [active, setActive] = useState("details");
   const [modal, setModal] = useState(false);
   const [modalData, setmodalData] = useState({
@@ -27,7 +28,9 @@ const UserProfile = () => {
   const [sheduled, setScheduled] = useState(false);
   const [shortlisted, setShortlisted] = useState(false);
   const [Inter, setInter] = useState({ date: "", time: "", interview: "", location: "" });
-  const [datalocation, setDatalocation] = useState();
+  const [ischange, setischange] = useState(location.state.index);
+  const [datalocation , setDatalocation] = useState();
+
 
   const setall = () => {
     setSelected(false);
@@ -35,7 +38,6 @@ const UserProfile = () => {
     setScheduled(false);
     setShortlisted(false);
   }
-  const location = useLocation();
   const userData = location.state.user;
   const index = location.state.index;
   const card = location.state.card;
@@ -169,7 +171,8 @@ const UserProfile = () => {
     }
   }
 
-  useEffect(() => {
+  const handleStatus = () => {
+    setall();
     if (card[index]?.status === "selected") {
       setSelected(true);
     } else if (card[index]?.status === "scheduled") {
@@ -179,6 +182,15 @@ const UserProfile = () => {
     } else if (card[index] === "rejected") {
       setRejected(true);
     }
+  }
+
+  if(index !== ischange){
+    handleStatus();
+    setischange(index);
+  }
+
+  useEffect(() => {
+      handleStatus();
     GetDatetime();
   }, [])
 
