@@ -5,3 +5,22 @@
 .d-none{
     display: none;
 }
+
+.prevNext{
+    display: flex;
+    justify-content: space-around;
+    margin-top: 50px !important;
+}
+
+.prevNext button {
+    border: none;
+    background: aqua;
+    padding: 5px 20px;
+    border-radius: 15px;
+    font-weight: bold;
+}
+
+.prevNext > td {
+    height: 0;
+    border: none;
+}

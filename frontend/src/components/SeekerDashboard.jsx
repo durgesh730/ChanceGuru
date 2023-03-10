@@ -4,6 +4,7 @@ import Searchbar from "./mini_components/Searchbar";
 import Card2 from "./mini_components/Card2";
 import { useNavigate } from "react-router-dom";
 import "./style.css";
+import server from "./server";
 
 const SeekerDashboard = () => {
   const [query, setQuery] = useState("");
@@ -14,7 +15,7 @@ const SeekerDashboard = () => {
 
   const handleSearchForAdmin = async () => {
     const data = await fetch(
-      `http://localhost:5000/project/SearchProjectForAdmin?name=${query}`,
+      `${server}/project/SearchProjectForAdmin?name=${query}`,
       {
         method: "GET",
         headers: {
@@ -31,7 +32,7 @@ const SeekerDashboard = () => {
 
   const handleSearch = async () => {
     const data = await fetch(
-      `http://localhost:5000/profile/searchSeekerData?name=${query}`,
+      `${server}/profile/searchSeekerData?name=${query}`,
       {
         method: "GET",
         headers: {
@@ -57,7 +58,7 @@ const SeekerDashboard = () => {
 
   const getProjects = async () => {
     const res = await fetch(
-      "http://localhost:5000/project/allProjectsSeekers",
+      "${server}/project/allProjectsSeekers",
       {
         method: "GET",
         headers: {
@@ -75,7 +76,7 @@ const SeekerDashboard = () => {
   // ============= get all seeker Project on Admin Page ==============
 
   const getAdminProjects = async () => {
-    const data = await fetch('http://localhost:5000/project/getProjectForAdmin', {
+    const data = await fetch(`${server}/project/getProjectForAdmin`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -111,7 +112,7 @@ const SeekerDashboard = () => {
       <Topbar />
       <div className="container">
         <div className="row">
-          <div className="col-lg-8 searchBox">
+          <div className="col-lg-8 col-12 searchBox">
             <Searchbar
               setQuery={setQuery}
               query={query}
@@ -134,7 +135,7 @@ const SeekerDashboard = () => {
                 ))}
             </div>
           </div>
-          <div className="col-lg-4">
+          <div className="col-lg-4 col-12">
             <button
               className="btn btn-primary create-btn"
               onClick={routeChange}

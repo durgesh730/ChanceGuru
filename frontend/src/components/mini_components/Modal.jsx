@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import server from '../server';
 
 const Modal = ({ setModel, info, setProfile, UserProfileDeatils, roles }) => {
 
@@ -29,7 +30,7 @@ const Modal = ({ setModel, info, setProfile, UserProfileDeatils, roles }) => {
   const roleApply = (chrId, rId) => {
     axios
       .post(
-        "http://localhost:5000/application",
+        `${server}/application`,
         {
           pId: info._id,
           roleId: rId,
@@ -165,7 +166,6 @@ const Modal = ({ setModel, info, setProfile, UserProfileDeatils, roles }) => {
           >
             Cancel
           </button>
-          <span className="mx-3"></span>
           <button onClick={handleProfile} className="update-btn">
             Update-Profile
           </button>

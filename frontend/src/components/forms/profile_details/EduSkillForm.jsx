@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import server from "../../server";
 
 const EduSkillForm = ({ display, toggleForm }) => {
   let form1 = document.getElementById("form1");
@@ -63,7 +64,7 @@ const EduSkillForm = ({ display, toggleForm }) => {
     e.preventDefault();
     const data = eduSkillDetails;
     axios
-      .put("http://localhost:5000/profile/education", eduSkillDetails, {
+      .put(`${server}/profile/education`, eduSkillDetails, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -80,7 +81,7 @@ const EduSkillForm = ({ display, toggleForm }) => {
     e.preventDefault();
     axios
       .put(
-        "http://localhost:5000/profile/skills",
+        `${server}/profile/skills`,
         { skills },
         {
           headers: {
@@ -100,7 +101,7 @@ const EduSkillForm = ({ display, toggleForm }) => {
 
   const handleShow = async () => {
     axios
-      .get(`http://localhost:5000/profile/`, {
+      .get(`${server}/profile/`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

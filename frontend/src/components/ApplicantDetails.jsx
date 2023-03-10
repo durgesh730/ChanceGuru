@@ -6,9 +6,7 @@ import time from "../assets/icons/time-left.svg";
 import reject from "../assets/icons/round-delete-button.svg";
 import ApplicantRowCard from './mini_components/ApplicantRowCard';
 import { useLocation } from 'react-router-dom';
-
-
-
+import server from "./server";
 
 const ApplicantDetails = () => {
     const location = useLocation();
@@ -40,7 +38,7 @@ const ApplicantDetails = () => {
     // console.log(location.state, "location")
 
     const ProjectData = async () => {
-        const data = await fetch(`http://localhost:5000/project/projectDetails/${location.state}`, {
+        const data = await fetch(`${server}/project/projectDetails/${location.state}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -82,7 +80,7 @@ const ApplicantDetails = () => {
 
     const [Data, setData] = useState();
     const fetchData = async () => {
-        const data = await fetch(`http://localhost:5000/project/Seekers/${location.state}`, {
+        const data = await fetch(`${server}/project/Seekers/${location.state}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -151,7 +149,7 @@ const ApplicantDetails = () => {
     })
 
     const Schedule = async () => {
-        const data = await fetch(`http://localhost:5000/project/Datetime/${id}`, {
+        const data = await fetch(`${server}/project/Datetime/${id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -168,72 +166,87 @@ const ApplicantDetails = () => {
         ProjectData()
     }, [setData])
 
+
+
+
     return (
         <>
             <Topbar />
 
-
             <div className="content-container">
-                <div>
-                    <div className="projCont">
-                        <img src={promotion} className="promotion" alt="" />
-                        {
-                            projectDetails?.map((items, i) => {
-                                return (
-                                    <>
-                                        <span key={i} className="projectTitle">
-                                            {items.basicInfo.name}
-                                        </span>
-                                        <span className="projectInfo">
-                                            {items.basicInfo.desc}
-                                        </span>
-                                    </>
-                                )
-                            })
-                        }
+                <div className="projCont">
+                    <div className='pc_child'>
+                        <div className='d-flex'>
+                            <figure className='m-0'>
+                                <img src={promotion} className="promotion" alt="" />
 
-                        <div className="Path-26"></div>
-                        <span className='postedOn'>Posted On</span>
-                        <span className="date">{"02/04/2001"}</span>
-                        <span className="location">Location</span>
-
-                        {
-                            projectDetails?.map((items, i) => {
-                                return (
-                                    <>
-                                        <span key={i} className="locationName">{items.basicInfo.address}</span>
-                                    </>
-                                )
-                            })
-                        }
-
-                        <div className="lastRow">
-                            <span number={`${c}`} className='appliedBy'>Applied By</span>
-
-                            {
-                                projectDetails?.map((items, i) => {
-                                    return (
-                                        <>
-                                            <span key={i} number={items.roles.length} className='roles'>Roles</span>
-                                        </>
-                                    )
-                                })
-                            }
-                            <span number={`${a}`} className='characters'>Characters</span>
+                            </figure>
+                            <div className='d-flex flex-column'>
+                                {
+                                    projectDetails?.map((items, i) => {
+                                        return (
+                                            <>
+                                                <span key={i} className="projectTitle">
+                                                    {items.basicInfo.name}
+                                                </span>
+                                                <span className="projectInfo">
+                                                    {items.basicInfo.desc}
+                                                </span>
+                                            </>
+                                        )
+                                    })
+                                }
+                            </div>
                         </div>
-                    </div>
 
+
+                        <hr className='Path-26' />
+                        <div className='d-flex justify-content-between'>
+                            <div>
+                                <span className='postedOn me-2'>Posted On</span>
+                                <span className="date">{"02/04/2001"}</span>
+                            </div>
+                            <div>
+                                <span className="location me-2">Location</span>
+
+                                {
+                                    projectDetails?.map((items, i) => {
+                                        return (
+                                            <>
+                                                <span className="locationName">{items.basicInfo.address}</span>
+                                            </>
+                                        )
+                                    })
+                                }
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div className="lastRow">
+                        <span number={`${c}`} className='appliedBy'>Applied By</span>
+
+                        {
+                            projectDetails?.map((items, i) => {
+                                return (
+                                    <>
+                                        <span key={i} number={items.roles.length} className='roles'>Roles</span>
+                                    </>
+                                )
+                            })
+                        }
+                        <span number={`${a}`} className='characters'>Characters</span>
+                    </div>
                     <div className="card my-4">
                         <div className="card-body">
                             <button onClick={handlemodal} className="btn btn-primary ">Schedule Audition </button>
                         </div>
                     </div>
                 </div>
+{/*============= modal ======================== */}
 
-                {/*============= modal ======================== */}
 
-
-                <div id="myModal" className="modal my-4 ">
+<div id="myModal" className="modal my-4 ">
                     <div className="modal-content">
 
                         <div className="row">
@@ -292,11 +305,9 @@ const ApplicantDetails = () => {
                 </div>
 
 
-
-
-
                 <div className="applicantDetails">
                     <div className="topNavbar">
+
                         {
 
                             projectDetails?.map((items, ind) => items.roles.map((i, index) => {
@@ -327,7 +338,6 @@ const ApplicantDetails = () => {
                     </div>
 
                     <div className="statusContainer">
-
                         <div highlighted={activeStatus === "shortlist" ? "true" : "false"} className='shortlisted' onClick={() => setActiveStatus("shortlist")} >
                             <img src={list} alt="" />
                             <span number={`${shortListCount}`}   >Short-listed</span>

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="30.471" height="25.228" viewBox="0 0 30.471 25.228">
+    <defs>
+        <style>
+            .cls-1{fill:#8443e5}
+        </style>
+    </defs>
+    <g id="Group_103" data-name="Group 103" transform="translate(-1352 -4957.431)">
+        <g id="mask_3_" data-name="mask (3)" transform="translate(1352 4957.431)">
+            <path id="Path_100" d="M110.434 53.8v6.718a9.9 9.9 0 0 1-19.793 0V46.4a40.789 40.789 0 0 1 19.793 0zm-1.517 2.659a3.093 3.093 0 0 0-6.185 0 10.552 10.552 0 0 1 6.185 0zm-8.379 9.236a5.573 5.573 0 0 0 5.572-5.572 19.009 19.009 0 0 1-11.145 0 5.573 5.573 0 0 0 5.572 5.57zm-2.195-9.236a3.093 3.093 0 0 0-6.185 0 10.552 10.552 0 0 1 6.185 0z" class="cls-1" data-name="Path 100" transform="translate(-85.727 -45.185)"/>
+            <g id="Group_95" data-name="Group 95" transform="translate(0 5.505)">
+                <path id="Path_107" d="M4.9 51.931a2.722 2.722 0 0 0-2.7 2.719v5.559a1.681 1.681 0 0 1-1.68 1.679.52.52 0 0 0 0 1.04 2.722 2.722 0 0 0 2.72-2.719V54.65a1.681 1.681 0 0 1 1.66-1.678v-1.041z" class="cls-1" data-name="Path 107" transform="translate(0 -50.364)"/>
+            </g>
+            <g id="Group_96" data-name="Group 96" transform="translate(24.821 5.505)">
+                <path id="Path_107-2" d="M0 51.931a2.949 2.949 0 0 1 3.117 2.719v5.559a1.822 1.822 0 0 0 1.934 1.679.525.525 0 1 1 0 1.04 2.952 2.952 0 0 1-3.133-2.719V54.65A1.82 1.82 0 0 0 0 52.972v-1.041z" class="cls-1" data-name="Path 107" transform="translate(0 -50.364)"/>
+            </g>
+        </g>
+    </g>
+</svg>

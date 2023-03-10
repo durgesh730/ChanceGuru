@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import Modal from "./Modal";
 import axios from "axios";
+import server from '../server';
 
 const Card = ({ card, profile, UserProfileDeatils , setClicked }) => {
 
@@ -24,7 +25,7 @@ const Card = ({ card, profile, UserProfileDeatils , setClicked }) => {
 
   const getRoles = () => {
     axios
-      .get(`http://localhost:5000/projects/getroles/${card.id}`)
+      .get(`${server}/projects/getroles/${card.id}`)
       .then((res) => {
         setroles(res.data.data);
       })
@@ -35,7 +36,7 @@ const Card = ({ card, profile, UserProfileDeatils , setClicked }) => {
 
   const getImage = () => {
     axios
-      .get(`http://localhost:5000/profile/seekersImage/${id}`)
+      .get(`${server}/profile/seekersImage/${id}`)
       .then((res) => {
         setImage(res.data);
       })

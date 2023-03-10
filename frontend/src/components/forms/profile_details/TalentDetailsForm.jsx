@@ -5,6 +5,7 @@ import "../forms.css";
 import form_group from "../../../assets/images/form_group.svg";
 import form_group_1 from "../../../assets/images/form-group-1.png";
 import form_group_2 from "../../../assets/images/form-group-2.png";
+import server from "../../server";
 
 const TalentDetailsForm = ({ display, toggle, getFunction }) => {
   let show = {};
@@ -52,7 +53,7 @@ const TalentDetailsForm = ({ display, toggle, getFunction }) => {
       travelling,
     } = talentDetails;
 
-    const res = await fetch("http://localhost:5000/profile/talent", {
+    const res = await fetch(`${server}/profile/talent`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -83,7 +84,7 @@ const TalentDetailsForm = ({ display, toggle, getFunction }) => {
 
   const handleShow = async () => {
     axios
-      .get(`http://localhost:5000/profile/`, {
+      .get(`${server}/profile/`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

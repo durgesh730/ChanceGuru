@@ -11,6 +11,8 @@ import Thumb from "../assets/images/Group 36.png";
 import axios from "axios";
 import SubViewProfile from './SubViewProfile';
 import { BsChevronRight, BsChevronLeft } from 'react-icons/bs';
+import Prevnext from "./mini_components/Prevnext";
+import server from "./server";
 
 const UserProfile = () => {
   const [active, setActive] = useState("details");
@@ -34,7 +36,6 @@ const UserProfile = () => {
     setShortlisted(false);
   }
   const location = useLocation();
-
   const userData = location.state.user;
   const index = location.state.index;
   const card = location.state.card;
@@ -63,7 +64,7 @@ const UserProfile = () => {
 
   const handleInterview = async () => {
     const { date, time, interview, location } = Inter;
-    const data = await fetch(`http://localhost:5000/application/DateTime/${jodId}`, {
+    const data = await fetch(`${server}/application/DateTime/${jodId}`, {
       method: "Put",
       headers: {
         "Content-Type": "application/json",
@@ -74,7 +75,7 @@ const UserProfile = () => {
   }
 
   const handleApplyReq = () => {
-    axios.put('http://localhost:5000/profile/ReqToApp', { talentId: location.state.user.userId }, {
+    axios.put(`${server}/profile/ReqToApp`, { talentId: location.state.user.userId }, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
@@ -101,7 +102,7 @@ const UserProfile = () => {
   };
 
   const handleSelect = async () => {
-    const data = await fetch(`http://localhost:5000/project/Select/${card[index]._id}/${d}`, {
+    const data = await fetch(`${server}/project/Select/${card[index]._id}/${d}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -114,7 +115,7 @@ const UserProfile = () => {
   };
 
   const handleReject = async () => {
-    const data = await fetch(`http://localhost:5000/project/Reject/${card[index]._id}`, {
+    const data = await fetch(`${server}/project/Reject/${card[index]._id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -127,7 +128,7 @@ const UserProfile = () => {
   };
 
   const handleShortlist = async () => {
-    const data = await fetch(`http://localhost:5000/project/Shortlist/${card[index]._id}/${d}`, {
+    const data = await fetch(`${server}/project/Shortlist/${card[index]._id}/${d}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -140,7 +141,7 @@ const UserProfile = () => {
   };
 
   const handleSchedule = async () => {
-    const data = await fetch(`http://localhost:5000/project/Schedule/${card[index]._id}/${d}`, {
+    const data = await fetch(`${server}/project/Schedule/${card[index]._id}/${d}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -155,7 +156,7 @@ const UserProfile = () => {
 
   var [first, setfirst] = useState(0)
   const handleNext = () => {
-    if (first < userData.photos.length - 1) {
+    if (first < userData?.photos.length - 1) {
       first = first + 1
       setfirst(first);
     }
@@ -196,7 +197,7 @@ const UserProfile = () => {
                 <figure className=" userImage_main">
 
                   {
-                    userData.photos.map((item, index) => {
+                    userData?.photos.map((item, index) => {
                       return (
                         <>
                           {(index === first) ? <img src={item.link} alt="" /> : ("")}
@@ -215,19 +216,19 @@ const UserProfile = () => {
                 <div className="small_img">
                   <figure>
                     {
-                      userData.photos?.map((img, i) => {
+                      userData?.photos?.map((img, i) => {
                         return (
                           (i > 0) ? <img src={img.link} className="m-1" alt="" /> : ("")
                         )
                       })
                     }
-                    <span> + {userData.photos.length}</span>
+                    <span> + {userData?.photos.length}</span>
 
                   </figure>
 
                   <figure className="d-flex" >
                     {
-                      userData.videos?.map((img, i) => {
+                      userData?.videos?.map((img, i) => {
                         // console.log(img.link)
                         return (
                           <>
@@ -264,7 +265,6 @@ const UserProfile = () => {
                           Shortlist
                         </button>
                       }
-
 
                       {
                         datalocation?.length !== 1 ? ("") : (
@@ -350,18 +350,18 @@ const UserProfile = () => {
                   </div>
                   <hr />
                   <div className="h-100">
-                    {active === "details" && <Details Data={userData.basicInfo} />}
-                    {active === "talent" && <Talents Data={userData.talent} />}
+                    {active === "details" && <Details Data={userData?.basicInfo} />}
+                    {active === "talent" && <Talents Data={userData?.talent} />}
                     {active === "bio" && <BioExperience
-                      Data={userData.portfolio}
+                      Data={userData?.portfolio}
                     />}
                     {active === "education" && <Education
-                      Data={userData
-                      }
+                      Data={userData}
                     />}
                     {active === "role" && <UserRole
                       Data={userData}
                     />}
+                    <Prevnext user={userData} card={card} index={index} d={d} />
                   </div>
                 </div>
               </div>
@@ -440,6 +440,7 @@ const UserProfile = () => {
             </div>
           </div>
         </div>
+
       )}
     </>
   );

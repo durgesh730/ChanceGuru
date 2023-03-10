@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import Topbar from "./mini_components/Topbar";
 import axios from "axios"
+import server from "./server";
+
 const RequestPage = () => {
   const [requests, setRequests] = useState([])
   const [reqUsers, setReqUsers] = useState([])
@@ -12,7 +14,7 @@ const RequestPage = () => {
 
     applyReqs?.map((item, index) => {
       axios
-        .get(`http://localhost:5000/profile/profileData?id=${item.seekerId}`)
+        .get(`${server}/profile/profileData?id=${item.seekerId}`)
         .then((res) => {
           if (res !== null) {
             setReqUsers(oldUsers => [...oldUsers, res.data])
@@ -27,7 +29,7 @@ const RequestPage = () => {
   }
 
   const getAllRequests = () => {
-    axios.get(`http://localhost:5000/profile/getRequests/${user._id}`)
+    axios.get(`${server}/profile/getRequests/${user._id}`)
       .then((res) => {
         console.log(res.data)
         if (res.data.length != 0) {

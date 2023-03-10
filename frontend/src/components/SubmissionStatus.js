@@ -3,6 +3,7 @@ import SubViewProfile from './SubViewProfile';
 import axios from 'axios'
 import StatusSide from './StatusSide';
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
+import server from "./server";
 
 const SubmissionStatus = ({ a, ArrayData, project, id }) => {
     const [active, setActive] = useState(false);
@@ -14,7 +15,7 @@ const SubmissionStatus = ({ a, ArrayData, project, id }) => {
 
     const getuserId = () => {
         axios
-            .get(`http://localhost:5000/project/Seekers/${id}`)
+            .get(`${server}/project/Seekers/${id}`)
             .then((res) => {
                 setcards(res.data)
             })

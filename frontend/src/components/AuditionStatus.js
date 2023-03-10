@@ -3,6 +3,7 @@ import SubViewProfile from './SubViewProfile';
 import axios from 'axios'
 import StatusSide from './StatusSide';
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
+import server from "./server";
 
 const SubmissionStatus = ({ a, project, id }) => {
 
@@ -11,9 +12,10 @@ const SubmissionStatus = ({ a, project, id }) => {
     console.log(id)
     const getuserId = () => {
         axios
-            .get(`http://localhost:5000/project/Seekers/${id}`)
+            .get(`${server}/project/Seekers/${id}`)
             .then((res) => {
-                setcards(res.data)
+                
+                setcards(res.data.filter(item => item.status !== 'rejected'))
             })
             .catch((err) => {
                 console.log(err);
