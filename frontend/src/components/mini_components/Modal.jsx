@@ -5,29 +5,59 @@ import server from '../server';
 
 const Modal = ({ setModel, info, setProfile, UserProfileDeatils, roles }) => {
 
-  const [status, setstatus] = useState();
+  const [jobstatus, setJobstatus] = useState([]);
 
-  const length = status?.length;
+  const length = jobstatus?.length;
 
-  var charId = 0;
+  var charIds = [];
   roles?.map((item) => item.characters?.map((i) => {
-    charId = i._id;
+    charIds.push(i._id);
   }))
 
   const handlestatus = async () => {
-    const data = await fetch(`http://localhost:5000/application/JobDetails/${UserProfileDeatils.userId}/${charId} `, {
-      method: 'GET',
-      headers: {
-        "Content-Type": "application/json",
-      }
+    let statuses = []
+    charIds?.map(async (charId,index)=>{
+      let data = await fetch (`http://localhost:5000/application/JobDetails/${UserProfileDeatils.userId}/${charId}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json", 
+        },})
+
+        let res = await data.json()
+        statuses[index] = await res
+        
+        if(statuses.length == charIds.length){
+          setJobstatus(statuses)
+        }
+
+      // .then((response)=>{
+      //   console.log(response.data)
+      //   statuses.push(response.data)
+      // })
+      // .catch((error)=>{
+      //   console.log(error.message)
+      // })
+
+      // setstatus(statuses)
+
+      
+      
+      // console.log(res[0]);
+      // statuses.push(res[0])
+      // if(statuses.length > 0 && statuses.length == charIds.length){
+      //   console.log(statuses)
+      //   setstatus(statuses)
+      // }
     })
-    const res = await data.json();
-    console.log(res);
-    setstatus(res)
   }
+
+  console.log(charIds,jobstatus)
+
 
   const navigate = useNavigate();
   const roleApply = (chrId, rId) => {
+    console.log(chrId,rId)
     axios
       .post(
         `${server}/application`,
@@ -45,6 +75,7 @@ const Modal = ({ setModel, info, setProfile, UserProfileDeatils, roles }) => {
         }
       )
       .then((res) => {
+        console.log(res)
         setModel(false);
         alert("You have successfully applied for this role");
       })
@@ -58,7 +89,10 @@ const Modal = ({ setModel, info, setProfile, UserProfileDeatils, roles }) => {
   }
 
   useEffect(() => {
-    handlestatus();
+    if(charIds.length > 0){
+
+      handlestatus();
+    }
   }, [])
 
   return (
@@ -79,73 +113,70 @@ const Modal = ({ setModel, info, setProfile, UserProfileDeatils, roles }) => {
         <div className="modal-body">
           <div className="modal-name">‘{info.basicInfo.name}’</div>
           <div className="secondary-text">Roles</div>
-          {roles.map((item, index) => {
+          {roles.map((prRole, index) => {
+            console.log(prRole)
             return (
               <>
                 <div key={index}>
                   <div className="modal-roles">
                     <div className="role-name">
-                      {item.role}
+                      {prRole.role}
                       {"  "}
-                      {`(${item.characters.length})`}
+                      {`(${prRole.characters.length})`}
                     </div>
-                    {item.characters.map((e, x) => {
-
+                    {prRole.characters.map((e, x) => {
+                      console.log("Modal 128",x+index , jobstatus[x+index])
                       return (
                         <>
                           <div key={x}>
                             <div className="char-name">{e.name}</div>
                             <div className="total-roles">
-                              {(setProfile.profile &&
+                              {
+                              (setProfile.profile &&
                                 setProfile.talent &&
                                 setProfile.photo &&
                                 setProfile.education &&
-                                setProfile.roles) >= 80 ? (
-
-                                length === 0 ? (
+                                setProfile.roles) >= 80 ?
+                                (
+                                  jobstatus.length == charIds.length && jobstatus[x+index]?.status == "notApplied" || jobstatus[x+index]?.status == "rejected" ?
+                                    (
+                                      <button
+                                        style={{
+                                          backgroundColor: "#8443e5",
+                                          color: "white",
+                                        }}
+                                        onClick={() => {
+                                          roleApply(e._id, prRole._id);
+                                        }}
+                                        className="apply-btn"
+                                      >
+                                        Apply
+                                      </button>
+                                    )
+                                    :
+                                    (
+                                      jobstatus.length == charIds.length && (<button
+                                        style={{
+                                          backgroundColor: "#8443e5",
+                                          color: "white",
+                                        }}
+                                        className="apply-btn"
+                                      >
+                                        {jobstatus[x+index]?.status}
+                                      </button>)
+                                    )
+                                    
+                                ) : (
                                   <button
                                     style={{
-                                      backgroundColor: "#8443e5",
+                                      backgroundColor: "grey",
                                       color: "white",
-                                    }}
-                                    onClick={() => {
-                                      roleApply(e._id, item._id);
                                     }}
                                     className="apply-btn"
                                   >
                                     Apply
-                                  </button>) : (
-                                  status?.map((item, i) => {
-
-                                    return (
-                                      item.status === "applied" && e._id || item.status === "shortlisted"  && e._id || item.status === "selected"  && e._id || item.status === "scheduled"  && e._id ? ("") : (
-                                        <button
-                                          style={{
-                                            backgroundColor: "#8443e5",
-                                            color: "white",
-                                          }}
-                                          onClick={() => {
-                                            roleApply(e._id, item._id);
-                                          }}
-                                          className="apply-btn"
-                                        >
-                                          Apply
-                                        </button>
-                                      )
-                                    )
-                                  })
-                                )
-                              ) : (
-                                <button
-                                  style={{
-                                    backgroundColor: "grey",
-                                    color: "white",
-                                  }}
-                                  className="apply-btn"
-                                >
-                                  Apply
-                                </button>
-                              )}
+                                  </button>
+                                )}
                             </div>
                           </div>
                         </>
