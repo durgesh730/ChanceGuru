@@ -112,14 +112,11 @@ const SubmissionStatus = ({ a, ArrayData, project, id }) => {
                                         return (
                                             <>
                                                 {
-                                                    item.status === "applied" ? (
                                                         <tr>
                                                             <StatusSide roleId={item.roleId} charId={item.charId} project={project} userId={item.userId} />
                                                             <td>{item.status}</td>
                                                             <SubViewProfile display={'/submission'} index={index} project={project} card={cards} msg={'View Profile'} />
                                                         </tr>
-                                                    )
-                                                        : ("")
                                                 }
                                             </>
                                         )
