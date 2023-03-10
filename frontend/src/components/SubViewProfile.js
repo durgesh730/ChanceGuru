@@ -3,12 +3,12 @@ import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import server from "./server";
 
-const SubViewProfile = ({ display, jobapplicationId, index, project, card, msg }) => {
+const SubViewProfile = ({ display, jobapplicationId, index, project, card, msg , da}) => {
     const [user, setUser] = useState();
     const [d, setd] = useState(1);
     const getuserData = () => {
         axios
-            .get(`${server}/profile/${userid}`)
+            .get(`${server}/profile/${card[index]?.userId}`)
             .then((res) => {
                 if (res !== null) {
                     setUser(res.data)
@@ -21,12 +21,6 @@ const SubViewProfile = ({ display, jobapplicationId, index, project, card, msg }
     }
 
     useEffect(() => {
-        if (display == "/submission") {
-            setd(1);
-        } else {
-            setd(2);
-        }
-
         if(!display){
             setd(da);
         }
