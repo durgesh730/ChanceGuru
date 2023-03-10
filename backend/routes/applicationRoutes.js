@@ -4,14 +4,35 @@ const JobApplicant = require("../db/JobApplication");
 const JobApplication = require("../db/JobApplication");
 const router = express.Router();
 
+
+// To find from _id
+router.get("/DatetimeLocation/:_id", (req, res) => {
+  JobApplicant.find({ _id: req.params._id })
+    .then((response) => {
+      res.json(response);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+});
+
 // To find from CharId
 router.get("/JobDetails/:UserId/:id", (req, res) => {
   JobApplicant.find({
     userId: req.params.UserId,
     charId: req.params.id
   }).then((response) => {
-    res.json(response);
     console.log(response)
+    if(response.length == 0){
+      let toReturn = {
+        status: "notApplied"
+      }
+      res.json(toReturn)
+    }
+    else{
+
+      res.json(response[0]);
+    }
   })
     .catch((err) => {
       res.status(400).json(err);

@@ -11,6 +11,7 @@ const Card2 = ({ card }) => {
   const id = card._id;
 
   const [apply, setApply] = useState([]);
+  console.log(apply, "app")
   const [photos, setPhotos] = useState([]);
 
   const userName = async (id) => {
