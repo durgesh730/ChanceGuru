@@ -23,12 +23,12 @@ const ChatProvider = (props) => {
     if (!user) navigate("/");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate]);
-  // useEffect(()=>{
-  //   if(chats && chats.length > 0){
-  //     console.log("Chats have been changed")
-  //     localStorage.setItem("userChats",JSON.stringify(chats))
-  //   }
-  // },[chats])
+  useEffect(()=>{
+    // if(chats && chats.length > 0){
+      console.log("ChatProvider 28 :",chats)
+      // localStorage.setItem("userChats",JSON.stringify(chats))
+    // }
+  },[chats])
 
   
   

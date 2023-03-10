@@ -71,6 +71,8 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
   };
 
   const sendMessage = async (event) => {
+    let chat = selectedChat
+    chat.unReadBy = chat.users[0]._id == user._id ? chat.users[1]:chat.users[0]
     if (newMessage) {
       socket.emit("stop typing", selectedChat._id);
 
@@ -99,7 +101,7 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
         data.users = selectedChat.users;
         data.chat = selectedChat;
         // console.log("Emit new message data: ", data);
-        socket.emit("new_message", selectedChat._id, data);
+        socket.emit("new_message", chat, data);
 
         setMessages((messages) => [...messages, data]);
         // console.log(data, "sent message response data");

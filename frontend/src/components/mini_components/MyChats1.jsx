@@ -164,7 +164,7 @@ const MyChats1 = ({ fetchAgain }) => {
               config
             )
               .then((response) => {
-                console.log("The response from topbar65:\n",response)
+                console.log("The response from Mychats 167:\n",response)
               });
 
           } catch (error) {
@@ -178,13 +178,17 @@ const MyChats1 = ({ fetchAgain }) => {
   useEffect(() => {
     socket.on("updateChat",(chat)=>{
       console.log("Mychats1 180\n",chat)
-      let newchats = chats.map((c)=>{
+      let indexCheck;
+      let newchats = chats.map((c,i)=>{
         if(c._id == chat._id){
+          indexCheck = i
           c.unreadCount = 0
+          c.unReadBy = chat.users[0]._id == chat.latestMessage.sender._id?chat.users[1]:chats.users[0]
         }
         return c
       })
-
+      console.log(newchats[indexCheck])
+      console.log("Mychats1 190")
       setChats(newchats)
     })
   
@@ -198,14 +202,16 @@ const MyChats1 = ({ fetchAgain }) => {
     let unreadOfThis = chats[i].unreadCount
     let newChats = [...chats]
     console.log("Mychat1 183 setting chat unread count:\n",newChats[i],unreadOfThis)
-    
-    setChatUnReadCount((prev) => {
-      console.log(prev)
-      console.log(prev - unreadOfThis)
-      return (prev - unreadOfThis)
-    })
-    newChats[i].unreadCount = 0
-    setChats(newChats)
+    if(chatUnReadCount > 0){
+
+      setChatUnReadCount((prev) => {
+        console.log(prev)
+        console.log(prev - unreadOfThis)
+        return (prev - unreadOfThis)
+      })
+      newChats[i].unreadCount = 0
+      setChats(newChats)
+    }
 
     socket.emit("updateYourchat",chat,user)
     
