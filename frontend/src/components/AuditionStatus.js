@@ -6,9 +6,10 @@ import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 import server from "./server";
 
 const SubmissionStatus = ({ a, project, id }) => {
+
     const [active, setActive] = useState(false);
     const [cards, setcards] = useState();
-
+    console.log(id)
     const getuserId = () => {
         axios
             .get(`${server}/project/Seekers/${id}`)
@@ -61,6 +62,7 @@ const SubmissionStatus = ({ a, project, id }) => {
                             <tbody>
 
                                 {cards?.map((item, index) => {
+                                    // console.log(item._id, "cards")
                                     return (
                                         <>
                                             {
@@ -71,7 +73,7 @@ const SubmissionStatus = ({ a, project, id }) => {
                                                         {
                                                             item.status === "scheduled" ?
                                                                     (item.audition?.map((sub, i) => {
-                                                                        console.log(sub, "auditionstaut")
+                                                                        // console.log(sub, "auditionstaut")
                                                                         return (
                                                                             <>
                                                                                 
@@ -84,7 +86,7 @@ const SubmissionStatus = ({ a, project, id }) => {
                                                                     }))
                                                                  : ("")
                                                         }                                                        
-                                                        <SubViewProfile display={'/audition'} index={index} card={cards} msg={'View Profile'} />
+                                                        <SubViewProfile display={'/audition'} index={index} project={project} jobapplicationId = {item._id} card={cards} msg={'View Profile'} />
                                                     </tr>
                                                 )
                                                     : ("")

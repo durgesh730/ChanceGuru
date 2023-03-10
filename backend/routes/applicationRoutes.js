@@ -4,6 +4,18 @@ const JobApplicant = require("../db/JobApplication");
 const JobApplication = require("../db/JobApplication");
 const router = express.Router();
 
+
+// To find from _id
+router.get("/DatetimeLocation/:_id", (req, res) => {
+  JobApplicant.find({ _id: req.params._id })
+    .then((response) => {
+      res.json(response);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+});
+
 // To find from CharId
 router.get("/JobDetails/:UserId/:id", (req, res) => {
   JobApplicant.find({

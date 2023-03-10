@@ -10,7 +10,6 @@ const SeekerDashboard = () => {
   const [query, setQuery] = useState("");
   const [card, setcard] = useState();
   const [searchData, setsearchData] = useState([]);
-
   const type = localStorage.getItem('type');
 
 
@@ -69,7 +68,6 @@ const SeekerDashboard = () => {
       }
     );
     const response = await res.json();
-
     if (response !== null) {
       setcard(response);
     }
@@ -85,7 +83,6 @@ const SeekerDashboard = () => {
       },
     })
     const re = await data.json();
-    console.log(re, "ok")
     if (re !== null) {
       setcard(re);
     }

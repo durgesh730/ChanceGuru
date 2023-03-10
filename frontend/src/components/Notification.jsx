@@ -139,11 +139,14 @@ const Notification = () => {
           </div>
           <Searchbar />
           <hr />
+
+          {/* project.reverse()?.map */}
+
           {
-            projects?.map((project, index) => {
+            projects?.reverse().map((project, index) => {
               return (
                 <>
-                  <div className="notificationDiv d-flex align-items-center">
+                  <div className="notificationDiv  d-flex align-items-center">
                     <img src={loggedUser.link === undefined ? profile : loggedUser.link} alt="pfp" className="me-4 shadow-sm" />
                     <p>
                       You have successfully created the project {project.basicInfo.name}
@@ -155,7 +158,7 @@ const Notification = () => {
             })
           }
           {
-            userProjectMap?.map((item) => {
+            userProjectMap?.reverse().map((item) => {
               return (
                 <>
                   <div className="notificationDiv d-flex align-items-center">
