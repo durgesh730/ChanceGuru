@@ -368,7 +368,7 @@ const ApplicantDetails = () => {
                                 Data?.map((Data, i) => {
                                     if (activeChar._id == Data.charId) {
                                         if (activeStatus === "shortlist") {
-                                            if (Data.status === activeStatus || Data.status === "selected") {
+                                            if (Data.status === activeStatus) {
 
                                                 return (
                                                     <ApplicantRowCard key={i} Data={Data} applied={check} />
