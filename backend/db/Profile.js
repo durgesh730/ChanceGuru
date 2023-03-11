@@ -145,14 +145,14 @@ let schema = new mongoose.Schema(
         ],
         skills: [
             {
-                skill: {
+                skillId: {
                     type: String,
                 }
             }
         ],
         rolePref: [
             {
-                role: {
+                roleId: {
                     type: String,
                 }
             }

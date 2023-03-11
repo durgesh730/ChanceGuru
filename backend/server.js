@@ -44,6 +44,7 @@ app.use("/application", require("./routes/applicationRoutes"));
 app.use("/api/user", require("./routes/userRoutes"));
 app.use("/api/chat", require("./routes/chatRoutes"));
 app.use("/api/message", require("./routes/messageRoutes"));
+app.use("/admin" , require("./routes/adminRoutes"));
 
 
 const server = app.listen(port, () => {
