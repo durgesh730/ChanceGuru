@@ -195,7 +195,7 @@ const BrowseProfile = () => {
                     <td> <Contect index={index} userId={item.userId} /> </td>
                     <td>
                       <NavLink
-                        to={"/browseprofile/:nickdavolt"}
+                        to={`/browseprofile/:${item.basicInfo.fullname}`}
                         state={{ user: item, card: [], index: 0, btn: 0 }}
                         onClick={() => viewProfileClicked(item)}
                         exact

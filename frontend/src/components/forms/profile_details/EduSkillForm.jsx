@@ -8,7 +8,8 @@ const EduSkillForm = ({ display, toggleForm }) => {
   let form2 = document.getElementById("form2");
   let toggle1 = document.getElementById("toggle1");
   let toggle2 = document.getElementById("toggle2");
-
+  const [Skill, setSkill] = useState([]);
+  console.log(Skill)
   const toggle = (cur_form) => {
     if (cur_form == "tog1") {
       form1.style.display = "block";
@@ -37,17 +38,18 @@ const EduSkillForm = ({ display, toggleForm }) => {
     endYear: "",
   });
 
-  const [skills, setskills] = useState([{ skill: "" }]);
+  const [skills, setskills] = useState([]);
+
 
   const handleSkillChange = (e, index) => {
     let data = [...skills];
-    data[index].skill = e.target.value;
+    data[index].skillId = e.target.value;
     setskills(data);
   };
 
   const addFields = (e) => {
     e.preventDefault();
-    let obj = { skill: "" };
+    let obj = { skillId: "" };
     setskills([...skills, obj]);
   };
 
@@ -79,6 +81,15 @@ const EduSkillForm = ({ display, toggleForm }) => {
 
   const handleSkillsSubmit = (e) => {
     e.preventDefault();
+    let bool = false ;
+    skills.forEach((item) => {
+      if(item.skillId == ""){
+        bool = true ;
+      }
+    }) 
+    if(bool){
+      alert("Please select skill first.");
+    }else{
     axios
       .put(
         `${server}/profile/skills`,
@@ -97,6 +108,7 @@ const EduSkillForm = ({ display, toggleForm }) => {
           toggleForm("role");
         }
       });
+    }
   };
 
   const handleShow = async () => {
@@ -121,8 +133,18 @@ const EduSkillForm = ({ display, toggleForm }) => {
         console.log(err.response);
       });
   };
+
+  const getSkills = () => {
+    axios.
+      get(`${server}/admin/skills`)
+      .then((res) => {
+        setSkill(res.data);
+      })
+      .catch((err) => { console.log(err) });
+  }
   useEffect(() => {
     handleShow();
+    getSkills();
   }, []);
 
   return (
@@ -241,14 +263,13 @@ const EduSkillForm = ({ display, toggleForm }) => {
                         onChange={(e) => {
                           handleSkillChange(e, index);
                         }}
-                        value={item.skill}
+                        value={item.skillId}
                         className="form-control form-select"
                       >
-                        <option value="" disabled selected>
-                          Add Skill
-                        </option>
-                        <option>Singing</option>
-                        <option>Acting</option>
+                        <option value="" disabled >Select Skill</option>
+                        {Skill.map((item, index) => {
+                          return <option key={index} value={item._id} >{item.skill}</option>
+                        })}
                       </select>
                       <i
                         className="fa-solid fa-trash-can mx-2 mb-2"

@@ -41,7 +41,6 @@ const TalentDashboard = () => {
 
     const getProjects = async () => {
         if (location.state) {
-            console.log(location.state.seekerId)
             axios.get(`${server}/project/getOnlySeekersProject/${location.state.seekerId}`)
                 .then(async (res) => {
                     setcards(res.data);
@@ -96,7 +95,6 @@ const TalentDashboard = () => {
 
     // Profile Strength Score
     const profileCompletion = (data) => {
-        // console.log(data);
         const profilePerc = data.basicInfo ? calculatePercentage(data.basicInfo) : 0;
         const talentPerc = data.talent ? calculatePercentage(data.talent) : 0;
         const photoPerc = data.photos.length === 0 ? 0 : 50;

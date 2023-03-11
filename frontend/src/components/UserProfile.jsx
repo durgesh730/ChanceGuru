@@ -29,8 +29,8 @@ const UserProfile = () => {
   const [shortlisted, setShortlisted] = useState(false);
   const [Inter, setInter] = useState({ date: "", time: "", interview: "", location: "" });
   const [ischange, setischange] = useState(location.state.index);
-  const [datalocation , setDatalocation] = useState();
-  
+  const [datalocation, setDatalocation] = useState();
+
   const setall = () => {
     setSelected(false);
     setRejected(false);
@@ -170,6 +170,7 @@ const UserProfile = () => {
     }
   }
 
+  console.log("d" , d);
   const handleStatus = () => {
     setall();
     if (card[index]?.status === "selected") {
@@ -178,18 +179,18 @@ const UserProfile = () => {
       setScheduled(true);
     } else if (card[index]?.status === "shortlisted") {
       setShortlisted(true);
-    } else if (card[index] === "rejected") {
+    } else if (card[index]?.status === "rejected") {
       setRejected(true);
     }
   }
 
-  if(index !== ischange){
+  if (index !== ischange) {
     handleStatus();
     setischange(index);
   }
 
   useEffect(() => {
-      handleStatus();
+    handleStatus();
     GetDatetime();
   }, [])
 
@@ -271,10 +272,11 @@ const UserProfile = () => {
                       <div className="tag">
                         {selected ? "Selected" : ""}{rejected ? "Rejected" : ""}{sheduled ? "Scheduled" : ""}{shortlisted ? "Shortlisted" : ""}
                       </div>
-                      {d == 1 &&
+                      {d == 1 || d == 3 ?
                         <button className={`${selected || rejected || shortlisted || sheduled ? "d-none" : ""}`} onClick={() => { setModal(true); setmodalData({ msg: " to Shortlist the ", btn: "Shortlist", num: 1 }) }} style={{ color: "#16bac5", borderColor: "#16bac5" }}>
                           Shortlist
-                        </button>
+                        </button> 
+                        : ""
                       }
 
                       {
@@ -311,13 +313,13 @@ const UserProfile = () => {
                         </button>
                         :
                         <>
-                          <button className={` ${selected || rejected ? "d-none" : ""} ${d == 1 ? "" : "d-none"} ${(shortlisted || sheduled || selected || rejected) ? "" : "d-none"} `} onClick={() => { setModal(true); setmodalData({ msg: " to Select the ", btn: "Select", num: 0 }) }} style={{ color: "#6cc592", borderColor: "#6cc592" }}>
+                          <button className={` ${selected || rejected ? "d-none" : ""} ${(d == 1 || d == 3) ? "" : "d-none"} `} onClick={() => { setModal(true); setmodalData({ msg: " to Select the ", btn: "Select", num: 0 }) }} style={{ color: "#6cc592", borderColor: "#6cc592" }}>
                             Select
                           </button>
-                          <button className={`${selected || rejected || (sheduled && d == 1) ? "d-none" : ""}`} onClick={() => { setModal(true); setmodalData({ msg: " to send a Schedule to ", btn: "Schedule", num: 2 }) }}>
+                          <button className={`${(selected || rejected || (sheduled && d == 1 || d == 3)) ? "d-none" : ""}`} onClick={() => { setModal(true); setmodalData({ msg: " to send a Schedule to ", btn: "Schedule", num: 2 }) }}>
                             Schedule
                           </button>
-                          <button className={` ${selected || rejected ? "d-none" : ""} ${d == 1 ? "" : "d-none"} ${(shortlisted || sheduled || selected || rejected) ? "" : "d-none"}`} onClick={() => { setModal(true); setmodalData({ msg: " Reject the", btn: "Reject", num: 3 }) }} style={{ color: "#b8d0eb", borderColor: "#b8d0eb" }} >
+                          <button className={` ${selected || rejected ? "d-none" : ""} ${(d == 1 || d == 3) ? "" : "d-none"}`} onClick={() => { setModal(true); setmodalData({ msg: " Reject the", btn: "Reject", num: 3 }) }} style={{ color: "#b8d0eb", borderColor: "#b8d0eb" }} >
                             Reject
                           </button>
                         </>
@@ -372,7 +374,12 @@ const UserProfile = () => {
                     {active === "role" && <UserRole
                       Data={userData}
                     />}
-                    <Prevnext user={userData} card={card} index={index} d={d} />
+                    {
+                      d == 0 ?
+                        ""
+                        :
+                        <Prevnext user={userData} card={card} index={index} d={d} />
+                    }
                   </div>
                 </div>
               </div>

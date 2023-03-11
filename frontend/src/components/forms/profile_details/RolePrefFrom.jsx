@@ -13,37 +13,48 @@ const RolePref = ({ display }) => {
     show = { display: "none" };
   }
 
-  const [formFields, setformFields] = useState([{ role: "" }]);
-
+  const [formFields, setformFields] = useState([]);
+  const [Roles, setRoles] = useState([]);
+  console.log(formFields)
   const handleFormChange = (e, index) => {
     let data = [...formFields];
-    data[index].role = e.target.value;
+    data[index].roleId = e.target.value ;
     setformFields(data);
   };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    axios
-      .put(
-        `${server}/profile/rolePref`,
-        { formFields },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      )
-      .then((res) => {
-        alert("Role prefrences saved successfully");
-        console.log("data added");
-        console.log(res);
-        navigate("/");
-      });
+    let bool = false ;
+    formFields.forEach((item) => {
+      if(item.roleId == ""){
+        bool = true ;
+      }
+    }) 
+    if(bool){
+      alert("Please select role first.");
+    }else{
+      axios
+        .put(
+          `${server}/profile/rolePref`,
+          { formFields },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        )
+        .then((res) => {
+          alert("Role prefrences saved successfully");
+          console.log("data added");
+          console.log(res);
+          navigate("/");
+        });
+    }
   };
 
   const addFields = (e) => {
     e.preventDefault();
-    let obj = { role: "" };
+    let obj = { roleId : "" };
     setformFields([...formFields, obj]);
   };
 
@@ -73,8 +84,17 @@ const RolePref = ({ display }) => {
       });
   };
 
+  const getRoles = () => {
+    axios.
+      get(`${server}/admin/roles`)
+      .then((res) => {
+        setRoles(res.data);
+      })
+      .catch((err) => {console.log(err)});
+  }
   useEffect(() => {
     handleShow();
+    getRoles();
   }, []);
 
   return (
@@ -91,19 +111,15 @@ const RolePref = ({ display }) => {
               <button className="full-width-btn" onClick={addFields}>
                 Add Roles
               </button>
-              {formFields?.map((form, index) => {
+              {formFields?.map((form, index) => { 
                 return (
                   <div key={index} className="d-flex align-items-center">
-                    <input
-                      name="role"
-                      value={form.role}
-                      onChange={(e) => {
-                        handleFormChange(e, index);
-                      }}
-                      type="text"
-                      className="form-control"
-                      placeholder="Add Role"
-                    />
+                    <select required={true} className="form-control" value={form.roleId} onChange={(e)=>{handleFormChange(e, index)}} >
+                      <option value="" disabled >Select Role</option>
+                      {Roles.map((item , index) => {
+                        return <option key={index} value={item._id} >{item.role}</option>
+                      })}                        
+                    </select>
                     <i
                       className="fa-solid fa-trash-can mx-2 mb-2"
                       onClick={() => removeFields(index)}

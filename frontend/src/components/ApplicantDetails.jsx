@@ -35,9 +35,6 @@ const ApplicantDetails = () => {
         modal.style.display = "none";
     }
 
-
-    // console.log(location.state, "location")
-
     const ProjectData = async () => {
         const data = await fetch(`${server}/project/projectDetails/${location.state}`, {
             method: "GET",
@@ -96,7 +93,7 @@ const ApplicantDetails = () => {
         setWaitingCount(0)
         setRejectedCount(0)
         Data?.map((item) => {
-            if (item.status === "shortlist" || item.status === "selected") {
+            if (item.status === "shortlist") {
                 setShortListCount(prevCount => prevCount += 1)
 
             }
@@ -141,8 +138,6 @@ const ApplicantDetails = () => {
     const handleaddclick = () => {
         setinputList([...inputList, { date: '', location: '' }]);
     }
-
-    console.log(inputList)
 
     var id = 0;
     projectDetails?.map((item, i) => {

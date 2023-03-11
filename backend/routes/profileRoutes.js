@@ -9,7 +9,6 @@ const { response } = require("express");
 const Project = require("../db/Project");
 
 
-
 //to get profile details by user id from user side
 router.get("/", jwtAuth, (req, res) => {
   const user = req.user;
@@ -477,6 +476,7 @@ router.put("/skills", jwtAuth, (req, res) => {
 router.put("/rolePref", jwtAuth, (req, res) => {
   const data = req.body;
   const user = req.user;
+  console.log(data.formFields)
   Profile.findOneAndUpdate(
     { userId: user._id },
     {
