@@ -51,34 +51,7 @@ const Topbar = (props) => {
   const user = JSON.parse(localStorage.getItem("login"));
   const navigate = useNavigate();
 
-  const updateUnReadCount = (localChats) => {
-    if (localChats && localChats.length > 0) {
-      localChats.map(async (item) => {
-        console.log(item)
-          try {
-            const config = {
-              headers: {
-                "Content-type": "application/json",
-                Authorization: `Bearer ${user.token}`,
-              },
-            };
-            await axios.put(
-              `http://localhost:5000/api/chat/updateUnreadCount`,
-              { item },
-              config
-            )
-              .then((response) => {
-                console.log("The response from topbar65:\n",response)
-              });
-
-          } catch (error) {
-            console.log("The response from topbar65:\n",error.message);
-          }
-        }
-      )
-    }
-  }
-
+  
   useEffect(() => {
     // setSocket(prev => prev = io(ENDPOINT));
     socket.emit("setup", user);
@@ -263,10 +236,10 @@ const Topbar = (props) => {
 
       });
       
-  //   } catch (error) {
-  //     console.log(error.message);
-  //   }
-  // };
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
   useEffect(() => {
     if (dataFetchedRef.current) return;
     dataFetchedRef.current = true;
