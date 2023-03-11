@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import server from '../server';
 
-const Card2 = ({ card }) => {
+const Card2 = ({ card,index }) => {
   const [model, setModel] = useState(false);
   const name = card.basicInfo.name;
   const id = card._id;
@@ -50,7 +50,6 @@ const Card2 = ({ card }) => {
  
 
   return (
-    // <>
       <li className="child_cards">
         <Link to={"/applicantdetails"} state={card._id}>
           <div className="card-title">

@@ -69,7 +69,7 @@ router.get("/project/:_id", (req, res) => {
   JobApplicant.find({ pId: req.params._id })
     .then((response) => {
       res.json(response);
-      console.log(response);
+      // console.log(response);
     })
     .catch((err) => {
       res.status(400).json(err);

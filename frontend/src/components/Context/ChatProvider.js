@@ -10,7 +10,7 @@ const ChatProvider = (props) => {
 
   const [selectedChat, setSelectedChat] = useState();
 
-  const {chatUnReadCount,setChatUnReadCount} = useContext(AuthContext)
+  const {chatUnReadCount,setChatUnReadCount,socket,setSocket, typing,setTyping} = useContext(AuthContext)
 
   const navigate = useNavigate();
 
@@ -24,15 +24,13 @@ const ChatProvider = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate]);
   useEffect(()=>{
-    if(chats && chats.length > 0){
-      console.log("Chats have been changed")
-      localStorage.setItem("userChats",JSON.stringify(chats))
-    }
+    // if(chats && chats.length > 0){
+      console.log("ChatProvider 28 :",chats)
+      // localStorage.setItem("userChats",JSON.stringify(chats))
+    // }
   },[chats])
 
-  useEffect(() => {
-    localStorage.setItem("UnReadNotify",JSON.stringify(chatUnReadCount))
-  }, [chatUnReadCount])
+  
   
   //console.log(chats, 'chats context')
   return (
@@ -47,6 +45,8 @@ const ChatProvider = (props) => {
           setChats,
           chatUnReadCount,
           setChatUnReadCount,
+          socket,setSocket,
+          typing,setTyping
         }}
       >
         {props.children}

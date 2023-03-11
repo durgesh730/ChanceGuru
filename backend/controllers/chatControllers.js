@@ -79,7 +79,7 @@ const fetchChats = asyncHandler(async (req, res) => {
           item.unReadBy = anotherUser
         })
         
-        console.log(results)
+
         res.status(200).send(results);
         //console.log(results);
       });
@@ -96,11 +96,12 @@ const updateUnRead = asyncHandler(async (req,res)=>{
 
     Chat.findOneAndUpdate({_id:item._id},
       {$set:{
-        unreadCount:item.unreadCount
+        unreadCount:item.unreadCount,
+        unReadBy:item.unReadBy
       }}
       )
       .then((response)=>{
-        console.log("UpdateUnReadCount:\n",response)
+        // console.log("UpdateUnReadCount:\n",response)
         res.json(response)
       })
     }

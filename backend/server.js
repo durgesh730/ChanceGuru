@@ -75,13 +75,33 @@ io.on("connection", (socket) => {
     console.log(room)
     console.log("User Joined the selectedChat Room: " + room);//room-selectedChatId
   });
-  
-  socket.on("typing", (room) => socket.in(room).emit("typing"));
-  socket.on("stop typing", (room) => socket.in(room).emit("stop typing"));
 
+  let prevChat = {} ;
+  socket.on("updateYourchat",(chat,userrec)=>{
+    // console.log("Serverjs 109",chat)
+    if(prevChat._id == chat._id)
+    {
+      prevChat = chat
+    }
+    chat.users.forEach((user)=>{
+      console.log("Serverjs 82",user)
+      if (user._id == userrec._id) return;
+
+      else{
+        
+        socket.in(user._id).emit("updateChat",chat);
+      }
+    })
+  });
+  
+  socket.on("typing", (room) => socket.in(room).emit("typing",room));
+  socket.on("stop typing", (room) => socket.in(room).emit("stop typing",room));
+
+
+  
   socket.on("new_message", (room,newMessageRecieved) => {
     
-    var chat = newMessageRecieved.chat;
+    var chat = room;
     if (!newMessageRecieved.users) return console.log("chat.users not defined");
 
     newMessageRecieved.users.forEach((user) => {
@@ -89,8 +109,11 @@ io.on("connection", (socket) => {
       if (user._id == newMessageRecieved.sender._id) return;
 
       else{
-
         socket.in(user._id).emit("message_recieved", newMessageRecieved);
+        
+        prevChat._id == chat._id ? chat.unreadCount += prevChat.unreadCount + 1:chat.unreadCount += 1
+        prevChat = chat
+        socket.in(user._id).emit("setNotify",chat);
       }
   
       //.in-- inside user._id exclusive socket room joined-- emit this "message recieved" event ////mern-docs
@@ -99,6 +122,8 @@ io.on("connection", (socket) => {
     // socket.to(room).emit('message recieved',newMessageRecieved)
     
   });
+  
+  
 
   socket.off("setup", () => {
     console.log("USER DISCONNECTED");

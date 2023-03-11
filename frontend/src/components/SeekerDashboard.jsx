@@ -129,7 +129,7 @@ const SeekerDashboard = () => {
                   return searchTerm && name.startsWith(searchTerm);
                 })
                 .map((item, index) => (
-                  <div onClick={() => { setQuery(item.basicInfo.name); handleSearch() }}>
+                  <div key={index} onClick={() => { setQuery(item.basicInfo.name); handleSearch() }}>
                     {item.basicInfo.name}
                   </div>
                 ))}
