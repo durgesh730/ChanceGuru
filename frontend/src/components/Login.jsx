@@ -47,45 +47,68 @@ const Login = () => {
       .post(`${server}/auth/login`, {
         email: values.email,
         password: values.pass,
+      }).then((res) => {
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("type", res.data.type);
+        axios
+          .get(`${server}/auth/` , {
+            headers: {
+              Authorization: `Bearer ${res.data.token}`,
+            },
+          })
+          .then((data) => {
+            // data.data.type="talent"
+            data.data.token = localStorage.getItem("token");
+            localStorage.setItem("login", JSON.stringify(data.data));
+            if (localStorage.getItem("type") == "seeker" || localStorage.getItem("type") == "admin") {
+              navigate("/seekerdashboard");
+            } else if (localStorage.getItem("type") == "user") {
+              navigate("/talentdashboard");
+            }
+          })
+          .catch((err) => {
+            
+            console.log(err);
+          });
       })
-      .then((res) => {
-        if (res.status == 200) {
-          signInWithEmailAndPassword(authentication, values.email, values.pass)
-            .then(() => {
-              if (!authentication.currentUser.emailVerified) {
-                alert("Email not verified");
-              } else {
-                localStorage.setItem("token", res.data.token);
-                localStorage.setItem("type", res.data.type);
-                axios
-                  .get(`${server}/auth/` , {
-                    headers: {
-                      Authorization: `Bearer ${res.data.token}`,
-                    },
-                  })
-                  .then((data) => {
-                    // data.data.type="talent"
-                    data.data.token = localStorage.getItem("token");
-                    localStorage.setItem("login", JSON.stringify(data.data));
-                    if (localStorage.getItem("type") == "seeker" || localStorage.getItem("type") == "admin") {
-                      navigate("/seekerdashboard");
-                    } else if (localStorage.getItem("type") == "user") {
-                      navigate("/talentdashboard");
-                    }
-                  })
-                  .catch((err) => {
-                    console.log(err);
-                  });
-              }
-            })
-            .catch((err) => setErrorMsg(err.message));
+      // .then((res) => {
+      //   if (res.status == 200) {
+      //     signInWithEmailAndPassword(authentication, values.email, values.pass)
+      //       .then(() => {
+      //         if (!authentication.currentUser.emailVerified) {
+      //           alert("Email not verified");
+      //         } else {
+      //           localStorage.setItem("token", res.data.token);
+      //           localStorage.setItem("type", res.data.type);
+      //           axios
+      //             .get(`${server}/auth/` , {
+      //               headers: {
+      //                 Authorization: `Bearer ${res.data.token}`,
+      //               },
+      //             })
+      //             .then((data) => {
+      //               // data.data.type="talent"
+      //               data.data.token = localStorage.getItem("token");
+      //               localStorage.setItem("login", JSON.stringify(data.data));
+      //               if (localStorage.getItem("type") == "seeker" || localStorage.getItem("type") == "admin") {
+      //                 navigate("/seekerdashboard");
+      //               } else if (localStorage.getItem("type") == "user") {
+      //                 navigate("/talentdashboard");
+      //               }
+      //             })
+      //             .catch((err) => {
+      //               console.log(err);
+      //             });
+      //         }
+      //       })
+      //       .catch((err) => setErrorMsg(err.message));
 
-        }
-      })
-      .catch((err) => {
-        console.log(err);
+      //   }
+      // })
+      // .catch((err) => {
+      //   console.log(err);
 
-      });
+      // });
   };
 
   useEffect(() => {
