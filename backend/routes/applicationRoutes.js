@@ -4,6 +4,66 @@ const JobApplicant = require("../db/JobApplication");
 const JobApplication = require("../db/JobApplication");
 const router = express.Router();
 
+
+// To find from _id
+router.get("/DatetimeLocation/:_id", (req, res) => {
+  JobApplicant.find({ _id: req.params._id })
+    .then((response) => {
+      res.json(response);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+});
+
+// To find from CharId
+router.get("/JobDetails/:UserId/:id", (req, res) => {
+  JobApplicant.find({
+    userId: req.params.UserId,
+    charId: req.params.id
+  }).then((response) => {
+    console.log(response)
+    if(response.length == 0){
+      let toReturn = {
+        status: "notApplied"
+      }
+      res.json(toReturn)
+    }
+    else{
+
+      res.json(response[0]);
+    }
+  })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+});
+
+router.put("/DateTime/:id", async (req, res) => {
+  const { time, date, interview, location } = req.body;
+  try {
+    const newData = {};
+    if (time) {
+      newData.time = time;
+    }
+    if (date) {
+      newData.date = date;
+    }
+    if (time) {
+      newData.interviewer = interview;
+    }
+    if (location) {
+      newData.location = location;
+    }
+    const userData = await JobApplicant.findOneAndUpdate({ _id: req.params.id }, { $push: { audition: newData } }, { new: true });
+    res.json({ userData });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Some error occured");
+  }
+}
+);
+
 // To find from pid
 router.get("/project/:_id", (req, res) => {
   JobApplicant.find({ pId: req.params._id })
@@ -84,7 +144,7 @@ router.get("/allJobsUser", jwtAuth, (req, res) => {
   const user = req.user;
   JobApplicant.find({ userId: user._id })
     .then((response) => {
-        // console.log(response);
+      // console.log(response);
       res.json(response);
     })
     .catch((err) => {

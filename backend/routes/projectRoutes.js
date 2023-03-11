@@ -5,6 +5,34 @@ const Project = require("../db/Project");
 const JobApplication = require('../db/JobApplication')
 const User = require('../db/User');
 
+
+// API for search Project by name project name
+router.get("/SearchProjectForAdmin", async (req, res) => {
+    const keyword = req.query.name
+      ? { "basicInfo.name": { $regex: req.query.name, $options: "i" } } //case insensitive
+      : {};
+    const users = await Project.find(keyword)
+    res.send(users);
+  });
+
+router.put("/Datetime/:id", async (req, res) => {
+    // console.log(req.body)
+    try {
+      const newData = {};
+      if (req.body) {
+        newData.DateTime = req.body;
+      }
+
+      console.log(newData)
+      const userData = await Project.findOneAndUpdate({ _id: req.params.id},{ $push: newData }, { new: true } );
+      res.json({ userData });
+      
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).send("Some error occured");
+    }
+  });
+
 //Get project form project id
 
 router.get("/oneproject/:id" , (req , res) => {
@@ -115,12 +143,20 @@ router.put("/Reject/:_id", (req, res) => {
         })
 })
 
-
-
-
 router.get("/allProjectsSeekers", jwtAuth, (req, res) => {
     const user = req.user;
     Project.find({ seekerId: user._id })
+        .then((response) => {
+            res.json(response);
+        })
+        .catch((err) => {
+            res.status(400).json(err);
+        })
+})
+
+//TO get all the sekers projects for admin Page
+router.get("/getProjectForAdmin", (req, res) => {
+    Project.find(req.params.id)
         .then((response) => {
             res.json(response);
         })

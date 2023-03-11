@@ -9,7 +9,7 @@ import { getSender, getSenderLink } from "../config/ChatLogics";
 
 import UserListItem from "../userAvatar/UserListItem";
 import profile from "../../assets/icons/profile1.svg";
-
+import server from '../server';
 
 const MyChats1 = ({ fetchAgain }) => {
   const [loggedUser, setLoggedUser] = useState();
@@ -25,7 +25,7 @@ const MyChats1 = ({ fetchAgain }) => {
       };
 
       const { data } = await axios.get(
-        "http://localhost:5000/api/chat",
+        `${server}/api/chat`,
         config
       );
       console.log("Mychats 31 Fetch Chats:",data)
@@ -83,7 +83,7 @@ const MyChats1 = ({ fetchAgain }) => {
       };
 
       const { data } = await axios.get(
-        `http://localhost:5000/api/user?search=${searchValue}`,
+        `${server}/api/user?search=${searchValue}`,
         config
       );
 
@@ -118,7 +118,7 @@ const MyChats1 = ({ fetchAgain }) => {
         },
       };
       const { data } = await axios.post(
-        `http://localhost:5000/api/chat`,
+        `${server}/api/chat`,
         { userId },
         config
       );
@@ -221,7 +221,8 @@ const MyChats1 = ({ fetchAgain }) => {
 
   return (
     <>
-      <div className="myChat_main col-lg-3">
+      <div className="myChat_main">
+
         <div className="myChat">
           <div className="searchChat">
             <CiSearch className="search_icon" />
@@ -303,6 +304,7 @@ const MyChats1 = ({ fetchAgain }) => {
           </div>
         </div>
       </div>
+
     </>
   );
 };

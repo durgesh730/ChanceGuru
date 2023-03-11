@@ -4,17 +4,35 @@ import Searchbar from "./mini_components/Searchbar";
 import Card2 from "./mini_components/Card2";
 import { useNavigate } from "react-router-dom";
 import "./style.css";
+import server from "./server";
 
 const SeekerDashboard = () => {
   const [query, setQuery] = useState("");
   const [card, setcard] = useState();
   const [searchData, setsearchData] = useState([]);
+  const type = localStorage.getItem('type');
 
-  // console.log(card[0].basicInfo.name)
+
+  const handleSearchForAdmin = async () => {
+    const data = await fetch(
+      `${server}/project/SearchProjectForAdmin?name=${query}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const res = await data.json();
+    if (res) {
+      setcard(res);
+      setsearchData(res)
+    }
+  };
 
   const handleSearch = async () => {
     const data = await fetch(
-      `http://localhost:5000/profile/searchSeekerData?name=${query}`,
+      `${server}/profile/searchSeekerData?name=${query}`,
       {
         method: "GET",
         headers: {
@@ -26,15 +44,21 @@ const SeekerDashboard = () => {
     const res = await data.json();
     if (res) {
       setcard(res);
+      setsearchData(res);
     }
   };
+
   useEffect(() => {
-    handleSearch();
+    if (type === 'seeker') {
+      handleSearch();
+    } else if (type === 'admin') {
+      handleSearchForAdmin();
+    }
   }, [query])
 
   const getProjects = async () => {
     const res = await fetch(
-      "http://localhost:5000/project/allProjectsSeekers",
+      "${server}/project/allProjectsSeekers",
       {
         method: "GET",
         headers: {
@@ -44,16 +68,38 @@ const SeekerDashboard = () => {
       }
     );
     const response = await res.json();
-
     if (response !== null) {
       setcard(response);
-      setsearchData(response);
     }
   };
 
+  // ============= get all seeker Project on Admin Page ==============
+
+  const getAdminProjects = async () => {
+    const data = await fetch(`${server}/project/getProjectForAdmin`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    const re = await data.json();
+    if (re !== null) {
+      setcard(re);
+    }
+  }
+
+
   useEffect(() => {
-    getProjects();
+    if (type === 'seeker') {
+      getProjects();
+    } else if (type === 'admin') {
+      getAdminProjects();
+    }
   }, [setcard]);
+
+  useEffect(() => {
+    getAdminProjects();
+  }, [])
 
   let navigate = useNavigate();
   const routeChange = () => {
@@ -66,7 +112,7 @@ const SeekerDashboard = () => {
       <Topbar />
       <div className="container">
         <div className="row">
-          <div className="col-lg-8 searchBox">
+          <div className="col-lg-8 col-12 searchBox">
             <Searchbar
               setQuery={setQuery}
               query={query}
@@ -89,7 +135,7 @@ const SeekerDashboard = () => {
                 ))}
             </div>
           </div>
-          <div className="col-lg-4">
+          <div className="col-lg-4 col-12">
             <button
               className="btn btn-primary create-btn"
               onClick={routeChange}
@@ -104,8 +150,8 @@ const SeekerDashboard = () => {
         </div>
         <div className="main-container">
           <ul className="grid-wrapper">
-            {card?.map((card, i) => (
-              <Card2 index={i} card={card} />
+            {card?.map((item, i) => (
+              <Card2 key={i} card={item} />
             ))}{" "}
           </ul>
         </div>

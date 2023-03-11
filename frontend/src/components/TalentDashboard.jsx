@@ -8,6 +8,7 @@ import cardImg from "../assets/images/rectangle-13.png";
 import AuthContext from "./AuthContext";
 import { BsChevronDown, BsPhone } from "react-icons/bs";
 import { useLocation } from "react-router-dom";
+import server from "./server";
 
 const TalentDashboard = () => {
     const auth = useContext(AuthContext);
@@ -18,7 +19,7 @@ const TalentDashboard = () => {
 
 
     const handleSearch = async () => {
-        const data = await fetch(`http://localhost:5000/profile/searchData?name=${query}`, {
+        const data = await fetch(`${server}/profile/searchData?name=${query}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -41,7 +42,7 @@ const TalentDashboard = () => {
     const getProjects = async () => {
         if (location.state) {
             console.log(location.state.seekerId)
-            axios.get(`http://localhost:5000/project/getOnlySeekersProject/${location.state.seekerId}`)
+            axios.get(`${server}/project/getOnlySeekersProject/${location.state.seekerId}`)
                 .then(async (res) => {
                     setcards(res.data);
                 })
@@ -53,7 +54,7 @@ const TalentDashboard = () => {
 
 
             axios
-                .get("http://localhost:5000/project/allProjects",
+                .get(`${server}/project/allProjects`,
                     {
                         headers: {
                             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -71,19 +72,18 @@ const TalentDashboard = () => {
 
     useEffect(() => {
         getProjects();
-    }, [setcards,location.state]);
+    }, [setcards, location.state]);
 
     const user = JSON.parse(localStorage.getItem("login"));
 
     const handleShow = async () => {
         axios
-            .get(`http://localhost:5000/profile/`, {
+            .get(`${server}/profile/`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
             })
             .then((response) => {
-                // console.log(response.data)
                 if (response.data !== null) {
                     setuserImg(response.data)
                     profileCompletion(response.data);
@@ -138,7 +138,7 @@ const TalentDashboard = () => {
     return (
         <>
             <Topbar />
-            <div className="container-fluid" style={{ padding: "0 60px" }}>
+            <div className="container-fluid talent_container" style={{ padding: "0 60px" }}>
                 <Searchbar setQuery={setQuery} query={query} handleSearch={handleSearch} />
                 <div className="talent-heading d-flex justify-content-between">
                     <div className="">Suggestions</div>
@@ -154,7 +154,7 @@ const TalentDashboard = () => {
                     <div className="row">
                         <ul className="grid-wrapper">
                             {cards?.map((card) => (
-                                <Card card={card} profile={profileStrength} setClicked={auth.setClicked} />
+                                <Card card={card} profile={profileStrength} UserProfileDeatils={userImg} setClicked={auth.setClicked} />
                             ))}{" "}
                             <li className="side_div" style={auth.clicked ? {} : { display: "none" }}>
                                 <div className="sd_1">

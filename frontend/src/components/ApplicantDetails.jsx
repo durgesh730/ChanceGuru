@@ -6,9 +6,8 @@ import time from "../assets/icons/time-left.svg";
 import reject from "../assets/icons/round-delete-button.svg";
 import ApplicantRowCard from './mini_components/ApplicantRowCard';
 import { useLocation } from 'react-router-dom';
-
-
-
+import server from "./server";
+import { AiFillDelete } from 'react-icons/ai';
 
 const ApplicantDetails = () => {
     const location = useLocation();
@@ -27,8 +26,20 @@ const ApplicantDetails = () => {
     var check = applied[0]
 
 
+    var modal = document.getElementById("myModal");
+
+    function handlemodal() {
+        modal.style.display = "block";
+    }
+    function handlemod() {
+        modal.style.display = "none";
+    }
+
+
+    // console.log(location.state, "location")
+
     const ProjectData = async () => {
-        const data = await fetch(`http://localhost:5000/project/projectDetails/${location.state}`, {
+        const data = await fetch(`${server}/project/projectDetails/${location.state}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -36,7 +47,6 @@ const ApplicantDetails = () => {
         })
         const res = await data.json();
         setProjectDetails(res)
-
     }
 
     useEffect(() => {
@@ -48,7 +58,6 @@ const ApplicantDetails = () => {
     }, [projectDetails])
 
     // for finding total characters in Project by using map
-
 
     var char = 0;
     var all = new Array();
@@ -72,7 +81,7 @@ const ApplicantDetails = () => {
 
     const [Data, setData] = useState();
     const fetchData = async () => {
-        const data = await fetch(`http://localhost:5000/project/Seekers/${location.state}`, {
+        const data = await fetch(`${server}/project/Seekers/${location.state}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -114,12 +123,61 @@ const ApplicantDetails = () => {
         })
     }
 
+    const [inputList, setinputList] = useState([{ date: '', location: '' }]);
+
+    const handleinputchange = (e, index) => {
+        const { name, value } = e.target;
+        const list = [...inputList];
+        list[index][name] = value;
+        setinputList(list);
+    }
+
+    const handleremove = (index) => {
+        const list = [...inputList];
+        list.splice(index, 1);
+        setinputList(list);
+    }
+
+    const handleaddclick = () => {
+        setinputList([...inputList, { date: '', location: '' }]);
+    }
+
+    console.log(inputList)
+
+    var id = 0;
+    projectDetails?.map((item, i) => {
+        id = item._id
+    })
+
+    const handledelete = async (e) => {
+        let x = e.target.getAttribute()
+        const data = await fetch(`${server}/project/Datetime/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+        const res = await data.json();
+        console.log(res)
+    }
+
+    const Schedule = async () => {
+        const data = await fetch(`${server}/project/Datetime/${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(inputList)
+        })
+        const json = await data.json();
+        console.log(json, "json data")
+        modal.style.display = "none";
+    }
+
     useEffect(() => {
         fetchData();
         ProjectData()
     }, [setData])
-
-
 
 
     return (
@@ -128,37 +186,54 @@ const ApplicantDetails = () => {
 
             <div className="content-container">
                 <div className="projCont">
-                    <img src={promotion} className="promotion" alt="" />
-                    {
-                        projectDetails?.map((items, i) => {
-                            return (
-                                <>
-                                    <span key={i} className="projectTitle">
-                                        {items.basicInfo.name}
-                                    </span>
-                                    <span className="projectInfo">
-                                        {items.basicInfo.desc}
-                                    </span>
-                                </>
-                            )
-                        })
-                    }
+                    <div className='pc_child'>
+                        <div className='d-flex'>
+                            <figure className='m-0'>
+                                <img src={promotion} className="promotion" alt="" />
 
-                    <div className="Path-26"></div>
-                    <span className='postedOn'>Posted On</span>
-                    <span className="date">{"02/04/2001"}</span>
-                    <span className="location">Location</span>
+                            </figure>
+                            <div className='d-flex flex-column'>
+                                {
+                                    projectDetails?.map((items, i) => {
+                                        return (
+                                            <>
+                                                <span key={i} className="projectTitle">
+                                                    {items.basicInfo.name}
+                                                </span>
+                                                <span className="projectInfo">
+                                                    {items.basicInfo.desc}
+                                                </span>
+                                            </>
+                                        )
+                                    })
+                                }
+                            </div>
+                        </div>
 
-                    {
-                        projectDetails?.map((items, i) => {
-                            return (
-                                <>
-                                    <span className="locationName">{items.basicInfo.address}</span>
-                                </>
-                            )
-                        })
-                    }
 
+                        <hr className='Path-26' />
+                        <div className='d-flex justify-content-between'>
+                            <div>
+                                <span className='postedOn me-2'>Posted On</span>
+                                <span className="date">{"02/04/2001"}</span>
+                            </div>
+                            <div>
+                                <span className="location me-2">Location</span>
+
+                                {
+                                    projectDetails?.map((items, i) => {
+                                        return (
+                                            <>
+                                                <span className="locationName">{items.basicInfo.address}</span>
+                                            </>
+                                        )
+                                    })
+                                }
+                            </div>
+                        </div>
+
+
+                    </div>
                     <div className="lastRow">
                         <span number={`${c}`} className='appliedBy'>Applied By</span>
 
@@ -173,6 +248,72 @@ const ApplicantDetails = () => {
                         }
                         <span number={`${a}`} className='characters'>Characters</span>
                     </div>
+                    <div className="card my-4">
+                        <div className="card-body">
+                            <button onClick={handlemodal} className="btn btn-primary" style={{backgroundColor: '#8443e5'}} >Schedule Audition </button>
+                        </div>
+                    </div>
+                </div>
+                {/*============= modal ======================== */}
+
+
+                <div id="myModal" className="modal my-4 ">
+                    <div className="modal-content">
+
+                        <div className="row">
+                            <div className="col-sm-12">
+                                <h5 className="mt-3 mb-4 fw-bold">Add date and time</h5>
+
+
+                                {
+                                    projectDetails?.map((items) => items.DateTime?.map((data, i) => {
+                                        return (
+                                            <>
+                                                <div key={i} className='my-2'>
+                                                    <span className='mx-2' >{data.location}</span>
+                                                    <span>{data.date}</span>
+                                                    <h4 removeData ={''} onClick={() => { handledelete(data._id) }} > <AiFillDelete /> </h4>
+                                                </div>
+                                            </>
+                                        )
+                                    }))
+                                }
+
+
+                                {
+                                    inputList.map((x, i) => {
+                                        return (
+                                            <div key={i} className="row mb-3">
+                                                <div class="form-group col-md-3">
+                                                    <label >Date</label>
+                                                    <input value={x.date} type="date" name="date" class="form-control" placeholder="Date" onChange={(e) => handleinputchange(e, i)} required />
+                                                </div>
+                                                <div class="form-group col-md-3 mx-4 ">
+                                                    <label >Location</label>
+                                                    <input type="location" value={x.location} name="location" class="form-control" placeholder="Location" onChange={(e) => handleinputchange(e, i)} required />
+                                                </div>
+                                                <div class="form-group col-md-2 mt-4">
+                                                    {
+                                                        inputList.length !== 1 &&
+                                                        <button className="btn btn-danger mx-1 " onClick={() => handleremove(i)}>Remove</button>
+                                                    }
+                                                    {
+                                                        inputList.length - 1 === i &&
+                                                        <button className="btn btn-success my-2 " onClick={handleaddclick}>Add More</button>
+                                                    }
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+
+                            </div>
+                        </div>
+
+                        <div className="text-center" >
+                            <button className='btn btn-primary ' onClick={handlemod} > close </button>
+                            <button className='btn btn-primary mx-4 ' onClick={Schedule} > Schedule </button>
+                        </div>
+                    </div>
                 </div>
 
 
@@ -183,7 +324,7 @@ const ApplicantDetails = () => {
 
                             projectDetails?.map((items, ind) => items.roles.map((i, index) => {
                                 return (
-                                    <span highlighted={active === index ? "true" : "false"}  onClick={() => { setActive(index); setLeadRoles(i.characters); setActiveChar(i.characters[0]) }} >{i.role + ` (${i.characters.length})`}</span>
+                                    <span key={ind} highlighted={active === index ? "true" : "false"} onClick={() => { setActive(index); setLeadRoles(i.characters); setActiveChar(i.characters[0]) }} >{i.role + ` (${i.characters.length})`}</span>
                                 )
                             })
                             )
@@ -199,7 +340,7 @@ const ApplicantDetails = () => {
 
                                 return (
                                     <>
-                                        <span highlighted={activeChar === p ? "true" : "false"} onClick={() => setActiveChar(p)} >{p.name}</span>
+                                        <span key={index} highlighted={activeChar === p ? "true" : "false"} onClick={() => setActiveChar(p)} >{p.name}</span>
                                     </>
                                 )
                             }
@@ -209,9 +350,6 @@ const ApplicantDetails = () => {
                     </div>
 
                     <div className="statusContainer">
-                        {
-                            // console.log(shortListCount,waitingCount,rejectedCount)
-                        }
                         <div highlighted={activeStatus === "shortlist" ? "true" : "false"} className='shortlisted' onClick={() => setActiveStatus("shortlist")} >
                             <img src={list} alt="" />
                             <span number={`${shortListCount}`}   >Short-listed</span>
@@ -242,7 +380,7 @@ const ApplicantDetails = () => {
                                 Data?.map((Data, i) => {
                                     if (activeChar._id == Data.charId) {
                                         if (activeStatus === "shortlist") {
-                                            if (Data.status === activeStatus || Data.status === "selected") {
+                                            if (Data.status === activeStatus) {
 
                                                 return (
                                                     <ApplicantRowCard key={i} Data={Data} applied={check} />

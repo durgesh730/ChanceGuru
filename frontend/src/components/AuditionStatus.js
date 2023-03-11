@@ -3,25 +3,28 @@ import SubViewProfile from './SubViewProfile';
 import axios from 'axios'
 import StatusSide from './StatusSide';
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
+import server from "./server";
 
 const SubmissionStatus = ({ a, project, id }) => {
+
     const [active, setActive] = useState(false);
     const [cards, setcards] = useState();
-
+    console.log(id)
     const getuserId = () => {
         axios
-            .get(`http://localhost:5000/project/Seekers/${id}`)
+            .get(`${server}/project/Seekers/${id}`)
             .then((res) => {
-                setcards(res.data)
+                
+                setcards(res.data.filter(item => item.status !== 'rejected'))
             })
             .catch((err) => {
                 console.log(err);
             })
     }
 
-  useEffect(() => {
-    getuserId();
-  }, []);
+    useEffect(() => {
+        getuserId();
+    }, []);
 
     return (
         <>
@@ -49,14 +52,17 @@ const SubmissionStatus = ({ a, project, id }) => {
                     <div className="b_table">
                         <table>
                             <thead>
-                                <td>Applocant Name</td>
+                                <td>Applicant Name</td>
                                 <td>Scheduled For</td>
                                 <td>Status</td>
-                                <td></td>
+                                <td>Date-Location</td>
+                                <td>Time</td>
+                                <td>Interviewer Name</td>
                             </thead>
                             <tbody>
 
                                 {cards?.map((item, index) => {
+                                    // console.log(item._id, "cards")
                                     return (
                                         <>
                                             {
@@ -64,7 +70,32 @@ const SubmissionStatus = ({ a, project, id }) => {
                                                     <tr>
                                                         <StatusSide roleId={item.roleId} charId={item.charId} project={project} userId={item.userId} />
                                                         <td>{item.status}</td>
-                                                        <SubViewProfile display={'/audition'} index={index} card={cards} msg={'View Profile'} />
+                                                        {
+                                                            item.status === "scheduled" ?
+
+                                                                    (item.audition?.map((sub, i) => {
+                                                                        // console.log(sub, "auditionstaut")
+                                                                        return (
+                                                                            <>
+
+                                                                                <td >{sub.date}</td>
+                                                                                <td>{sub.time}</td>
+                                                                                <td>{sub.interviewer}</td>
+
+                                                                            </>
+                                                                        )
+                                                                    })
+                                                                )
+                                                                : (
+                                                                    <>
+                                                                        <td >NA</td>
+                                                                        <td>NA</td>
+                                                                        <td>NA</td>
+                                                                    </>
+                                                                )
+                                                        }
+                                                                                                               
+                                                        <SubViewProfile display={'/audition'} index={index} project={project} jobapplicationId = {item._id} card={cards} msg={'View Profile'} />
                                                     </tr>
                                                 )
                                                     : ("")

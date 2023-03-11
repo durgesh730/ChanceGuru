@@ -11,8 +11,11 @@ import Thumb from "../assets/images/Group 36.png";
 import axios from "axios";
 import SubViewProfile from './SubViewProfile';
 import { BsChevronRight, BsChevronLeft } from 'react-icons/bs';
+import Prevnext from "./mini_components/Prevnext";
+import server from "./server";
 
 const UserProfile = () => {
+  const location = useLocation();
   const [active, setActive] = useState("details");
   const [modal, setModal] = useState(false);
   const [modalData, setmodalData] = useState({
@@ -24,40 +27,83 @@ const UserProfile = () => {
   const [rejected, setRejected] = useState(false);
   const [sheduled, setScheduled] = useState(false);
   const [shortlisted, setShortlisted] = useState(false);
-
+  const [Inter, setInter] = useState({ date: "", time: "", interview: "", location: "" });
+  const [ischange, setischange] = useState(location.state.index);
+  const [datalocation , setDatalocation] = useState();
+  
   const setall = () => {
     setSelected(false);
     setRejected(false);
     setScheduled(false);
     setShortlisted(false);
   }
-  const location = useLocation();
-
   const userData = location.state.user;
   const index = location.state.index;
   const card = location.state.card;
   const d = location.state.btn;
+  const DateTime = location.state.project
+  const jodId = location.state.jobapplicationId
+
+
+  var id = 0;
+  var userId = 0;
+  card?.map((item) => {
+    id = item._id;
+    userId = item.userId
+  })
+
+  const setVal = (e) => {
+    const { value, name } = e.target;
+
+    setInter(() => {
+      return {
+        ...Inter,
+        [name]: value
+      }
+    })
+  }
+
+  const handleInterview = async () => {
+    const { date, time, interview, location } = Inter;
+    const data = await fetch(`${server}/application/DateTime/${jodId}`, {
+      method: "Put",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ date: date, time: time, interview: interview, location: location })
+    })
+    const res = await data.json();
+  }
 
   const handleApplyReq = () => {
-    axios.put('http://localhost:5000/profile/ReqToApp',{talentId: location.state.user.userId},{
-      
+    axios.put(`${server}/profile/ReqToApp`, { talentId: location.state.user.userId }, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-      
+      },
+
     })
-    .then(res => {
-      console.log(res.data);
-     
-    })
-    .catch(err => {
-      console.log(err);
-    });
+      .then(res => {
+        setModal(false);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
   };
 
+  const GetDatetime = async () => {
+    const data = await fetch(`http://localhost:5000/application/DatetimeLocation/${jodId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    const res = await data.json();
+    setDatalocation(res)
+  };
 
   const handleSelect = async () => {
-    const data = await fetch(`http://localhost:5000/project/Select/${card[index]._id}/${d}`, {
+    const data = await fetch(`${server}/project/Select/${card[index]._id}/${d}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -67,11 +113,10 @@ const UserProfile = () => {
     setall();
     setSelected(true);
     setModal(false);
-    console.log(res)
   };
 
   const handleReject = async () => {
-    const data = await fetch(`http://localhost:5000/project/Reject/${card[index]._id}`, {
+    const data = await fetch(`${server}/project/Reject/${card[index]._id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -81,25 +126,23 @@ const UserProfile = () => {
     setall();
     setRejected(true);
     setModal(false);
-    console.log(res);
   };
 
   const handleShortlist = async () => {
-    const data = await fetch(`http://localhost:5000/project/Shortlist/${card[index]._id}/${d}`, {
+    const data = await fetch(`${server}/project/Shortlist/${card[index]._id}/${d}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
     })
     const res = await data.json();
-    console.log(res);
     setall();
     setShortlisted(true);
     setModal(false);
   };
 
   const handleSchedule = async () => {
-    const data = await fetch(`http://localhost:5000/project/Schedule/${card[index]._id}/${d}`, {
+    const data = await fetch(`${server}/project/Schedule/${card[index]._id}/${d}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -109,16 +152,14 @@ const UserProfile = () => {
     setall();
     setScheduled(true);
     setModal(false);
-    console.log(res);
   };
 
 
   var [first, setfirst] = useState(0)
   const handleNext = () => {
-    if (first < userData.photos.length - 1) {
+    if (first < userData?.photos.length - 1) {
       first = first + 1
       setfirst(first);
-      console.log(first)
     }
   }
 
@@ -126,13 +167,11 @@ const UserProfile = () => {
     if (first >= 1) {
       first = first - 1;
       setfirst(first);
-      console.log(first)
     }
   }
 
-  console.log(first)
-
-  useEffect(() => {
+  const handleStatus = () => {
+    setall();
     if (card[index]?.status === "selected") {
       setSelected(true);
     } else if (card[index]?.status === "scheduled") {
@@ -142,10 +181,18 @@ const UserProfile = () => {
     } else if (card[index] === "rejected") {
       setRejected(true);
     }
-    console.log(card[index])
+  }
+
+  if(index !== ischange){
+    handleStatus();
+    setischange(index);
+  }
+
+  useEffect(() => {
+      handleStatus();
+    GetDatetime();
   }, [])
 
-  console.log(userData)
 
   return (
     <>
@@ -161,7 +208,7 @@ const UserProfile = () => {
                 <figure className=" userImage_main">
 
                   {
-                    userData.photos.map((item, index) => {
+                    userData?.photos.map((item, index) => {
                       return (
                         <>
                           {(index === first) ? <img src={item.link} alt="" /> : ("")}
@@ -180,19 +227,19 @@ const UserProfile = () => {
                 <div className="small_img">
                   <figure>
                     {
-                      userData.photos?.map((img, i) => {
+                      userData?.photos?.map((img, i) => {
                         return (
                           (i > 0) ? <img src={img.link} className="m-1" alt="" /> : ("")
                         )
                       })
                     }
-                    <span> + {userData.photos.length}</span>
+                    <span> + {userData?.photos.length}</span>
 
                   </figure>
 
                   <figure className="d-flex" >
                     {
-                      userData.videos?.map((img, i) => {
+                      userData?.videos?.map((img, i) => {
                         // console.log(img.link)
                         return (
                           <>
@@ -219,6 +266,8 @@ const UserProfile = () => {
                       <p>Actor</p>
                     </div>
                     <div>
+
+
                       <div className="tag">
                         {selected ? "Selected" : ""}{rejected ? "Rejected" : ""}{sheduled ? "Scheduled" : ""}{shortlisted ? "Shortlisted" : ""}
                       </div>
@@ -228,19 +277,47 @@ const UserProfile = () => {
                         </button>
                       }
 
+                      {
+                        datalocation?.length !== 1 ? ("") : (
+
+                          datalocation?.map((item, i) => {
+                            console.log(item, "date")
+                            return (
+                              <>
+                                {item.status === "scheduled" ?
+                                  (item.audition?.map((sub, i) => {
+                                    return (
+                                      <>
+                                        <div>
+                                          <span className="mx-1" >{sub.date}</span>
+                                          <span className="mx-1" >{sub.time}</span>
+                                          <span className="mx-1" >{sub.interviewer}</span>
+                                        </div>
+                                      </>
+                                    )
+                                  }))
+                                  : ("")}
+                              </>
+                            )
+                          })
+                        )
+                      }
+
+
+
                       {d == 0 ?
                         <button onClick={() => { setModal(true); setmodalData({ msg: " send a Request to ", btn: "Send", num: 4 }) }}>
                           Send Request
                         </button>
                         :
                         <>
-                          <button className={` ${selected || rejected ? "d-none" : ""} ${(d == 1 ^ (shortlisted || sheduled || selected || rejected)) ? "" : "d-none"}`} onClick={() => { setModal(true); setmodalData({ msg: " to Select the ", btn: "Select", num: 0 }) }} style={{ color: "#6cc592", borderColor: "#6cc592" }}>
+                          <button className={` ${selected || rejected ? "d-none" : ""} ${d == 1 ? "" : "d-none"} ${(shortlisted || sheduled || selected || rejected) ? "" : "d-none"} `} onClick={() => { setModal(true); setmodalData({ msg: " to Select the ", btn: "Select", num: 0 }) }} style={{ color: "#6cc592", borderColor: "#6cc592" }}>
                             Select
                           </button>
-                          <button className={`${selected || rejected || (sheduled || shortlisted && d == 1) ? "d-none" : ""}`} onClick={() => { setModal(true); setmodalData({ msg: " to send a Schedule to ", btn: "Schedule", num: 2 }) }}>
+                          <button className={`${selected || rejected || (sheduled && d == 1) ? "d-none" : ""}`} onClick={() => { setModal(true); setmodalData({ msg: " to send a Schedule to ", btn: "Schedule", num: 2 }) }}>
                             Schedule
                           </button>
-                          <button className={` ${selected || rejected ? "d-none" : ""} ${(d == 1 ^ (shortlisted || sheduled || selected || rejected)) ? "" : "d-none"}`} onClick={() => { setModal(true); setmodalData({ msg: " Reject the", btn: "Reject", num: 3 }) }} style={{ color: "#b8d0eb", borderColor: "#b8d0eb" }} >
+                          <button className={` ${selected || rejected ? "d-none" : ""} ${d == 1 ? "" : "d-none"} ${(shortlisted || sheduled || selected || rejected) ? "" : "d-none"}`} onClick={() => { setModal(true); setmodalData({ msg: " Reject the", btn: "Reject", num: 3 }) }} style={{ color: "#b8d0eb", borderColor: "#b8d0eb" }} >
                             Reject
                           </button>
                         </>
@@ -284,18 +361,18 @@ const UserProfile = () => {
                   </div>
                   <hr />
                   <div className="h-100">
-                    {active === "details" && <Details Data={userData.basicInfo} />}
-                    {active === "talent" && <Talents Data={userData.talent} />}
+                    {active === "details" && <Details Data={userData?.basicInfo} />}
+                    {active === "talent" && <Talents Data={userData?.talent} />}
                     {active === "bio" && <BioExperience
-                      Data={userData.portfolio}
+                      Data={userData?.portfolio}
                     />}
                     {active === "education" && <Education
-                      Data={userData
-                      }
+                      Data={userData}
                     />}
                     {active === "role" && <UserRole
                       Data={userData}
                     />}
+                    <Prevnext user={userData} card={card} index={index} d={d} />
                   </div>
                 </div>
               </div>
@@ -305,9 +382,51 @@ const UserProfile = () => {
       </div>
 
       {/* -------------modal----------------------------- */}
+
+      {/* {
+        console.log(modalData.num, "h")
+      } */}
+
       {modal && (
         <div className="userSub_modal">
           <div className="modal_child shadow">
+
+            {
+              modalData.num === 2 ? (
+                <div className="d-flex my-4 " >
+
+                  <div className="my-2" >
+                    <div>
+                      <label>Time</label> <br />
+                      <input type='time' name="time" value={Inter.time} onChange={setVal} ></input>
+                    </div>
+
+                    <div>
+                      <label>Interviewer Name</label> <br />
+                      <input name="interview" value={Inter.interview} onChange={setVal}  ></input>
+                    </div>
+                  </div>
+
+                  <div className="d-flex my-2 mx-4 " >
+                    <div>
+                      <select name="date" value={Inter.date} onChange={setVal}  >
+                        <option selected >Date and Location</option>
+                        {
+                          DateTime?.DateTime?.map((item, i) => {
+                            return (
+                              <>
+                                <option key={i} >{item.date} , {item.location} </option>
+                              </>
+                            )
+                          })
+                        }
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              ) : ("")
+            }
+
             <h1 className="purple_title">Request Confirmation</h1>
             <figure>
               <img src={Thumb} alt="thumb" />
@@ -322,6 +441,7 @@ const UserProfile = () => {
                   handleShortlist();
                 } else if (modalData.num == 2) {
                   handleSchedule();
+                  handleInterview()
                 } else if (modalData.num == 3) {
                   handleReject();
                 } else {
@@ -331,6 +451,7 @@ const UserProfile = () => {
             </div>
           </div>
         </div>
+
       )}
     </>
   );

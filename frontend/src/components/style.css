@@ -424,8 +424,9 @@ a:hover {
   height: 100%;
 }
 .roleChild {
+  width: 100%;
   min-height: calc(100% - 50px);
-  margin: 25px 30px 0 22px;
+  margin: 25px 30px;
   padding: 23.5px 31px 23px 29px;
   border-radius: 6px;
   box-shadow: 0 0 6px 0 rgba(158, 158, 158, 0.5);
@@ -603,6 +604,11 @@ a:hover {
   text-align: left;
   color: #8748e5;
 }
+.charForm {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
 
 .charList {
   padding: 15px;
@@ -642,23 +648,21 @@ a:hover {
 }
 .projCont {
   width: 413px;
-  height: 302px;
-  margin: 25px 22px 340px 35px;
+  height: fit-content;
+  margin: 25px 22px 0 35px;
   /* padding: 32px 28px 19px 24px; */
-  position: relative;
   border-radius: 6px;
   box-shadow: 0 0 6px 0 rgba(158, 158, 158, 0.5);
   background-color: #fff;
 }
-.projCont > * {
-  position: absolute;
+.pc_child {
+  padding: 37px 28px 30px 24px;
 }
 img.promotion {
   width: 52.3px;
   height: 49.5px;
   object-fit: contain;
-  top: 37px;
-  left: 29px;
+  margin-right: 17px;
 }
 .projectTitle {
   width: 223px;
@@ -667,7 +671,6 @@ img.promotion {
   font-weight: 400;
   line-height: 1.25;
   color: #6c54a6;
-  top: 32px;
 }
 .postedOn,
 .projectInfo {
@@ -675,19 +678,16 @@ img.promotion {
   color: #444;
 }
 .projectInfo {
-  width: 265px;
+  width: 100%;
   height: 32px;
   font-size: 13px;
   line-height: 1.23;
-  top: 64px;
 }
 .Path-26 {
-  width: 356px;
-  height: 0;
+  margin: 15px 0;
+
   opacity: 0.37;
   border: 1px solid #bd9af1;
-  top: 119px;
-  left: 29px;
 }
 .date,
 .location,
@@ -698,7 +698,6 @@ img.promotion {
 .location,
 .locationName,
 .postedOn {
-  top: 140px;
   font-size: 14px;
   font-stretch: normal;
   font-style: normal;
@@ -709,20 +708,17 @@ img.promotion {
   left: 24px;
 }
 .date {
-  left: 102px;
   width: 76px;
   margin: 0;
   font-weight: 500;
   color: #8443e5;
 }
 .location {
-  left: 250px;
   width: 55px;
   font-weight: 400;
   color: #444;
 }
 .locationName {
-  left: 311px;
   width: 74px;
   font-weight: 500;
   text-align: center;
@@ -733,7 +729,6 @@ div.lastRow {
   position: relative;
   height: 114px;
   width: inherit;
-  top: calc(100% - 114px);
   display: flex;
   padding: 19px 26px;
   justify-content: space-between;
@@ -796,19 +791,26 @@ div.applicantDetails {
   background-color: #fff;
   top: 24px;
   padding-bottom: 22px;
+  padding-left: 60px;
 }
 div.topNavbar {
   margin-top: 23.5px;
+
+  display: flex;
+  /* margin-left: 30px; */
 }
+/* 
+.topNavbar::-webkit-scrollbar {
+  display: none;
+} */
 .topNavbar span {
   cursor: pointer;
   height: 20px;
-  display: inline-block;
+  display: block;
   position: relative;
   font-stretch: normal;
   font-style: normal;
   letter-spacing: normal;
-  text-align: center;
   width: 200px;
 }
 .leadRoles span,
@@ -850,13 +852,12 @@ span.chorus {
   position: absolute;
   top: 25px;
   left: 29px;
-  width: 806px;
   height: 1px;
   background-color: #d8d8d8;
 }
 .applicantDetails .leadRoles {
   margin-top: 36.5px;
-  margin-left: 52px;
+  /* margin-left: 52px; */
 }
 .leadRoles span {
   cursor: pointer;
@@ -875,15 +876,15 @@ span.chorus {
 }
 div.statusContainer {
   display: flex;
-  margin-left: 47px;
+  /* margin-left: 47px; */
 }
 div.statusContainer > div {
   cursor: pointer;
   position: relative;
   width: 241px;
   height: 74px;
-  margin-right: 23px;
-  margin-top: 28.5px;
+  margin: 10px 10px;
+  margin-left: 0;
   padding: 12.5px 17px 12px 19px;
   border-radius: 6px;
   border: 1px solid rgba(158, 158, 158, 0.5);
@@ -894,7 +895,7 @@ div.statusContainer > div span {
 div.statusContainer > div span::after {
   content: attr(number);
   position: absolute;
-  left: 190px;
+  right: 0;
   top: 26px;
   width: 34px;
   height: 36px;
@@ -921,30 +922,32 @@ div.applicantList {
   overflow-y: scroll;
 }
 div.tableHeading {
-  margin-left: 61px;
+  /* margin-left: 61px; */
+  display: flex;
+  justify-content: start;
 }
 div.tableHeading span {
+  display: block;
+  width: 33%;
   font-weight: 700;
   font-stretch: normal;
   font-style: normal;
   letter-spacing: normal;
-  text-align: center;
 }
-div.tableHeading span.last {
+/* div.tableHeading span.last {
   margin-left: 148px;
   margin-right: 157px;
-}
+} */
 div.applicantList div.listItems {
   height: 322px;
 }
 div.applicantList hr {
-  margin-top: 10px;
-  width: 806px;
   height: 1px;
+  margin: 10px;
   background-color: #d8d8d8;
 }
 div.listItems {
-  margin-top: 10px;
+  margin-top: 30px;
 }
 
 div.css-18dcxwc {
@@ -1177,8 +1180,8 @@ div.css-18dcxwc {
 .userSub_modal .modal_child {
   position: relative;
   background-color: #fff;
-  width: 529px;
-  height: 327px;
+  width: 729px;
+  height: 527px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1250,11 +1253,20 @@ div.css-18dcxwc {
 /* =================================Audition======================================= */
 .side_nav {
   /* position: fixed; */
+  width: 273px;
+  position: absolute;
   background-color: #402c87;
-  min-height: calc(100vh - 80px);
+  min-height: 100%;
   padding: 30px 15px !important;
   display: flex;
   flex-direction: column;
+}
+.subAud {
+  width: calc(100vw - 310px);
+  margin-left: 300px;
+}
+.navSideToggle {
+  display: none;
 }
 
 .side_nav span {
@@ -1269,6 +1281,7 @@ div.css-18dcxwc {
 }
 
 .lactive-class {
+  color: white;
   border-bottom: 2px solid #fff;
 }
 
@@ -1287,6 +1300,7 @@ div.css-18dcxwc {
   scroll-behavior: smooth;
   overflow-x: hidden;
   overflow-y: hidden;
+  width: 100%;
 }
 .experience_container .ec_child div {
   /* min-width: 48.7%;
@@ -1474,22 +1488,29 @@ div.css-18dcxwc {
   align-items: center;
   justify-content: space-between;
   /* width: calc(657px + 150px); */
-  width: 97%;
+  width: 100%;
   height: 160px;
   box-shadow: 0 0 6px 0 rgba(158, 158, 158, 0.5);
 }
 .role_main .long_Cards .firstDiv {
-  width: 200px;
+  width: 270px;
   height: 160px;
   background-color: #8443e5;
   color: #fff;
-}
-
-.role_main .long_Cards div {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+}
+.role_main .long_Cards div div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  border-right: 1px solid #d8d8d8;
+}
+.role_main .long_Cards div div:last-child() {
+  border: 0;
 }
 
 .role_main .long_Cards div span {
@@ -1497,17 +1518,16 @@ div.css-18dcxwc {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  padding: 0 16px;
-  border-right: 1px solid #d8d8d8;
   height: 101px;
-  width: 100%;
 }
 .role_main .long_Cards div span p {
-  height: 18px;
   font-size: 14px;
   font-weight: bold;
   color: #b8b8b8;
+  text-align: center;
+  margin-bottom: 5px;
 }
+
 .role_main .long_Cards div span h3 {
   color: #8443e5;
 }
@@ -1629,10 +1649,11 @@ div.css-18dcxwc {
   padding: 33px 27px 24px 27px;
 }
 .myChat_main {
+  display: block;
   box-shadow: 0 0 6px 0 rgba(180, 180, 180, 0.5);
   /* width: 292px; */
   /* height: 600px; */
-  height: calc(100% - 80px) !important;
+  height: calc(100% - 70px) !important;
 }
 .chat_page h4 {
   font-size: 18px;
@@ -1672,7 +1693,7 @@ div.css-18dcxwc {
 }
 .myChat_users {
   width: 100%;
-  height: calc(600px - 80px);
+  height: calc(100vh - 99px);
   overflow-y: scroll;
   margin: 0;
   padding: 0;
@@ -1969,4 +1990,13 @@ aside.emoji-picker-react {
   font-size: 40px;
   top: 50%;
   opacity: 0.7;
+}
+.side_toggle_chat {
+  display: block;
+  height: calc(100% - 80px) !important;
+}
+
+.side_chat {
+  display: none !important;
+  transition: all 0.3s;
 }

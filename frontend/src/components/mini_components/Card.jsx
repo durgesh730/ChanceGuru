@@ -2,8 +2,9 @@ import React from "react";
 import { useState, useEffect } from "react";
 import Modal from "./Modal";
 import axios from "axios";
+import server from '../server';
 
-const Card = ({ card, profile, setClicked }) => {
+const Card = ({ card, profile, UserProfileDeatils , setClicked }) => {
 
   const basicInfo = card.basicInfo;
   const role = card.roles;
@@ -17,7 +18,6 @@ const Card = ({ card, profile, setClicked }) => {
   const current = new Date().toUTCString();
   var date1 = new Date(create);
   var date2 = new Date(current);
-  // console.log(image);
 
   var Difference_In_Time = date2.getTime() - date1.getTime();
   var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
@@ -25,18 +25,18 @@ const Card = ({ card, profile, setClicked }) => {
 
   const getRoles = () => {
     axios
-      .get(`http://localhost:5000/projects/getroles/${card.id}`)
+      .get(`${server}/projects/getroles/${card.id}`)
       .then((res) => {
         setroles(res.data.data);
       })
       .catch((err) => {
-        // console.log(err);
+        console.log(err);
       });
   };
 
   const getImage = () => {
     axios
-      .get(`http://localhost:5000/profile/seekersImage/${id}`)
+      .get(`${server}/profile/seekersImage/${id}`)
       .then((res) => {
         setImage(res.data);
       })
@@ -86,6 +86,7 @@ const Card = ({ card, profile, setClicked }) => {
             setProfile={profile}
             info={card}
             roles={role}
+            UserProfileDeatils = {UserProfileDeatils}
           />
         )}
       </a>

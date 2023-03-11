@@ -3,10 +3,8 @@ import Topbar from "./mini_components/Topbar";
 import { IoLogoDesignernews, IoMdNotifications } from "react-icons/io";
 import Searchbar from "./mini_components/Searchbar";
 import profile from "../assets/icons/profile1.svg";
-
 import axios from "axios"
-
-
+import server from "./server";
 
 const Notification = () => {
   const [projects, setProjects] = useState()
@@ -21,7 +19,7 @@ const Notification = () => {
 
   const getProjects = async () => {
     const res = await fetch(
-      "http://localhost:5000/project/allProjectsSeekers",
+      `${server}/project/allProjectsSeekers`,
       {
         method: "GET",
         headers: {
@@ -39,7 +37,7 @@ const Notification = () => {
 
   const getJobApplications = async () => {
     const res = await fetch(
-      "http://localhost:5000/application/allJobsSeeker",
+      `${server}/application/allJobsSeeker`,
       {
         method: "GET",
         headers: {
@@ -61,7 +59,7 @@ const Notification = () => {
 
     jobs?.map((job, index) => {
       axios
-        .get(`http://localhost:5000/project/UserId/${job.userId}`)
+        .get(`${server}/project/UserId/${job.userId}`)
         .then((res) => {
           if (res !== null) {
             setJobUsers(oldUsers => [...oldUsers, res.data])
@@ -78,7 +76,7 @@ const Notification = () => {
   function getJobProjects(jobs) {
     jobs?.map((job, index) => {
 
-      axios.get(`http://localhost:5000/project/projectDetails/${job.pId}`)
+      axios.get(`${server}/project/projectDetails/${job.pId}`)
         .then((res) => {
           if (res !== null) {
             setJobProjects(oldProjects => [...oldProjects, res.data])
@@ -141,11 +139,14 @@ const Notification = () => {
           </div>
           <Searchbar />
           <hr />
+
+          {/* project.reverse()?.map */}
+
           {
-            projects?.map((project, index) => {
+            projects?.reverse().map((project, index) => {
               return (
                 <>
-                  <div className="notificationDiv d-flex align-items-center">
+                  <div className="notificationDiv  d-flex align-items-center">
                     <img src={loggedUser.link === undefined ? profile : loggedUser.link} alt="pfp" className="me-4 shadow-sm" />
                     <p>
                       You have successfully created the project {project.basicInfo.name}
@@ -157,7 +158,7 @@ const Notification = () => {
             })
           }
           {
-            userProjectMap?.map((item) => {
+            userProjectMap?.reverse().map((item) => {
               return (
                 <>
                   <div className="notificationDiv d-flex align-items-center">

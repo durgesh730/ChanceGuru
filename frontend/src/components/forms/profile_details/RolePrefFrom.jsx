@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import server from "../../server";
 
 const RolePref = ({ display }) => {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ const RolePref = ({ display }) => {
     e.preventDefault();
     axios
       .put(
-        "http://localhost:5000/profile/rolePref",
+        `${server}/profile/rolePref`,
         { formFields },
         {
           headers: {
@@ -54,7 +55,7 @@ const RolePref = ({ display }) => {
 
   const handleShow = async () => {
     axios
-      .get(`http://localhost:5000/profile/`, {
+      .get(`${server}/profile/`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

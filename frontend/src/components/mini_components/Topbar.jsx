@@ -1,6 +1,10 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
 import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { RiLogoutBoxRLine } from "react-icons/ri";
+import { AiOutlineClose } from "react-icons/ai";
+import { FaBars } from "react-icons/fa";
+
+
 
 import "./minicomp.css";
 import home from "../../assets/icons/home.svg";
@@ -23,6 +27,7 @@ import arole from "../../assets/images/active-role.png";
 import requests from "../../assets/icons/request.png";
 import arequests from "../../assets/icons/active-request.png";
 import axios from "axios";
+import server from '../server';
 
 import AuthContext from "../AuthContext";
 
@@ -35,6 +40,7 @@ const Topbar = (props) => {
   const [dim, setDim] = useState(0);
   const [projects, setProjects] = useState();
   const [loggedUser, setLoggedUser] = useState("");
+  const [toggleNav, settoggleNav] = useState(false)
 
   let location = useLocation()
 
@@ -127,7 +133,33 @@ const Topbar = (props) => {
 
   const [modal, setModal] = useState(false);
 
-  
+  const updateUnReadCount = (localChats) => {
+    if (localChats && localChats.length > 0) {
+      localChats.map(async (item) => {
+        console.log(item)
+          try {
+            const config = {
+              headers: {
+                "Content-type": "application/json",
+                Authorization: `Bearer ${user.token}`,
+              },
+            };
+            await axios.put(
+              `${server}/api/chat/updateUnreadCount`,
+              { item },
+              config
+            )
+              .then((response) => {
+                console.log(response)
+              });
+
+          } catch (error) {
+            console.log(error.message);
+          }
+        }
+      )
+    }
+  }
 
   function handleLogout() {
     let localChats = JSON.parse(localStorage.getItem("userChats"))
@@ -150,7 +182,7 @@ const Topbar = (props) => {
 
   const getProjects = async () => {
     const res = await fetch(
-      "http://localhost:5000/project/allProjectsSeekers",
+      `${server}/project/allProjectsSeekers`,
       {
         method: "GET",
         headers: {
@@ -167,7 +199,7 @@ const Topbar = (props) => {
   };
 
   const getJobApplications = async () => {
-    const res = await fetch("http://localhost:5000/application/allJobsSeeker", {
+    const res = await fetch(`${server}/application/allJobsSeeker`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -185,7 +217,7 @@ const Topbar = (props) => {
   function getUsers(jobs) {
     jobs?.map((job, index) => {
       axios
-        .get(`http://localhost:5000/project/UserId/${job.userId}`)
+        .get(`${server}/project/UserId/${job.userId}`)
         .then((res) => {
           if (res !== null) {
             setJobUsers((oldUsers) => [...oldUsers, res.data]);
@@ -201,7 +233,7 @@ const Topbar = (props) => {
   function getJobProjects(jobs) {
     jobs?.map((job, index) => {
       axios
-        .get(`http://localhost:5000/project/projectDetails/${job.pId}`)
+        .get(`${server}/project/projectDetails/${job.pId}`)
         .then((res) => {
           if (res !== null) {
             setJobProjects((oldProjects) => [...oldProjects, res.data]);
@@ -214,22 +246,22 @@ const Topbar = (props) => {
     });
   }
 
-  // const getUnReadCount = async () => {
-  //   // console.log(user._id);
-  //   try {
-  //     const config = {
-  //       headers: { Authorization: `Bearer ${user.token}` },
-  //     };
+  const getUnReadCount = async () => {
+    // console.log(user._id);
+    try {
+      const config = {
+        headers: { Authorization: `Bearer ${user.token}` },
+      };
 
-  //     await axios.get(
-  //       "http://localhost:5000/api/chat/getUnreadCount",
-  //       config
-  //     )
-  //     .then((response)=>{
-  //       console.log(response)
-  //       setChatUnReadCount(response.data)
+      await axios.get(
+        `${server}/api/chat/getUnreadCount`,
+        config
+      )
+      .then((response)=>{
+        console.log(response)
+        auth.setChatUnReadCount(response.data)
 
-  //     });
+      });
       
   //   } catch (error) {
   //     console.log(error.message);
@@ -265,24 +297,37 @@ const Topbar = (props) => {
     }
     // console.log(arr)
     setUserProjectMap([...arr])
-
   }, [jobUsers, jobProjects])
 
   useEffect(() => {
     setLoggedUser(JSON.parse(localStorage.getItem("login")));
   }, []);
-  // console.log(loggedUser.link)
+
+  const handleNavbar = () => {
+    if (toggleNav) {
+      document.querySelector(".topbar-nav").style.display = "none";
+      settoggleNav(false);
+
+    }
+    else {
+      document.querySelector(".topbar-nav").style.display = "flex";
+      settoggleNav(true)
+    }
+  }
 
   return (
     <>
       <div className="topbar">
         <div className="topbar-name">
           Chance <br /> Guru
+          <span className="navToggle" onClick={handleNavbar}>
+            {toggleNav ? <AiOutlineClose /> : <FaBars />}
+          </span>
         </div>
 
         <div className="topbar-nav">
           <Link
-            to={user.type === "user" ? "/talentdashboard" : "/seekerdashboard"}
+            to={user.type === "user"  ? "/talentdashboard" : "/seekerdashboard"}
             onClick={() => auth.setActive("home")}
             state={null}
           >
@@ -301,7 +346,7 @@ const Topbar = (props) => {
             </span>
           </Link>
           {
-            user.type === "seeker" ? (
+            user.type === "seeker" || user.type === "admin" ? (
               <>
                 <Link to="/submission" onClick={() => auth.setActive("chair")}>
                   <span
@@ -377,8 +422,9 @@ const Topbar = (props) => {
 
 
 
-
-          <Link to="/chat">
+         {
+           user.type !== 'admin'?
+          (<Link to="/chat">
             <span
               className={
                 active === "chat"
@@ -395,10 +441,12 @@ const Topbar = (props) => {
 
               { chatUnReadCount > 0 && <h6>{chatUnReadCount}</h6>}
             </span>
-          </Link>
+          </Link>):("")
+             }
+
           {
-            user.type !== "seeker"
-            &&
+            user.type === "user"
+            && 
             <Link to="/requestpage">
               <span
                 className={
@@ -430,7 +478,7 @@ const Topbar = (props) => {
             ) : (
               <img className="topbar-icons " src={notification} alt="" />
             )}
-            <h6>10</h6>
+            {auth.notificationCount !== 0?<h6>{auth.notificationCount}</h6>:""}
 
             <div className="notif-options" id="notifOption">
               <div>
@@ -459,7 +507,8 @@ const Topbar = (props) => {
                       <hr />
                     </>
                   );
-                })}
+                })
+                }
                 {/* <hr />
                 <div>
                   <img src="" alt="pfp" />
@@ -478,7 +527,7 @@ const Topbar = (props) => {
                   </p>
                 </div> */}
                 <div className="d-flex justify-content-center align-items-center view_all">
-                  <NavLink to="/notification">
+                  <NavLink to="/notification" onClick={() => auth.setNotificationCount(0)} >
                     <p>View All</p>
                   </NavLink>
                 </div>
@@ -487,7 +536,7 @@ const Topbar = (props) => {
           </span>
 
           <span
-            className="d-flex align-items-center cursor-pointer"
+            className="d-flex align-items-center cursor-pointer position-relative"
             onClick={toggleProfileOptions}
           >
             <span className="topbar-icons-container">
