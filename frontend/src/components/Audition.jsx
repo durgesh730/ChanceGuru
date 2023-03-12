@@ -12,12 +12,15 @@ const Audition = () => {
   const location = useLocation();
 
   const [cards, setcards] = useState();
+
+ 
+
   const type = localStorage.getItem('type');
   const [query, setQuery] = useState("");
   const [toggleSideNav, settoggleSideNav] = useState(false)
   const [searchData, setsearchData] = useState([]);
 
-
+// console.log(cards)
 
   const handleSearch = async () => {
     const data = await fetch(`${server}/profile/searchSeekerData?name=${query}`, {
@@ -33,19 +36,19 @@ const Audition = () => {
     }
   };
 
-  const getAdminProjects = async ()=>{
+  const getAdminProjects = async () => {
     const data = await fetch(`${server}/project/getProjectForAdmin`, {
-      method:"GET",
-      headers:{
-       "Content-Type":"application/json",
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
       },
     })
     const re = await data.json();
     console.log(re, "submi")
-    if(re !== null){
+    if (re !== null) {
       setcards(re);
     }
-}
+  }
 
   const getProjects = () => {
     axios.get(`${server}/project/allProjectsSeekers`, {
@@ -62,11 +65,12 @@ const Audition = () => {
       });
   };
 
- 
+  console.log(cards, "cards")
+
   useEffect(() => {
-    if(type === 'seeker'){
+    if (type === 'seeker') {
       getProjects();
-    }else if(type ==='admin'){
+    } else if (type === 'admin') {
       getAdminProjects();
     }
   }, []);
@@ -83,9 +87,12 @@ const Audition = () => {
 
     }
   }
+
   useEffect(() => {
+    getAdminProjects()
     handleSearch();
   }, [query])
+
   return (
     <>
       <Topbar />
@@ -139,36 +146,42 @@ const Audition = () => {
               </div>
               <h5 className="purple_title">Projects</h5>
 
-              {cards?.map((item, index) => {
-                console.log(item,"jkhg")
-                // ========= calculate total charcters =============
-                var char = 0;
-                var all = new Array();
-                var a = 0;
-                {
-                  item.roles.map((i) => {
-                    char = char + i.characters.length;
-                    var length = i.characters.length;
-                    for (i = 0; i < length; i++) {
-                      all[i] = char;
+              {
+                cards?.length === 0 || cards === undefined ? (
+                  <div class="loader"></div>
+                ) : (
+                  cards?.map((item, index) => {
+                    // ========= calculate total charcters =============
+                    var char = 0;
+                    var all = new Array();
+                    var a = 0;
+                    {
+                      item.roles.map((i) => {
+                        char = char + i.characters.length;
+                        var length = i.characters.length;
+                        for (i = 0; i < length; i++) {
+                          all[i] = char;
+                        }
+
+                        for (i = 0; i < all.length; i++) {
+                          if (all[i] > a) a = all[i];
+                        }
+                      });
                     }
 
-                    for (i = 0; i < all.length; i++) {
-                      if (all[i] > a) a = all[i];
-                    }
-                  });
-                }
+                    return (
+                      <>
+                        <div key={index} className="audition_accordion mb-3 ">
+                          <div className="aa1 border p-2">
+                            <AuditionStatus a={a} project={item} id={item._id} />
+                          </div>
+                        </div>
+                      </>
+                    );
+                  })
+                )
+              }
 
-                return (
-                  <>
-                    <div key={index} className="audition_accordion mb-3 ">
-                      <div className="aa1 border p-2">
-                        <AuditionStatus a={a} project={item} id={item._id} />
-                      </div>
-                    </div>
-                  </>
-                );
-              })}
             </div>
           </div>
         </div>

@@ -11,7 +11,6 @@ const Card2 = ({ card,index }) => {
   const id = card._id;
 
   const [apply, setApply] = useState([]);
-  console.log(apply, "app")
   const [photos, setPhotos] = useState([]);
 
   const userName = async (id) => {
@@ -23,7 +22,7 @@ const Card2 = ({ card,index }) => {
     });
     const res = await data.json();
     if (res !== null) {
-      setPhotos(res.photos);
+      setPhotos(prev =>[...prev, res.photos[0]]);
     }
   };
 
@@ -66,10 +65,14 @@ const Card2 = ({ card,index }) => {
               <span className="h4">{apply.length}</span>
             </div>
             <div className="many_images">
-              {photos?.map((item, i) => {
+              {/* {photos?.map((item, i) => {
                 return <img key={i} src={item.link} alt="img" />;
-              })}
-              <span>+20</span>
+              })} */}
+            
+              <img  src={photos[0]?.link} alt="img" />
+              <img  src={photos[1]?.link} alt="img" />
+              <img  src={photos[2]?.link} alt="img" />
+              <span>{photos?.length-3}</span>
             </div>
           </div>
 

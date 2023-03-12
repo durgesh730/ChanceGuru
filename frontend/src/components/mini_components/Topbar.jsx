@@ -132,6 +132,7 @@ const Topbar = (props) => {
             console.log(error.message);
           }
         }
+      }
       )
     }
   }
@@ -143,7 +144,7 @@ const Topbar = (props) => {
     console.log("Logout succesfull");
   }
 
-  
+
 
 
 
@@ -153,6 +154,8 @@ const Topbar = (props) => {
 
   const dataFetchedRef = useRef(false);
   const [userProjectMap, setUserProjectMap] = useState([]);
+  const [ForIds, setForIds] = useState()
+
 
   const getProjects = async () => {
     const res = await fetch(
@@ -166,10 +169,21 @@ const Topbar = (props) => {
       }
     );
     const response = await res.json();
-
     if (response !== null) {
       setProjects(response);
     }
+  };
+
+  const getJobapplicationIds = async () => {
+    const res = await fetch(`${server}/application/allJobsUser`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    const response = await res.json();
+    setForIds(response)
   };
 
   const getJobApplications = async () => {
@@ -235,8 +249,6 @@ const Topbar = (props) => {
         console.log(response)
         setChatUnReadCount(response.data)
 
-      });
-      
     } catch (error) {
       console.log(error.message);
     }
@@ -245,8 +257,13 @@ const Topbar = (props) => {
     if (dataFetchedRef.current) return;
     dataFetchedRef.current = true;
     getProjects();
+    getJobapplicationIds();
     getJobApplications();
-    
+    let localUnReadCount = JSON.parse(localStorage.getItem("UnReadNotify"))
+    if (!localUnReadCount) { getUnReadCount() }
+    else {
+      auth.setChatUnReadCount(localUnReadCount)
+    }
   }, []);
 
   useEffect(() => {
@@ -310,7 +327,7 @@ const Topbar = (props) => {
 
         <div className="topbar-nav">
           <Link
-            to={user.type === "user"  ? "/talentdashboard" : "/seekerdashboard"}
+            to={user.type === "user" ? "/talentdashboard" : "/seekerdashboard"}
             onClick={() => auth.setActive("home")}
             state={null}
           >
@@ -429,7 +446,7 @@ const Topbar = (props) => {
 
           {
             user.type === "user"
-            && 
+            &&
             <Link to="/requestpage">
               <span
                 className={
@@ -461,7 +478,7 @@ const Topbar = (props) => {
             ) : (
               <img className="topbar-icons " src={notification} alt="" />
             )}
-            {auth.notificationCount !== 0?<h6>{auth.notificationCount}</h6>:""}
+            {auth.notificationCount !== 0 ? <h6>{auth.notificationCount}</h6> : ""}
 
             <div className="notif-options" id="notifOption">
               <div>
@@ -549,7 +566,10 @@ const Topbar = (props) => {
                     )
                 }
                 <li>
-                  <NavLink to="/setting">Account Settings</NavLink>
+                  <NavLink to="/myapplication" state={ForIds} exect >My Applications</NavLink>
+                </li>
+                <li>
+                  <NavLink state={loggedUser} to="/setting" exect >Account Settings</NavLink>
                 </li>
                 <li>
                   <NavLink to="/help">FAQ's & Help</NavLink>

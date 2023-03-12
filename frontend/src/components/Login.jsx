@@ -46,6 +46,12 @@ const Login = () => {
     }
   }
 
+  var x = document.getElementById("snackbar");
+  function myFunction() {
+    x.className = "show";
+    setTimeout(function () { x.className = x.className.replace("show", ""); }, 15000);
+  }
+
   const handleForgotPassword = (e) => {
     e.preventDefault();
     confirmObj.confirm(forgotValues.otp).then((result) => {
@@ -120,10 +126,11 @@ const Login = () => {
               navigate("/seekerdashboard");
             } else if (localStorage.getItem("type") == "user") {
               navigate("/talentdashboard");
+              myFunction();
             }
           })
           .catch((err) => {
-            
+
             console.log(err);
           });
       })
@@ -180,6 +187,9 @@ const Login = () => {
 
   return (
     <>
+
+      <div id="snackbar">You are logged in Successfully..</div>
+
       <div className="login-container row">
         <div className="left-side col-lg-5">
           <div className="top-left d-flex align-items-center">
@@ -239,6 +249,7 @@ const Login = () => {
             <button
               type="submit"
               className="submit-btn btn btn-lg btn-block my-4"
+              onClick={myFunction}
             >
               Login
             </button>
@@ -321,6 +332,8 @@ const Login = () => {
             </button>
           </form>
         </div>
+
+
       </div>
     </>
   );
