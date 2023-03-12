@@ -9,6 +9,7 @@ import server from "./server";
 const SeekerDashboard = () => {
   const [query, setQuery] = useState("");
   const [card, setcard] = useState();
+  console.log(card);
   const [searchData, setsearchData] = useState([]);
   const type = localStorage.getItem('type');
 
@@ -150,7 +151,9 @@ const SeekerDashboard = () => {
         <div className="main-container">
           <ul className="grid-wrapper">
 
-            {card?.length === 0 || card === undefined ? (<div class="loader"></div>) : (
+            {(!card) ? (<div class="loader"></div>) : 
+              card.length == 0 ? "No Projects" :
+             (
               card?.map((item, i) => (
                 <Card2 key={i} card={item} />
               ))

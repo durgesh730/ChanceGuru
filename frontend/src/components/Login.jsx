@@ -249,7 +249,6 @@ const Login = () => {
             <button
               type="submit"
               className="submit-btn btn btn-lg btn-block my-4"
-              onClick={myFunction}
             >
               Login
             </button>
