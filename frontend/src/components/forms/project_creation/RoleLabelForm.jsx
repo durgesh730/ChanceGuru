@@ -23,7 +23,12 @@ const RoleLabelForm = ({ display , functions }) => {
         setformFields([...formFields, obj]);
     };
 
-    console.log(addFields)
+   
+    var x = document.getElementById("snackbar");
+    function myFunction() {
+        x.className = "show";
+        setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
+    }
 
     const removeFields = (index) => {
         let data = [...formFields];
@@ -73,7 +78,7 @@ const RoleLabelForm = ({ display , functions }) => {
                     <div className="d-flex justify-content-between">
                         <input className="col-4 cancel-btn btn btn-lg btn-block my-2" value="Reset" />
                         <p className="col-1"></p>
-                        <input type="submit" className="col-7 save-btn btn btn-lg btn-block my-2" value="Save" />
+                        <input type="submit" onClick={myFunction}  className="col-7 save-btn btn btn-lg btn-block my-2" value="Save" />
                     </div>
                 </form>
             </div>

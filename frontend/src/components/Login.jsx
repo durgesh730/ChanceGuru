@@ -25,6 +25,12 @@ const Login = () => {
   const { setTimeActive } = useAuthValue();
 
 
+  var x = document.getElementById("snackbar");
+  function myFunction() {
+    x.className = "show";
+    setTimeout(function () { x.className = x.className.replace("show", ""); }, 15000);
+  }
+
   const handleForgotPassword = (e) => {
     e.preventDefault();
     console.log(values.email);
@@ -51,7 +57,7 @@ const Login = () => {
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("type", res.data.type);
         axios
-          .get(`${server}/auth/` , {
+          .get(`${server}/auth/`, {
             headers: {
               Authorization: `Bearer ${res.data.token}`,
             },
@@ -64,51 +70,52 @@ const Login = () => {
               navigate("/seekerdashboard");
             } else if (localStorage.getItem("type") == "user") {
               navigate("/talentdashboard");
+              myFunction();
             }
           })
           .catch((err) => {
-            
+
             console.log(err);
           });
       })
-      // .then((res) => {
-      //   if (res.status == 200) {
-      //     signInWithEmailAndPassword(authentication, values.email, values.pass)
-      //       .then(() => {
-      //         if (!authentication.currentUser.emailVerified) {
-      //           alert("Email not verified");
-      //         } else {
-      //           localStorage.setItem("token", res.data.token);
-      //           localStorage.setItem("type", res.data.type);
-      //           axios
-      //             .get(`${server}/auth/` , {
-      //               headers: {
-      //                 Authorization: `Bearer ${res.data.token}`,
-      //               },
-      //             })
-      //             .then((data) => {
-      //               // data.data.type="talent"
-      //               data.data.token = localStorage.getItem("token");
-      //               localStorage.setItem("login", JSON.stringify(data.data));
-      //               if (localStorage.getItem("type") == "seeker" || localStorage.getItem("type") == "admin") {
-      //                 navigate("/seekerdashboard");
-      //               } else if (localStorage.getItem("type") == "user") {
-      //                 navigate("/talentdashboard");
-      //               }
-      //             })
-      //             .catch((err) => {
-      //               console.log(err);
-      //             });
-      //         }
-      //       })
-      //       .catch((err) => setErrorMsg(err.message));
+    // .then((res) => {
+    //   if (res.status == 200) {
+    //     signInWithEmailAndPassword(authentication, values.email, values.pass)
+    //       .then(() => {
+    //         if (!authentication.currentUser.emailVerified) {
+    //           alert("Email not verified");
+    //         } else {
+    //           localStorage.setItem("token", res.data.token);
+    //           localStorage.setItem("type", res.data.type);
+    //           axios
+    //             .get(`${server}/auth/` , {
+    //               headers: {
+    //                 Authorization: `Bearer ${res.data.token}`,
+    //               },
+    //             })
+    //             .then((data) => {
+    //               // data.data.type="talent"
+    //               data.data.token = localStorage.getItem("token");
+    //               localStorage.setItem("login", JSON.stringify(data.data));
+    //               if (localStorage.getItem("type") == "seeker" || localStorage.getItem("type") == "admin") {
+    //                 navigate("/seekerdashboard");
+    //               } else if (localStorage.getItem("type") == "user") {
+    //                 navigate("/talentdashboard");
+    //               }
+    //             })
+    //             .catch((err) => {
+    //               console.log(err);
+    //             });
+    //         }
+    //       })
+    //       .catch((err) => setErrorMsg(err.message));
 
-      //   }
-      // })
-      // .catch((err) => {
-      //   console.log(err);
+    //   }
+    // })
+    // .catch((err) => {
+    //   console.log(err);
 
-      // });
+    // });
   };
 
   useEffect(() => {
@@ -124,6 +131,9 @@ const Login = () => {
 
   return (
     <>
+
+      <div id="snackbar">You are logged in Successfully..</div>
+
       <div className="login-container row">
         <div className="left-side col-lg-5">
           <div className="top-left d-flex align-items-center">
@@ -182,6 +192,7 @@ const Login = () => {
             <button
               type="submit"
               className="submit-btn btn btn-lg btn-block my-4"
+              onClick={myFunction}
             >
               Login
             </button>
@@ -204,7 +215,7 @@ const Login = () => {
           </form>
         </div>
 
-        <div id="snackbar">Some text some message..</div>
+
       </div>
     </>
   );

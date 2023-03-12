@@ -97,9 +97,7 @@ const SeekerDashboard = () => {
     }
   }, [type]);
 
-  // useEffect(() => {
-  //   getAdminProjects();
-  // }, [])
+
 
   let navigate = useNavigate();
   const routeChange = () => {
@@ -110,6 +108,7 @@ const SeekerDashboard = () => {
   return (
     <>
       <Topbar />
+      <div id="snackbar">You are logged in Successfully..</div>
       <div className="container">
         <div className="row">
           <div className="col-lg-8 col-12 searchBox">

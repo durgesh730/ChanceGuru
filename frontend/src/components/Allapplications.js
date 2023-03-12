@@ -16,12 +16,17 @@ const Allapplications = ({ pid, charId, roleId, date,status }) => {
         setProject(res)
     };
 
+  
+
     useEffect(() => {
         handleSearch();
     }, [])
 
     return (
         <>
+            {/* <button onClick={myFunction} > check </button>
+         <div id="snackbar">Some text some message..</div> */}
+            
             <td>{project?.basicInfo?.name}</td>
             {
                 project?.roles?.map((item) => {
