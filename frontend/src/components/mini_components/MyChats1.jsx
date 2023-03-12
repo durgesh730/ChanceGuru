@@ -42,14 +42,14 @@ const MyChats1 = ({ fetchAgain }) => {
 
   useEffect(() => {
     setLoggedUser(JSON.parse(localStorage.getItem("login"))); //chatLogics
-    let localChats = JSON.parse(localStorage.getItem("userChats"))
-    if(!localChats || localChats.length <= 0){
+    // let localChats = JSON.parse(localStorage.getItem("userChats"))
+    // if(!localChats || localChats.length <= 0){
 
       fetchChats();
-    }
-    else{
-      setChats(localChats)
-    }
+    // }
+    // else{
+      // setChats(localChats)
+    // }
     // eslint-disable-next-line
   }, [fetchAgain]);
   //fetching chats again witht the updated list of all of our chats...
@@ -176,15 +176,22 @@ const MyChats1 = ({ fetchAgain }) => {
   }
 
   useEffect(() => {
-    socket.on("updateChat",(chat)=>{
+    socket.off("updateChat").on("updateChat",(chat)=>{
       console.log("Mychats1 180\n",chat)
+      chat.unreadCount = 0
+      console.log("Mychats1 181\n",selectedChat)
       let indexCheck;
       let newchats = chats.map((c,i)=>{
         if(c._id == chat._id){
+          console.log("c and chat matched as :",c,chat)
           indexCheck = i
           c.unreadCount = 0
-          c.unReadBy = chat.users[0]._id == chat.latestMessage.sender._id?chat.users[1]:chats.users[0]
+          c.unReadBy = chat.users[0]._id == chat.latestMessage.sender._id?chat.users[1]:chat.users[0]
+
         }
+          if(selectedChat._id == chat._id){
+            setSelectedChat(chat)
+          }
         return c
       })
       console.log(newchats[indexCheck])
@@ -199,7 +206,7 @@ const MyChats1 = ({ fetchAgain }) => {
   function handleChatClick(chat, i){
     setSelectedChat(chat);
     setactiveChat(i)
-    let unreadOfThis = chats[i].unreadCount
+    let unreadOfThis = chat.unreadCount
     let newChats = [...chats]
     console.log("Mychat1 183 setting chat unread count:\n",newChats[i],unreadOfThis)
     if(chatUnReadCount > 0){
@@ -212,7 +219,7 @@ const MyChats1 = ({ fetchAgain }) => {
       newChats[i].unreadCount = 0
       setChats(newChats)
     }
-
+    console.log("Mychats222 HandleClick: ",chat,user)
     socket.emit("updateYourchat",chat,user)
     
 
@@ -280,7 +287,7 @@ const MyChats1 = ({ fetchAgain }) => {
                     <div className="user_unseenDiv">
                       <h6>{getSender(loggedUser, chat.users)} </h6>
                       {
-                        chat.unReadBy && (chat.unReadBy._id == user._id) &&
+                        chat.unReadBy && (chat.unReadBy._id == user._id || chat.unReadBy == user._id) &&
                       <span style={
                         chat.unreadCount === 0 ? { display: "none" } : { display: "grid" }} > {chat.unreadCount} 
                       </span>
