@@ -86,8 +86,8 @@ const Login = () => {
                         type: location.state.talent ? "user" : "seeker"
                     }).then(() => {
                         alert(`Welcome ${location.state.talent ? "Talent" : "Seeker"} User. Your sign up data has been saved! Please verify your email.`);
-
-                        navigate("/emailverify");
+navigate("/");
+                       // navigate("/emailverify");
                     }).catch((err) => {
                         console.log(err);
                     });
