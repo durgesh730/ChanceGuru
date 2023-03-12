@@ -554,13 +554,15 @@ const Topbar = (props) => {
             <div className="profile-options" id="profileOption">
               <ul>
                 {
-                  user.type !== "seeker" ?
+                  user.type == "user" ?
                     (
                       <>
                         <li>
                           <Link to="/profiledetails">My Profile</Link>
                         </li>
-
+                        <li>
+                          <NavLink to="/myapplication" state={ForIds} exect >My Applications</NavLink>
+                        </li>
 
                       </>
                     )
@@ -568,9 +570,7 @@ const Topbar = (props) => {
                       <></>
                     )
                 }
-                <li>
-                  <NavLink to="/myapplication" state={ForIds} exect >My Applications</NavLink>
-                </li>
+                
                 <li>
                   <NavLink state={loggedUser} to="/setting" exect >Account Settings</NavLink>
                 </li>

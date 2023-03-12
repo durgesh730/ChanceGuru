@@ -40,7 +40,7 @@ const Card2 = ({ card }) => {
         <div className="card-author d-flex align-items-center  h-75">
           <div className="d-flex flex-column  mx-2  justify-content-between h-100">
             {/* <div className="posted-by">Applied by</div> */}
-            <span>{apply.length} Roles</span>
+            <span>{card.roles.length} Roles</span>
             <div className="card_date">
               <h6>Posted On</h6>
               <p>{result?(result):"Not available"}</p>

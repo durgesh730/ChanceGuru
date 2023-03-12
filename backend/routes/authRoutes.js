@@ -103,7 +103,7 @@ router.put("/ResetLoggedUserData/:id", jwtAuth, async (req, res) => {
       newData.phone = phone.value
     }
     if (link) {
-      newData.link = link.link;
+      newData.link = link;
     }
     const save = await User.findByIdAndUpdate({ _id: user.id },
       { $set: newData }, { new: true })
