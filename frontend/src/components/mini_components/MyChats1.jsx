@@ -159,7 +159,7 @@ const MyChats1 = ({ fetchAgain }) => {
               },
             };
             await axios.put(
-              `http://localhost:5000/api/chat/updateUnreadCount`,
+              `${server}/api/chat/updateUnreadCount`,
               { item },
               config
             )
