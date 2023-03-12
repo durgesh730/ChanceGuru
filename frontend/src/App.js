@@ -2,7 +2,7 @@ import React from "react";
 import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
 import "./App.css";
 import { AuthProvider } from "./components/AuthContext";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Verification from "./components/Verification";
@@ -55,6 +55,9 @@ function App() {
     const [typing, setTyping] = useState(false);
     
     const [socket,setSocket] = useState(io(ENDPOINT))
+
+    const getunreadonTopbar = useRef(0)
+
   useEffect(() => {
     let user = JSON.parse(localStorage.getItem("login"));
     if (user) {
@@ -66,7 +69,7 @@ function App() {
   return (
     <Router>
       <AuthProvider
-        value={{ currentUser, timeActive, setTimeActive, setClicked, clicked, active,setActive, notificationCount,setNotificationCount, chatUnReadCount,setChatUnReadCount,typing, setTyping, socketConnected, setSocketConnected, socket,setSocket }}
+        value={{ currentUser, timeActive, setTimeActive, setClicked, clicked, active,setActive, notificationCount,setNotificationCount, chatUnReadCount,setChatUnReadCount,typing, setTyping, socketConnected, setSocketConnected, socket,setSocket,getunreadonTopbar }}
       >
         <Routes>
           <Route

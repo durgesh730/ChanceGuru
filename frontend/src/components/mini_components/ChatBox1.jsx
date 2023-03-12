@@ -72,6 +72,7 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
 
   const sendMessage = async (event) => {
     let chat = selectedChat
+    console.log("chatbox1 75: ",chat,selectedChat)
     chat.unReadBy = chat.users[0]._id == user._id ? chat.users[1]:chat.users[0]
     if (newMessage) {
       socket.emit("stop typing", selectedChat._id);
@@ -123,6 +124,7 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
     //whwnever selctedChat changes, fetchAllMessages again for new selectedChat._id
 
     //just to keep a track
+    console.log("ChatBox 126 SelectedChat:",selectedChat)
     selectedChatCompare = selectedChat;
 
     // eslint-disable-next-line
@@ -131,6 +133,8 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
   //console.log(notification, 'notification Bellicon');
 
   const updateUnReadCount = (localChats) => {
+    if(window.location.pathname == "/chat"){
+
     if (localChats && localChats.length > 0) {
       localChats.map(async (item) => {
         console.log(item)
@@ -147,7 +151,7 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
               config
             )
               .then((response) => {
-                console.log("The response from topbar65:\n",response)
+                console.log("The response from ChatBox150:\n",response)
               });
 
           } catch (error) {
@@ -156,6 +160,8 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
         }
       )
     }
+  }
+
   }
 
   useEffect(() => {

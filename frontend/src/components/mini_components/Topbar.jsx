@@ -42,15 +42,17 @@ const Topbar = (props) => {
   const [loggedUser, setLoggedUser] = useState("");
   const [toggleNav, settoggleNav] = useState(false)
 
+
   let location = useLocation()
 
   const auth = useContext(AuthContext)
   const active = auth.active
 
-  let {socket,setSocket,setSocketConnected,setIsTyping,chatUnReadCount,setChatUnReadCount} = auth
+  let {socket,setSocket,setSocketConnected,setIsTyping,chatUnReadCount,setChatUnReadCount,getunreadonTopbar} = auth
   const user = JSON.parse(localStorage.getItem("login"));
   const navigate = useNavigate();
 
+  
   
   useEffect(() => {
     // setSocket(prev => prev = io(ENDPOINT));
@@ -67,7 +69,7 @@ const Topbar = (props) => {
           console.log(prev);
           return prev + 1
         })
-        updateUnReadCount([chat])
+        incrementChatCount([chat])
       }
     })
 
@@ -106,7 +108,7 @@ const Topbar = (props) => {
 
   const [modal, setModal] = useState(false);
 
-  const updateUnReadCount = (localChats) => {
+  const incrementChatCount = (localChats) => {
     if (localChats && localChats.length > 0) {
       localChats.map(async (item) => {
         console.log(item)
@@ -118,7 +120,7 @@ const Topbar = (props) => {
               },
             };
             await axios.put(
-              `${server}/api/chat/updateUnreadCount`,
+              `${server}/api/chat/incrChat`,
               { item },
               config
             )
@@ -135,8 +137,7 @@ const Topbar = (props) => {
   }
 
   function handleLogout() {
-    let localChats = JSON.parse(localStorage.getItem("userChats"))
-    updateUnReadCount(localChats)
+    
     localStorage.clear();
     navigate("/login");
     console.log("Logout succesfull");
@@ -232,7 +233,7 @@ const Topbar = (props) => {
       )
       .then((response)=>{
         console.log(response)
-        auth.setChatUnReadCount(response.data)
+        setChatUnReadCount(response.data)
 
       });
       
@@ -287,6 +288,15 @@ const Topbar = (props) => {
       settoggleNav(true)
     }
   }
+
+  useEffect(() => {
+    if(getunreadonTopbar.current < 1){
+      getUnReadCount()
+      getunreadonTopbar.current++
+    }
+
+  }, [])
+  
 
   return (
     <>
