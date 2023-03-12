@@ -131,8 +131,9 @@ const Topbar = (props) => {
           } catch (error) {
             console.log(error.message);
           }
-        }
+        
       }
+      
       )
     }
   }
@@ -249,6 +250,8 @@ const Topbar = (props) => {
         console.log(response)
         setChatUnReadCount(response.data)
 
+      });
+      
     } catch (error) {
       console.log(error.message);
     }
