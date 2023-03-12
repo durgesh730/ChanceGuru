@@ -86,6 +86,7 @@ const Submission = () => {
 
   useEffect(() => {
     handleSearch();
+    getAdminProjects()
   }, [query])
   console.log(searchData)
   return (

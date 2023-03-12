@@ -12,6 +12,9 @@ const Audition = () => {
   const location = useLocation();
 
   const [cards, setcards] = useState();
+
+ 
+
   const type = localStorage.getItem('type');
   const [query, setQuery] = useState("");
   const [toggleSideNav, settoggleSideNav] = useState(false)
@@ -62,6 +65,7 @@ const Audition = () => {
       });
   };
 
+  console.log(cards, "cards")
 
   useEffect(() => {
     if (type === 'seeker') {
@@ -83,9 +87,12 @@ const Audition = () => {
 
     }
   }
+
   useEffect(() => {
+    getAdminProjects()
     handleSearch();
   }, [query])
+
   return (
     <>
       <Topbar />
