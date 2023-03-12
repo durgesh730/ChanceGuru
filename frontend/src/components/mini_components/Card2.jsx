@@ -32,6 +32,7 @@ const Card2 = ({ card,index }) => {
       .get(`${server}/application/project/${id}`)
       .then((res) => {
         if (res.data !== null) {
+          console.log("Card2 34",res.data)
           setApply(res.data);
           res.data.forEach(async (element) => {
             let name = await userName(element.userId);

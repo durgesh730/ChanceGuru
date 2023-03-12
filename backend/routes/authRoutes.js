@@ -66,5 +66,15 @@ router.get("/" , jwtAuth , (req , res) => {
     res.status(400).json(err);
   })
 })
+router.get("/seeker/:userId", (req , res) => {
+  const userId = req.params.userId;
+  User.findOne({_id : userId})
+  .then((data) => {
+    res.json(data);
+  })
+  .catch((err) => {
+    res.status(400).json(err);
+  })
+})
 
 module.exports = router;

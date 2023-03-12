@@ -102,7 +102,9 @@ function TalentNotification() {
                 roles.add(`${item.roles[0].role} in ${item.basicInfo.name}`)
             })
         })
-        setRolesNotification([...roles])
+        let rolesArr = [...roles]
+        rolesArr.reverse()
+        setRolesNotification(rolesArr)
     },[jobRoles])
 
     useEffect(()=>{
@@ -113,7 +115,9 @@ function TalentNotification() {
                 roles.add(`${item.username}`)
             })
         })
-        setViewNotification([...roles])
+        let viewsArr = [...roles]
+        viewsArr.reverse()
+        setViewNotification(viewsArr)
     },[viewUsers])
 
     
