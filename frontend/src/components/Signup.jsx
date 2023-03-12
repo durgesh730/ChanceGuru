@@ -23,7 +23,7 @@ const Login = () => {
     const location = useLocation();
     const { setTimeActive } = useAuthValue();
     const [errorMsg, setErrorMsg] = useState("");
-    const [phone, setPhone] = useState("+911234567890");
+    const [phone, setPhone] = useState("911234567890");
     const [values, setValues] = useState({
         username: "",
         email: "",
