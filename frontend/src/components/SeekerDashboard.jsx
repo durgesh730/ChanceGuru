@@ -150,12 +150,14 @@ const SeekerDashboard = () => {
         </div>
         <div className="main-container">
           <ul className="grid-wrapper">
-            {card?.map((item, i) => (
-              <Card2 key={i} card={item} />
-            ))}{" "}
+
+            {card?.length === 0 || card === undefined ? (<div class="loader"></div>) : (
+              card?.map((item, i) => (
+                <Card2 key={i} card={item} />
+              ))
+            )}
           </ul>
         </div>
-
         <div className="loadmore">
           <button className="btn">Load1 More</button>
         </div>

@@ -36,6 +36,7 @@ import ChatProvider from "./components/Context/ChatProvider";
 
 import ChatPage1 from "./components/ChatPage1";
 import "./components/responsive.css"
+import Myapplication from "./components/Myapplication";
 
 
 function App() {
@@ -105,7 +106,7 @@ function App() {
           <Route path="/requestpage" element={<RequestPage />} />
           <Route path="/roles" element={<Roles />} />
           <Route path="/applicantdetails" element={<ApplicantDetails />} />
-
+          <Route path="/myapplication" element={<Myapplication />} />
           <Route
             path="/chat"
             element={

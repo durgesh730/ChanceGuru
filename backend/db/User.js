@@ -31,6 +31,10 @@ let schema = new mongoose.Schema(
       type: String,
       enum: ["user", "seeker"],
       required: true,
+    },
+    link: {
+      type: String,
+      required: false,
     }, 
   },
   { collation: { locale: "en" } }

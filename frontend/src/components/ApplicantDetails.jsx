@@ -149,16 +149,19 @@ const ApplicantDetails = () => {
         id = item._id
     })
 
-    const handledelete = async (e) => {
-        let x = e.target.getAttribute()
-        const data = await fetch(`${server}/project/Datetime/${id}`, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
-        const res = await data.json();
-        console.log(res)
+    const temp = []
+    const [arr,setArr] = useState()
+    //const [deleted, setDeleted] = useState([])
+    const [checkd, setChacked] = useState(false)
+    const handledelete =  ( _id, data) => {
+        setArr(...temp)
+        const index = arr.indexOf({ "_id": _id, "time": data });
+        const x = arr.splice(index, 1);
+        //arr.remove()
+        setArr(...temp)
+        //setDeleted(arr)
+        setChacked(true)
+        console.log(arr, "deleted ")
     }
 
     const Schedule = async () => {
@@ -170,7 +173,6 @@ const ApplicantDetails = () => {
             body: JSON.stringify(inputList)
         })
         const json = await data.json();
-        console.log(json, "json data")
         modal.style.display = "none";
     }
 
@@ -265,23 +267,46 @@ const ApplicantDetails = () => {
                                 <h5 className="mt-3 mb-4 fw-bold">Add date and time</h5>
 
 
-                                {
-                                    projectDetails?.map((items) => items.DateTime?.map((data, i) => {
+                                {/* {arr?.map((item) => {
+                                        return (
+                                            <>
+                                                <span className='mx-2' >{item.time.location}</span>
+                                                <span>{item.time.date}</span>
+                                                <h4 removeData={item.location} onClick={() => { handledelete(item._id, item.time) }} > <AiFillDelete /> </h4>
+                                            </>
+                                        )
+                                    })
+                                } */}
+
+
+                                { projectDetails?.map((items) => items.DateTime?.map((data, i) => {
+                                        temp.push({ "_id": items._id, "time": data })
+                                        //arr.push({ "_id": items._id, "time": data })
+                                        
                                         return (
                                             <>
                                                 <div key={i} className='my-2'>
-                                                    <span className='mx-2' >{data.location}</span>
-                                                    <span>{data.date}</span>
-                                                    <h4 removeData ={''} onClick={() => { handledelete(data._id) }} > <AiFillDelete /> </h4>
+                                                    {
+                                                        checkd ? ('') : (
+                                                            <>
+                                                                <span className='mx-2' >{data.location}</span>
+                                                                <span>{data.date}</span>
+                                                                <h4 removeData={data.location} onClick={() => { handledelete(items._id, data) }} > <AiFillDelete /> </h4>
+                                                            </>
+                                                        )
+                                                    }
+                                                    
                                                 </div>
                                             </>
                                         )
+                                        
                                     }))
+                                    
                                 }
 
+                               
 
-                                {
-                                    inputList.map((x, i) => {
+                                { inputList.map((x, i) => {
                                         return (
                                             <div key={i} className="row mb-3">
                                                 <div class="form-group col-md-3">
@@ -414,7 +439,7 @@ const ApplicantDetails = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div >
         </>
     )
 }

@@ -17,7 +17,7 @@ const BrowseProfile = () => {
 
   const setGet = (e) => {
     const { name, value } = e.target;
-    
+
     setSelect(() => {
       return {
         ...select,
@@ -167,45 +167,53 @@ const BrowseProfile = () => {
               <td>Contact</td>
             </thead>
             <tbody>
-              {profileData?.map((item, index) => {
-                return (
-                  <tr key={index}>
-                    <td className="d-flex justify-content-start align-items-center">
-                      <img src={item.photos[0]?.link ? item.photos[0]?.link : profile} />
-                      <p>{item.basicInfo.fullname}</p>
-                    </td>
-                    <td>
-                      {item.rolePref.length !== 0
-                        ? item.rolePref?.map((i) => {
-                          return (
-                            <>
-                              <span>{i.role}</span>
-                              <br />
-                            </>
-                          );
-                        })
-                        : "No role preferences found"}
-                    </td>
-                    <td>
-                      {" "}
-                      {item.basicInfo.address
-                        ? item.basicInfo.address
-                        : "No address"}{" "}
-                    </td>
-                    <td> <Contect index={index} userId={item.userId} /> </td>
-                    <td>
-                      <NavLink
-                        to={"/browseprofile/:nickdavolt"}
-                        state={{ user: item, card: [], index: 0, btn: 0 }}
-                        onClick={() => viewProfileClicked(item)}
-                        exact
-                      >
-                        <button>View Profile</button>
-                      </NavLink>
-                    </td>
-                  </tr>
-                );
-              })}
+              {console.log(profileData, "pro")}
+
+              {
+                profileData?.length === 0 || profileData === undefined ? (
+                  <div class="loader"></div>
+                ) : (
+                  profileData?.map((item, index) => {
+                    return (
+                      <tr key={index}>
+                        <td className="d-flex justify-content-start align-items-center">
+                          <img src={item.photos[0]?.link ? item.photos[0]?.link : profile} />
+                          <p>{item.basicInfo.fullname}</p>
+                        </td>
+                        <td>
+                          {item.rolePref.length !== 0
+                            ? item.rolePref?.map((i) => {
+                              return (
+                                <>
+                                  <span>{i.role}</span>
+                                  <br />
+                                </>
+                              );
+                            })
+                            : "No role preferences found"}
+                        </td>
+                        <td>
+                          {" "}
+                          {item.basicInfo.address
+                            ? item.basicInfo.address
+                            : "No address"}{" "}
+                        </td>
+                        <td> <Contect index={index} userId={item.userId} /> </td>
+                        <td>
+                          <NavLink
+                            to={"/browseprofile/:nickdavolt"}
+                            state={{ user: item, card: [], index: 0, btn: 0 }}
+                            onClick={() => viewProfileClicked(item)}
+                            exact
+                          >
+                            <button>View Profile</button>
+                          </NavLink>
+                        </td>
+                      </tr>
+                    );
+                  })
+                )
+              }
             </tbody>
           </table>
         </div>

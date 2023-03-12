@@ -10,7 +10,7 @@ const router = express.Router();
 router.post("/signup", (req, res) => {
   const data = req.body;
   let user = new User({
-    username : data.username ,
+    username: data.username,
     phone: data.phone,
     email: data.email,
     password: data.pass,
@@ -56,15 +56,42 @@ router.post("/login", (req, res, next) => {
   )(req, res, next);
 });
 
-router.get("/" , jwtAuth , (req , res) => {
+router.put("/ResetLoggedUserData/:id", jwtAuth, async (req, res) => {
   const user = req.user;
-  User.findOne({_id : user._id})
-  .then((data) => {
-    res.json(data);
-  })
-  .catch((err) => {
-    res.status(400).json(err);
-  })
+  const { email, username, phone, link } = req.body;
+  // console.log(req.body)
+  try {
+    const newData = {}
+    if (username) {
+      newData.username = username.value
+    }
+    if (email) {
+      newData.email = email.value
+    }
+    if (phone) {
+      newData.phone = phone.value
+    }
+    if (link) {
+      newData.link = link.link;
+    }
+    const save = await User.findByIdAndUpdate({ _id: user.id },
+      { $set: newData }, { new: true })
+    res.status(201).json({ status: 201, save });
+  } catch (error) {
+    res.status(400).json(error);
+  }
+})
+
+
+router.get("/", jwtAuth, (req, res) => {
+  const user = req.user;
+  User.findOne({ _id: user._id })
+    .then((data) => {
+      res.json(data);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    })
 })
 
 module.exports = router;

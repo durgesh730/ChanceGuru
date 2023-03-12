@@ -1,11 +1,58 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FcSettings } from "react-icons/fc";
-import Searchbar from "./mini_components/Searchbar";
+// import Searchbar from "./mini_components/Searchbar";
 import Topbar from "./mini_components/Topbar";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import server from "./server";
+import axios from "axios";
+
 
 const Setting = () => {
+  const account = JSON.parse(localStorage.getItem("login"));
+  const [link, setLink] = useState({ link: "" });
+
+  const useInputs = (initialValue) => {
+    const [value, setValue] = useState(initialValue);
+    const handleChange = (e) => {
+      setValue(e.target.value);
+    };
+
+    const changeValue = (v) => {
+      setValue(v);
+    }
+    return {
+      value,
+      onChange: handleChange,
+      onSet: changeValue
+    }
+  }
+
+  const username = useInputs('');
+  const email = useInputs('');
+  const phone = useInputs('');
+
+
+  const handleReset = async () => {
+    const data = await fetch(`${server}/auth/ResetLoggedUserData/${account._id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify({ username, email, phone, link })
+    });
+    const res = await data.json();
+    localStorage.setItem("login", JSON.stringify(res.save));
+    console.log(res)
+  };
+
+  useEffect(() => {
+    username.onSet(account.username)
+    email.onSet(account.email)
+    phone.onSet(account.phone)
+  }, [])
+
   return (
     <>
       <Topbar />
@@ -19,39 +66,49 @@ const Setting = () => {
           <hr />
           <div className="w-50">
             <div className="d-flex justify-content-between">
+
+              <div>
+                <label for="formFile" class="form-label">Upload Image</label>
+                <input class="form-control" type="file"
+                  name="link"
+                  value={link.link}
+                  onChange={(event) => {
+                    setLink((prev) => ({ ...prev, link: event.target.value }));
+                  }}
+                  id="formFile" />
+              </div>
+
               <TextField
                 id="standard-basic"
                 label="First Name"
-                className="me-5"
+                className="me-5 mx-4 my-3 "
+                name="username"
+                value={username.value}
+                onChange={username.onChange}
               />
-              <TextField id="standard-basic" label="Last Name" />
             </div>
             <div className="d-flex justify-content-between">
               <TextField
                 id="standard-basic"
                 label="EmailAddress"
                 className="me-5"
+                name="email"
+                value={email.value}
+                onChange={email.onChange}
               />
-              <TextField id="standard-basic" label="Phone Number" />
+              <TextField id="standard-basic" label="Phone Number"
+                name="email"
+                value={phone.value}
+                onChange={phone.onChange}
+              />
             </div>
             <div className="d-flex justify-content-start my-3">
-              <Button variant="contained" color="primary" className="me-3">
+              <Button onClick={handleReset} variant="contained" style={{backgroundColor:"#8443e5", color:"white"}}  className="me-3">
                 Save Changes
               </Button>
               <Button variant="contained">Cancel</Button>
             </div>
             <hr />
-            <div className="d-flex justify-content-between align-items-center">
-              <div>
-                <h5 className="m-0">Deactivate your account</h5>
-                <p className="text-secondary">
-                  Details about your comapany and you account
-                </p>
-              </div>
-              <Button variant="contained" color="secondary">
-                Deactivate
-              </Button>
-            </div>
           </div>
         </div>
       </div>

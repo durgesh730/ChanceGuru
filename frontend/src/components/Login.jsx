@@ -58,7 +58,7 @@ const Login = () => {
                 localStorage.setItem("token", res.data.token);
                 localStorage.setItem("type", res.data.type);
                 axios
-                  .get(`${server}/auth/` , {
+                  .get(`${server}/auth/`, {
                     headers: {
                       Authorization: `Bearer ${res.data.token}`,
                     },
@@ -71,6 +71,11 @@ const Login = () => {
                       navigate("/seekerdashboard");
                     } else if (localStorage.getItem("type") == "user") {
                       navigate("/talentdashboard");
+                      
+                      console.log("true hai durgesh")
+                      var x = document.getElementById("snackbar");
+                      x.className = "show";
+                      setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
                     }
                   })
                   .catch((err) => {
@@ -180,6 +185,8 @@ const Login = () => {
             </div>
           </form>
         </div>
+
+        <div id="snackbar">Some text some message..</div>
       </div>
     </>
   );
