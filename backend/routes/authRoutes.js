@@ -5,6 +5,36 @@ const authKeys = require("../lib/authKeys");
 const User = require("../db/User");
 const jwtAuth = require("../lib/jwtAuth");
 const router = express.Router();
+const bcrypt = require("bcrypt");
+
+//To get the user deatils with the help of email.
+router.get("/getuserwithemail/:email" , (req , res) => {
+  User.findOne({email : req.params.email})
+    .then((data) => {
+      console.log(data)
+      res.json(data);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    })
+})
+
+//To reset the password of user
+router.put("/resetPassword/" , (req, res) => {
+  const data = req.body ;
+  bcrypt.hash(data.password, 10, (err, hash) => {
+    if (err) {
+      console.log(err);
+    }
+    User.findOneAndUpdate({email : data.email} ,{ $set : {password : hash}})
+    .then((user) => {
+      res.json({msg : "Password has been reset successfully"});
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    })
+  });
+})
 
 //for signup just call post request with all the details in the body
 router.post("/signup", (req, res) => {

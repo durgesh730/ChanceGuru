@@ -65,6 +65,7 @@ const fetchChats = asyncHandler(async (req, res) => {
     Chat.find({ users: { $elemMatch: { $eq: req.user._id } } })
       .populate("users", "-password")
       .populate("latestMessage")
+      .populate("unReadBy")
       .sort({ updatedAt: -1 })
       .then(async (results) => {
         //populating user inside latestMessage's sender
@@ -73,11 +74,11 @@ const fetchChats = asyncHandler(async (req, res) => {
           select: "name email",
         });
 
-        results.map((item)=>{
+        // results.map((item)=>{
 
-          let anotherUser = item.users[0]._id == req.user._id ? item.users[1]:item.users[0]
-          item.unReadBy = anotherUser
-        })
+        //   let anotherUser = item.users[0]._id == req.user._id ? item.users[1]:item.users[0]
+        //   item.unReadBy = anotherUser
+        // })
         
 
         res.status(200).send(results);
@@ -92,6 +93,7 @@ const fetchChats = asyncHandler(async (req, res) => {
 
 const updateUnRead = asyncHandler(async (req,res)=>{
   let {item} = req.body
+  console.log("chatController 96 item unreadCount: ",item.unreadCount)
   try{
 
     Chat.findOneAndUpdate({_id:item._id},
@@ -110,10 +112,31 @@ const updateUnRead = asyncHandler(async (req,res)=>{
     }
 })
 
+const incrementChat = asyncHandler(async (req,res)=>{
+  let {item} = req.body
+  console.log(item)
+  // console.log("chatController 117 item unreadCount: ",item.unreadCount)
+  try{
+
+    Chat.findOneAndUpdate({_id:item._id},
+      {$inc:{
+        unreadCount:1
+      }}
+      )
+      .then((response)=>{
+        // console.log("UpdateUnReadCount:\n",response)
+        res.json(response)
+      })
+    }
+    catch (error){
+      console.log(error.message)
+    }
+})
+
 const getUnReadCount = asyncHandler(async (req,res)=>{
   try{
     
-    Chat.find({ users: { $elemMatch: { $eq: req.user._id } },unreadCount:{$gt:0} })
+    Chat.find({ users: { $elemMatch: { $eq: req.user._id } },unreadCount:{$gt:0},unReadBy:req.user._id })
     .then((response)=>{
       
       let unreadCnt = 0
@@ -131,4 +154,4 @@ const getUnReadCount = asyncHandler(async (req,res)=>{
   }
 })
 
-module.exports = { accessChat, fetchChats,updateUnRead, getUnReadCount};
+module.exports = { accessChat, fetchChats,updateUnRead, getUnReadCount,incrementChat};

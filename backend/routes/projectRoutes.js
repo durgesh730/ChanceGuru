@@ -15,16 +15,11 @@ router.get("/SearchProjectForAdmin", async (req, res) => {
     res.send(users);
   });
 
-router.put("/Datetime/:id", async (req, res) => {
+router.put("/Datetime/", async (req, res) => {
     // console.log(req.body)
     try {
-      const newData = {};
-      if (req.body) {
-        newData.DateTime = req.body;
-      }
-
-      console.log(newData)
-      const userData = await Project.findOneAndUpdate({ _id: req.params.id},{ $push: newData }, { new: true } );
+      const data = req.body ;
+      const userData = await Project.findOneAndUpdate({ _id: data._id},{ $set: {DateTime : data.list} }, { new: true } );
       res.json({ userData });
       
     } catch (error) {
