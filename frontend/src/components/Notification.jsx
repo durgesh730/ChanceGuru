@@ -31,6 +31,7 @@ const Notification = () => {
     const response = await res.json();
 
     if (response !== null) {
+      response.reverse()
       setProjects(response);
     }
   }
@@ -117,7 +118,9 @@ const Notification = () => {
       arr.add({ notification: `${mapObj.user} has applied to project ${mapObj.project}`, img: image })
     }
     console.log(arr)
-    setUserProjectMap([...arr])
+    let projArr  = [...arr]
+    projArr.reverse()
+    setUserProjectMap(projArr)
 
   }, [jobUsers, jobProjects])
 
@@ -125,7 +128,7 @@ const Notification = () => {
     setLoggedUser(JSON.parse(localStorage.getItem("login")));
   }, []);
 
-  console.log("userProjectMap", jobUsers)
+  
 
   return (
     <>

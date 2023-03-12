@@ -39,6 +39,9 @@ import "./components/responsive.css"
 import Myapplication from "./components/Myapplication";
 
 
+import io from "socket.io-client";
+const ENDPOINT = "http://localhost:5000";
+
 function App() {
     const [currentUser, setCurrentUser] = useState(null);
     const [timeActive, setTimeActive] = useState(false);
@@ -49,6 +52,10 @@ function App() {
 
     const [chatUnReadCount,setChatUnReadCount] = useState(0)
 
+    const [socketConnected, setSocketConnected] = useState(false);
+    const [typing, setTyping] = useState(false);
+    
+    const [socket,setSocket] = useState(io(ENDPOINT))
   useEffect(() => {
     let user = JSON.parse(localStorage.getItem("login"));
     if (user) {
@@ -60,7 +67,7 @@ function App() {
   return (
     <Router>
       <AuthProvider
-        value={{ currentUser, timeActive, setTimeActive, setClicked, clicked, active,setActive, notificationCount,setNotificationCount, chatUnReadCount,setChatUnReadCount }}
+        value={{ currentUser, timeActive, setTimeActive, setClicked, clicked, active,setActive, notificationCount,setNotificationCount, chatUnReadCount,setChatUnReadCount,typing, setTyping, socketConnected, setSocketConnected, socket,setSocket }}
       >
         <Routes>
           <Route

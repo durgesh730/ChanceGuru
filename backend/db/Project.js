@@ -67,6 +67,12 @@ let schema = new mongoose.Schema(
         ]
       }
     ],
+    createAt: {
+      type: String,
+    },
+    updateAt: {
+      type: String,
+    },
     DateTime :{
       type:Array
     }

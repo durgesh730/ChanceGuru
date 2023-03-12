@@ -167,8 +167,6 @@ const BrowseProfile = () => {
               <td>Contact</td>
             </thead>
             <tbody>
-              {console.log(profileData, "pro")}
-
               {
                 profileData?.length === 0 || profileData === undefined ? (
                   <div class="loader"></div>

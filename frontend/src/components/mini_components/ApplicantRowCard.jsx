@@ -4,7 +4,6 @@ import kamal from "../../assets/images/kamal.jpeg"
 import server from '../server';
 
 const ApplicantRowCard = ({ Data, applied }) => {
-
     var a = applied;
     var id = Data.userId
 
@@ -26,7 +25,7 @@ const ApplicantRowCard = ({ Data, applied }) => {
     }
 
     const handleSelect = async () => {
-        const data = await fetch(`${server}/project/Select/${_id}/${2}`, {
+        const data = await fetch(`${server}/project/Select/${_id}/${Data.status == "applied" ? 1 : 2}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -34,7 +33,11 @@ const ApplicantRowCard = ({ Data, applied }) => {
             body: JSON.stringify({ select })
         })
         const res = await data.json();
-        console.log(res)
+        if (res) {
+            Data.status = "selected";
+            alert("Candidate has been selected successfully");
+            window.location.reload();
+        }
     }
 
     const handleReject = async () => {
@@ -46,7 +49,11 @@ const ApplicantRowCard = ({ Data, applied }) => {
             body: JSON.stringify({ rejected })
         })
         const res = await data.json();
-        console.log(res)
+        if (res) {
+            Data.status = "selected";
+            alert("Candidate has been rejected");
+            window.location.reload();
+        }
     }
 
 
@@ -91,55 +98,39 @@ const ApplicantRowCard = ({ Data, applied }) => {
 
     }
 
-
-    console.log("user", User)
-
-
     return (
         <div >
-            {/* <div> */}
-
             {User?.map((items, i) => {
                 return (
-                  <>
-                    <div className="lI">
-                      <div className="d-flex align-items-center">
-                        <NavLink
-                          to={"/browseprofile/:nickdavolt"}
-                          state={{ user: items, card: [], index: 0, btn: 0 }}
-                          exact
-                        >
-                          <img
-                            src={items.photos[0]?.link}
-                            alt=""
-                            style={{ width: "4rem" }}
-                          />
-                        <span key={i} className="applicantName">
-                          {items.basicInfo.fullname}
-                        </span>
-                        </NavLink>
-                      </div>
-                      <div>
-                        <span className="applicantStatus">
-                          {getLastUpdate(items.updatedAt)}
-                        </span>
-                      </div>
-                      <div className="actionButtons">
-                        <button onClick={handleSelect}>Select</button>
-                        <button
-                          onClick={handleReject}
-                          style={{ borderColor: "red", color: "red" }}
-                        >
-                          Reject
-                        </button>
-                      </div>
-                    </div>
-                  </>
+                    <>
+                        <div className="lI" >
+                            <div className='d-flex align-items-center'>
+                                <NavLink
+                                    to={`/browseprofile/:${items.basicInfo.fullname}`}
+                                    state={{ user: items, card: [Data], index: 0, btn: 3 }}
+                                    exact
+                                >
+                                    <img src={items.photos[0]?.link} alt="" style={{ width: '4rem' }} />
+                                    <span key={i} className="applicantName">
+                                        {items.basicInfo.fullname}
+                                    </span>
+                                </NavLink>
+                            </div>
+                            <div >
+                                <span className="applicantStatus">{getLastUpdate(items.updatedAt)}</span>
+                            </div>
+                            {
+                                Data.status === "rejected" || Data.status === "selected" ?
+                                    Data.status :
+                                    <div className="actionButtons" >
+                                        <button onClick={handleSelect} >Select</button>
+                                        <button onClick={handleReject} style={{ borderColor: "red", color: "red" }} >Reject</button>
+                                    </div>
+                            }
+                        </div>
+                    </>
                 );
             })}
-
-            {/* </div> */}
-
         </div>
     )
 }

@@ -43,6 +43,7 @@ router.post("/login", (req, res, next) => {
         return next(err);
       }
       if (!user) {
+       
         res.status(401).json(info);
         return;
       }
@@ -92,6 +93,16 @@ router.get("/", jwtAuth, (req, res) => {
     .catch((err) => {
       res.status(400).json(err);
     })
+})
+router.get("/seeker/:userId", (req , res) => {
+  const userId = req.params.userId;
+  User.findOne({_id : userId})
+  .then((data) => {
+    res.json(data);
+  })
+  .catch((err) => {
+    res.status(400).json(err);
+  })
 })
 
 module.exports = router;

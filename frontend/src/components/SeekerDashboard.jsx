@@ -58,7 +58,7 @@ const SeekerDashboard = () => {
 
   const getProjects = async () => {
     const res = await fetch(
-      "${server}/project/allProjectsSeekers",
+      `${server}/project/allProjectsSeekers`,
       {
         method: "GET",
         headers: {
@@ -95,11 +95,11 @@ const SeekerDashboard = () => {
     } else if (type === 'admin') {
       getAdminProjects();
     }
-  }, [setcard]);
+  }, [type]);
 
-  useEffect(() => {
-    getAdminProjects();
-  }, [])
+  // useEffect(() => {
+  //   getAdminProjects();
+  // }, [])
 
   let navigate = useNavigate();
   const routeChange = () => {
@@ -129,7 +129,7 @@ const SeekerDashboard = () => {
                   return searchTerm && name.startsWith(searchTerm);
                 })
                 .map((item, index) => (
-                  <div onClick={() => { setQuery(item.basicInfo.name); handleSearch() }}>
+                  <div key={index} onClick={() => { setQuery(item.basicInfo.name); handleSearch() }}>
                     {item.basicInfo.name}
                   </div>
                 ))}

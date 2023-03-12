@@ -35,9 +35,6 @@ const ApplicantDetails = () => {
         modal.style.display = "none";
     }
 
-
-    // console.log(location.state, "location")
-
     const ProjectData = async () => {
         const data = await fetch(`${server}/project/projectDetails/${location.state}`, {
             method: "GET",
@@ -96,7 +93,7 @@ const ApplicantDetails = () => {
         setWaitingCount(0)
         setRejectedCount(0)
         Data?.map((item) => {
-            if (item.status === "shortlist" || item.status === "selected") {
+            if (item.status === "shortlist") {
                 setShortListCount(prevCount => prevCount += 1)
 
             }
@@ -141,8 +138,6 @@ const ApplicantDetails = () => {
     const handleaddclick = () => {
         setinputList([...inputList, { date: '', location: '' }]);
     }
-
-    console.log(inputList)
 
     var id = 0;
     projectDetails?.map((item, i) => {
@@ -252,7 +247,7 @@ const ApplicantDetails = () => {
                     </div>
                     <div className="card my-4">
                         <div className="card-body">
-                            <button onClick={handlemodal} className="btn btn-primary ">Schedule Audition </button>
+                            <button onClick={handlemodal} className="btn btn-primary" style={{backgroundColor: '#8443e5'}} >Schedule Audition </button>
                         </div>
                     </div>
                 </div>
@@ -405,7 +400,7 @@ const ApplicantDetails = () => {
                                 Data?.map((Data, i) => {
                                     if (activeChar._id == Data.charId) {
                                         if (activeStatus === "shortlist") {
-                                            if (Data.status === activeStatus || Data.status === "selected") {
+                                            if (Data.status === activeStatus) {
 
                                                 return (
                                                     <ApplicantRowCard key={i} Data={Data} applied={check} />

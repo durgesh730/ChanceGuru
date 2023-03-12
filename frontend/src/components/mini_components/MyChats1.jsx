@@ -14,7 +14,7 @@ import server from '../server';
 const MyChats1 = ({ fetchAgain }) => {
   const [loggedUser, setLoggedUser] = useState();
 
-  const { selectedChat, setSelectedChat, user, chats, setChats, chatUnReadCount,setChatUnReadCount } =
+  const { selectedChat, setSelectedChat, user, chats, setChats, chatUnReadCount,setChatUnReadCount, socket } =
     useContext(ChatContext);
   //const {getSender}=useHelper();
   const fetchChats = async () => {
@@ -28,6 +28,7 @@ const MyChats1 = ({ fetchAgain }) => {
         `${server}/api/chat`,
         config
       );
+      console.log("Mychats 31 Fetch Chats:",data)
       setChats(data);
 
       console.log(data, "fetching all users chats in my chats");
@@ -138,22 +139,84 @@ const MyChats1 = ({ fetchAgain }) => {
   };
 
   useEffect(() => {
-    // setSelectedChat(chats[0]);
+    setSelectedChat(chats[0]);
 
     console.log(chats);
-  }, [chats]);
+  }, []);
   
   // console.log("chats", getSender(loggedUser, chats[5].users));
   // console.log("chats", chats[5].users[1].link);
 
+  const updateUnReadCount = (localChats) => {
+    if (localChats && localChats.length > 0) {
+      localChats.map(async (item) => {
+        // console.log(item)
+          try {
+            const config = {
+              headers: {
+                "Content-type": "application/json",
+                Authorization: `Bearer ${user.token}`,
+              },
+            };
+            await axios.put(
+              `http://localhost:5000/api/chat/updateUnreadCount`,
+              { item },
+              config
+            )
+              .then((response) => {
+                console.log("The response from Mychats 167:\n",response)
+              });
+
+          } catch (error) {
+            console.log("The response from topbar65:\n",error.message);
+          }
+        }
+      )
+    }
+  }
+
+  useEffect(() => {
+    socket.on("updateChat",(chat)=>{
+      console.log("Mychats1 180\n",chat)
+      let indexCheck;
+      let newchats = chats.map((c,i)=>{
+        if(c._id == chat._id){
+          indexCheck = i
+          c.unreadCount = 0
+          c.unReadBy = chat.users[0]._id == chat.latestMessage.sender._id?chat.users[1]:chats.users[0]
+        }
+        return c
+      })
+      console.log(newchats[indexCheck])
+      console.log("Mychats1 190")
+      setChats(newchats)
+    })
+  
+    
+  })
+  
+
   function handleChatClick(chat, i){
     setSelectedChat(chat);
     setactiveChat(i)
-
+    let unreadOfThis = chats[i].unreadCount
     let newChats = [...chats]
-    setChatUnReadCount(prev => prev - newChats[i].unreadCount)
-    newChats[i].unreadCount = 0
-    setChats(newChats)
+    console.log("Mychat1 183 setting chat unread count:\n",newChats[i],unreadOfThis)
+    if(chatUnReadCount > 0){
+
+      setChatUnReadCount((prev) => {
+        console.log(prev)
+        console.log(prev - unreadOfThis)
+        return (prev - unreadOfThis)
+      })
+      newChats[i].unreadCount = 0
+      setChats(newChats)
+    }
+
+    socket.emit("updateYourchat",chat,user)
+    
+
+    updateUnReadCount([chat])
   }
 
   return (
@@ -165,7 +228,7 @@ const MyChats1 = ({ fetchAgain }) => {
             <CiSearch className="search_icon" />
             <input
               type="text"
-              placeHolder="search"
+              placeholder="search"
               value={search}
               onChange={(e) => handleInputChange(e)}
             ></input>
@@ -195,8 +258,10 @@ const MyChats1 = ({ fetchAgain }) => {
             )}
             {chats ? (
               chats.map((chat, i) => {
+                
                 return(
                 <div
+                key={i}
                   onClick={() => {handleChatClick(chat,i)}}
                   className={
                     activeChat === i ? "active_userChat userChat" : "userChat"
@@ -215,7 +280,7 @@ const MyChats1 = ({ fetchAgain }) => {
                     <div className="user_unseenDiv">
                       <h6>{getSender(loggedUser, chat.users)} </h6>
                       {
-                        // chat.unReadBy &&
+                        chat.unReadBy && (chat.unReadBy._id == user._id) &&
                       <span style={
                         chat.unreadCount === 0 ? { display: "none" } : { display: "grid" }} > {chat.unreadCount} 
                       </span>

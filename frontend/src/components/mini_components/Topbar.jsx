@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { RiLogoutBoxRLine } from "react-icons/ri";
 import { AiOutlineClose } from "react-icons/ai";
 import { FaBars } from "react-icons/fa";
@@ -30,6 +30,10 @@ import axios from "axios";
 import server from '../server';
 
 import AuthContext from "../AuthContext";
+
+
+
+
 const Topbar = (props) => {
   const [profileHeight, setProfileHeight] = useState(0);
   const [notifHeight, setnotifHeight] = useState(0);
@@ -38,11 +42,42 @@ const Topbar = (props) => {
   const [loggedUser, setLoggedUser] = useState("");
   const [toggleNav, settoggleNav] = useState(false)
 
+  let location = useLocation()
+
   const auth = useContext(AuthContext)
   const active = auth.active
 
+  let {socket,setSocket,setSocketConnected,setIsTyping,chatUnReadCount,setChatUnReadCount} = auth
   const user = JSON.parse(localStorage.getItem("login"));
   const navigate = useNavigate();
+
+  
+  useEffect(() => {
+    // setSocket(prev => prev = io(ENDPOINT));
+    socket.emit("setup", user);
+    socket.on("connected", () => setSocketConnected(true));
+    
+
+    socket.off("setNotify").on("setNotify", (chat) => {
+      console.log("Topbar.jsx 55 :",chat)
+      if (location.pathname != "/chat") {
+
+        console.log("Topbar 86 Setting chat unread count")
+        setChatUnReadCount((prev) => {
+          console.log(prev);
+          return prev + 1
+        })
+        updateUnReadCount([chat])
+      }
+    })
+
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("UnReadNotify",JSON.stringify(chatUnReadCount))
+  }, [chatUnReadCount])
+
 
   function toggleProfileOptions() {
     if (profileHeight == 0) {
@@ -378,27 +413,27 @@ const Topbar = (props) => {
 
 
 
-          {
-            user.type !== 'admin' ?
-              (<Link to="/chat">
-                <span
-                  className={
-                    active === "chat"
-                      ? `nav_active topbar-icons-container bubbleDiv bubbleColorChange`
-                      : "topbar-icons-container bubbleDiv"
-                  }
-                  onClick={() => auth.setActive("chat")}
-                >
-                  {active === "chat" ? (
-                    <img className="topbar-icons" src={achat} alt="" />
-                  ) : (
-                    <img className="topbar-icons" src={chat} alt="" />
-                  )}
+         {
+           user.type !== 'admin'?
+          (<Link to="/chat">
+            <span
+              className={
+                active === "chat"
+                  ? `nav_active topbar-icons-container bubbleDiv bubbleColorChange`
+                  : "topbar-icons-container bubbleDiv"
+              }
+              onClick={() => auth.setActive("chat")}
+            >
+              {active === "chat" ? (
+                <img className="topbar-icons" src={achat} alt="" />
+              ) : (
+                <img className="topbar-icons" src={chat} alt="" />
+              )}
 
-                  {auth.chatUnReadCount > 0 && <h6>{auth.chatUnReadCount}</h6>}
-                </span>
-              </Link>) : ("")
-          }
+              { chatUnReadCount > 0 && <h6>{chatUnReadCount}</h6>}
+            </span>
+          </Link>):("")
+             }
 
           {
             user.type === "user"
@@ -441,7 +476,7 @@ const Topbar = (props) => {
                 {projects?.slice(0, 2).map((project, index) => {
                   return (
                     <>
-                      <div>
+                      <div key={index}>
                         <img src={loggedUser.link === undefined ? profile : loggedUser.link} alt="pfp" />
                         <p>
                           You have successfully created the project{" "}
@@ -452,10 +487,10 @@ const Topbar = (props) => {
                     </>
                   );
                 })}
-                {userProjectMap?.slice(0, 2).map((item) => {
+                {userProjectMap?.slice(0, 2).map((item,i) => {
                   return (
                     <>
-                      <div className="d-flex align-items-center">
+                      <div key={i} className="d-flex align-items-center">
                         <img src={item.img === undefined ? profile : item.img} alt="pfp" className="me-4 shadow-sm" />
 
                         <p>{item.notification}</p>

@@ -14,7 +14,7 @@ const RequestPage = () => {
 
     applyReqs?.map((item, index) => {
       axios
-        .get(`${server}/profile/profileData?id=${item.seekerId}`)
+        .get(`${server}/auth/seeker/${item.seekerId}`)
         .then((res) => {
           if (res !== null) {
             setReqUsers(oldUsers => [...oldUsers, res.data])
@@ -51,8 +51,8 @@ const RequestPage = () => {
     let arr = []
     for (let index = 0; index < len; index++) {
 
-      const seekerName = reqUsers[index][0].basicInfo.fullname;
-      const seekerId = reqUsers[index][0].userId;
+      const seekerName = reqUsers[index].username;
+      const seekerId = reqUsers[index]._id;
       let requestTime = new Date(requests[index].RequestSendAt);
       console.log(typeof (requestTime))
       requestTime = `${requestTime.getDate()}-${requestTime.getMonth() + 1 < 10 ? `0${requestTime.getMonth() + 1}` : requestTime.getMonth()}-${requestTime.getFullYear()}`

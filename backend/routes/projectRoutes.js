@@ -54,7 +54,7 @@ router.put("/Select/:_id/:inc", (req, res) => {
             JobApplication.findOneAndUpdate({ _id: req.params._id }, {
                 $set: {
                     status: "selected",
-                    value: (req.params.inc == 1) ? job.value + 5 : job.value + 100,
+                    value: (req.params.inc == 1 || req.params.inc == 3) ? job.value + 5 : job.value + 100,
                     updatedAt: new Date(),
                 },
             }, { returnOriginal: false })
@@ -80,7 +80,7 @@ router.put("/Shortlist/:_id/:inc", (req, res) => {
             JobApplication.findOneAndUpdate({ _id: req.params._id }, {
                 $set: {
                     status: "shortlisted",
-                    value: (req.params.inc == 1) ? job.value + 100 : job.value + 1000 ,
+                    value: (req.params.inc == 1 || req.params.inc == 3) ? job.value + 100 : job.value + 1000 ,
                     updatedAt: new Date(),
                 },
             }, { returnOriginal: false })
@@ -259,7 +259,8 @@ router.post("/", jwtAuth, (req, res) => {
     const project = new Project({
         seekerId: user._id,
         basicInfo: data.basicInfo,
-        roles: data.roles
+        roles: data.roles,
+        createAt : new Date(),
     })
     project
         .save()
@@ -280,6 +281,7 @@ router.put("/changeRoles", jwtAuth, (req, res) => {
     Project.findOneAndUpdate({ _id: data.project._id }, {
         $set: {
             roles: data.project.roles,
+            updateAt : new Date()
         },
     })
         .then((response) => {
