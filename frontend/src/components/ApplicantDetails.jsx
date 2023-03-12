@@ -7,7 +7,7 @@ import reject from "../assets/icons/round-delete-button.svg";
 import ApplicantRowCard from './mini_components/ApplicantRowCard';
 import { useLocation } from 'react-router-dom';
 import server from "./server";
-import { AiFillDelete } from 'react-icons/ai';
+import axios from "axios";
 
 const ApplicantDetails = () => {
     const location = useLocation();
@@ -17,10 +17,14 @@ const ApplicantDetails = () => {
     const [leadRoles, setLeadRoles] = useState([])
     const [activeChar, setActiveChar] = useState({})
     const [activeStatus, setActiveStatus] = useState("shortlist")
-
+    
     const [shortListCount, setShortListCount] = useState(0)
     const [waitingCount, setWaitingCount] = useState(0)
-    const [rejectedCount, setRejectedCount] = useState(0)
+    const [rejectedCount, setRejectedCount] = useState(0);
+    const [inputList, setinputList] = useState([]);
+    const [datelocation, setdatelocation] = useState({date : "" , loc : ""})
+
+    const [Add, setAdd] = useState(false);
 
     var applied = leadRoles.map((Data) => { return Data._id });
     var check = applied[0]
@@ -43,7 +47,8 @@ const ApplicantDetails = () => {
             },
         })
         const res = await data.json();
-        setProjectDetails(res)
+        setProjectDetails(res);
+        setinputList(res[0]?.DateTime);
     }
 
     useEffect(() => {
@@ -120,23 +125,31 @@ const ApplicantDetails = () => {
         })
     }
 
-    const [inputList, setinputList] = useState([{ date: '', location: '' }]);
-
-    const handleinputchange = (e, index) => {
-        const { name, value } = e.target;
-        const list = [...inputList];
-        list[index][name] = value;
-        setinputList(list);
+    const handleDateLocationChange = (list) => {
+        console.log(list);
+        axios
+            .put(`${server}/project/Datetime` , {list : list , _id : projectDetails[0]._id})
+            .then((res) => {
+                console.log(res);
+                setAdd(false);
+                setdatelocation({...datelocation , date : "" , loc : ""});
+                ProjectData();
+            })
+            .catch((err) => {
+                alert(err);
+            })
     }
 
-    const handleremove = (index) => {
+    const handleremove = async  (index) => {
         const list = [...inputList];
         list.splice(index, 1);
         setinputList(list);
+        handleDateLocationChange(list);
     }
 
-    const handleaddclick = () => {
-        setinputList([...inputList, { date: '', location: '' }]);
+    const handleSave = () => {
+        setinputList([...inputList, { date: datelocation.date, location: datelocation.loc }]);
+        handleDateLocationChange([...inputList, { date: datelocation.date, location: datelocation.loc }]);
     }
 
     var id = 0;
@@ -144,17 +157,6 @@ const ApplicantDetails = () => {
         id = item._id
     })
 
-    const handledelete = async (e) => {
-        let x = e.target.getAttribute()
-        const data = await fetch(`${server}/project/Datetime/${id}`, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
-        const res = await data.json();
-        console.log(res)
-    }
 
     const Schedule = async () => {
         const data = await fetch(`${server}/project/Datetime/${id}`, {
@@ -245,7 +247,7 @@ const ApplicantDetails = () => {
                     </div>
                     <div className="card my-4">
                         <div className="card-body">
-                            <button onClick={handlemodal} className="btn btn-primary" style={{backgroundColor: '#8443e5'}} >Schedule Audition </button>
+                            <button onClick={handlemodal} className="btn btn-primary" style={{ backgroundColor: '#8443e5' }} >Schedule Audition </button>
                         </div>
                     </div>
                 </div>
@@ -264,10 +266,16 @@ const ApplicantDetails = () => {
                                     projectDetails?.map((items) => items.DateTime?.map((data, i) => {
                                         return (
                                             <>
-                                                <div key={i} className='my-2'>
-                                                    <span className='mx-2' >{data.location}</span>
-                                                    <span>{data.date}</span>
-                                                    <h4 removeData ={''} onClick={() => { handledelete(data._id) }} > <AiFillDelete /> </h4>
+                                                <div key={i} className="row mb-3 my-2">
+                                                    <div class="form-group col-md-3 mx-4 ">
+                                                        <input value={data.date} type="date" name="date" class="form-control" placeholder="Date" disabled required />
+                                                    </div>
+                                                    <div class="form-group col-md-3 mx-4 ">
+                                                        <input type="location" value={data.location} name="location" class="form-control" placeholder="Location" disabled required />
+                                                    </div>
+                                                    <div class="form-group col-md-3 mt-1 mx-4">
+                                                        <button className="btn btn-danger mx-1 " onClick={() => handleremove(i)}>Remove</button>
+                                                    </div>
                                                 </div>
                                             </>
                                         )
@@ -275,38 +283,31 @@ const ApplicantDetails = () => {
                                 }
 
 
-                                {
-                                    inputList.map((x, i) => {
-                                        return (
-                                            <div key={i} className="row mb-3">
-                                                <div class="form-group col-md-3">
-                                                    <label >Date</label>
-                                                    <input value={x.date} type="date" name="date" class="form-control" placeholder="Date" onChange={(e) => handleinputchange(e, i)} required />
-                                                </div>
-                                                <div class="form-group col-md-3 mx-4 ">
-                                                    <label >Location</label>
-                                                    <input type="location" value={x.location} name="location" class="form-control" placeholder="Location" onChange={(e) => handleinputchange(e, i)} required />
-                                                </div>
-                                                <div class="form-group col-md-2 mt-4">
-                                                    {
-                                                        inputList.length !== 1 &&
-                                                        <button className="btn btn-danger mx-1 " onClick={() => handleremove(i)}>Remove</button>
-                                                    }
-                                                    {
-                                                        inputList.length - 1 === i &&
-                                                        <button className="btn btn-success my-2 " onClick={handleaddclick}>Add More</button>
-                                                    }
-                                                </div>
-                                            </div>
-                                        );
-                                    })}
+                                <div  className={`row mb-3 ${Add ? "" : "d-none"}`}>
+                                    <div class="form-group col-md-3">
+                                        <label >Date</label>
+                                        <input onChange={(e)=>{setdatelocation({...datelocation , date : e.target.value})}}  type="date" name="date" class="form-control" placeholder="Date"  required />
+                                    </div>
+                                    <div class="form-group col-md-3 mx-4 ">
+                                        <label >Location</label>
+                                        <input onChange={(e)=>{setdatelocation({...datelocation , loc : e.target.value})}} type="location"  name="location" class="form-control" placeholder="Location" required />
+                                    </div>
+                                    <div class="form-group col-md-2 mt-4">
+                                        {
+                                            <button className="btn btn-danger mx-1 " onClick={() =>{setAdd(false)}}>Cancel</button>
+                                        }
+                                        {
+                                            <button className="btn btn-success my-2 " onClick={()=>{handleSave()}}>Save</button>
+                                        }
+                                    </div>
+                                </div>
 
                             </div>
                         </div>
 
-                        <div className="text-center" >
-                            <button className='btn btn-primary ' onClick={handlemod} > close </button>
-                            <button className='btn btn-primary mx-4 ' onClick={Schedule} > Schedule </button>
+                        <div className="text-center mb-5" >
+                            <button className='btn btn-primary mx-5' onClick={handlemod} > Close </button>
+                            <button className="btn btn-success mx-5" onClick={()=>{setAdd(true)}}>Add More</button>
                         </div>
                     </div>
                 </div>
