@@ -53,7 +53,6 @@ const Card = ({ card, profile, UserProfileDeatils , setClicked }) => {
   const activateModal=()=>{
     setModel(true);
     setClicked(1);
-    document.querySelector(".talent-heading").style.gridArea = "1/1/2/4";
   }
 
   return (
