@@ -26,6 +26,7 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
   
   const [loadingChat, setLoadingChat] = useState(false);
   const [reportModal, setReportModal] = useState(0);
+  const [blockModal, setBlockModal] = useState(0);
   const [loggedUser, setLoggedUser] = useState();
 
 
@@ -296,7 +297,12 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
   };
 
   const reportChat = () => {
+    setBlockModal(0)
     setReportModal(1);
+  };
+  const blockChat = () => {
+    setReportModal(0);
+    setBlockModal(1)
   };
 
   // console.log("SelectedUser", selectedChat);
@@ -356,6 +362,36 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
     }
 
   }
+
+  const handleBlockChat = async()=>{
+    try {
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+      await axios.post(
+        `${server}/api/chat/blockChat`,
+        {selectedChat},
+        config
+      )
+        .then((response) => {
+          console.log(response)
+          setBlockModal(0)
+          let selectChat = selectedChat
+          selectChat.status = "blocked"
+          setSelectedChat(selectChat)
+        })
+        .catch((err) => {
+          console.log(err)
+        });
+    }
+    catch (error) {
+      console.log(error)
+
+    }
+  }
   return (
     <>
       {selectedChat ? (
@@ -376,7 +412,7 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
                     <li onClick={() => deleteChat(selectedChat._id)}>
                       Delete Chat
                     </li>
-                    {selectedChat.status != "blocked" &&<li>Block {getSender(user, selectedChat.users)}</li>}
+                    {selectedChat.status != "blocked" &&<li onClick={blockChat} >Block {getSender(user, selectedChat.users)}</li>}
                     {selectedChat.status != "reported" &&<li onClick={reportChat}>
                       Report {getSender(user, selectedChat.users)}
                     </li>}
@@ -450,7 +486,7 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
                 <button onClick={sendMessage}>Send</button>
                 </>
                 :
-                <p>You have {selectedChat.status} this user</p>
+                <p>This chat has been {selectedChat.status} </p>
                 }
               </div>
             
@@ -485,6 +521,27 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
                 <button type="submit" >Report</button>
               </div>
             </form>
+            
+          </div>
+        </div>
+      )}
+      {blockModal == 1 && (
+        <div className="userSub_modal my-4 ">
+          <div className="modal_child d-flex justify-content-center px-3 shadow ">
+            <div className="d-flex justify-content-start align-items-center m-3">
+              <h1 className="purple_title m-0" style={{ fontSize: "30px" }}>
+                Block User
+              </h1>
+            </div>
+            
+              <p>
+                Are you sure you want to block {getSender(user, selectedChat.users)}
+              </p>
+              <div className="btns">
+                <button onClick={(e) => {e.preventDefault();setBlockModal(0)}}>Cancel</button>
+                <button onClick={(e)=> {e.preventDefault();handleBlockChat()}} >Block</button>
+              </div>
+            
             
           </div>
         </div>

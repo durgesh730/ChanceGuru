@@ -184,4 +184,24 @@ const reportChat = asyncHandler(async (req,res)=>{
   }
 })
 
-module.exports = { accessChat, fetchChats,updateUnRead, getUnReadCount,incrementChat,reportChat};
+const blockChat = asyncHandler(async (req,res)=>{
+  let {selectedChat} = req.body;
+  try {
+    Chat.findByIdAndUpdate(selectedChat._id,{$set:{
+      status:"blocked"
+    }})
+    .then((response)=>{
+      console.log("Chat status updated successfull \n",response)
+      res.json(response.data)
+    })
+    .catch((error)=>{
+      console.log("An error occurred while updating chat status \n",error)
+      res.status(404).json(error)
+    })
+  } 
+  catch (error) {
+    
+  }
+})
+
+module.exports = { accessChat, fetchChats,updateUnRead, getUnReadCount,incrementChat,reportChat, blockChat};

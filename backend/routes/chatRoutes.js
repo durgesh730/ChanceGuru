@@ -5,7 +5,8 @@ const {
   updateUnRead,
   incrementChat,
   getUnReadCount,
-  reportChat
+  reportChat,
+  blockChat
 } = require("../controllers/chatControllers");
 const { protect } = require("../middleware/authMiddleware");
 
@@ -17,6 +18,7 @@ router.route("/updateUnreadCount").put(protect, updateUnRead);
 router.route("/incrChat").put(protect, incrementChat);
 router.route("/getUnreadCount").get(protect, getUnReadCount);
 router.route("/reportChat").post(protect, reportChat);
+router.route("/blockChat").post(protect, blockChat);
 
 
 module.exports = router;
