@@ -23,7 +23,7 @@ const Login = () => {
     const location = useLocation();
     const { setTimeActive } = useAuthValue();
     const [errorMsg, setErrorMsg] = useState("");
-    const [phone, setPhone] = useState("+911234567890");
+    const [phone, setPhone] = useState("911234567890");
     const [values, setValues] = useState({
         username: "",
         email: "",
@@ -72,51 +72,41 @@ const Login = () => {
             repass: "",
         });
 
-        if (phone.length >= 12) {
+        if (phone.length >= 12 && validatePassword()) {
             setUpRecaptcha();
             let appVerifier = window.recaptchaVerifier;
-            signInWithPhoneNumber(authentication, phone, appVerifier)
-                .then((confirmationResult) => {
-                    window.confirmationResult = confirmationResult;
-                    axios.post(`${server}/auth/signup`, {
-                        username: username,
-                        email: email,
-                        pass: pass,
-                        phone: phone,
-                        type: location.state.talent ? "user" : "seeker"
-                    }).then(() => {
-                        alert(`Welcome ${location.state.talent ? "Talent" : "Seeker"} User. Your sign up data has been saved! Please verify your email.`);
-                        navigate("/");
-                       // navigate("/emailverify");
+            axios.post(`${server}/auth/signup`, {
+                username: username,
+                email: email,
+                pass: pass,
+                phone: phone,
+                type: location.state.talent ? "user" : "seeker"
+            }).then((res) => {
+                signInWithPhoneNumber(authentication, phone, appVerifier)
+                    .then((confirmationResult) => {
+                        window.confirmationResult = confirmationResult;
+                        console.log(res);
+                        // Create a new user with email and password using firebase
+                        createUserWithEmailAndPassword(authentication, values.email, values.pass)
+                            .then(() => {
+                                sendEmailVerification(authentication.currentUser)
+                                    .then(() => {
+                                        setTimeActive(true);
+                                        navigate("/verification");
+                                    })
+                                    .catch((err) => alert(err.message));
+                            })
+                            .catch((err) => {
+                                setErrorMsg(err.message);
+                            });
                     }).catch((err) => {
                         console.log(err);
                     });
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
+            })
+            .catch((error) => {
+                console.log(error);
+            });
         }
-        if (validatePassword()) {
-            // Create a new user with email and password using firebase
-            createUserWithEmailAndPassword(authentication, values.email, values.pass)
-                .then(() => {
-                    sendEmailVerification(authentication.currentUser)
-                        .then(() => {
-                            setTimeActive(true);
-                            navigate("/verification");
-                        })
-                        .catch((err) => alert(err.message));
-                })
-                .catch((err) => {
-                    setErrorMsg(err.message);
-                });
-        } else {
-            return;
-        }
-
-
-
-
     };
 
     return (

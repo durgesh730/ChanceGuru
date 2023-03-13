@@ -30,7 +30,7 @@ import MyRoles from "./components/MyRoles";
 import RequestPage from "./components/RequestPage";
 
 import TalentNotification from "./components/TalentNotification";
-
+import server from "./components/server";
 
 import ChatProvider from "./components/Context/ChatProvider";
 
@@ -40,7 +40,7 @@ import Myapplication from "./components/Myapplication";
 
 
 import io from "socket.io-client";
-const ENDPOINT = "http://localhost:5000";
+const ENDPOINT = {server};
 
 function App() {
     const [currentUser, setCurrentUser] = useState(null);

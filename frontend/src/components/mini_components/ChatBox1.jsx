@@ -146,7 +146,7 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
               },
             };
             await axios.put(
-              `http://localhost:5000/api/chat/updateUnreadCount`,
+              `${server}/api/chat/updateUnreadCount`,
               { item },
               config
             )

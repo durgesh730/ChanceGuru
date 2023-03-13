@@ -57,23 +57,54 @@ const Login = () => {
                             <div className="grid-container">
                                 <div className="column">
                                     <div className="web1-image">
-                                        <img src="https://images.pexels.com/photos/2106037/pexels-photo-2106037.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=375&w=630" />
+                                        <img src="https://i.pinimg.com/736x/a7/1a/18/a71a18e3339c8b0f12e3dc9f62466c21.jpg" />
                                         <div className="image_overlay">
                                             <div className="overlay-name">Rachel Zayne</div>
                                             <div className="overlay-profession">Actress</div>
                                         </div>
                                     </div>
                                     <div className="web1-image">
-                                        <img src="https://images.pexels.com/photos/1083822/pexels-photo-1083822.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" />
+                                        <img src="https://st1.bollywoodlife.com/wp-content/uploads/2018/07/SalmanKhan.jpg" />
                                         <div className="image_overlay">
-                                            <div className="overlay-name">Rachel Zayne</div>
+                                            <div className="overlay-name">Salman Khan</div>
+                                            <div className="overlay-profession">Actor</div>
+                                        </div>
+                                    </div>
+                                    <div className="web1-image">
+                                        <img src="https://resize.indiatvnews.com/en/resize/newbucket/715_-/2020/08/akshay-kumar-1556950313-1597741941.jpg" />
+                                        <div className="image_overlay">
+                                            <div className="overlay-name">Akshay Kumar</div>
+                                            <div className="overlay-profession">Actor</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="column">
+                                    <div className="web1-image">
+                                        <img src="https://www.easterneye.biz/wp-content/uploads/2019/03/Deepika-Padukone.jpg" />
+                                        <div className="image_overlay">
+                                            <div className="overlay-name">Deepika Padukone</div>
                                             <div className="overlay-profession">Actress</div>
                                         </div>
                                     </div>
                                     <div className="web1-image">
-                                        <img src="https://images.pexels.com/photos/772571/pexels-photo-772571.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" />
+                                        <img src="https://filmfare.wwmindia.com/content/2019/apr/aliabhatt11554808888.jpg" />
                                         <div className="image_overlay">
-                                            <div className="overlay-name">Rachel Zayne</div>
+                                            <div className="overlay-name">Alia Bhatt</div>
+                                            <div className="overlay-profession">Actress</div>
+                                        </div>
+                                    </div>
+                                    <div className="web1-image">
+                                        <img src="https://theindianwire.com/wp-content/uploads/2019/09/Mrunal-Thakur3.jpg" />
+                                        <div className="image_overlay">
+                                            <div className="overlay-name">Mrunal Thakur</div>
+                                            <div className="overlay-profession">Actress</div>
+                                        </div>
+                                    </div>
+                                    <div className="web1-image">
+                                        <img src="https://4.bp.blogspot.com/_YTxbRMzpLmc/TFqtlAlv_BI/AAAAAAAAB0o/cxZMjPxYMN0/s1600/001+Sonali+Bendre+(2).jpg" />
+                                        <div className="image_overlay">
+                                            <div className="overlay-name">Sonali Bendre</div>
                                             <div className="overlay-profession">Actress</div>
                                         </div>
                                     </div>
@@ -81,86 +112,55 @@ const Login = () => {
 
                                 <div className="column">
                                     <div className="web1-image">
-                                        <img src="https://images.pexels.com/photos/3629537/pexels-photo-3629537.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500" />
+                                        <img src="https://movierdo.com/my_para/wp-content/uploads/2015/07/singham-ajay-devgan.jpg" />
                                         <div className="image_overlay">
-                                            <div className="overlay-name">Rachel Zayne</div>
-                                            <div className="overlay-profession">Actress</div>
+                                            <div className="overlay-name">Ajay Devgan</div>
+                                            <div className="overlay-profession">Actor</div>
                                         </div>
                                     </div>
                                     <div className="web1-image">
-                                        <img src="https://images.pexels.com/photos/1327838/pexels-photo-1327838.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500" />
+                                        <img src="https://www.newszii.com/wp-content/uploads/2017/01/Sushant-Singh-Rajput-V1.jpg" />
                                         <div className="image_overlay">
-                                            <div className="overlay-name">Rachel Zayne</div>
-                                            <div className="overlay-profession">Actress</div>
+                                            <div className="overlay-name">Sushant Singh</div>
+                                            <div className="overlay-profession">Actor</div>
                                         </div>
                                     </div>
                                     <div className="web1-image">
-                                        <img src="https://images.pexels.com/photos/3673762/pexels-photo-3673762.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500" />
+                                        <img src="https://images.news18.com/ibnlive/uploads/2022/07/untitled-design-101-16583210403x2.png?impolicy=website&width=510&height=356" />
                                         <div className="image_overlay">
-                                            <div className="overlay-name">Rachel Zayne</div>
-                                            <div className="overlay-profession">Actress</div>
-                                        </div>
-                                    </div>
-                                    <div className="web1-image">
-                                        <img src="https://images.pexels.com/photos/3338497/pexels-photo-3338497.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500" />
-                                        <div className="image_overlay">
-                                            <div className="overlay-name">Rachel Zayne</div>
-                                            <div className="overlay-profession">Actress</div>
+                                            <div className="overlay-name">Neel Salekar</div>
+                                            <div className="overlay-profession">Cinematographer</div>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div className="column">
                                     <div className="web1-image">
-                                        <img src="https://images.pexels.com/photos/4000421/pexels-photo-4000421.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500" />
+                                        <img src="https://beautyhealthtips.in/wp-content/uploads/2018/03/Hrithik-roshan-1.jpg" />
                                         <div className="image_overlay">
-                                            <div className="overlay-name">Rachel Zayne</div>
-                                            <div className="overlay-profession">Actress</div>
+                                            <div className="overlay-name">Hritik Roshan</div>
+                                            <div className="overlay-profession">Dancer</div>
                                         </div>
                                     </div>
                                     <div className="web1-image">
-                                        <img src="https://images.pexels.com/photos/4230630/pexels-photo-4230630.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500" />
+                                        <img src="https://i2.cinestaan.com/image-bank/1500-1500/126001-127000/126990.jpg" />
                                         <div className="image_overlay">
-                                            <div className="overlay-name">Rachel Zayne</div>
-                                            <div className="overlay-profession">Actress</div>
+                                            <div className="overlay-name">Tiger Shroff</div>
+                                            <div className="overlay-profession">Stunt Man</div>
                                         </div>
                                     </div>
                                     <div className="web1-image">
-                                        <img src="https://images.pexels.com/photos/4197439/pexels-photo-4197439.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500" />
+                                        <img src="https://timesofindia.indiatimes.com/thumb/msid-58515457,imgsize-198415,width-800,height-600,resizemode-4/58515457.jpg" />
                                         <div className="image_overlay">
-                                            <div className="overlay-name">Rachel Zayne</div>
-                                            <div className="overlay-profession">Actress</div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="column">
-                                    <div className="web1-image">
-                                        <img src="https://images.pexels.com/photos/2248516/pexels-photo-2248516.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500" />
-                                        <div className="image_overlay">
-                                            <div className="overlay-name">Rachel Zayne</div>
-                                            <div className="overlay-profession">Actress</div>
+                                            <div className="overlay-name">Chetan Bhagat</div>
+                                            <div className="overlay-profession">Writer</div>
                                         </div>
                                     </div>
                                     <div className="web1-image">
-                                        <img src="https://images.pexels.com/photos/4555468/pexels-photo-4555468.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500" />
+                                        <img src="https://filmfare.wwmindia.com/content/2020/jul/director-anurag-kashyap-11595317563.jpg" />
                                         <div className="image_overlay">
-                                            <div className="overlay-name">Rachel Zayne</div>
-                                            <div className="overlay-profession">Actress</div>
-                                        </div>
-                                    </div>
-                                    <div className="web1-image">
-                                        <img src="https://images.pexels.com/photos/2899100/pexels-photo-2899100.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500" />
-                                        <div className="image_overlay">
-                                            <div className="overlay-name">Rachel Zayne</div>
-                                            <div className="overlay-profession">Actress</div>
-                                        </div>
-                                    </div>
-                                    <div className="web1-image">
-                                        <img src="https://images.pexels.com/photos/3726314/pexels-photo-3726314.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500" />
-                                        <div className="image_overlay">
-                                            <div className="overlay-name">Rachel Zayne</div>
-                                            <div className="overlay-profession">Actress</div>
+                                            <div className="overlay-name">Anurag Kashyap</div>
+                                            <div className="overlay-profession">Director</div>
                                         </div>
                                     </div>
                                 </div>

@@ -167,6 +167,7 @@ const ApplicantDetails = () => {
             body: JSON.stringify(inputList)
         })
         const json = await data.json();
+        console.log(json, "json data")
         modal.style.display = "none";
     }
 
@@ -261,26 +262,10 @@ const ApplicantDetails = () => {
                                 <h5 className="mt-3 mb-4 fw-bold">Add date and time</h5>
 
 
-                                {/* {arr?.map((item) => {
+                                {
+                                    projectDetails?.map((items) => items.DateTime?.map((data, i) => {
                                         return (
                                             <>
-                                                <span className='mx-2' >{item.time.location}</span>
-                                                <span>{item.time.date}</span>
-                                                <h4 removeData={item.location} onClick={() => { handledelete(item._id, item.time) }} > <AiFillDelete /> </h4>
-                                            </>
-                                        )
-                                    })
-                                } */}
-
-
-                                { projectDetails?.map((items) => items.DateTime?.map((data, i) => {
-                                        temp.push({ "_id": items._id, "time": data })
-                                        //arr.push({ "_id": items._id, "time": data })
-                                        
-                                        return (
-                                            <>
-                                                   
-
                                                 <div key={i} className="row mb-3 my-2">
                                                     <div class="form-group col-md-3 mx-4 ">
                                                         <input value={data.date} type="date" name="date" class="form-control" placeholder="Date" disabled required />
@@ -294,12 +279,9 @@ const ApplicantDetails = () => {
                                                 </div>
                                             </>
                                         )
-                                        
                                     }))
-                                    
                                 }
 
-                               
 
                                 <div  className={`row mb-3 ${Add ? "" : "d-none"}`}>
                                     <div class="form-group col-md-3">
@@ -319,6 +301,7 @@ const ApplicantDetails = () => {
                                         }
                                     </div>
                                 </div>
+
                             </div>
                         </div>
 
@@ -427,7 +410,7 @@ const ApplicantDetails = () => {
                         </div>
                     </div>
                 </div>
-            </div >
+            </div>
         </>
     )
 }

@@ -73,9 +73,9 @@ const Login = () => {
                     <div className="login-footer">
                         <div className="open-quote">“</div>
                         <div className="quote">
-                            I’m a 21st century man. I don’t belive in magic. I belive in sweat, tears, life and death.
+                            I’m a 21st century man. I don’t believe in magic. I believe in sweat, tears, life and death.
                         </div>
-                        <div className="author">kamal haasan</div>
+                        <div className="author">Kamal Hasan</div>
                         <div className="close-quote">”</div>
                         <div className="three-dots">
                             <i className="fa-solid fa-circle mx-1"></i>
@@ -92,7 +92,7 @@ const Login = () => {
                                 <b>Verify Mobile Number</b>
                             </p>
                             <span className="secondary-text">
-                                Enter the OTP recived on the registerd mobile number <b>{}</b>
+                                Enter the OTP received on the registered mobile number <b>{}</b>
                             </span>
                         </div>
                         <input

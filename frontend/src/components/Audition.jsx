@@ -147,7 +147,7 @@ const Audition = () => {
               <h5 className="purple_title">Projects</h5>
 
               {
-                cards?.length === 0 || cards === undefined ? (
+                (!cards) ? (
                   <div class="loader"></div>
                 ) : (
                   cards?.map((item, index) => {

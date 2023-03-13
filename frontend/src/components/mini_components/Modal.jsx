@@ -17,7 +17,7 @@ const Modal = ({ setModel, info, setProfile, UserProfileDeatils, roles }) => {
   const handlestatus = async () => {
     let statuses = []
     charIds?.map(async (charId,index)=>{
-      let data = await fetch (`http://localhost:5000/application/JobDetails/${UserProfileDeatils.userId}/${charId}`,
+      let data = await fetch (`${server}/application/JobDetails/${UserProfileDeatils.userId}/${charId}`,
       {
         method: "GET",
         headers: {
