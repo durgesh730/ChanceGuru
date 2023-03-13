@@ -126,6 +126,8 @@ function TalentNotification() {
         setLoggedUser(JSON.parse(localStorage.getItem("login")));
       }, []);
 
+      console.log("count noti",viewsNotification.length)
+
     return (
         <>
             <Topbar />

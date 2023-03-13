@@ -23,7 +23,7 @@ const Login = () => {
         <>
             <div className="web1">
                 <div className="row">
-                    <div className="col-4 col-12 col">
+                    <div className="col-lg-4 col-12 col">
                         <div className="web1-signin d-flex flex-column justify-content-between">
                             <div className="menu">
                                 <div className="Rectangle-1"></div>
@@ -52,7 +52,7 @@ const Login = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="col-8 col stylishImages">
+                    <div className="col-lg-8 col stylishImages">
                         <div className="web1-images">
                             <div className="grid-container">
                                 <div className="column">

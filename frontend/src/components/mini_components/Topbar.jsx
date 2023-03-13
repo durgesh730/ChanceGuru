@@ -431,7 +431,26 @@ const Topbar = (props) => {
 
   }, [])
 
+  useEffect(() => {
+    if (rolesNotification.length <= 2 && viewsNotification.length <= 2) {
+      auth.setNotificationCount(rolesNotification.length + viewsNotification.length)
+    }
+    else {
+      auth.setNotificationCount(4)
+    }
+  }, [])
 
+  useEffect(() => {
+    if (projects <= 2 && userProjectMap <= 2) {
+      auth.setNotificationCountSeeker(projects.length + userProjectMap.length)
+    }
+    else {
+      auth.setNotificationCountSeeker(4)
+    }
+  }, [])
+
+
+  console.log("count", auth.notificationCount)
   return (
     <>
       <div className="topbar">
@@ -595,19 +614,32 @@ const Topbar = (props) => {
             ) : (
               <img className="topbar-icons " src={notification} alt="" />
             )}
-            {auth.notificationCount !== 0 ? <h6>{auth.notificationCount}</h6> : ""}
+            {
+              user.type === "user" ?
+
+                auth.notificationCount !== 0 ?
+                  <h6>{auth.notificationCount}</h6> : ""
+
+                :
+
+                auth.notificationCountSeeker !== 0 ?
+            <h6>
+              {auth.notificationCountSeeker}</h6> : ""
+              
+            }
+            {/* {auth.notificationCount !== 0 ? <h6>{auth.notificationCount}</h6> : ""} */}
 
             <div className="notif-options" id="notifOption">
               {user.type === 'user' ?
-            
-              <div>
+
+                <div>
                   {rolesNotification?.slice(0, 2).map((roleName, index) => {
                     return (
                       <>
                         <div key={index}>
                           <img src={loggedUser.link === undefined ? profile : loggedUser.link} alt="pfp" />
                           <p>
-                          You have successfully applied for the role {roleName}
+                            You have successfully applied for the role {roleName}
                           </p>
                         </div>
                         <hr />
@@ -627,12 +659,9 @@ const Topbar = (props) => {
                     );
                   })
                   }
-                  <div className="d-flex justify-content-center align-items-center view_all">
-                    <NavLink to="/notification" onClick={() => auth.setNotificationCount(0)} >
-                      <p>View All</p>
-                    </NavLink>
-                  </div>
+                  
                 </div>
+                
                 :
                 <div>
                   {projects?.slice(0, 2).map((project, index) => {
@@ -662,13 +691,14 @@ const Topbar = (props) => {
                     );
                   })
                   }
-                  <div className="d-flex justify-content-center align-items-center view_all">
+                  
+                </div>
+              }
+              <div className="d-flex justify-content-center align-items-center view_all">
                     <NavLink to="/notification" onClick={() => auth.setNotificationCount(0)} >
                       <p>View All</p>
                     </NavLink>
                   </div>
-                </div>
-              }
             </div>
           </span>
 

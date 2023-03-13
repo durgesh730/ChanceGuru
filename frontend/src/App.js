@@ -47,7 +47,8 @@ function App() {
     const [timeActive, setTimeActive] = useState(false);
     const [clicked, setClicked] = useState(0);
     const [active, setActive] = useState("home");
-    const [notificationCount,setNotificationCount] = useState(4)
+    const [notificationCount,setNotificationCount] = useState(0)
+    const [notificationCountSeeker,setNotificationCountSeeker] = useState(0)
 
 
     const [chatUnReadCount,setChatUnReadCount] = useState(0)
@@ -70,7 +71,7 @@ function App() {
   return (
     <Router>
       <AuthProvider
-        value={{ currentUser, timeActive, setTimeActive, setClicked, clicked, active,setActive, notificationCount,setNotificationCount, chatUnReadCount,setChatUnReadCount,typing, setTyping, socketConnected, setSocketConnected, socket,setSocket,getunreadonTopbar }}
+        value={{ currentUser, timeActive, setTimeActive, setClicked, clicked, active,setActive, notificationCount,setNotificationCount,notificationCountSeeker,setNotificationCountSeeker, chatUnReadCount,setChatUnReadCount,typing, setTyping, socketConnected, setSocketConnected, socket,setSocket,getunreadonTopbar }}
       >
         <Routes>
           <Route
