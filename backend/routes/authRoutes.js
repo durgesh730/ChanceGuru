@@ -136,4 +136,16 @@ router.get("/seeker/:userId", (req , res) => {
   })
 })
 
+
+// To get Job applications using seekerId for notification
+router.get("/UserImageFromUserTable/:id", (req, res) => {
+  User.find({ _id:req.params.id })
+    .then((response) => {
+      res.json(response);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+});
+
 module.exports = router;

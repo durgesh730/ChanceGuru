@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import server from "./server";
+import { FcBusinessman } from 'react-icons/fc';
 
 const StatusSide = ({ charId, roleId, project, userId }) => {
     const [cards, setcards] = useState([]);
@@ -21,10 +22,10 @@ const StatusSide = ({ charId, roleId, project, userId }) => {
 
     const getProfileImages = () => {
         axios
-            .get(`${server}/profile/${userId}`)
+            .get(`${server}/auth/UserImageFromUserTable/${userId}`)
             .then((res) => {
                 if (res !== null) {
-                    setImg(res.data.photos)
+                    setImg(res.data)
                 }
             })
             .catch((err) => {
@@ -52,7 +53,9 @@ const StatusSide = ({ charId, roleId, project, userId }) => {
                 {
                     img?.map((item, i) => {
                         return (
-                            (i === 0) ? <img src={item.link} /> : ("")
+                            (item.link) ? <img src={item.link} /> : (
+                             <span style={{fontSize:"3.5rem"}} > <FcBusinessman/></span> 
+                            )
                         )
                     })
                 }

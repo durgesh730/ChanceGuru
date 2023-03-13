@@ -28,6 +28,7 @@ import requests from "../../assets/icons/request.png";
 import arequests from "../../assets/icons/active-request.png";
 import axios from "axios";
 import server from '../server';
+import { RiAccountCircleFill } from 'react-icons/ri';
 
 import AuthContext from "../AuthContext";
 
@@ -543,12 +544,17 @@ const Topbar = (props) => {
             onClick={toggleProfileOptions}
           >
             <span className="topbar-icons-container">
-              <img
+
+              {
+                (loggedUser.link)?<img
                 className="topbar-icons topbar-profile p-0"
                 src={loggedUser.link}
                 alt=""
 
-              />
+              />:(
+                <RiAccountCircleFill style={{fontSize:"2rem"}} />
+              )
+              }
             </span>
             <span className="top-profile-name">{user.username}</span>
             <div className="profile-options" id="profileOption">

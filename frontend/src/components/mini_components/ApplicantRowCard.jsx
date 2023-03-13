@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom';
 import kamal from "../../assets/images/kamal.jpeg"
+import Images from '../Images';
 import server from '../server';
 
 const ApplicantRowCard = ({ Data, applied }) => {
@@ -101,6 +102,7 @@ const ApplicantRowCard = ({ Data, applied }) => {
     return (
         <div >
             {User?.map((items, i) => {
+                console.log(items, "ite")
                 return (
                     <>
                         <div className="lI" >
@@ -110,7 +112,7 @@ const ApplicantRowCard = ({ Data, applied }) => {
                                     state={{ user: items, card: [Data], index: 0, btn: 3 }}
                                     exact
                                 >
-                                    <img src={items.photos[0]?.link} alt="" style={{ width: '4rem' }} />
+                                    <Images item={items} />
                                     <span key={i} className="applicantName">
                                         {items.basicInfo.fullname}
                                     </span>

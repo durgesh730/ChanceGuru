@@ -6,10 +6,10 @@ import { useNavigate } from "react-router-dom";
 import "./style.css";
 import server from "./server";
 
+
 const SeekerDashboard = () => {
   const [query, setQuery] = useState("");
   const [card, setcard] = useState();
-  console.log(card);
   const [searchData, setsearchData] = useState([]);
   const type = localStorage.getItem('type');
 
