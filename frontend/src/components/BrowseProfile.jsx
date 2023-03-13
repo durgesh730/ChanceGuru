@@ -3,10 +3,11 @@ import Searchbar from "./mini_components/Searchbar";
 import Topbar from "./mini_components/Topbar";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { BsChevronDown, BsPhone } from "react-icons/bs";
-import profile from "../assets/icons/profile1.svg";
+
 import axios from "axios";
 import Contect from "./Contect";
 import server from "./server";
+import Images from "./Images";
 
 const BrowseProfile = () => {
   const [query, setQuery] = useState("");
@@ -175,7 +176,8 @@ const BrowseProfile = () => {
                     return (
                       <tr key={index}>
                         <td className="d-flex justify-content-start align-items-center">
-                          <img src={item.photos[0]?.link ? item.photos[0]?.link : profile} />
+                          <Images item = {item} />
+                          {/* <img src={item.photos[0]?.link ? item.photos[0]?.link : profile} /> */}
                           <p>{item.basicInfo.fullname}</p>
                         </td>
                         <td>

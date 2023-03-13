@@ -36,25 +36,25 @@ const Submission = () => {
     }
   };
 
-  const getAdminProjects = async ()=>{
+  const getAdminProjects = async () => {
     const data = await fetch(`${server}/project/getProjectForAdmin`, {
-      method:"GET",
-      headers:{
-       "Content-Type":"application/json",
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
       },
     })
     const re = await data.json();
-    if(re !== null){
+    if (re !== null) {
       setcards(re);
     }
-}
+  }
 
   const url = `${server}/project/allProjectsSeekers`;
   const getProjects = (e) => {
     axios
       .get(url, {
         headers: {
-           "Content-Type": "application/json",
+          "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       })
@@ -66,9 +66,9 @@ const Submission = () => {
   };
 
   useEffect(() => {
-    if(type === 'seeker'){
+    if (type === 'seeker') {
       getProjects();
-    }else if(type ==='admin'){
+    } else if (type === 'admin') {
       getAdminProjects();
     }
   }, []);
@@ -140,36 +140,44 @@ const Submission = () => {
                 </div>
               </div>
               <h5 className="purple_title">Projects</h5>
-              {cards?.map((item, index) => {
-                // console.log(item , 'durgesh');
-                // ========= calculate total charcters =============
-                var char = 0;
-                var all = new Array();
-                var a = 0;
-                {
-                  item.roles.map((i) => {
-                    char = char + i.characters.length;
-                    var length = i.characters.length;
-                    for (i = 0; i < length; i++) {
-                      all[i] = char;
+
+              {
+                (!cards) ? (
+                  <div class="loader"></div>
+                ) : (
+                  cards?.map((item, index) => {
+                    // console.log(item , 'durgesh');
+                    // ========= calculate total charcters =============
+                    var char = 0;
+                    var all = new Array();
+                    var a = 0;
+                    {
+                      item.roles.map((i) => {
+                        char = char + i.characters.length;
+                        var length = i.characters.length;
+                        for (i = 0; i < length; i++) {
+                          all[i] = char;
+                        }
+
+                        for (i = 0; i < all.length; i++) {
+                          if (all[i] > a) a = all[i];
+                        }
+                      });
                     }
 
-                    for (i = 0; i < all.length; i++) {
-                      if (all[i] > a) a = all[i];
-                    }
-                  });
-                }
+                    return (
+                      <>
+                        <div className="audition_accordion mb-3 ">
+                          <div className="aa1 border p-2">
+                            <SubmissionStatus a={a} project={item} ArrayData={cards} id={item._id} />
+                          </div>
+                        </div>
+                      </>
+                    );
+                  })
+                )
+              }
 
-                return (
-                  <>
-                    <div className="audition_accordion mb-3 ">
-                      <div className="aa1 border p-2">
-                        <SubmissionStatus a={a} project={item} ArrayData={cards} id={item._id} />
-                      </div>
-                    </div>
-                  </>
-                );
-              })}
             </div>
           </div>
         </div>
