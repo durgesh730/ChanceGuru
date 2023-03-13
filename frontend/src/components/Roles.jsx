@@ -275,8 +275,7 @@ const Roles = ({ display }) => {
           {
             <div className="roleUpdate form-body">
               <div className="roleChild">
-                <div>
-                  <div className="form-toggle d-flex " style={show}>
+                  <div className="form-toggle fixedDiv d-flex " style={show}>
                     <div
                       className="toggle-option active-toggle"
                       onClick={() => {
@@ -354,7 +353,6 @@ const Roles = ({ display }) => {
                         </div>
                       </form>
                     </div>
-                  </div>
                 </div>
                 <form
                   id="char-form"

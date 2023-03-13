@@ -45,7 +45,7 @@ input {
 
 .form-body {
   height: calc(100vh - 80px);
-  overflow: auto;
+  overflow-y: auto;
 }
 
 .form-container {
@@ -112,6 +112,8 @@ input {
   height: 50px;
   color: #fff;
   border-radius: 5px;
+  margin-right: 28px !important;
+
 }
 
 .cancel-btn:hover {
@@ -125,6 +127,9 @@ input {
   margin-bottom: 10px;
   border-bottom: 1px solid #d8d8d8;
   overflow-x: auto;
+}
+.form-toggle::-webkit-scrollbar{
+  display: none;
 }
 
 .toggle-option {
@@ -157,6 +162,7 @@ input {
   height: 50px;
   border: none;
   border-radius: 3px;
+  padding: 0 20px;
   margin: 10px 0 20px;
 }
 

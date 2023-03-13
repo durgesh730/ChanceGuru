@@ -2,6 +2,7 @@ import React from "react";
 import Carousel from "./Carousel";
 
 const BioExperience = ({ Data }) => {
+  console.log(Data)
   return (
     <>
       <div className="userdetails d-flex justify-content-between flex-column">
@@ -14,18 +15,18 @@ const BioExperience = ({ Data }) => {
             <div>
               <p>Experience</p>
               <div className="scroll_x">
-                {Data.experience?.map((i) => {
+                {/* {Data.experience?.map((i) => {
                   // console.log(i)
                   return (
                     <div className="x_cards">
                       <h6>
                         {i.startDate} - {i.endDate}
                       </h6>
-                      <p>{i.about}</p>
+                      <p>{i.aboutWork}</p>
                     </div>
                   );
-                })}
-                {/* <Carousel /> */}
+                })} */}
+                <Carousel Data={Data}/>
 
                 {/* <div className="x_cards">
                   <h6>05/12/2018 - 01/12/2018</h6>

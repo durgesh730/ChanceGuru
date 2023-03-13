@@ -50,6 +50,12 @@ const Card = ({ card, profile, UserProfileDeatils , setClicked }) => {
     getImage();
   }, []);
 
+  const activateModal=()=>{
+    setModel(true);
+    setClicked(1);
+    document.querySelector(".talent-heading").style.gridArea = "1/1/2/4";
+  }
+
   return (
     <li className="child_cards">
       <a>
@@ -72,10 +78,8 @@ const Card = ({ card, profile, UserProfileDeatils , setClicked }) => {
         </div>
         <button
           className="card-apply btn"
-          onClick={() => {
-            setModel(true);
-            setClicked(1);
-          }}
+          onClick={activateModal}
+          // style={model?{gridArea:"1/1/2/4"}:{gridArea:"1/1/2/5"}}
         >
           Apply
         </button>

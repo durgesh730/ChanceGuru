@@ -40,7 +40,6 @@ const Topbar = (props) => {
   const [notifHeight, setnotifHeight] = useState(0);
   const [dim, setDim] = useState(0);
   const [projects, setProjects] = useState();
-  const [loggedUser, setLoggedUser] = useState("");
   const [toggleNav, settoggleNav] = useState(false)
 
 
@@ -49,20 +48,20 @@ const Topbar = (props) => {
   const auth = useContext(AuthContext)
   const active = auth.active
 
-  let {socket,setSocket,setSocketConnected,setIsTyping,chatUnReadCount,setChatUnReadCount,getunreadonTopbar} = auth
+  let { socket, setSocket, setSocketConnected, setIsTyping, chatUnReadCount, setChatUnReadCount, getunreadonTopbar } = auth
   const user = JSON.parse(localStorage.getItem("login"));
   const navigate = useNavigate();
 
-  
-  
+
+
   useEffect(() => {
     // setSocket(prev => prev = io(ENDPOINT));
     socket.emit("setup", user);
     socket.on("connected", () => setSocketConnected(true));
-    
+
 
     socket.off("setNotify").on("setNotify", (chat) => {
-      console.log("Topbar.jsx 55 :",chat)
+      console.log("Topbar.jsx 55 :", chat)
       if (location.pathname != "/chat") {
 
         console.log("Topbar 86 Setting chat unread count")
@@ -78,7 +77,7 @@ const Topbar = (props) => {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("UnReadNotify",JSON.stringify(chatUnReadCount))
+    localStorage.setItem("UnReadNotify", JSON.stringify(chatUnReadCount))
   }, [chatUnReadCount])
 
 
@@ -113,34 +112,34 @@ const Topbar = (props) => {
     if (localChats && localChats.length > 0) {
       localChats.map(async (item) => {
         console.log(item)
-          try {
-            const config = {
-              headers: {
-                "Content-type": "application/json",
-                Authorization: `Bearer ${user.token}`,
-              },
-            };
-            await axios.put(
-              `${server}/api/chat/incrChat`,
-              { item },
-              config
-            )
-              .then((response) => {
-                console.log(response)
-              });
+        try {
+          const config = {
+            headers: {
+              "Content-type": "application/json",
+              Authorization: `Bearer ${user.token}`,
+            },
+          };
+          await axios.put(
+            `${server}/api/chat/incrChat`,
+            { item },
+            config
+          )
+            .then((response) => {
+              console.log(response)
+            });
 
-          } catch (error) {
-            console.log(error.message);
-          }
-        
+        } catch (error) {
+          console.log(error.message);
+        }
+
       }
-      
+
       )
     }
   }
 
   function handleLogout() {
-    
+
     localStorage.clear();
     navigate("/login");
     console.log("Logout succesfull");
@@ -158,6 +157,7 @@ const Topbar = (props) => {
   const [userProjectMap, setUserProjectMap] = useState([]);
   const [ForIds, setForIds] = useState()
 
+  const [jobRoles, setJobRoles] = useState([])
 
   const getProjects = async () => {
     const res = await fetch(
@@ -247,12 +247,12 @@ const Topbar = (props) => {
         `${server}/api/chat/getUnreadCount`,
         config
       )
-      .then((response)=>{
-        console.log(response)
-        setChatUnReadCount(response.data)
+        .then((response) => {
+          console.log(response)
+          setChatUnReadCount(response.data)
 
-      });
-      
+        });
+
     } catch (error) {
       console.log(error.message);
     }
@@ -298,6 +298,120 @@ const Topbar = (props) => {
     setLoggedUser(JSON.parse(localStorage.getItem("login")));
   }, []);
 
+  // ============talent=========================
+  const [jobsTalent, setJobsTalent] = useState()
+  const [jobRolesTalent, setJobRolesTalent] = useState([])
+  const [rolesNotification, setRolesNotification] = useState([])
+  const [views, setViews] = useState([])
+  const [viewUsers, setViewUsers] = useState([])
+  const [viewsNotification, setViewNotification] = useState([])
+  const [loggedUser, setLoggedUser] = useState("");
+
+
+  const dataFetchedRefTalent = useRef(false);
+
+
+  const getJobApplicationsTalent = async () => {
+    const res = await fetch(
+      `${server}/application/allJobsUser`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+
+    const response = await res.json();
+    console.log(response)
+
+    setJobsTalent(response)
+    getJobRolesTalent(response)
+  }
+
+  function getUsersTalent(views) {
+
+    views?.map((view, index) => {
+      console.log(view)
+      axios
+        .get(`${server}/project/UserId/${view.seekerId}`)
+        .then((res) => {
+          if (res !== null) {
+            setViewUsers(oldUsers => [...oldUsers, res.data])
+          }
+          // console.log(res.data)
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+
+    })
+  }
+
+  function getJobRolesTalent(jobsTalent) {
+    jobsTalent?.map((job, index) => {
+
+      axios.get(`${server}/project/getCharacter/${job.roleId}`)
+        .then((res) => {
+
+          console.log(res.data)
+          setJobRolesTalent(oldRoles => [...oldRoles, res.data])
+
+
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+    })
+  }
+
+  const getReqToApp = () => {
+    axios.get(`${server}/profile/reqToApp/${user._id}`)
+      .then((res) => {
+        console.log(res.data)
+        setViews(res.data)
+        getUsersTalent(res.data)
+
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+
+  useEffect(() => {
+    if (dataFetchedRefTalent.current) return;
+    dataFetchedRefTalent.current = true;
+    getJobApplicationsTalent()
+    getReqToApp()
+
+  }, [])
+
+  useEffect(() => {
+    let roles = new Set()
+    jobRolesTalent?.map((job) => {
+      job?.map((item) => {
+        roles.add(`${item.roles[0].role} in ${item.basicInfo.name}`)
+      })
+    })
+    let rolesArr = [...roles]
+    rolesArr.reverse()
+    setRolesNotification(rolesArr)
+  }, [jobRolesTalent])
+
+  useEffect(() => {
+    let roles = new Set()
+    viewUsers?.map((view) => {
+      console.log(view)
+      view?.map((item) => {
+        roles.add({ "notification": item.username, "img": item.link })
+      })
+    })
+    let viewsArr = [...roles]
+    viewsArr.reverse()
+    setViewNotification(viewsArr)
+  }, [viewUsers])
+
   const handleNavbar = () => {
     if (toggleNav) {
       document.querySelector(".topbar-nav").style.display = "none";
@@ -311,13 +425,13 @@ const Topbar = (props) => {
   }
 
   useEffect(() => {
-    if(getunreadonTopbar.current < 1){
+    if (getunreadonTopbar.current < 1) {
       getUnReadCount()
       getunreadonTopbar.current++
     }
 
   }, [])
-  
+
 
   return (
     <>
@@ -426,27 +540,27 @@ const Topbar = (props) => {
 
 
 
-         {
-           user.type !== 'admin'?
-          (<Link to="/chat">
-            <span
-              className={
-                active === "chat"
-                  ? `nav_active topbar-icons-container bubbleDiv bubbleColorChange`
-                  : "topbar-icons-container bubbleDiv"
-              }
-              onClick={() => auth.setActive("chat")}
-            >
-              {active === "chat" ? (
-                <img className="topbar-icons" src={achat} alt="" />
-              ) : (
-                <img className="topbar-icons" src={chat} alt="" />
-              )}
+          {
+            user.type !== 'admin' ?
+              (<Link to="/chat">
+                <span
+                  className={
+                    active === "chat"
+                      ? `nav_active topbar-icons-container bubbleDiv bubbleColorChange`
+                      : "topbar-icons-container bubbleDiv"
+                  }
+                  onClick={() => auth.setActive("chat")}
+                >
+                  {active === "chat" ? (
+                    <img className="topbar-icons" src={achat} alt="" />
+                  ) : (
+                    <img className="topbar-icons" src={chat} alt="" />
+                  )}
 
-              { chatUnReadCount > 0 && <h6>{chatUnReadCount}</h6>}
-            </span>
-          </Link>):("")
-             }
+                  {chatUnReadCount > 0 && <h6>{chatUnReadCount}</h6>}
+                </span>
+              </Link>) : ("")
+          }
 
           {
             user.type === "user"
@@ -485,57 +599,77 @@ const Topbar = (props) => {
             {auth.notificationCount !== 0 ? <h6>{auth.notificationCount}</h6> : ""}
 
             <div className="notif-options" id="notifOption">
+              {user.type === 'user' ?
+            
               <div>
-                {projects?.slice(0, 2).map((project, index) => {
-                  return (
-                    <>
-                      <div key={index}>
-                        <img src={loggedUser.link === undefined ? profile : loggedUser.link} alt="pfp" />
-                        <p>
-                          You have successfully created the project{" "}
-                          {project.basicInfo.name}
-                        </p>
-                      </div>
-                      <hr />
-                    </>
-                  );
-                })}
-                {userProjectMap?.slice(0, 2).map((item,i) => {
-                  return (
-                    <>
-                      <div key={i} className="d-flex align-items-center">
-                        <img src={item.img === undefined ? profile : item.img} alt="pfp" className="me-4 shadow-sm" />
+                  {rolesNotification?.slice(0, 2).map((roleName, index) => {
+                    return (
+                      <>
+                        <div key={index}>
+                          <img src={loggedUser.link === undefined ? profile : loggedUser.link} alt="pfp" />
+                          <p>
+                          You have successfully applied for the role {roleName}
+                          </p>
+                        </div>
+                        <hr />
+                      </>
+                    );
+                  })}
+                  {viewsNotification?.slice(0, 2).map((item, i) => {
+                    return (
+                      <>
+                        <div key={i} className="d-flex align-items-center">
+                          <img src={item.img === undefined ? profile : item.img} alt="pfp" className="me-4 shadow-sm" />
 
-                        <p>{item.notification}</p>
-                      </div>
-                      <hr />
-                    </>
-                  );
-                })
-                }
-                {/* <hr />
-                <div>
-                  <img src="" alt="pfp" />
-                  <p>
-                    You have successfully created the project "Shakespeare's
-                    Macbeth"
-                  </p>
+                          {item.notification} has viewed your profile
+                        </div>
+                        <hr />
+                      </>
+                    );
+                  })
+                  }
+                  <div className="d-flex justify-content-center align-items-center view_all">
+                    <NavLink to="/notification" onClick={() => auth.setNotificationCount(0)} >
+                      <p>View All</p>
+                    </NavLink>
+                  </div>
                 </div>
-                <hr />
+                :
+                <div>
+                  {projects?.slice(0, 2).map((project, index) => {
+                    return (
+                      <>
+                        <div key={index}>
+                          <img src={loggedUser.link === undefined ? profile : loggedUser.link} alt="pfp" />
+                          <p>
+                            You have successfully created the project{" "}
+                            {project.basicInfo.name}
+                          </p>
+                        </div>
+                        <hr />
+                      </>
+                    );
+                  })}
+                  {userProjectMap?.slice(0, 2).map((item, i) => {
+                    return (
+                      <>
+                        <div key={i} className="d-flex align-items-center">
+                          <img src={item.img === undefined ? profile : item.img} alt="pfp" className="me-4 shadow-sm" />
 
-                <div>
-                  <img src="" alt="pfp" />
-                  <p>
-                    You have successfully created the project "Shakespeare's
-                    Macbeth"
-                  </p>
-                </div> */}
-                <div className="d-flex justify-content-center align-items-center view_all">
-                  <NavLink to="/notification" onClick={() => auth.setNotificationCount(0)} >
-                    <p>View All</p>
-                  </NavLink>
+                          <p>{item.notification}</p>
+                        </div>
+                        <hr />
+                      </>
+                    );
+                  })
+                  }
+                  <div className="d-flex justify-content-center align-items-center view_all">
+                    <NavLink to="/notification" onClick={() => auth.setNotificationCount(0)} >
+                      <p>View All</p>
+                    </NavLink>
+                  </div>
                 </div>
-              </div>
+              }
             </div>
           </span>
 
@@ -576,7 +710,7 @@ const Topbar = (props) => {
                       <></>
                     )
                 }
-                
+
                 <li>
                   <NavLink state={loggedUser} to="/setting" exect >Account Settings</NavLink>
                 </li>
