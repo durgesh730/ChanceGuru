@@ -8,7 +8,7 @@ import axios from "axios"
 import server from "./server";
 
 function TalentNotification() {
-    const [jobsTalent, setJobsTalent] = useState()
+    const [jobsTalent, setJobsTalent] = useState([])
     const [jobRolesTalent, setJobRolesTalent] = useState([])
     const [rolesNotification, setRolesNotification] = useState([])
     const [views, setViews] = useState([])
@@ -126,7 +126,7 @@ function TalentNotification() {
         setLoggedUser(JSON.parse(localStorage.getItem("login")));
       }, []);
 
-      console.log("count noti",viewsNotification.length)
+      console.log("count noti",rolesNotification.length)
 
     return (
         <>

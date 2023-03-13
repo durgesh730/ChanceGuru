@@ -38,7 +38,7 @@ const Topbar = (props) => {
   const [profileHeight, setProfileHeight] = useState(0);
   const [notifHeight, setnotifHeight] = useState(0);
   const [dim, setDim] = useState(0);
-  const [projects, setProjects] = useState();
+  const [projects, setProjects] = useState([]);
   const [toggleNav, settoggleNav] = useState(false)
 
 
@@ -298,7 +298,7 @@ const Topbar = (props) => {
   }, []);
 
   // ============talent=========================
-  const [jobsTalent, setJobsTalent] = useState()
+  const [jobsTalent, setJobsTalent] = useState([])
   const [jobRolesTalent, setJobRolesTalent] = useState([])
   const [rolesNotification, setRolesNotification] = useState([])
   const [views, setViews] = useState([])
@@ -431,26 +431,25 @@ const Topbar = (props) => {
 
   }, [])
 
-  useEffect(() => {
     if (rolesNotification.length <= 2 && viewsNotification.length <= 2) {
       auth.setNotificationCount(rolesNotification.length + viewsNotification.length)
     }
     else {
       auth.setNotificationCount(4)
     }
-  }, [])
+  console.log("Talentcount", auth.notificationCount)
 
-  useEffect(() => {
-    if (projects <= 2 && userProjectMap <= 2) {
+
+    if (projects.length <= 2 && userProjectMap.length <= 2) {
       auth.setNotificationCountSeeker(projects.length + userProjectMap.length)
     }
     else {
       auth.setNotificationCountSeeker(4)
     }
-  }, [])
+  console.log("Seekercount", auth.notificationCountSeeker)
+  
 
 
-  console.log("count", auth.notificationCount)
   return (
     <>
       <div className="topbar">

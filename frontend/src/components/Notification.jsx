@@ -7,8 +7,8 @@ import axios from "axios"
 import server from "./server";
 
 const Notification = () => {
-  const [projects, setProjects] = useState()
-  const [jobs, setJobs] = useState()
+  const [projects, setProjects] = useState([])
+  const [jobs, setJobs] = useState([])
   const [jobProjects, setJobProjects] = useState([])
   const [jobUsers, setJobUsers] = useState([])
 
@@ -97,6 +97,7 @@ const Notification = () => {
     getJobApplications()
   }, [])
 
+  
   useEffect(() => {
     if (jobUsers.length == 0 || jobProjects.length == 0) {
       return
@@ -117,7 +118,7 @@ const Notification = () => {
       }
       arr.add({ notification: `${mapObj.user} has applied to project ${mapObj.project}`, img: image })
     }
-    console.log(arr)
+    // console.log(arr)
     let projArr  = [...arr]
     projArr.reverse()
     setUserProjectMap(projArr)
@@ -128,6 +129,7 @@ const Notification = () => {
     setLoggedUser(JSON.parse(localStorage.getItem("login")));
   }, []);
 
+  // console.log("lenghth :",projects.length)
   
 
   return (
