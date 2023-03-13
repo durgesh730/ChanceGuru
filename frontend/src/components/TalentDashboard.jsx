@@ -138,19 +138,21 @@ const TalentDashboard = () => {
             <Topbar />
             <div className="container-fluid talent_container" style={{ padding: "0 60px" }}>
                 <Searchbar setQuery={setQuery} query={query} handleSearch={handleSearch} />
-                <div className="talent-heading d-flex justify-content-between">
-                    <div className="">Suggestions</div>
-                    <div className="filter d-flex justify-content-between align-item-center">
-                        <button className="bg-light p-2 border-0">
-                            Filter
-                            <BsChevronDown className="mx-1" />
-                        </button>
-                    </div>
-                </div>
+
 
                 <div className="container-fluid">
                     <div className="row">
-                        <ul className="grid-wrapper">
+                        <ul className="grid-wrapper"
+                        style={{gridTemplateRows:"70px repeat(4, 170px"}}>
+                            <div className="talent-heading d-flex justify-content-between">
+                                <div className="">Suggestions</div>
+                                <div className="filter d-flex justify-content-between align-item-center">
+                                    <button className="bg-light p-2 border-0">
+                                        Filter
+                                        <BsChevronDown className="mx-1" />
+                                    </button>
+                                </div>
+                            </div>
                             {cards?.map((card) => (
                                 <Card card={card} profile={profileStrength} UserProfileDeatils={userImg} setClicked={auth.setClicked} />
                             ))}{" "}

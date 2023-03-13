@@ -38,15 +38,19 @@
     margin: 0;
   }
   .grid-wrapper {
-    grid-template-columns: repeat(1, 1fr);
-    grid-template-rows: repeat(4, 200px);
+    grid-template-columns: repeat(1, 1fr) !important;
+    grid-template-rows: repeat(auto, 170px) !important;
+  }
+  .talent-heading{
+    grid-area: 1/1/1/1 !important;
   }
   .side_div {
-    grid-area: 1/1 / 3/ 2;
+    grid-area:2/1/5/1 !important;
     top: 0;
   }
+  
   .grid-wrapper .child_cards a {
-    height: 200px;
+    height: 170px;
   }
 
   .notif-options {
@@ -67,17 +71,17 @@
   }
   /* ===================browse profile========================= */
   .b_table thead td {
-    font-size: 12px;
+    font-size: 9px;
     width: 0;
   }
   .b_table tbody tr td img {
-    width: 43px;
-    height: 43px;
+    width: 40px;
+    height: 40px;
     margin-right: 5px;
   }
   .b_table table tbody td {
     /* font-family: Muli; */
-    font-size: 10px;
+    font-size: 8px;
     padding: 2px;
     width: 20%;
   }
@@ -158,8 +162,12 @@
   .horizontal_nav span {
     font-size: 12px;
   }
+  .userPfp{
+    height: 100%;
+  }
   .right_pfp {
     margin-top: 20px;
+    height: 100vh;
   }
 
   /* ==============================roles======================================= */
@@ -170,6 +178,7 @@
     align-items: center;
     justify-content: center;
     margin-top: 10px;
+    padding: 0;
   }
   .flex-container {
     padding: 10px;
@@ -181,12 +190,14 @@
   .apply-btn,
   .cancel-btn {
     width: 100%;
+    margin: 0 !important;
+
   }
   .save-btn {
     width: 100%;
   }
   .toggle-option {
-    margin-right: 0;
+    margin-right: 70px;
   }
   .char-form {
     display: flex;
@@ -206,6 +217,7 @@
   }
   .form-body {
     height: auto;
+    overflow-y: visible;
   }
   .form-toggle {
     padding: 0;
@@ -226,6 +238,9 @@
   /* ==================================login====================================== */
   .login-container {
     height: auto;
+  }
+  .left-side{
+    display: none;
   }
   /* ==============================side nav======================================= */
   .side_nav {
@@ -314,4 +329,6 @@
   .myChat_users {
     height: calc(100vh - 130px);
   }
+  
 }
+

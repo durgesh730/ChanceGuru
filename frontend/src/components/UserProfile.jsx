@@ -201,8 +201,8 @@ const UserProfile = () => {
         <div>
           <Topbar />
         </div>
-        <div className="container-fluid my-3  userPfp ">
-          <div className="row">
+        <div className="container-fluid py-3 userPfp ">
+          <div className="row h-100">
             <div className="left_pfp col-lg-3 col-md-3 col-12">
               <div className="shadow child_user mx-2 ">
 
@@ -260,7 +260,7 @@ const UserProfile = () => {
             </div>
             <div className="right_pfp col-lg-9 col-md-9 col-12">
               <div className="shadow child_user mx-2">
-                <div className="p-4 pb-0">
+                <div className="p-4" style={{height:"100%"}}>
                   <div className="p1 d-flex justify-content-between">
                     <div>
                       <h6>{userData?.basicInfo?.fullname}</h6>
@@ -361,8 +361,8 @@ const UserProfile = () => {
                       Role Preferences
                     </span>
                   </div>
-                  <hr />
-                  <div className="h-100">
+                  <hr className="mt-0"/>
+                  <div >
                     {active === "details" && <Details Data={userData?.basicInfo} />}
                     {active === "talent" && <Talents Data={userData?.talent} />}
                     {active === "bio" && <BioExperience
