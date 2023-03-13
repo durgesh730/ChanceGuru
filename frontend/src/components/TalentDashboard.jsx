@@ -143,8 +143,10 @@ const TalentDashboard = () => {
                 <div className="container-fluid">
                     <div className="row">
                         <ul className="grid-wrapper"
-                        style={{gridTemplateRows:"70px repeat(4, 170px"}}>
-                            <div className="talent-heading d-flex justify-content-between">
+                            style={{ gridTemplateRows: "70px repeat(4, 170px" }}>
+                            <div className="talent-heading d-flex justify-content-between"
+                                style={auth.clicked ? { gridArea: "1/1/2/4" } : { gridArea: "1/1/2/5" }}
+                            >
                                 <div className="">Suggestions</div>
                                 <div className="filter d-flex justify-content-between align-item-center">
                                     <button className="bg-light p-2 border-0">
@@ -163,7 +165,13 @@ const TalentDashboard = () => {
                                         <p>{user.username}</p>
                                         <div>
                                             <h6>Profile Strength :</h6>
-                                            <span>Awesome</span>
+                                            <span>
+                                                {(profileStrength.profile &&
+                                                    profileStrength.talent &&
+                                                    profileStrength.photo &&
+                                                    profileStrength.education &&
+                                                    profileStrength.roles) <= 80 ? <p className="text-danger">Poor</p> : "Awesome"}
+                                            </span>
                                         </div>
                                         <div className="line"></div>
                                     </div>

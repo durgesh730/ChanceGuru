@@ -93,7 +93,7 @@ input {
 .save-btn {
   background-color: var(--color_p2);
   border: var(--color_p2) 2px solid;
-  width: 273px;
+  /* width: 273px; */
   height: 50px;
   color: #fff;
   border-radius: 5px;
@@ -108,11 +108,11 @@ input {
 .cancel-btn {
   background-color: #aeaab4;
   border: #aeaab4 2px solid;
-  width: 152px;
+  /* width: 152px; */
   height: 50px;
   color: #fff;
   border-radius: 5px;
-  margin-right: 28px !important;
+  /* margin-right: 28px !important; */
 
 }
 
