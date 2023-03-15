@@ -56,7 +56,7 @@ function App() {
     const [socketConnected, setSocketConnected] = useState(false);
     const [typing, setTyping] = useState(false);
     
-    const [socket,setSocket] = useState(io(ENDPOINT))
+    const [socket,setSocket] = useState(io.connect(ENDPOINT.server))
 
     const getunreadonTopbar = useRef(0)
 

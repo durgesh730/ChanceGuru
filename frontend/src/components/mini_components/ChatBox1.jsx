@@ -27,6 +27,7 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
   const [loadingChat, setLoadingChat] = useState(false);
   const [reportModal, setReportModal] = useState(0);
   const [blockModal, setBlockModal] = useState(0);
+  const [deleteModal, setDeleteModal] = useState(0);
   const [loggedUser, setLoggedUser] = useState();
 
 
@@ -44,7 +45,7 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
     socket,socketConnected,
     typing,setTyping
   } = useContext(ChatContext);
-  // console.log(selectedChat, "selectedChat in chatBox");
+  
 
   const fetchMessages = async () => {
     if (!selectedChat) return;
@@ -191,6 +192,13 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
         setMessages((messages) => [...messages, newMessageRecieved]);
       }
     });
+
+    socket.off("deleteChat").on("deleteChat",(chat)=>{
+      // console.log("Deletechat emit",chat)
+      if(selectedChat._id == chat._id){
+        fetchMessages()
+      }
+    })
   });
 
   useEffect(() => {
@@ -200,7 +208,7 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
     socket.on("stop typing", (room) => setTyping(false));
     
   }, [])
-  
+
 
   useEffect(() => {
     var objDiv = document.querySelector(".msg_Div");
@@ -261,48 +269,56 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
     }
   }
 
-  const deleteChat = async (userId) => {
-    // try {
-    //   setLoadingChat(true);
-    //   const config = {
-    //     headers: {
-    //       "Content-type": "application/json",
-    //       Authorization: `Bearer ${user.token}`,
-    //     },
-    //   };
-    //   const { data } = await axios.delete(
-    //     `${server}/api/chat`,
-    //     { userId },
-    //     config
-    //   );
+  const handleDeleteChat = async () => {
+    try {
+      setLoadingChat(true);
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+      await axios.post(
+        `${server}/api/message/deleteChat`,
+        { selectedChat },
+        config
+      )
+      .then((response)=>{
+        console.log(response)
+        setDeleteModal(0)
+        fetchMessages()
+        setLoadingChat(false);
+        socket.emit("deleteChat",selectedChat,user)
+      })
+      .catch((err)=>{
+        console.log(err)
+      });
 
-    //   if (!chats.find((chat) => chat._id === data._id))
-    //     setChats([data, ...chats]);
-    //   //already existing check clause //newly created chat above the rest
 
-    //   setSelectedChat(data);
+      
 
-    //   console.log(data, "access new/existing chat response data");
+    } catch (error) {
+      console.log(error);
+    }
 
-    //   setLoadingChat(false);
-    // } catch (error) {
-    //   console.log(error.message);
-    // }
-
-    console.log("deleting", userId);
-    const newChat = chats.filter((chat) => {
-      return chat._id !== userId;
-    });
-    setChats(newChat);
+    
   };
 
   const reportChat = () => {
     setBlockModal(0)
+    setDeleteModal(0)
     setReportModal(1);
   };
   const blockChat = () => {
     setReportModal(0);
+    setDeleteModal(0);
     setBlockModal(1)
+  };
+
+  const deleteChat = () => {
+    setReportModal(0);
+    setBlockModal(0)
+    setDeleteModal(1);
   };
 
   // console.log("SelectedUser", selectedChat);
@@ -351,6 +367,9 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
           let selectChat = selectedChat
           selectChat.status = "reported"
           setSelectedChat(selectChat)
+
+          console.log("Emitting chatUpdated")
+          socket.emit("chatUpdated",selectedChat,user)
         })
         .catch((err) => {
           console.log(err)
@@ -382,6 +401,8 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
           let selectChat = selectedChat
           selectChat.status = "blocked"
           setSelectedChat(selectChat)
+          console.log("Emitting chatUpdated")
+          socket.emit("chatUpdated",selectedChat,user)
         })
         .catch((err) => {
           console.log(err)
@@ -409,9 +430,9 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
                 </span>
                 <div id="chatOption">
                   <ul>
-                    <li onClick={() => deleteChat(selectedChat._id)}>
+                    {user.type != "user" &&<li onClick={deleteChat}>
                       Delete Chat
-                    </li>
+                    </li>}
                     {selectedChat.status != "blocked" &&<li onClick={blockChat} >Block {getSender(user, selectedChat.users)}</li>}
                     {selectedChat.status != "reported" &&<li onClick={reportChat}>
                       Report {getSender(user, selectedChat.users)}
@@ -540,6 +561,27 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
               <div className="btns">
                 <button onClick={(e) => {e.preventDefault();setBlockModal(0)}}>Cancel</button>
                 <button onClick={(e)=> {e.preventDefault();handleBlockChat()}} >Block</button>
+              </div>
+            
+            
+          </div>
+        </div>
+      )}
+      {deleteModal == 1 && (
+        <div className="userSub_modal my-4 ">
+          <div className="modal_child d-flex justify-content-center px-3 shadow ">
+            <div className="d-flex justify-content-start align-items-center m-3">
+              <h1 className="purple_title m-0" style={{ fontSize: "30px" }}>
+                Delete Chat ?
+              </h1>
+            </div>
+            
+              <p>
+                Are you sure you want to delete all previous messages?
+              </p>
+              <div className="btns">
+                <button onClick={(e) => {e.preventDefault();setDeleteModal(0)}}>Cancel</button>
+                <button onClick={(e)=> {e.preventDefault();handleDeleteChat()}} >Delete</button>
               </div>
             
             
