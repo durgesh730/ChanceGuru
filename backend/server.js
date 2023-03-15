@@ -77,6 +77,33 @@ io.on("connection", (socket) => {
     console.log("User Joined the selectedChat Room: " + room);//room-selectedChatId
   });
 
+  socket.on("chatUpdated",(chat,userrec)=>{
+    // console.log("Serverjs 99",chat)
+    
+    chat.users.forEach((user)=>{
+      // console.log("Serverjs 82",user)
+      if (user._id == userrec._id) return;
+
+      else{
+        
+        socket.in(user._id).emit("chatUpdated",chat);
+      }
+    })
+  });
+  socket.on("deleteChat",(chat,userrec)=>{
+    // console.log("Serverjs 94",chat)
+    
+    chat.users.forEach((user)=>{
+      // console.log("Serverjs 82",user)
+      if (user._id == userrec._id) return;
+
+      else{
+        
+        socket.in(user._id).emit("deleteChat",chat);
+      }
+    })
+  });
+
   let prevChat = {} ;
   socket.on("updateYourchat",(chat,userrec)=>{
     // console.log("Serverjs 109",chat)
@@ -94,6 +121,8 @@ io.on("connection", (socket) => {
       }
     })
   });
+
+  
   
   socket.on("typing", (room) => socket.in(room).emit("typing",room));
   socket.on("stop typing", (room) => socket.in(room).emit("stop typing",room));

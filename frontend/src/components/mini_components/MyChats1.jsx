@@ -11,7 +11,7 @@ import UserListItem from "../userAvatar/UserListItem";
 import profile from "../../assets/icons/profile1.svg";
 import server from '../server';
 
-const MyChats1 = ({ fetchAgain }) => {
+const MyChats1 = ({ fetchAgain,setFetchAgain }) => {
   const [loggedUser, setLoggedUser] = useState();
 
   const { selectedChat, setSelectedChat, user, chats, setChats, chatUnReadCount,setChatUnReadCount, socket } =
@@ -189,7 +189,7 @@ const MyChats1 = ({ fetchAgain }) => {
           c.unReadBy = chat.users[0]._id == chat.latestMessage.sender._id?chat.users[1]:chat.users[0]
 
         }
-          if(selectedChat._id == chat._id){
+          if(selectedChat && selectedChat._id == chat._id){
             setSelectedChat(chat)
           }
         return c
@@ -197,6 +197,16 @@ const MyChats1 = ({ fetchAgain }) => {
       console.log(newchats[indexCheck])
       console.log("Mychats1 190")
       setChats(newchats)
+    })
+
+    socket.off("chatUpdated").on("chatUpdated",(chat)=>{
+      console.log("Emmit from server chat updated Mychats 203: \n",chat)
+      setFetchAgain(prev => !prev)
+      if(selectedChat._id == chat._id){
+        let selctChat = selectedChat
+        selctChat.status = chat.status
+        setSelectedChat(selctChat)
+      }
     })
   
     

@@ -168,7 +168,7 @@ const reportChat = asyncHandler(async (req,res)=>{
         status:"reported"
       }})
       .then((response)=>{
-        console.log("Chat status updated successfull \n",response)
+        // console.log("Chat status updated successfull \n",response)
       })
       .catch((error)=>{
         console.log("An error occurred while updating chat status \n",error)
@@ -191,7 +191,7 @@ const blockChat = asyncHandler(async (req,res)=>{
       status:"blocked"
     }})
     .then((response)=>{
-      console.log("Chat status updated successfull \n",response)
+      // console.log("Chat status updated successfull \n",response)
       res.json(response.data)
     })
     .catch((error)=>{
