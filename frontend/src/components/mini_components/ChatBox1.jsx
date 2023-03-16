@@ -26,6 +26,8 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
   
   const [loadingChat, setLoadingChat] = useState(false);
   const [reportModal, setReportModal] = useState(0);
+  const [blockModal, setBlockModal] = useState(0);
+  const [deleteModal, setDeleteModal] = useState(0);
   const [loggedUser, setLoggedUser] = useState();
 
 
@@ -43,7 +45,7 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
     socket,socketConnected,
     typing,setTyping
   } = useContext(ChatContext);
-  // console.log(selectedChat, "selectedChat in chatBox");
+  
 
   const fetchMessages = async () => {
     if (!selectedChat) return;
@@ -190,6 +192,13 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
         setMessages((messages) => [...messages, newMessageRecieved]);
       }
     });
+
+    socket.off("deleteChat").on("deleteChat",(chat)=>{
+      // console.log("Deletechat emit",chat)
+      if(selectedChat._id == chat._id){
+        fetchMessages()
+      }
+    })
   });
 
   useEffect(() => {
@@ -199,7 +208,7 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
     socket.on("stop typing", (room) => setTyping(false));
     
   }, [])
-  
+
 
   useEffect(() => {
     var objDiv = document.querySelector(".msg_Div");
@@ -260,43 +269,56 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
     }
   }
 
-  const deleteChat = async (userId) => {
-    // try {
-    //   setLoadingChat(true);
-    //   const config = {
-    //     headers: {
-    //       "Content-type": "application/json",
-    //       Authorization: `Bearer ${user.token}`,
-    //     },
-    //   };
-    //   const { data } = await axios.delete(
-    //     `${server}/api/chat`,
-    //     { userId },
-    //     config
-    //   );
+  const handleDeleteChat = async () => {
+    try {
+      setLoadingChat(true);
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+      await axios.post(
+        `${server}/api/message/deleteChat`,
+        { selectedChat },
+        config
+      )
+      .then((response)=>{
+        console.log(response)
+        setDeleteModal(0)
+        fetchMessages()
+        setLoadingChat(false);
+        socket.emit("deleteChat",selectedChat,user)
+      })
+      .catch((err)=>{
+        console.log(err)
+      });
 
-    //   if (!chats.find((chat) => chat._id === data._id))
-    //     setChats([data, ...chats]);
-    //   //already existing check clause //newly created chat above the rest
 
-    //   setSelectedChat(data);
+      
 
-    //   console.log(data, "access new/existing chat response data");
+    } catch (error) {
+      console.log(error);
+    }
 
-    //   setLoadingChat(false);
-    // } catch (error) {
-    //   console.log(error.message);
-    // }
-
-    console.log("deleting", userId);
-    const newChat = chats.filter((chat) => {
-      return chat._id !== userId;
-    });
-    setChats(newChat);
+    
   };
 
   const reportChat = () => {
+    setBlockModal(0)
+    setDeleteModal(0)
     setReportModal(1);
+  };
+  const blockChat = () => {
+    setReportModal(0);
+    setDeleteModal(0);
+    setBlockModal(1)
+  };
+
+  const deleteChat = () => {
+    setReportModal(0);
+    setBlockModal(0)
+    setDeleteModal(1);
   };
 
   // console.log("SelectedUser", selectedChat);
@@ -313,6 +335,84 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
     setLoggedUser(JSON.parse(localStorage.getItem("login")));
   }, [fetchAgain]);
 
+  const handleReportChat = async(e) =>{
+    e.preventDefault()
+    let txtArea = e.target.querySelector("#reportInputTxt")
+    let users = selectedChat.users
+    let anotherUser = users[0]._id == user._id ? users[1] : users[0]
+    
+
+    let reportData = {
+      reportee: user._id,
+      reported: anotherUser._id,
+      message: txtArea.value
+    }
+
+    console.log(reportData)
+    try {
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+      await axios.post(
+        `${server}/api/chat/reportChat`,
+        {reportData,selectedChat},
+        config
+      )
+        .then((response) => {
+          console.log(response)
+          setReportModal(0)
+          let selectChat = selectedChat
+          selectChat.status = "reported"
+          setSelectedChat(selectChat)
+
+          console.log("Emitting chatUpdated")
+          socket.emit("chatUpdated",selectedChat,user)
+        })
+        .catch((err) => {
+          console.log(err)
+        });
+    }
+    catch (error) {
+      console.log(error)
+
+    }
+
+  }
+
+  const handleBlockChat = async()=>{
+    try {
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+      await axios.post(
+        `${server}/api/chat/blockChat`,
+        {selectedChat},
+        config
+      )
+        .then((response) => {
+          console.log(response)
+          setBlockModal(0)
+          let selectChat = selectedChat
+          selectChat.status = "blocked"
+          setSelectedChat(selectChat)
+          console.log("Emitting chatUpdated")
+          socket.emit("chatUpdated",selectedChat,user)
+        })
+        .catch((err) => {
+          console.log(err)
+        });
+    }
+    catch (error) {
+      console.log(error)
+
+    }
+  }
   return (
     <>
       {selectedChat ? (
@@ -330,13 +430,13 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
                 </span>
                 <div id="chatOption">
                   <ul>
-                    <li onClick={() => deleteChat(selectedChat._id)}>
+                    {user.type != "user" &&<li onClick={deleteChat}>
                       Delete Chat
-                    </li>
-                    <li>Block {getSender(user, selectedChat.users)}</li>
-                    <li onClick={reportChat}>
+                    </li>}
+                    {selectedChat.status != "blocked" &&<li onClick={blockChat} >Block {getSender(user, selectedChat.users)}</li>}
+                    {selectedChat.status != "reported" &&<li onClick={reportChat}>
                       Report {getSender(user, selectedChat.users)}
-                    </li>
+                    </li>}
                   </ul>
                 </div>
               </div>
@@ -374,36 +474,43 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
             </div>
                */}
 
-            <div
-              className="cb_msgSend"
-              onKeyDown={sendMessageByEnter}
-              id="first-name"
-              mt={3}
-            >
-              <input
-                type="text"
-                placeholder="Enter a message.."
-                value={newMessage}
-                onChange={typingHandler}
-              />
+            
+              <div
+                className="cb_msgSend"
+                onKeyDown={sendMessageByEnter}
+                id="first-name"
+                mt={3}
+              >
+                {(selectedChat.status == "")? 
+                <><input
+                  type="text"
+                  placeholder="Enter a message.."
+                  value={newMessage}
+                  onChange={typingHandler}
+                />
 
-              <MdOutlineEmojiEmotions
-                className="emoji-icon mx-2"
-                src={emojiIcon}
-                style={showPicker ? { color: "#8443e5" } : { color: "#9f9ec1" }}
-                onClick={() => setShowPicker((val) => !val)}
-              />
-              <div className="picker-container">
-                {showPicker && (
-                  <Picker
-                    pickerStyle={{ width: "100%" }}
-                    onEmojiClick={onEmojiClick}
-                  />
-                )}
+                <MdOutlineEmojiEmotions
+                  className="emoji-icon mx-2"
+                  src={emojiIcon}
+                  style={showPicker ? { color: "#8443e5" } : { color: "#9f9ec1" }}
+                  onClick={() => setShowPicker((val) => !val)}
+                />
+                <div className="picker-container">
+                  {showPicker && (
+                    <Picker
+                      pickerStyle={{ width: "100%" }}
+                      onEmojiClick={onEmojiClick}
+                    />
+                  )}
+                </div>
+
+                <button onClick={sendMessage}>Send</button>
+                </>
+                :
+                <p>This chat has been {selectedChat.status} </p>
+                }
               </div>
-
-              <button onClick={sendMessage}>Send</button>
-            </div>
+            
           </div>
         </div>
       ) : (
@@ -412,21 +519,72 @@ const ChatBox1 = ({ fetchAgain, setFetchAgain }) => {
 
       {reportModal == 1 && (
         <div className="userSub_modal my-4 ">
-          <div className="modal_child d-flex justify-content-evenly px-3 shadow ">
+          <div className="modal_child d-flex justify-content-center px-3 shadow ">
             <div className="d-flex justify-content-start align-items-center m-3">
               <h1 className="purple_title m-0" style={{ fontSize: "30px" }}>
                 Report User
               </h1>
             </div>
+            <form onSubmit={handleReportChat}>
+              <textarea 
+                name="inputField" 
+                placeholder="Why do you want to report this user"
+                id="reportInputTxt" 
+                cols="30" 
+                rows="2"
+                className="form-control text-area"
+                required
+                >
 
-            <p>
-              Are you sure,you want to Report this user? Most recent messages
-              will be forwarded to Company{" "}
-            </p>
-            <div className="btns">
-              <button onClick={() => setReportModal(0)}>Cancel</button>
-              <button>Logout</button>
+              </textarea>
+              <div className="btns">
+                <button onClick={(e) => {e.preventDefault();setReportModal(0)}}>Cancel</button>
+                <button type="submit" >Report</button>
+              </div>
+            </form>
+            
+          </div>
+        </div>
+      )}
+      {blockModal == 1 && (
+        <div className="userSub_modal my-4 ">
+          <div className="modal_child d-flex justify-content-center px-3 shadow ">
+            <div className="d-flex justify-content-start align-items-center m-3">
+              <h1 className="purple_title m-0" style={{ fontSize: "30px" }}>
+                Block User
+              </h1>
             </div>
+            
+              <p>
+                Are you sure you want to block {getSender(user, selectedChat.users)}
+              </p>
+              <div className="btns">
+                <button onClick={(e) => {e.preventDefault();setBlockModal(0)}}>Cancel</button>
+                <button onClick={(e)=> {e.preventDefault();handleBlockChat()}} >Block</button>
+              </div>
+            
+            
+          </div>
+        </div>
+      )}
+      {deleteModal == 1 && (
+        <div className="userSub_modal my-4 ">
+          <div className="modal_child d-flex justify-content-center px-3 shadow ">
+            <div className="d-flex justify-content-start align-items-center m-3">
+              <h1 className="purple_title m-0" style={{ fontSize: "30px" }}>
+                Delete Chat ?
+              </h1>
+            </div>
+            
+              <p>
+                Are you sure you want to delete all previous messages?
+              </p>
+              <div className="btns">
+                <button onClick={(e) => {e.preventDefault();setDeleteModal(0)}}>Cancel</button>
+                <button onClick={(e)=> {e.preventDefault();handleDeleteChat()}} >Delete</button>
+              </div>
+            
+            
           </div>
         </div>
       )}

@@ -190,7 +190,7 @@ const Modal = ({ setModel, info, setProfile, UserProfileDeatils, roles }) => {
         </div>
         <div className="modal-footer">
           <button
-            className="cancel-btn"
+            className="cancel-btn me-4"
             onClick={() => {
               setModel(false);
             }}

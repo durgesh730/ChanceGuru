@@ -402,6 +402,7 @@ a:hover {
 /* Roles creation */
 .flex-container {
   display: flex;
+  height: calc(100vh - 100px);
 }
 .roleDetails {
   width: 413px;
@@ -420,17 +421,27 @@ a:hover {
   padding: 10px;
 }
 .roleUpdate {
-  width: 990px;
-  height: 100%;
+  width: 100%;
+  padding: 25px 30px;
+
 }
 .roleChild {
-  width: 100%;
-  min-height: calc(100% - 50px);
-  margin: 25px 30px;
-  padding: 23.5px 31px 23px 29px;
+  /* min-height: calc(100% - 50px); */
+  height: calc(100vh - 100px);
+overflow-y: scroll;
+  height: 100%;
+  padding: 0px 31px 20px 29px;
   border-radius: 6px;
   box-shadow: 0 0 6px 0 rgba(158, 158, 158, 0.5);
   background-color: #fff;
+  position: relative;
+}
+.fixedDiv{
+  padding-top: 20px !important;
+  position: sticky !important;
+  top: 0 !important;
+  background-color: #fff;
+  z-index: 999;
 }
 
 .announcesvg {
@@ -613,16 +624,17 @@ a:hover {
 .charList {
   padding: 15px;
   display: flex;
+  align-items: center;
 }
 .charList div {
   margin-right: 20px;
   width: 123px;
-  height: 31px;
   display: grid;
   place-items: center;
   font-size: 14px;
   border-radius: 6px;
   cursor: pointer;
+  padding: 10px;
 }
 .hihlightedCharList {
   background-color: #8443e5;
@@ -831,7 +843,7 @@ div.statusContainer > div span {
   content: "";
   position: absolute;
   left: 0;
-  top: 27px;
+  top: 24px;
   height: 4px;
   width: 100%;
   background-color: #6c54a6;
@@ -1006,21 +1018,24 @@ div.css-18dcxwc {
   /* margin: 3px; */
 }
 .userPfp {
-  /* height: calc(100vh - 120px); */
+  height: calc(100vh - 80px);
   z-index: 1;
+}
+.left_pfp{
+  height: 100%;
+
 }
 .right_pfp {
   /* margin-left: 10px; */
   /* height: 100vh; */
-  /* height: 100%; */
+  height: 100%;
 
-  /* height: calc(100vh - 80px); */
 }
 .child_user {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 100%;
+  height: 100%;
 }
 .right_pfp * {
   margin: 0;
@@ -1303,8 +1318,8 @@ div.css-18dcxwc {
   width: 100%;
 }
 .experience_container .ec_child div {
-  /* min-width: 48.7%;
-  width: 48.7%; */
+  min-width: 48.7% !important;
+  width: 48.7% !important;
   min-width: 98%;
   width: 98%;
   border-radius: 6px;
@@ -1365,6 +1380,9 @@ div.css-18dcxwc {
   height: 0px;
   overflow-y: hidden;
   transition: all 0.5s ease-in;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 .notif-options * {
   margin: 0;
@@ -1512,7 +1530,12 @@ div.css-18dcxwc {
 .role_main .long_Cards div div:last-child() {
   border: 0;
 }
-
+.role_main .long_Cards div div:nth-last-child(2) h3{
+  color: #f5a623;
+}
+.role_main .long_Cards div div:nth-last-child(1) h3{
+  color: #ff5a5a;
+}
 .role_main .long_Cards div span {
   display: flex;
   align-items: center;
@@ -1530,6 +1553,7 @@ div.css-18dcxwc {
 
 .role_main .long_Cards div span h3 {
   color: #8443e5;
+  font-weight: 600;
 }
 
 .role_main .long_Cards .--2 {
@@ -1547,14 +1571,20 @@ div.css-18dcxwc {
   box-shadow: 0 0 6px 0 rgba(158, 158, 158, 0.5);
 }
 .role_card .rCard_detail {
-  width: 50%;
+  width: 100%;
+  display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+}
+.rCard_child{
+  font-weight: bold;
+
 }
 
 .role_card .rCard_detail div {
-  width: 100%;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: start;
 }
 
 .hurrayDiv {
@@ -1567,6 +1597,7 @@ div.css-18dcxwc {
 .rCard_child p {
   font-size: 16px;
   color: #8443e5;
+
 }
 .rCard_child button {
   width: 379px;
@@ -1579,12 +1610,16 @@ div.css-18dcxwc {
   outline: none !important;
 }
 .rCard_detail p {
-  font-size: 14px;
-  color: #444444;
+   font-size: 14px;
+font-weight: 600;
+  color: #444;
+  width: 100px;
 }
 .rCard_detail span {
   font-size: 16px;
   color: #8443e5;
+  width: 100px;
+
 }
 .rCard_child h2 {
   font-size: 16px;
@@ -1976,9 +2011,9 @@ aside.emoji-picker-react {
 .userImage_main {
   position: relative;
 }
-.userImage_main img {
+.userImage_main .display {
   width: 100%;
-  height: 400px;
+  height: 300px;
 }
 
 .imageUser {
@@ -1999,4 +2034,7 @@ aside.emoji-picker-react {
 .side_chat {
   display: none !important;
   transition: all 0.3s;
+}
+.filter :last-child{
+  outline: none;
 }

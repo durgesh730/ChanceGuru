@@ -45,7 +45,7 @@ const ChatPage1 = () => {
         <div className="row">
           <div className="side_toggle_chat  col-lg-3">
 
-            {user && <MyChats1 fetchAgain={fetchAgain} />}
+            {user && <MyChats1 fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />}
           </div>
 
           {user && (

@@ -1,6 +1,7 @@
 const { response } = require("express");
 const asyncHandler = require("express-async-handler");
 const Chat = require("../db/chatModel");
+const ChatReport = require("../db/reportChat");
 const User = require("../db/User");
 
 //@description     Create or fetch One to One Chat
@@ -154,4 +155,53 @@ const getUnReadCount = asyncHandler(async (req,res)=>{
   }
 })
 
-module.exports = { accessChat, fetchChats,updateUnRead, getUnReadCount,incrementChat};
+
+const reportChat = asyncHandler(async (req,res)=>{
+  let {reportData,selectedChat} = req.body 
+  console.log("chat controller 161",selectedChat)
+  try {
+    console.log("chat controller 163",reportData)
+    ChatReport.create(reportData)
+    .then((response)=>{
+
+      Chat.findByIdAndUpdate(selectedChat._id,{$set:{
+        status:"reported"
+      }})
+      .then((response)=>{
+        // console.log("Chat status updated successfull \n",response)
+      })
+      .catch((error)=>{
+        console.log("An error occurred while updating chat status \n",error)
+      })
+      res.json(response.data);
+    })
+    .catch((err)=>{
+      res.status(404).json(err);
+    })
+  } 
+  catch (error) {
+    console.log("chat controller 166",error)
+  }
+})
+
+const blockChat = asyncHandler(async (req,res)=>{
+  let {selectedChat} = req.body;
+  try {
+    Chat.findByIdAndUpdate(selectedChat._id,{$set:{
+      status:"blocked"
+    }})
+    .then((response)=>{
+      // console.log("Chat status updated successfull \n",response)
+      res.json(response.data)
+    })
+    .catch((error)=>{
+      console.log("An error occurred while updating chat status \n",error)
+      res.status(404).json(error)
+    })
+  } 
+  catch (error) {
+    
+  }
+})
+
+module.exports = { accessChat, fetchChats,updateUnRead, getUnReadCount,incrementChat,reportChat, blockChat};

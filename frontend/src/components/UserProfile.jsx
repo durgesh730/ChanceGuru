@@ -30,6 +30,7 @@ const UserProfile = () => {
   const [Inter, setInter] = useState({ date: "", time: "", interview: "", location: "" });
   const [ischange, setischange] = useState(location.state.index);
   const [datalocation, setDatalocation] = useState();
+  const [media, setMedia] = useState("img")
 
   const setall = () => {
     setSelected(false);
@@ -171,6 +172,24 @@ const UserProfile = () => {
     }
   }
 
+  var [firstV, setfirstV] = useState(0)
+
+  const handleNextV = () => {
+    if (firstV < userData?.videos.length - 1) {
+      firstV = firstV + 1
+      setfirstV(firstV);
+    }
+  }
+
+  const handlePreV = () => {
+    if (firstV >= 1) {
+      firstV = firstV - 1;
+      setfirstV(firstV);
+    }
+  }
+
+  console.log("d", d);
+  
   const handleStatus = () => {
     setall();
     if (card[index]?.status === "selected") {
@@ -194,34 +213,71 @@ const UserProfile = () => {
     GetDatetime();
   }, [])
 
+  const displayVideo = (index) => {
+    setMedia("vid")
+    setfirstV(index)
+  }
+  const displayImage = (index) => {
+    setMedia("img")
+    setfirst(index)
+  }
+  console.log("images", userData.photos)
 
+  console.log("videos", userData.videos)
+
+  console.log(firstV)
   return (
     <>
       <div className={modal ? `dim` : ""}>
         <div>
           <Topbar />
         </div>
-        <div className="container-fluid my-3  userPfp ">
-          <div className="row">
+        <div className="container-fluid py-3 userPfp ">
+          <div className="row h-100">
             <div className="left_pfp col-lg-3 col-md-3 col-12">
               <div className="shadow child_user mx-2 ">
 
                 <figure className=" userImage_main">
-
-                  {
+                  {(media === "img") ?
+                  
                     userData?.photos.map((item, index) => {
                       return (
                         <>
-                          {(index === first) ? <img src={item.link} alt="" /> : ("")}
+                          {(index === first) ? <img className="display" src={item.link} alt="" /> : ("")}
                         </>
                       )
                     })
+                  
+                  :
+                  
+                    userData?.videos.map((item, index) => {
+                      return (
+                        <>
+                          {(index === firstV) ?
+                            <iframe className="display" src={item.link.replace("/watch?v=", "/embed/")} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                            : ("")}
+                        </>
+                      )
+                    })
+                  
                   }
+
+
+                  {(media === "img") ?
+                  
                   <div className="imageUser">
                     <BsChevronLeft onClick={handlePre} />
 
                     <BsChevronRight onClick={handleNext} />
                   </div>
+                  :
+
+                  <div className="imageUser">
+                    <BsChevronLeft onClick={handlePreV} />
+
+                    <BsChevronRight onClick={handleNextV} />
+                  </div>
+                  }
 
                 </figure>
 
@@ -230,7 +286,8 @@ const UserProfile = () => {
                     {
                       userData?.photos?.map((img, i) => {
                         return (
-                          (i > 0) ? <img src={img.link} className="m-1" alt="" /> : ("")
+                          (i >= 0) ? <img src={img.link} className="m-1" alt=""
+                          onClick={() => displayImage(i)} /> : ("")
                         )
                       })
                     }
@@ -238,29 +295,28 @@ const UserProfile = () => {
 
                   </figure>
 
-                  <figure className="d-flex" >
+                  <figure className="d-flex align-items-center" >
                     {
                       userData?.videos?.map((img, i) => {
                         // console.log(img.link)
                         return (
                           <>
-                            <div className="mx-2">
-                              <video target="_blank" width="35" height='40' controls>
-                                <source src={img.link} type="video/mp4" />
-                              </video>
+                            <div className="mx-2" >
+                              <img src={`https://img.youtube.com/vi/${img.link.split("?v=")[1]}/hqdefault.jpg`} onClick={() => displayVideo(i)} />
                             </div>
                           </>
                         )
                       })
                     }
-                    <span> + 5</span>
+                    <span> + {userData?.videos.length}</span>
+
                   </figure>
                 </div>
               </div>
             </div>
             <div className="right_pfp col-lg-9 col-md-9 col-12">
               <div className="shadow child_user mx-2">
-                <div className="p-4 pb-0">
+                <div className="p-4" style={{ height: "100%" }}>
                   <div className="p1 d-flex justify-content-between">
                     <div>
                       <h6>{userData?.basicInfo?.fullname}</h6>
@@ -367,8 +423,8 @@ const UserProfile = () => {
                       Role Preferences
                     </span>
                   </div>
-                  <hr />
-                  <div className="h-100">
+                  <hr className="mt-0" />
+                  <div >
                     {active === "details" && <Details Data={userData?.basicInfo} />}
                     {active === "talent" && <Talents Data={userData?.talent} />}
                     {active === "bio" && <BioExperience

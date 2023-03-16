@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler");
 const Message = require("../db/messageModel");
 const User = require("../db/User");
 const Chat = require("../db/chatModel");
+const { response } = require("express");
 
 //@description     Get all Messages
 //@route           GET /api/Message/:chatId
@@ -12,7 +13,7 @@ const allMessages = asyncHandler(async (req, res) => {
   try {
     
     //:chatId in routes //request params
-    const messages = await Message.find({ chat: req.params.chatId })
+    const messages = await Message.find({ chat: req.params.chatId,isDeleted:false })
       .populate("sender", "name email")
       .populate("chat");
 
@@ -68,4 +69,27 @@ const sendMessage = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { allMessages, sendMessage };
+const deleteMessages = asyncHandler(async (req, res) => {
+  let {selectedChat} = req.body
+  console.log(selectedChat._id)
+  try {
+    
+    await Message.updateMany({chat:selectedChat._id},{
+      $set:{
+        isDeleted:true
+      }
+    },{multi:true})
+    .then((response)=>{
+
+      console.log(response.nModified)
+      res.json(response.nModified)
+    })
+    
+    
+  } catch (error) {
+    res.status(400);
+    throw new Error(error.message);
+  }
+});
+
+module.exports = { allMessages, sendMessage, deleteMessages };

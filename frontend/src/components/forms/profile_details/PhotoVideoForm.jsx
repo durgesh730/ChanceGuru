@@ -232,8 +232,9 @@ const PhotoVideoForm = ({ display, toggleForm, userData }) => {
                             </div>
                         </div>
                         <form id="photo-form" onSubmit={handlePhotoSubmit}>
+                        <input type="file" multiple="true" accept="image/*" id="finput" onChange={handleFileInputChange} />
                             <div className="d-flex">
-                                <input type="file" multiple="true" accept="image/*" id="finput" onChange={handleFileInputChange} />
+                                
 
                                 <input type="button" className="full-width-btn" value="Upload Photo" onClick={handleFileUpload} />
 
@@ -293,7 +294,7 @@ const PhotoVideoForm = ({ display, toggleForm, userData }) => {
                                 )
                             })}
 
-                            <div className="row">
+                            <div className="row justify-content-between">
                                 <input
                                     type="submit"
                                     className="col-4 cancel-btn btn btn-lg btn-block my-2"
