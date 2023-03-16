@@ -6,33 +6,45 @@ const JobApplication = require('../db/JobApplication')
 const User = require('../db/User');
 
 
+router.put("/Deleteproject/:id", (req, res) => {
+    const { list } = req.body;
+    Project.findOneAndUpdate({ _id: req.params.id }, { $set: { roles: list } }, { new: true })
+        .then(job => {
+            res.json(job);
+            console.log(job)
+        })
+        .catch(err => {
+            res.status(400).json(err);
+        })
+})
+
 // API for search Project by name project name
 router.get("/SearchProjectForAdmin", async (req, res) => {
     const keyword = req.query.name
-      ? { "basicInfo.name": { $regex: req.query.name, $options: "i" } } //case insensitive
-      : {};
+        ? { "basicInfo.name": { $regex: req.query.name, $options: "i" } } //case insensitive
+        : {};
     const users = await Project.find(keyword)
     res.send(users);
-  });
+});
 
 router.put("/Datetime/", async (req, res) => {
     // console.log(req.body)
     try {
-      const data = req.body ;
-      const userData = await Project.findOneAndUpdate({ _id: data._id},{ $set: {DateTime : data.list} }, { new: true } );
-      res.json({ userData });
-      
+        const data = req.body;
+        const userData = await Project.findOneAndUpdate({ _id: data._id }, { $set: { DateTime: data.list } }, { new: true });
+        res.json({ userData });
+
     } catch (error) {
-      console.error(error.message);
-      res.status(500).send("Some error occured");
+        console.error(error.message);
+        res.status(500).send("Some error occured");
     }
-  });
+});
 
 //Get project form project id
 
-router.get("/oneproject/:id" , (req , res) => {
-    Project.findOne({_id : req.params.id})
-        .then(job =>{
+router.get("/oneproject/:id", (req, res) => {
+    Project.findOne({ _id: req.params.id })
+        .then(job => {
             res.json(job);
         })
         .catch(err => {
@@ -75,7 +87,7 @@ router.put("/Shortlist/:_id/:inc", (req, res) => {
             JobApplication.findOneAndUpdate({ _id: req.params._id }, {
                 $set: {
                     status: "shortlisted",
-                    value: (req.params.inc == 1 || req.params.inc == 3) ? job.value + 100 : job.value + 1000 ,
+                    value: (req.params.inc == 1 || req.params.inc == 3) ? job.value + 100 : job.value + 1000,
                     updatedAt: new Date(),
                 },
             }, { returnOriginal: false })
@@ -97,7 +109,7 @@ router.put("/Schedule/:_id/:inc", (req, res) => {
             JobApplication.findOneAndUpdate({ _id: req.params._id }, {
                 $set: {
                     status: "scheduled",
-                    value: job.value == 5 ? job.value + 1000 : job.value + 500 ,
+                    value: job.value == 5 ? job.value + 1000 : job.value + 500,
                     updatedAt: new Date(),
                 },
             }, { returnOriginal: false })
@@ -122,7 +134,7 @@ router.put("/Reject/:_id", (req, res) => {
             JobApplication.findOneAndUpdate({ _id: req.params._id }, {
                 $set: {
                     status: "rejected",
-                    value: (job.value - 1) ,
+                    value: (job.value - 1),
                     updatedAt: new Date(),
                 },
             }, { returnOriginal: false })
@@ -171,9 +183,9 @@ router.get("/allProjects", jwtAuth, (req, res) => {
         })
 })
 
-router.get("/getOnlySeekersProject/:seekerId",(req,res)=>{
+router.get("/getOnlySeekersProject/:seekerId", (req, res) => {
     let seekerId = req.params.seekerId;
-    Project.find({seekerId:seekerId})
+    Project.find({ seekerId: seekerId })
         .then((response) => {
             res.json(response);
         })
@@ -255,7 +267,7 @@ router.post("/", jwtAuth, (req, res) => {
         seekerId: user._id,
         basicInfo: data.basicInfo,
         roles: data.roles,
-        createAt : new Date(),
+        createAt: new Date(),
     })
     project
         .save()
@@ -272,16 +284,15 @@ router.post("/", jwtAuth, (req, res) => {
 router.put("/changeRoles", jwtAuth, (req, res) => {
     const user = req.user;
     const data = req.body;
-    // console.log(data.project.roles,data.project._id)
+    console.log(data.project.roles,data.project._id)
     Project.findOneAndUpdate({ _id: data.project._id }, {
         $set: {
             roles: data.project.roles,
-            updateAt : new Date()
+            updateAt: new Date()
         },
     })
         .then((response) => {
             res.json(response);
-
         })
         .catch((err) => {
             // console.log(err)
@@ -292,18 +303,18 @@ router.put("/changeRoles", jwtAuth, (req, res) => {
 
 
 // To get just one character using character Id
-router.get("/getCharacter/:roleId",(req,res)=>{
+router.get("/getCharacter/:roleId", (req, res) => {
     let roleId = req.params.roleId;
     Project.find(
-        { roles : { $elemMatch : { _id:roleId } } },
-        { basicInfo:1,roles : { $elemMatch : { _id:roleId } } }
-        )
-    .then((response)=>{
-        res.json(response);
-    })
-    .catch((err)=>{
-        res.status(400).json(err);
-    })
+        { roles: { $elemMatch: { _id: roleId } } },
+        { basicInfo: 1, roles: { $elemMatch: { _id: roleId } } }
+    )
+        .then((response) => {
+            res.json(response);
+        })
+        .catch((err) => {
+            res.status(400).json(err);
+        })
 })
 
 

@@ -6,11 +6,12 @@ import AWS from 'aws-sdk';
 import { Buffer } from 'buffer';
 import server from "../../server";
 
-const PhotoVideoForm = ({ display, toggleForm }) => {
+const PhotoVideoForm = ({ display, toggleForm, userData }) => {
     let photoForm = document.getElementById("photo-form");
     let vidForm = document.getElementById("vid-form");
     let photoToggle = document.getElementById("photo-toggle");
     let vidToggle = document.getElementById("vid-toggle");
+    const user = JSON.parse(localStorage.getItem("login"));
 
     const toggle = (cur_form) => {
         if (cur_form == "photo") {
@@ -142,7 +143,16 @@ const PhotoVideoForm = ({ display, toggleForm }) => {
             });
     }
     useEffect(() => {
-        handleShow();
+        if(user.type === "user"){
+            handleShow();
+          }else{
+            if (userData.photos.length !== 0) {
+                setphotoURL(userData.photos);
+            }
+            if (userData.videos.length !== 0) {
+                setvideoURL(userData.videos);
+            }
+          }
     }, [])
 
     //s3 bucket image upload

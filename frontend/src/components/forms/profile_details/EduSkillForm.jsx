@@ -3,13 +3,14 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import server from "../../server";
 
-const EduSkillForm = ({ display, toggleForm }) => {
+const EduSkillForm = ({ display, toggleForm, userData }) => {
   let form1 = document.getElementById("form1");
   let form2 = document.getElementById("form2");
   let toggle1 = document.getElementById("toggle1");
   let toggle2 = document.getElementById("toggle2");
   const [Skill, setSkill] = useState([]);
-  console.log(Skill)
+  const user = JSON.parse(localStorage.getItem("login"));
+
   const toggle = (cur_form) => {
     if (cur_form == "tog1") {
       form1.style.display = "block";
@@ -39,7 +40,7 @@ const EduSkillForm = ({ display, toggleForm }) => {
   });
 
   const [skills, setskills] = useState([]);
-
+  console.log(skills, "skills")
 
   const handleSkillChange = (e, index) => {
     let data = [...skills];
@@ -81,33 +82,31 @@ const EduSkillForm = ({ display, toggleForm }) => {
 
   const handleSkillsSubmit = (e) => {
     e.preventDefault();
-    let bool = false ;
+    let bool = false;
     skills.forEach((item) => {
-      if(item.skillId == ""){
-        bool = true ;
+      if (item.skillId == "") {
+        bool = true;
       }
-    }) 
-    if(bool){
+    })
+    if (bool) {
       alert("Please select skill first.");
-    }else{
-    axios
-      .put(
-        `${server}/profile/skills`,
-        { skills },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      )
-      .then((res) => {
-        alert("Skills Details saved!");
-        console.log("data added");
-        console.log(res);
-        if (res) {
-          toggleForm("role");
-        }
-      });
+    } else {
+      axios
+        .put(
+          `${server}/profile/skills`,
+          { skills },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        )
+        .then((res) => {
+          alert("Skills Details saved!");
+          if (res) {
+            toggleForm("role");
+          }
+        });
     }
   };
 
@@ -120,12 +119,12 @@ const EduSkillForm = ({ display, toggleForm }) => {
       })
       .then((response) => {
         if (response.data !== null) {
-          console.log(response.data);
           if (response.data.education.length !== 0) {
             setEduSkillDetails(response.data.education[0]);
           }
           if (response.data.skills.length !== 0) {
             setskills(response.data.skills);
+            // console.log(response.data.skills, "response")
           }
         }
       })
@@ -142,8 +141,36 @@ const EduSkillForm = ({ display, toggleForm }) => {
       })
       .catch((err) => { console.log(err) });
   }
+
+  // ============ fetching  data =============
+
+  const GetSkillAtadminSide = (data) => {
+    data.map(async (item) => {
+      const res = await fetch(`${server}/admin/GetSkillAtadminSide/${item.skillId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      const data = await res.json();
+      console.log(data, "respnod")
+      if (data !== null) {
+        setskills(prev => [...prev, { skill: data[0]?.skill }]);
+      }
+    })
+  }
+
   useEffect(() => {
-    handleShow();
+    if (user.type === "user") {
+      handleShow();
+    } else {
+      if (userData.education.length !== 0) {
+        setEduSkillDetails(userData.education[0]);
+      }
+      if (userData.skills.length !== 0) {
+        GetSkillAtadminSide(userData.skills);
+      }
+    }
     getSkills();
   }, []);
 
@@ -254,7 +281,7 @@ const EduSkillForm = ({ display, toggleForm }) => {
               <button className="full-width-btn" onClick={addFields}>
                 Add Skills
               </button>
-              {skills.map((item, index) => {
+              {skills?.map((item, index) => {
                 return (
                   <>
                     <div key={index} className="d-flex align-items-center">

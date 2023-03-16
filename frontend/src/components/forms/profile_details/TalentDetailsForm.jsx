@@ -7,13 +7,14 @@ import form_group_1 from "../../../assets/images/form-group-1.png";
 import form_group_2 from "../../../assets/images/form-group-2.png";
 import server from "../../server";
 
-const TalentDetailsForm = ({ display, toggle, getFunction }) => {
+const TalentDetailsForm = ({ display, toggle, getFunction, userData }) => {
   let show = {};
   if (display) {
     show = { display: "block" };
   } else {
     show = { display: "none" };
   }
+  const user = JSON.parse(localStorage.getItem("login"));
   const [talentDetails, setTalentDetails] = useState({
     type: "",
     height: "",
@@ -102,7 +103,11 @@ const TalentDetailsForm = ({ display, toggle, getFunction }) => {
   };
 
   useEffect(() => {
-    handleShow();
+    if(user.type === "user"){
+      handleShow();
+    }else{
+      setTalentDetails(userData.talent);
+    }
   }, []);
 
   return (

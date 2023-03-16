@@ -4,7 +4,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import server from "../../server";
 
-const RolePref = ({ display }) => {
+const RolePref = ({ display, userData }) => {
+  const user = JSON.parse(localStorage.getItem("login"));
   const navigate = useNavigate();
   let show = {};
   if (display) {
@@ -15,24 +16,23 @@ const RolePref = ({ display }) => {
 
   const [formFields, setformFields] = useState([]);
   const [Roles, setRoles] = useState([]);
-  console.log(formFields)
   const handleFormChange = (e, index) => {
     let data = [...formFields];
-    data[index].roleId = e.target.value ;
+    data[index].roleId = e.target.value;
     setformFields(data);
   };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    let bool = false ;
+    let bool = false;
     formFields.forEach((item) => {
-      if(item.roleId == ""){
-        bool = true ;
+      if (item.roleId == "") {
+        bool = true;
       }
-    }) 
-    if(bool){
+    })
+    if (bool) {
       alert("Please select role first.");
-    }else{
+    } else {
       axios
         .put(
           `${server}/profile/rolePref`,
@@ -54,7 +54,7 @@ const RolePref = ({ display }) => {
 
   const addFields = (e) => {
     e.preventDefault();
-    let obj = { roleId : "" };
+    let obj = { roleId: "" };
     setformFields([...formFields, obj]);
   };
 
@@ -73,7 +73,6 @@ const RolePref = ({ display }) => {
       })
       .then((response) => {
         if (response.data !== null) {
-          console.log(response.data);
           if (response.data.rolePref !== 0) {
             setformFields(response.data.rolePref);
           }
@@ -90,11 +89,36 @@ const RolePref = ({ display }) => {
       .then((res) => {
         setRoles(res.data);
       })
-      .catch((err) => {console.log(err)});
+      .catch((err) => { console.log(err) });
   }
+
+
+  // ============ fetching roles data =============
+
+  const getRolesAtadminSide = (data) => {
+    data.map(async (item) => {
+      const res = await fetch(`${server}/admin/getRolesAtadminSide/${item.roleId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      const data = await res.json();
+      if (data !== null) {
+        setRoles(prev => [...prev, { role: data[0]?.role }]);
+      }
+    })
+  }
+
   useEffect(() => {
-    handleShow();
-    getRoles();
+    if (user.type === "user") {
+      handleShow();
+      getRoles();
+    }
+    else {
+      getRolesAtadminSide(userData.rolePref)
+      setformFields(userData.rolePref);
+    }
   }, []);
 
   return (
@@ -111,14 +135,14 @@ const RolePref = ({ display }) => {
               <button className="full-width-btn" onClick={addFields}>
                 Add Roles
               </button>
-              {formFields?.map((form, index) => { 
+              {formFields?.map((form, index) => {
                 return (
                   <div key={index} className="d-flex align-items-center">
-                    <select required={true} className="form-control" value={form.roleId} onChange={(e)=>{handleFormChange(e, index)}} >
+                    <select required={true} className="form-control" value={form.roleId} onChange={(e) => { handleFormChange(e, index) }} >
                       <option value="" disabled >Select Role</option>
-                      {Roles.map((item , index) => {
+                      {Roles?.map((item, index) => {
                         return <option key={index} value={item._id} >{item.role}</option>
-                      })}                        
+                      })}
                     </select>
                     <i
                       className="fa-solid fa-trash-can mx-2 mb-2"

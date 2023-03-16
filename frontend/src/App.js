@@ -38,7 +38,6 @@ import ChatPage1 from "./components/ChatPage1";
 import "./components/responsive.css"
 import Myapplication from "./components/Myapplication";
 
-
 import io from "socket.io-client";
 const ENDPOINT = {server};
 
