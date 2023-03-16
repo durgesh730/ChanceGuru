@@ -1,15 +1,14 @@
-import React from "react";
-
-
+import React, { useState } from "react";
 import Topbar from "./mini_components/Topbar";
 import Sidebar from "./mini_components/Sidebar";
+import { useLocation } from "react-router-dom";
 
 const ProfileDetails = () => {
-
+    const location = useLocation()
     return (
         <div>
             <Topbar />
-            <Sidebar />
+            <Sidebar userData={location.state?.user} />
         </div>
     );
 };

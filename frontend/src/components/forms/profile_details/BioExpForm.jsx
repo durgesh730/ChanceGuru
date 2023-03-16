@@ -4,11 +4,14 @@ import axios from "axios";
 import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
 import server from "../../server";
 
-const BioExpForm = ({ display, toggleForm }) => {
+const BioExpForm = ({ display, toggleForm, userData }) => {
   let bioForm = document.getElementById("bio-form");
   let expForm = document.getElementById("exp-form");
   let bioToggle = document.getElementById("bio-toggle");
   let expToggle = document.getElementById("exp-toggle");
+
+  const user = JSON.parse(localStorage.getItem("login"));
+
   const [profileData, setprofileData] = useState({});
   const [experience, setExperience] = useState()
   const toggle = (cur_form) => {
@@ -79,12 +82,12 @@ const BioExpForm = ({ display, toggleForm }) => {
     e.preventDefault();
     const data = expData;
     console.log(e.target)
-    
-    let newExp = experience?[...experience,data]:[data]
-    if(experience){
-      setExperience([...experience,data])
+
+    let newExp = experience ? [...experience, data] : [data]
+    if (experience) {
+      setExperience([...experience, data])
     }
-    else{
+    else {
       setExperience([data])
     }
     axios
@@ -107,7 +110,7 @@ const BioExpForm = ({ display, toggleForm }) => {
           endDate: "",
           aboutWork: "",
         })
-        document.getElementsByClassName("ExpformData")[0].style.display="none"
+        document.getElementsByClassName("ExpformData")[0].style.display = "none"
         console.log(res);
         if (res) {
           toggleForm("photo");
@@ -126,12 +129,11 @@ const BioExpForm = ({ display, toggleForm }) => {
       .then((response) => {
         if (response.data !== null) {
           if (response.data.portfolio.bio !== "") {
-            setBioData({ bio: response.data.portfolio.bio });
+            setBioData({ bio: response.data.portfolio.bio});
           }
           if (response.data.portfolio.experience.length !== 0) {
             setExperience(response.data.portfolio.experience);
           }
-          console.log(response.data);
         }
       })
       .catch((err) => {
@@ -140,7 +142,14 @@ const BioExpForm = ({ display, toggleForm }) => {
   };
 
   useEffect(() => {
-    handleShow();
+    if (user.type ==="user") {
+      handleShow();
+    } else {
+      setBioData({bio:userData?.portfolio.bio});
+      if (userData.portfolio.experience.length !== 0) {
+        setExperience(userData.portfolio.experience);
+      }
+    }
   }, []);
 
   const slideDiv = useRef("");
@@ -156,11 +165,11 @@ const BioExpForm = ({ display, toggleForm }) => {
     slideDiv.current.scrollLeft = slideDiv.current.scrollLeft + width;
   };
 
-  const handleAddExperience = (e)=>{
+  const handleAddExperience = (e) => {
     e.preventDefault()
     e.target.nextElementSibling.style.display = "block"
   }
-  const handleCancelExperience = (e)=>{
+  const handleCancelExperience = (e) => {
     e.preventDefault()
     setExpData({
       workedIn: "",
@@ -169,7 +178,7 @@ const BioExpForm = ({ display, toggleForm }) => {
       endDate: "",
       aboutWork: "",
     })
-    document.getElementsByClassName("ExpformData")[0].style.display="none"
+    document.getElementsByClassName("ExpformData")[0].style.display = "none"
 
 
   }
@@ -208,7 +217,7 @@ const BioExpForm = ({ display, toggleForm }) => {
                 handleBioSubmit(e);
               }}
             >
-              
+
               <textarea
                 name="bio"
                 value={bioData.bio}
@@ -241,101 +250,101 @@ const BioExpForm = ({ display, toggleForm }) => {
               style={{ display: "none" }}
               onSubmit={handleExpSubmit}
             >
-              {experience?(<div className="scroll_x ">
-                      <div className="container-fluid experience_container">
-                        <div className="ec_child" ref={slideDiv}>
-                          {experience?.map((item, index) => {
-                            return (
-                              
-                              <div>
-                                <span class="experienceComp" style={{ fontWeight: "700", color: "#6c54a6" }}>
-                                  {item.workedIn}
-                                </span>
-                                <br />
-                                <span class="experiencePos" style={{ fontSize: "13px" }}>
-                                  {item.workedAs} | {item.startDate} - {item.endDate}
-                                </span>
-                                <p class="experienceDesc" style={{ fontSize: "12px" }}>
-                                  {item.aboutWork}
-                                </p>
-                              </div>
-                            );
-                          })}
+              {experience ? (<div className="scroll_x ">
+                <div className="container-fluid experience_container">
+                  <div className="ec_child" ref={slideDiv}>
+                    {experience?.map((item, index) => {
+                      return (
+
+                        <div>
+                          <span class="experienceComp" style={{ fontWeight: "700", color: "#6c54a6" }}>
+                            {item.workedIn}
+                          </span>
+                          <br />
+                          <span class="experiencePos" style={{ fontSize: "13px" }}>
+                            {item.workedAs} | {item.startDate} - {item.endDate}
+                          </span>
+                          <p class="experienceDesc" style={{ fontSize: "12px" }}>
+                            {item.aboutWork}
+                          </p>
                         </div>
-                        <div className="controllers">
-                          <button onClick={prevCon}>
-                            <BsChevronCompactLeft />
-                          </button>
-                          <button onClick={nextCon}>
-                            <BsChevronCompactRight />
-                          </button>
-                        </div>
-                      </div>
-                </div>):""}
+                      );
+                    })}
+                  </div>
+                  <div className="controllers">
+                    <button onClick={prevCon}>
+                      <BsChevronCompactLeft />
+                    </button>
+                    <button onClick={nextCon}>
+                      <BsChevronCompactRight />
+                    </button>
+                  </div>
+                </div>
+              </div>) : ""}
               <input
                 type="submit"
                 className="full-width-btn"
                 value="Add Experience"
                 onClick={handleAddExperience}
               />
-              <div className="ExpformData" style={{display:"none"}} >
+              <div className="ExpformData" style={{ display: "none" }} >
 
-              <input
-                name="workedIn"
-                value={expData.workedIn}
-                onChange={handleExpInputChange}
-                type="text"
-                className="form-control"
-                placeholder="Worked in"
-              />
-              <input
-                name="workedAs"
-                value={expData.workedAs}
-                onChange={handleExpInputChange}
-                type="text"
-                className="form-control"
-                placeholder="Worked as"
-              />
-              <input
-                name="startDate"
-                value={expData.startDate}
-                onChange={handleExpInputChange}
-                type="text"
-                className="form-control"
-                placeholder="Start date"
-              />
-              <input
-                name="endDate"
-                value={expData.endDate}
-                onChange={handleExpInputChange}
-                type="text"
-                className="form-control"
-                placeholder="End date"
-              />
-              <textarea
-                name="aboutWork"
-                value={expData.aboutWork}
-                onChange={handleExpInputChange}
-                id="bio"
-                className="form-control text-area"
-                rows="5"
-                placeholder="About Work"
-                maxLength="250"
-              ></textarea>
-              <div className="row">
                 <input
-                  type="button"
-                  className="col-4 cancel-btn btn btn-lg btn-block my-2"
-                  value="Cancel"
-                  onClick={handleCancelExperience}
+                  name="workedIn"
+                  value={expData.workedIn}
+                  onChange={handleExpInputChange}
+                  type="text"
+                  className="form-control"
+                  placeholder="Worked in"
                 />
-                <p className="col-1"></p>
                 <input
-                  type="submit"
-                  className="col-7 save-btn btn btn-lg btn-block my-2"
-                  value="Save"
+                  name="workedAs"
+                  value={expData.workedAs}
+                  onChange={handleExpInputChange}
+                  type="text"
+                  className="form-control"
+                  placeholder="Worked as"
                 />
-              </div>
+                <input
+                  name="startDate"
+                  value={expData.startDate}
+                  onChange={handleExpInputChange}
+                  type="text"
+                  className="form-control"
+                  placeholder="Start date"
+                />
+                <input
+                  name="endDate"
+                  value={expData.endDate}
+                  onChange={handleExpInputChange}
+                  type="text"
+                  className="form-control"
+                  placeholder="End date"
+                />
+                <textarea
+                  name="aboutWork"
+                  value={expData.aboutWork}
+                  onChange={handleExpInputChange}
+                  id="bio"
+                  className="form-control text-area"
+                  rows="5"
+                  placeholder="About Work"
+                  maxLength="250"
+                ></textarea>
+                <div className="row">
+                  <input
+                    type="button"
+                    className="col-4 cancel-btn btn btn-lg btn-block my-2"
+                    value="Cancel"
+                    onClick={handleCancelExperience}
+                  />
+                  <p className="col-1"></p>
+                  <input
+                    type="submit"
+                    className="col-7 save-btn btn btn-lg btn-block my-2"
+                    value="Save"
+                  />
+                </div>
               </div>
 
             </form>

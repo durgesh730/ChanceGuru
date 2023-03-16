@@ -14,9 +14,9 @@ const ProfileDetailsForm = ({
   profileData,
   bool,
   setbool,
+  userData
 }) => {
   const user = JSON.parse(localStorage.getItem("login"));
-
   let show = {};
   if (display) {
     show = { display: "block" };
@@ -40,7 +40,7 @@ const ProfileDetailsForm = ({
     userId: "1",
   });
 
-  // console.log(profileDetails)
+
 
   const handleInputChange = (e) => {
     setProfileDetails({ ...profileDetails, [e.target.name]: e.target.value });
@@ -117,7 +117,6 @@ const ProfileDetailsForm = ({
         }),
       });
       const ok = await res.json();
-      console.log(ok);
       if (ok) {
         alert("Profile details saved successfully");
         toggle("talent");
@@ -134,7 +133,7 @@ const ProfileDetailsForm = ({
       })
       .then((response) => {
         if (response.data !== null) {
-          setProfileDetails(response.data.basicInfo);
+            setProfileDetails(response.data.basicInfo);
           setbool(true);
         }
       })
@@ -144,7 +143,11 @@ const ProfileDetailsForm = ({
   };
 
   useEffect(() => {
-    handleShow();
+    if(user.type === "user"){
+      handleShow();
+    }else{
+      setProfileDetails(userData?.basicInfo);
+    }
   }, [setProfileDetails]);
 
   return (

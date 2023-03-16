@@ -42,7 +42,8 @@ const UserProfile = () => {
   const card = location.state.card;
   const d = location.state.btn;
   const DateTime = location.state.project
-  const jodId = location.state.jobapplicationId
+  const jodId = location.state.jobapplicationId;
+  const user = JSON.parse(localStorage.getItem("login"));
 
 
   var id = 0;
@@ -170,7 +171,6 @@ const UserProfile = () => {
     }
   }
 
-  console.log("d" , d);
   const handleStatus = () => {
     setall();
     if (card[index]?.status === "selected") {
@@ -275,7 +275,7 @@ const UserProfile = () => {
                       {d == 1 || d == 3 ?
                         <button className={`${selected || rejected || shortlisted || sheduled ? "d-none" : ""}`} onClick={() => { setModal(true); setmodalData({ msg: " to Shortlist the ", btn: "Shortlist", num: 1 }) }} style={{ color: "#16bac5", borderColor: "#16bac5" }}>
                           Shortlist
-                        </button> 
+                        </button>
                         : ""
                       }
 
@@ -283,7 +283,6 @@ const UserProfile = () => {
                         datalocation?.length !== 1 ? ("") : (
 
                           datalocation?.map((item, i) => {
-                            console.log(item, "date")
                             return (
                               <>
                                 {item.status === "scheduled" ?
@@ -305,12 +304,19 @@ const UserProfile = () => {
                         )
                       }
 
-
-
                       {d == 0 ?
-                        <button onClick={() => { setModal(true); setmodalData({ msg: " send a Request to ", btn: "Send", num: 4 }) }}>
-                          Send Request
-                        </button>
+                        user?.type === "admin" ? (
+                          <NavLink
+                            to="/profiledetails"
+                            state={{ user: userData }}
+                            exact
+                          >
+                            Edit Profile
+                          </NavLink>
+                        ) :
+                          (<button onClick={() => { setModal(true); setmodalData({ msg: " send a Request to ", btn: "Send", num: 4 }) }}>
+                            Send Request
+                          </button>)
                         :
                         <>
                           <button className={` ${selected || rejected ? "d-none" : ""} ${(d == 1 || d == 3) ? "" : "d-none"} `} onClick={() => { setModal(true); setmodalData({ msg: " to Select the ", btn: "Select", num: 0 }) }} style={{ color: "#6cc592", borderColor: "#6cc592" }}>

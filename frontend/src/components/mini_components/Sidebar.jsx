@@ -11,7 +11,7 @@ import axios from "axios";
 import { BsThreeDotsVertical } from "react-icons/bs";
 
 
-const Sidebar = () => {
+const Sidebar = ({userData}) => {
     const [profile, setProfile] = useState(true);
     const [talent, setTalent] = useState(false);
     const [bio, setBio] = useState(false);
@@ -19,7 +19,6 @@ const Sidebar = () => {
     const [skill, setSkill] = useState(false);
     const [role, setRole] = useState(false);
     const [bool, setbool] = useState(false);
-
     const setFalse = () => {
         setProfile(false);
         setTalent(false);
@@ -134,12 +133,12 @@ const Sidebar = () => {
             </div>
 
 
-            <ProfileDetailsForm display={profile} toggle={toggleForm} bool={bool} setbool={setbool} />
-            <TalentDetailsForm display={talent} toggle={toggleForm} />
-            <BioExpForm display={bio} toggleForm={toggleForm} />
-            <PhotoVideoForm display={photo} toggleForm={toggleForm} />
-            <EduSkillForm display={skill} toggleForm={toggleForm} />
-            <RolePref display={role} toggleForm={toggleForm} />
+            <ProfileDetailsForm userData={userData} display={profile} toggle={toggleForm} bool={bool} setbool={setbool} />
+            <TalentDetailsForm userData={userData} display={talent} toggle={toggleForm} />
+            <BioExpForm userData={userData} display={bio} toggleForm={toggleForm} />
+            <PhotoVideoForm userData={userData} display={photo} toggleForm={toggleForm} />
+            <EduSkillForm userData={userData} display={skill} toggleForm={toggleForm} />
+            <RolePref userData={userData} display={role} toggleForm={toggleForm} />
         </>
     );
 };

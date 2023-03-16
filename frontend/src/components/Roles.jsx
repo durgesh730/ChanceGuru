@@ -72,7 +72,7 @@ const Roles = ({ display }) => {
 
   const handleRoleUpdateForm = (e) => {
     e.preventDefault();
-    // //console.log("Submitting edited form");
+    console.log("Submitting edited form");
     setProjectDetails({ ...projectDetails, roles });
     axios
       .put(
@@ -88,8 +88,8 @@ const Roles = ({ display }) => {
       )
       .then((res) => {
         alert(`${res.data.basicInfo.name} Roles Updated suceessfully`);
-        //console.log("data added");
-        //console.log(res)
+        // console.log("data added");
+        console.log(res, "jhjgf")
       });
   };
 
@@ -112,6 +112,33 @@ const Roles = ({ display }) => {
 
     setToEdit({ ...toEdit, [name]: value });
   };
+  
+  var modal = document.getElementById("myModal");
+  var[Index, setIndex] = useState();
+  const [ProjectId, setProjectId ] = useState(projectDetails._id)
+  const handledelete = (index, id) => {
+    setIndex(index)
+    modal.style.display = "block";
+  }
+
+  // console.log(RoleId, "idspr")
+
+  const handlesave = async () => {
+    const list = [...roles];
+    list.splice(Index, 1);
+    setRoles(list);
+    modal.style.display = "none";
+     
+    const savedata = await fetch( `${server}/project/Deleteproject/${ProjectId}`,{
+        method:"PUT",
+        headers:{
+          "Content-Type":"application/json",
+        },
+        body: JSON.stringify({list})
+    })
+    const res = await savedata.json();
+    // console.log(res);
+  }
 
   function handleCharacterUpdateForm(e) {
     e.preventDefault();
@@ -332,7 +359,7 @@ const Roles = ({ display }) => {
                                     handleFormChange(e, index, "roleName");
                                   }}
                                 />
-                                <RiDeleteBin5Line />
+                                <RiDeleteBin5Line onClick={() => handledelete(index, item._id)} />
                               </div>
                             </>
                           );
@@ -347,7 +374,7 @@ const Roles = ({ display }) => {
                           />
                           <p className="col-1"></p>
                           <input
-                            type="button"
+                            type="submit"
                             className="save-btn btn btn-lg btn-block"
                             value="Save"
                           />
@@ -488,6 +515,22 @@ const Roles = ({ display }) => {
                     </div>
                   </div>
                 </form>
+
+                {/* ========  modal for delete confirm ============= */}
+                <div id="myModal" class="modal">
+                  <div class="modal-content">
+                    <p>Your are sure to delete this Role</p>
+                  <div className="text-center" >
+                    <input
+                     onClick={handlesave}
+                      type="submit"
+                      className=" save-btn btn btn-lg btn-block my-2"
+                      value="Delete"
+                    />
+                  </div>
+                  </div>
+                </div>
+
 
                 <form
                   id="summ-form"
