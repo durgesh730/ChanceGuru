@@ -3,8 +3,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import "../forms.css";
 import form_group from "../../../assets/images/form_group.svg";
-import form_group_1 from "../../../assets/images/form-group-1.png";
-import form_group_2 from "../../../assets/images/form-group-2.png";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
 import server from "../../server";
 
 const TalentDetailsForm = ({ display, toggle, getFunction, userData }) => {
@@ -54,32 +54,65 @@ const TalentDetailsForm = ({ display, toggle, getFunction, userData }) => {
       travelling,
     } = talentDetails;
 
-    const res = await fetch(`${server}/profile/talent`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      body: JSON.stringify({
-        type,
-        height,
-        weight,
-        bodyType,
-        skinTone,
-        eyeColour,
-        hairColour,
-        hairStyle,
-        beardStyle,
-        language,
-        boldScenes,
-        allowances,
-        travelling,
-      }),
-    });
-    const ok = await res.json();
-    console.log(ok);
-    if (ok) {
-      toggle("bio");
+    if (user.type === "admin") {
+      const res = await fetch(`${server}/profile/editTalentAtAdmin/${userData._id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          type,
+          height,
+          weight,
+          bodyType,
+          skinTone,
+          eyeColour,
+          hairColour,
+          hairStyle,
+          beardStyle,
+          language,
+          boldScenes,
+          allowances,
+          travelling,
+        }),
+      });
+      const ok = await res.json();
+      if (ok) {
+        toast("Talent details updated successfully", {
+          autoClose: 2000,
+        })
+        toggle("bio");
+      }
+    } else {
+      const res = await fetch(`${server}/profile/talent`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({
+          type,
+          height,
+          weight,
+          bodyType,
+          skinTone,
+          eyeColour,
+          hairColour,
+          hairStyle,
+          beardStyle,
+          language,
+          boldScenes,
+          allowances,
+          travelling,
+        }),
+      });
+      const ok = await res.json();
+      if (ok) {
+        toast("Talent details updated successfully", {
+          autoClose: 2000,
+        })
+        toggle("bio");
+      }
     }
   };
 
@@ -103,9 +136,9 @@ const TalentDetailsForm = ({ display, toggle, getFunction, userData }) => {
   };
 
   useEffect(() => {
-    if(user.type === "user"){
+    if (user.type === "user") {
       handleShow();
-    }else{
+    } else {
       setTalentDetails(userData.talent);
     }
   }, []);

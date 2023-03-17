@@ -1,7 +1,8 @@
 import React from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import axios from "axios";
-import { toast, ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
 
 import "../forms.css";
 import { useState } from "react";
@@ -23,6 +24,7 @@ const ProfileDetailsForm = ({
   } else {
     show = { display: "none" };
   }
+
 
   const [profileDetails, setProfileDetails] = useState({
     fullname: "",
@@ -90,36 +92,72 @@ const ProfileDetailsForm = ({
       });
       const ok = await res.json();
       if (ok) {
-        alert("Profile details updated successfully");
+        toast("Profile details updated successfully", {
+          autoClose: 2000,
+        })
         toggle("talent");
       }
     } else {
-      const res = await fetch(`${server}/profile/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify({
-          fullname,
-          gender,
-          email,
-          password,
-          DOB,
-          city,
-          state,
-          country,
-          address,
-          linkedin,
-          facebook,
-          instagram,
-          userId,
-        }),
-      });
-      const ok = await res.json();
-      if (ok) {
-        alert("Profile details saved successfully");
-        toggle("talent");
+
+      if (user.type === "admin") {
+        const res = await fetch(`${server}/profile/basicinfoAdmin/${userData._id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            fullname,
+            gender,
+            email,
+            password,
+            DOB,
+            city,
+            state,
+            country,
+            address,
+            linkedin,
+            facebook,
+            instagram,
+            userId,
+          }),
+        });
+        const ok = await res.json();
+        if (ok) {
+          toast("Profile details updated successfully", {
+            autoClose: 2000,
+          })
+          toggle("talent");
+        }
+      } else {
+        const res = await fetch(`${server}/profile/`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({
+            fullname,
+            gender,
+            email,
+            password,
+            DOB,
+            city,
+            state,
+            country,
+            address,
+            linkedin,
+            facebook,
+            instagram,
+            userId,
+          }),
+        });
+        const ok = await res.json();
+        if (ok) {
+          toast("Profile details saved successfully", {
+            autoClose: 2000,
+          })
+          toggle("talent");
+        }
       }
     }
   };
@@ -133,7 +171,7 @@ const ProfileDetailsForm = ({
       })
       .then((response) => {
         if (response.data !== null) {
-            setProfileDetails(response.data.basicInfo);
+          setProfileDetails(response.data.basicInfo);
           setbool(true);
         }
       })
@@ -143,9 +181,9 @@ const ProfileDetailsForm = ({
   };
 
   useEffect(() => {
-    if(user.type === "user"){
+    if (user.type === "user") {
       handleShow();
-    }else{
+    } else {
       setProfileDetails(userData?.basicInfo);
     }
   }, [setProfileDetails]);
@@ -154,7 +192,6 @@ const ProfileDetailsForm = ({
     <>
       {
         <div className="form-body" style={show}>
-          <ToastContainer position="top-center" />
           <div className="form-container">
             <div className="form-head">Portfolio Details</div>
             <div className="form-desc">
@@ -285,6 +322,7 @@ const ProfileDetailsForm = ({
           </div>
         </div>
       }
+      <ToastContainer/>
     </>
   );
 };

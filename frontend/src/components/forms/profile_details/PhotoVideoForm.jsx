@@ -5,6 +5,8 @@ import axios from "axios";
 import AWS from 'aws-sdk';
 import { Buffer } from 'buffer';
 import server from "../../server";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
 
 const PhotoVideoForm = ({ display, toggleForm, userData }) => {
     let photoForm = document.getElementById("photo-form");
@@ -43,7 +45,7 @@ const PhotoVideoForm = ({ display, toggleForm, userData }) => {
         link: ""
     }]);
 
-  
+
     const handlePhotoInputChange = (e, index) => {
         let data = [...photoURL];
         data[index].link = e.target.value;
@@ -65,22 +67,33 @@ const PhotoVideoForm = ({ display, toggleForm, userData }) => {
     const handlePhotoSubmit = (e) => {
         e.preventDefault();
         const data = photoURL;
-        axios.put(`${server}/profile/photo`, {
-            photoURL
-        },
-            {
-                headers: {
-                    "Authorization": `Bearer ${localStorage.getItem("token")}`
-                }
+        if (user.type === "admin") {
+            axios.put(`${server}/profile/AdminSidephoto/${userData._id}`, {
+                photoURL
             }
+            ).then((res) => {
+                toast("Photos url data saved!", {
+                    autoClose: 2000,
+                  })
+                toggle("vid");
+            })
 
-        ).then((res) => {
-            alert("Photos url data saved!")
-            console.log("data added");
-            console.log(res);
-            toggle("vid");
-        })
-        console.log(data);
+        } else {
+            axios.put(`${server}/profile/photo`, {
+                photoURL
+            },
+                {
+                    headers: {
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    }
+                }
+            ).then((res) => {
+                toast("Photos url data saved!", {
+                    autoClose: 2000,
+                  })
+                toggle("vid");
+            })
+        }
     }
 
     const handleVideoInputChange = (e, index) => {
@@ -104,21 +117,32 @@ const PhotoVideoForm = ({ display, toggleForm, userData }) => {
     const handleVideoSubmit = (e) => {
         e.preventDefault();
         const data = videoURL;
-        axios.put(`${server}/profile/video`, videoURL,
-            {
-                headers: {
-                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+        if (user.type === "admin") {
+            axios.put(`${server}/profile/AdminSidevideo/${userData._id}`, videoURL,).then((res) => {
+                toast("Videos url data saved!", {
+                    autoClose: 2000,
+                  })
+                if (res) {
+                    toggleForm("skill");
                 }
-            }
-        ).then((res) => {
-            alert("Videos url data saved!")
-            console.log("data added");
-            console.log(res);
-            if (res) {
-                toggleForm("skill");
-            }
-        })
-        console.log(data);
+            })
+
+        }else{
+            axios.put(`${server}/profile/video`, videoURL,
+                {
+                    headers: {
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    }
+                }
+            ).then((res) => {
+                toast("Videos url data saved!", {
+                    autoClose: 2000,
+                  })
+                if (res) {
+                    toggleForm("skill");
+                }
+            })
+        }
     }
 
     const handleShow = async () => {
@@ -143,16 +167,16 @@ const PhotoVideoForm = ({ display, toggleForm, userData }) => {
             });
     }
     useEffect(() => {
-        if(user.type === "user"){
+        if (user.type === "user") {
             handleShow();
-          }else{
+        } else {
             if (userData.photos.length !== 0) {
                 setphotoURL(userData.photos);
             }
             if (userData.videos.length !== 0) {
                 setvideoURL(userData.videos);
             }
-          }
+        }
     }, [])
 
     //s3 bucket image upload
@@ -182,7 +206,7 @@ const PhotoVideoForm = ({ display, toggleForm, userData }) => {
         const urls = [];
 
         for (let i = 0; i < file.length; i++) {
-            formData.append("images",file[i]);
+            formData.append("images", file[i]);
             const files = file[i];
             const params = {
                 Bucket: 'image-orders-bucket',
@@ -194,14 +218,14 @@ const PhotoVideoForm = ({ display, toggleForm, userData }) => {
             const { Location } = await s3.upload(params).promise();
             urls.push(Location);
             var obj = { link: urls[i] };
-            setImageUrl([...imageUrl , obj]);
+            setImageUrl([...imageUrl, obj]);
             let data = [...photoURL];
             data[i].link = urls[i];
-            setphotoURL([...photoURL,obj]);
+            setphotoURL([...photoURL, obj]);
             //setphotoURL([...photoURL, obj]);
             console.log('uploading to s3', urls[i]);
         }
-       console.log(photoURL)
+        console.log(photoURL)
     }
     return (
         <>
@@ -237,7 +261,7 @@ const PhotoVideoForm = ({ display, toggleForm, userData }) => {
 
                                 <input type="button" className="full-width-btn" value="Upload Photo" onClick={handleFileUpload} />
 
-                               
+
 
                                 <p className="mx-1"></p>
                                 <input onClick={addFields} type="button" className="full-width-btn" value="Add Photo Link" />

@@ -2,6 +2,8 @@ import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import server from "../../server";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
 
 const EduSkillForm = ({ display, toggleForm, userData }) => {
   let form1 = document.getElementById("form1");
@@ -66,18 +68,31 @@ const EduSkillForm = ({ display, toggleForm, userData }) => {
   const handleEduSubmit = (e) => {
     e.preventDefault();
     const data = eduSkillDetails;
-    axios
-      .put(`${server}/profile/education`, eduSkillDetails, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
-      .then(() => {
-        alert("Eudcation details saved!");
-        console.log("data added");
+  
+     if(user.type === "admin"){
+      axios
+      .put(`${server}/profile/AdminSideEducation/${userData._id}`, eduSkillDetails)
+      .then((res) => {
+        toast("Eudcation details saved!", {
+          autoClose: 2000,
+        })
         toggle("tog2");
       });
-    console.log(data);
+
+     }else{
+       axios
+         .put(`${server}/profile/education`, eduSkillDetails, {
+           headers: {
+             Authorization: `Bearer ${localStorage.getItem("token")}`,
+           },
+         })
+         .then(() => {
+           toast("Eudcation details saved!", {
+            autoClose: 2000,
+          })
+           toggle("tog2");
+         });
+     }
   };
 
   const handleSkillsSubmit = (e) => {
@@ -89,8 +104,24 @@ const EduSkillForm = ({ display, toggleForm, userData }) => {
       }
     })
     if (bool) {
-      alert("Please select skill first.");
+      toast("Please select skill first.", {
+        autoClose: 2000,
+      })
     } else {
+      if(user.type === "admin"){
+        axios
+        .put(
+          `${server}/profile/AdminSideskills/${userData._id}`,
+          { skills })
+        .then((res) => {
+          toast("Skills Details saved!", {
+            autoClose: 2000,
+          })
+          if (res) {
+            toggleForm("role");
+          }
+        });
+      }
       axios
         .put(
           `${server}/profile/skills`,
@@ -102,7 +133,9 @@ const EduSkillForm = ({ display, toggleForm, userData }) => {
           }
         )
         .then((res) => {
-          alert("Skills Details saved!");
+          toast("Skills Details saved!", {
+            autoClose: 2000,
+          })
           if (res) {
             toggleForm("role");
           }
@@ -124,7 +157,6 @@ const EduSkillForm = ({ display, toggleForm, userData }) => {
           }
           if (response.data.skills.length !== 0) {
             setskills(response.data.skills);
-            // console.log(response.data.skills, "response")
           }
         }
       })
@@ -153,7 +185,6 @@ const EduSkillForm = ({ display, toggleForm, userData }) => {
         },
       })
       const data = await res.json();
-      console.log(data, "respnod")
       if (data !== null) {
         setskills(prev => [...prev, { skill: data[0]?.skill }]);
       }

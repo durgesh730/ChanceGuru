@@ -3,6 +3,8 @@ import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
 import server from "../../server";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
 
 const BioExpForm = ({ display, toggleForm, userData }) => {
   let bioForm = document.getElementById("bio-form");
@@ -60,22 +62,37 @@ const BioExpForm = ({ display, toggleForm, userData }) => {
   const handleBioSubmit = (e) => {
     e.preventDefault();
     const data = bioData;
-    axios
-      .put(
-        `${server}/profile/portfolio`,
-        { bio: bio },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      )
-      .then((res) => {
-        alert("Bio Details data saved!");
-        console.log(res);
-        toggle("exp");
-      });
-    console.log(data);
+
+    if (user.type === "admin") {
+      axios
+        .put(
+          `${server}/profile/AdminSideportfolio/${userData._id}`,
+          { bio: bio })
+        .then((res) => {
+          toast("Bio Details data saved!", {
+            autoClose: 2000,
+          })
+          toggle("exp");
+        });
+
+    } else {
+      axios
+        .put(
+          `${server}/profile/portfolio`,
+          { bio: bio },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        )
+        .then((res) => {
+          toast("Bio Details data saved!", {
+            autoClose: 2000,
+          })
+          toggle("exp");
+        });
+    }
   };
 
   const handleExpSubmit = (e) => {
@@ -90,17 +107,12 @@ const BioExpForm = ({ display, toggleForm, userData }) => {
     else {
       setExperience([data])
     }
-    axios
-      .put(
-        `${server}/profile/portfolio/exp`,
-        newExp,
 
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      )
+    if(user.type === "admin"){
+      axios
+      .put(
+        `${server}/profile/portfolio/Adminexp/${userData._id}`,
+        newExp,)
       .then((res) => {
         alert("Experience Details data saved!");
         setExpData({
@@ -111,12 +123,43 @@ const BioExpForm = ({ display, toggleForm, userData }) => {
           aboutWork: "",
         })
         document.getElementsByClassName("ExpformData")[0].style.display = "none"
-        console.log(res);
         if (res) {
+          toast("Exp Details data saved!", {
+            autoClose: 2000,
+          })
           toggleForm("photo");
         }
       });
-    console.log(data);
+
+    }else{
+      axios
+        .put(
+          `${server}/profile/portfolio/exp`,
+          newExp,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        )
+        .then((res) => {
+          alert("Experience Details data saved!");
+          setExpData({
+            workedIn: "",
+            workedAs: "",
+            startDate: "",
+            endDate: "",
+            aboutWork: "",
+          })
+          document.getElementsByClassName("ExpformData")[0].style.display = "none"
+          if (res) {
+            toast("Exp Details data saved!", {
+              autoClose: 2000,
+            })
+            toggleForm("photo");
+          }
+        });
+    }
   };
 
   const handleShow = async () => {
@@ -129,7 +172,7 @@ const BioExpForm = ({ display, toggleForm, userData }) => {
       .then((response) => {
         if (response.data !== null) {
           if (response.data.portfolio.bio !== "") {
-            setBioData({ bio: response.data.portfolio.bio});
+            setBioData({ bio: response.data.portfolio.bio });
           }
           if (response.data.portfolio.experience.length !== 0) {
             setExperience(response.data.portfolio.experience);
@@ -142,10 +185,10 @@ const BioExpForm = ({ display, toggleForm, userData }) => {
   };
 
   useEffect(() => {
-    if (user.type ==="user") {
+    if (user.type === "user") {
       handleShow();
     } else {
-      setBioData({bio:userData?.portfolio.bio});
+      setBioData({ bio: userData?.portfolio.bio });
       if (userData.portfolio.experience.length !== 0) {
         setExperience(userData.portfolio.experience);
       }
