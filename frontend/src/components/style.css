@@ -423,12 +423,11 @@ a:hover {
 .roleUpdate {
   width: 100%;
   padding: 25px 30px;
-
 }
 .roleChild {
   /* min-height: calc(100% - 50px); */
   height: calc(100vh - 100px);
-overflow-y: scroll;
+  overflow-y: scroll;
   height: 100%;
   padding: 0px 31px 20px 29px;
   border-radius: 6px;
@@ -436,7 +435,7 @@ overflow-y: scroll;
   background-color: #fff;
   position: relative;
 }
-.fixedDiv{
+.fixedDiv {
   padding-top: 20px !important;
   position: sticky !important;
   top: 0 !important;
@@ -1021,15 +1020,13 @@ div.css-18dcxwc {
   height: calc(100vh - 80px);
   z-index: 1;
 }
-.left_pfp{
+.left_pfp {
   height: 100%;
-
 }
 .right_pfp {
   /* margin-left: 10px; */
   /* height: 100vh; */
   height: 100%;
-
 }
 .child_user {
   display: flex;
@@ -1530,10 +1527,10 @@ div.css-18dcxwc {
 .role_main .long_Cards div div:last-child() {
   border: 0;
 }
-.role_main .long_Cards div div:nth-last-child(2) h3{
+.role_main .long_Cards div div:nth-last-child(2) h3 {
   color: #f5a623;
 }
-.role_main .long_Cards div div:nth-last-child(1) h3{
+.role_main .long_Cards div div:nth-last-child(1) h3 {
   color: #ff5a5a;
 }
 .role_main .long_Cards div span {
@@ -1573,13 +1570,12 @@ div.css-18dcxwc {
 .role_card .rCard_detail {
   width: 100%;
   display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
-.rCard_child{
+.rCard_child {
   font-weight: bold;
-
 }
 
 .role_card .rCard_detail div {
@@ -1597,7 +1593,6 @@ justify-content: center;
 .rCard_child p {
   font-size: 16px;
   color: #8443e5;
-
 }
 .rCard_child button {
   width: 379px;
@@ -1610,8 +1605,8 @@ justify-content: center;
   outline: none !important;
 }
 .rCard_detail p {
-   font-size: 14px;
-font-weight: 600;
+  font-size: 14px;
+  font-weight: 600;
   color: #444;
   width: 100px;
 }
@@ -1619,7 +1614,6 @@ font-weight: 600;
   font-size: 16px;
   color: #8443e5;
   width: 100px;
-
 }
 .rCard_child h2 {
   font-size: 16px;
@@ -2035,6 +2029,66 @@ aside.emoji-picker-react {
   display: none !important;
   transition: all 0.3s;
 }
-.filter :last-child{
+.filter :last-child {
   outline: none;
+}
+
+.faq_accordion li {
+  list-style: none;
+}
+
+.faq_accordion .question {
+  cursor: pointer;
+}
+.faq_accordion h1 {
+  margin-top: 20px;
+  color: #8443e5;
+}
+.faq_accordion .question h2 {
+  font-size: 17px;
+  line-height: 34px;
+  font-weight: 300;
+  letter-spacing: 1px;
+  display: block;
+  background-color: #fefffa;
+  margin: 0;
+  transition: all 0.25s ease-in-out;
+  color: #444;
+  font-weight: 600;
+}
+
+.faq_accordion p {
+  color: rgba(48, 69, 92, 0.8);
+  font-size: 14px;
+  line-height: 26px;
+  letter-spacing: 1px;
+  position: relative;
+  overflow: hidden;
+  max-height: 800px;
+  opacity: 1;
+  transform: translate(0, 0);
+  margin-top: 0px;
+  z-index: 2;
+  transition: all 0.25s ease-in-out;
+}
+.accordion_left {
+  position: relative;
+}
+.accordion_left div {
+  position: sticky;
+  top: 100px;
+}
+.faq_accordion ul {
+  position: sticky;
+  top: 100px;
+}
+.faq_accordion ul {
+  padding: 0 !important;
+}
+.accordion_left h5 {
+  font-size: 20px;
+  cursor: pointer;
+}
+.accordion_left h5:hover {
+  color: #8443e5;
 }

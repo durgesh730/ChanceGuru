@@ -587,8 +587,8 @@ const Topbar = (props) => {
               <span
                 className={
                   active === "request"
-                    ? `nav_active topbar-icons-container`
-                    : "topbar-icons-container"
+                    ? `nav_active topbar-icons-container bubbleDiv bubbleColorChange`
+                    : "topbar-icons-container bubbleDiv"
                 }
                 onClick={() => auth.setActive("request")}
               >
@@ -597,7 +597,7 @@ const Topbar = (props) => {
                 ) : (
                   <img className="topbar-icons" src={requests} alt="" />
                 )}
-
+                <h6>4</h6>
               </span>
             </Link>
           }
@@ -606,7 +606,11 @@ const Topbar = (props) => {
           {/*
                         <Link to="/projectcreation"> */}
           <span
-            className="topbar-icons-container n_icon bubbleDiv"
+          className={
+                  active === "notification"
+                    ? `topbar-icons-container n_icon bubbleDiv bubbleColorChange`
+                    : "topbar-icons-container n_icon  bubbleDiv"
+                }
             onClick={() => { toggleNotifOption(); auth.setActive("notification") }}
           >
             {active === "notification" ? (
