@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import server from "../../server";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
 
 const RolePref = ({ display, userData }) => {
   const user = JSON.parse(localStorage.getItem("login"));
@@ -33,22 +35,35 @@ const RolePref = ({ display, userData }) => {
     if (bool) {
       alert("Please select role first.");
     } else {
-      axios
+      if(user.type === "admin"){
+        axios
         .put(
-          `${server}/profile/rolePref`,
-          { formFields },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        )
+          `${server}/profile/AdminSiderolePref/${userData._id}`,
+          { formFields })
         .then((res) => {
-          alert("Role prefrences saved successfully");
-          console.log("data added");
-          console.log(res);
+          toast("Role prefrences saved successfully", {
+            autoClose: 2000,
+          })
           navigate("/");
         });
+      }else{
+        axios
+          .put(
+            `${server}/profile/rolePref`,
+            { formFields },
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            }
+          )
+          .then((res) => {
+            toast("Role prefrences saved successfully", {
+              autoClose: 2000,
+            })
+            navigate("/");
+          });
+      }
     }
   };
 

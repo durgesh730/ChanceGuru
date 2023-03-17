@@ -250,6 +250,28 @@ router.put("/basicinfo", jwtAuth, (req, res) => {
     });
 });
 
+// To change the basicinfo of user by put req at admin side
+
+router.put("/basicinfoAdmin/:id", (req, res) => {
+  const data = req.body;
+  Profile.findOneAndUpdate(
+    { _id: req.params.id },
+    {
+      $set: {
+        basicInfo: data,
+        updatedAt: new Date(),
+      },
+    }
+  )
+    .then((response) => {
+      res.json(response);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+});
+
+
 //to set talent of user  or change
 router.put("/talent", jwtAuth, async (req, res) => {
   const {
@@ -323,6 +345,80 @@ router.put("/talent", jwtAuth, async (req, res) => {
   }
 });
 
+
+//to set talent of user  or change by admin side 
+router.put("/editTalentAtAdmin/:id", async (req, res) => {
+  const {
+    type,
+    height,
+    weight,
+    bodyType,
+    skinTone,
+    eyeColour,
+    hairColour,
+    hairStyle,
+    beardStyle,
+    language,
+    boldScenes,
+    allowances,
+    travelling,
+  } = req.body;
+
+  try {
+    const newData = {};
+    if (type) {
+      newData.type = type;
+    }
+    if (height) {
+      newData.height = height;
+    }
+    if (weight) {
+      newData.weight = weight;
+    }
+    if (bodyType) {
+      newData.bodyType = bodyType;
+    }
+    if (skinTone) {
+      newData.skinTone = skinTone;
+    }
+    if (eyeColour) {
+      newData.eyeColour = eyeColour;
+    }
+    if (hairColour) {
+      newData.hairColour = hairColour;
+    }
+    if (hairStyle) {
+      newData.eyeColour = hairStyle;
+    }
+    if (beardStyle) {
+      newData.beardStyle = beardStyle;
+    }
+    if (language) {
+      newData.language = language;
+    }
+    if (boldScenes) {
+      newData.boldScenes = boldScenes;
+    }
+    if (allowances) {
+      newData.allowances = allowances;
+    }
+    if (travelling) {
+      newData.travelling = travelling;
+    }
+
+    const userData = await Profile.findOneAndUpdate(
+      { _id: req.params.id },
+      { $set: { talent: newData } },
+      { new: true }
+    );
+
+    res.json({ userData });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Some error occured");
+  }
+});
+
 //to set portfolio of user or change
 
 router.put("/portfolio", jwtAuth, (req, res) => {
@@ -345,6 +441,54 @@ router.put("/portfolio", jwtAuth, (req, res) => {
     .catch((err) => {
       res.status(400).json(err);
     });
+});
+
+
+//to set portfolio of user or change admin side
+
+router.put("/AdminSideportfolio/:id", (req, res) => {
+  const data = req.body;
+  const d = { bio: data.bio };
+  Profile.findOneAndUpdate(
+    { _id: req.params.id},
+    {
+      $set: {
+        portfolio: d,
+        updatedAt: new Date(),
+      },
+    }
+  )
+    .then((response) => {
+      res.json(response);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+});
+
+
+router.put("/portfolio/Adminexp/:id", (req, res) => {
+  const data = req.body;
+  const d = {};
+  Profile.findOne({ _id:req.params.id }).then((r) => {
+    d.bio = r.portfolio.bio;
+    d.experience = data;
+    Profile.findOneAndUpdate(
+      { _id:req.params.id },
+      {
+        $set: {
+          portfolio: d,
+          updatedAt: new Date(),
+        },
+      }
+    )
+      .then((response) => {
+        res.json(response);
+      })
+      .catch((err) => {
+        res.status(400).json(err);
+      });
+  });
 });
 
 router.put("/portfolio/exp", jwtAuth, (req, res) => {
@@ -395,11 +539,49 @@ router.put("/photo", jwtAuth, (req, res) => {
     });
 });
 
+router.put("/AdminSidephoto/:id", (req, res) => {
+  const data = req.body;
+  Profile.findOneAndUpdate(
+    { _id:req.params.id },
+    {
+      $set: {
+        photos: data.photoURL,
+        updatedAt: new Date(),
+      },
+    }
+  )
+    .then((response) => {
+      res.json(response);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+});
+
 router.put("/video", jwtAuth, (req, res) => {
   const data = req.body;
   const user = req.user;
   Profile.findOneAndUpdate(
     { userId: user._id },
+    {
+      $set: {
+        videos: data,
+        updatedAt: new Date(),
+      },
+    }
+  )
+    .then((response) => {
+      res.json(response);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+});
+
+router.put("/AdminSidevideo/:id", (req, res) => {
+  const data = req.body;
+  Profile.findOneAndUpdate(
+    { _id:req.params.id },
     {
       $set: {
         videos: data,
@@ -448,6 +630,35 @@ router.put("/education", jwtAuth, async (req, res) => {
   }
 });
 
+
+router.put("/AdminSideEducation/:id", async (req, res) => {
+  const { college, schoolYear, collegeYear, course } = req.body;
+  try {
+    const newData = {};
+    if (college) {
+      newData.college = college;
+    }
+    if (schoolYear) {
+      newData.startYear = schoolYear;
+    }
+    if (collegeYear) {
+      newData.endYear = collegeYear;
+    }
+    if (course) {
+      newData.degree = course;
+    }
+    const userData = await Profile.findOneAndUpdate(
+      { _id:req.params.id },
+      { $set: { education: newData } },
+      { new: true }
+    );
+    res.json({ userData });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Some error occured");
+  }
+});
+
 //to set skills of user or change
 
 router.put("/skills", jwtAuth, (req, res) => {
@@ -471,6 +682,27 @@ router.put("/skills", jwtAuth, (req, res) => {
     });
 });
 
+//to set skills of user or change
+
+router.put("/AdminSideskills/:id", (req, res) => {
+  const data = req.body;
+  Profile.findOneAndUpdate(
+    { _id:req.params.id },
+    {
+      $set: {
+        skills: data.skills,
+        updatedAt: new Date(),
+      },
+    }
+  )
+    .then((response) => {
+      res.json(response);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+});
+
 //to set role preferences  of user or change
 
 router.put("/rolePref", jwtAuth, (req, res) => {
@@ -479,6 +711,25 @@ router.put("/rolePref", jwtAuth, (req, res) => {
   console.log(data.formFields)
   Profile.findOneAndUpdate(
     { userId: user._id },
+    {
+      $set: {
+        rolePref: data.formFields,
+        updatedAt: new Date(),
+      },
+    }
+  )
+    .then((response) => {
+      res.json(response);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+});
+
+router.put("/AdminSiderolePref/:id", (req, res) => {
+  const data = req.body;
+  Profile.findOneAndUpdate(
+    { _id:req.params.id },
     {
       $set: {
         rolePref: data.formFields,
