@@ -30,7 +30,10 @@ function CharacterCard({ index, cardData, toEdit, setToEdit }) {
             </button>
           </span>
           <span>
-            <img src={del} alt="" />
+          <button className="mx-3">
+          <img src={del} alt="" />
+
+          </button>
           </span>
         </span>
       </span>

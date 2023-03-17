@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.f42bf379.css",
-    "main.js": "/static/js/main.3815ed01.js",
+    "main.css": "/static/css/main.4493e45f.css",
+    "main.js": "/static/js/main.01038448.js",
     "static/media/godfather.png": "/static/media/godfather.f9e761257ec7b78ccdc0.png",
     "static/media/Mask Group 29.png": "/static/media/Mask Group 29.03be7c4bd71fae89bfef.png",
     "static/media/kamal.jpeg": "/static/media/kamal.c13af431b643f408d82d.jpeg",
@@ -32,11 +32,11 @@
     "static/media/profile1.svg": "/static/media/profile1.9fd9547f6f53286029f1cea1b2b28ffe.svg",
     "static/media/round-delete-button.svg": "/static/media/round-delete-button.d37243b029d7768410b740bcc7ee3ab5.svg",
     "static/media/form_group.svg": "/static/media/form_group.15fb7f5505ba6888c7f98d9cd4b7fa6c.svg",
-    "main.f42bf379.css.map": "/static/css/main.f42bf379.css.map",
-    "main.3815ed01.js.map": "/static/js/main.3815ed01.js.map"
+    "main.4493e45f.css.map": "/static/css/main.4493e45f.css.map",
+    "main.01038448.js.map": "/static/js/main.01038448.js.map"
   },
   "entrypoints": [
-    "static/css/main.f42bf379.css",
-    "static/js/main.3815ed01.js"
+    "static/css/main.4493e45f.css",
+    "static/js/main.01038448.js"
   ]
 }

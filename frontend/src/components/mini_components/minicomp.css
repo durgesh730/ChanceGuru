@@ -134,13 +134,14 @@
   display: grid;
   grid-gap: 20px;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(4, 170px);
+  grid-template-rows:repeat(4, 170px);
 
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: "Montserrat", sans-serif;
 }
+
 .grid-wrapper .child_cards * {
   margin: 0;
 }
@@ -160,14 +161,18 @@
   justify-content: space-between;
   flex-direction: column;
 }
+.talent-heading{
+  grid-area: 1/1/2/5;
+  align-items: start;
+}
 .side_div {
   list-style: none;
-  grid-area: 1/4 / 3/ 5;
+  grid-area: 1/4 / 4/ 5;
   box-shadow: 0 0 6px 0 rgba(158, 158, 158, 0.5);
   padding: 19px 14px;
-  height: 400px;
+  /* height: 400px; */
   position: relative;
-  top: -12%;
+  /* top: -12%; */
 }
 .side_div .sd_1 {
   height: 100%;

@@ -38,7 +38,7 @@ const RoleRecentCard = ({ index, card , activeCard }) => {
               </figure>
               <p className="m-0">You have selected for a new role</p>
               <button>‘{project?.basicInfo?.name}’</button>
-              <div className="rCard_detail d-flex justify-content-between align-items-center flex-column">
+              <div className="rCard_detail d-flex justify-content-start align-items-center flex-column">
                 <div>
                   <p>Role</p>
                   <span>{role? role[0]?.role : ""}</span>

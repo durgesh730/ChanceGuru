@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
 
-const Carousel = () => {
+const Carousel = ({Data}) => {
   const slideDiv = useRef("");
 
   // let width = box.offsetWidth;
@@ -20,48 +20,17 @@ const Carousel = () => {
     <>
       <div className="container-fluid experience_container">
         <div className="ec_child" ref={slideDiv}>
-          <div>
-            <h6>05/12/2018 - 01/12/2018</h6>
-            <p>
-              Supporting Actor, Milwaukee Repertory Theater Persued the role of
-              Ensemble in Man of La Mancha.
-            </p>
-          </div>
-          <div>
-            <h6>2</h6>
-            <p>
-              Supporting Actor, Milwaukee Repertory Theater Persued the role of
-              Ensemble in Man of La Mancha.
-            </p>
-          </div>
-          <div>
-            <h6>3</h6>
-            <p>
-              Supporting Actor, Milwaukee Repertory Theater Persued the role of
-              Ensemble in Man of La Mancha.
-            </p>
-          </div>
-          <div>
-            <h6>4</h6>
-            <p>
-              Supporting Actor, Milwaukee Repertory Theater Persued the role of
-              Ensemble in Man of La Mancha.
-            </p>
-          </div>
-          <div>
-            <h6>05</h6>
-            <p>
-              Supporting Actor, Milwaukee Repertory Theater Persued the role of
-              Ensemble in Man of La Mancha.
-            </p>
-          </div>
-          <div>
-            <h6>6</h6>
-            <p>
-              Supporting Actor, Milwaukee Repertory Theater Persued the role of
-              Ensemble in Man of La Mancha.
-            </p>
-          </div>
+          {Data.experience?.map((i) => {
+            // console.log(i)
+            return (
+              <div>
+                <h6>{i.startDate} - {i.endDate}</h6>
+                <p>
+                  {i.aboutWork}
+                </p>
+              </div>
+            )
+          })}
         </div>
         <div className="controllers">
           <button onClick={prevCon}>

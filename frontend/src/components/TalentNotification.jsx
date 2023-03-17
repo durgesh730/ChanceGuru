@@ -8,18 +8,20 @@ import axios from "axios"
 import server from "./server";
 
 function TalentNotification() {
-    const [jobs, setJobs] = useState()
-    const [jobRoles, setJobRoles] = useState([])
+    const [jobsTalent, setJobsTalent] = useState([])
+    const [jobRolesTalent, setJobRolesTalent] = useState([])
     const [rolesNotification, setRolesNotification] = useState([])
     const [views, setViews] = useState([])
     const [viewUsers, setViewUsers] = useState([])
     const [viewsNotification,setViewNotification] = useState([])
+  const [loggedUser, setLoggedUser] = useState("");
 
-    const dataFetchedRef = useRef(false);
+
+    const dataFetchedRefTalent = useRef(false);
 
     const user = JSON.parse(localStorage.getItem("login"))
 
-    const getJobApplications = async () => {
+    const getJobApplicationsTalent = async () => {
         const res = await fetch(
             `${server}/application/allJobsUser`,
             {
@@ -34,11 +36,11 @@ function TalentNotification() {
         const response = await res.json();
         console.log(response)
 
-        setJobs(response)
-        getJobRoles(response)
+        setJobsTalent(response)
+        getJobRolesTalent(response)
     }
 
-    function getUsers(views){
+    function getUsersTalent(views){
     
         views?.map((view, index) => {
             console.log(view)
@@ -57,14 +59,14 @@ function TalentNotification() {
         })
       }
 
-    function getJobRoles(jobs) {
-        jobs?.map((job, index) => {
+    function getJobRolesTalent(jobsTalent) {
+        jobsTalent?.map((job, index) => {
 
             axios.get(`${server}/project/getCharacter/${job.roleId}`)
                 .then((res) => {
                     
                     console.log(res.data)
-                    setJobRoles(oldRoles => [...oldRoles,res.data])
+                    setJobRolesTalent(oldRoles => [...oldRoles,res.data])
                     
 
                 })
@@ -79,7 +81,7 @@ function TalentNotification() {
         .then((res)=>{
             console.log(res.data)
             setViews(res.data)
-            getUsers(res.data)
+            getUsersTalent(res.data)
             
         })
         .catch((err)=>{
@@ -88,16 +90,16 @@ function TalentNotification() {
     }
 
     useEffect(() => {
-        if (dataFetchedRef.current) return;
-        dataFetchedRef.current = true;
-        getJobApplications()
+        if (dataFetchedRefTalent.current) return;
+        dataFetchedRefTalent.current = true;
+        getJobApplicationsTalent()
         getReqToApp()
 
     }, [])
 
     useEffect(()=>{
         let roles = new Set()
-        jobRoles?.map((job)=>{
+        jobRolesTalent?.map((job)=>{
             job?.map((item) => {
                 roles.add(`${item.roles[0].role} in ${item.basicInfo.name}`)
             })
@@ -105,14 +107,14 @@ function TalentNotification() {
         let rolesArr = [...roles]
         rolesArr.reverse()
         setRolesNotification(rolesArr)
-    },[jobRoles])
+    },[jobRolesTalent])
 
     useEffect(()=>{
         let roles = new Set()
         viewUsers?.map((view)=>{
             console.log(view)
             view?.map((item) => {
-                roles.add(`${item.username}`)
+                roles.add({"notification":item.username,"img":item.link})
             })
         })
         let viewsArr = [...roles]
@@ -120,7 +122,11 @@ function TalentNotification() {
         setViewNotification(viewsArr)
     },[viewUsers])
 
-    
+    useEffect(() => {
+        setLoggedUser(JSON.parse(localStorage.getItem("login")));
+      }, []);
+
+      console.log("count noti",rolesNotification.length)
 
     return (
         <>
@@ -138,8 +144,8 @@ function TalentNotification() {
                         rolesNotification?.map((roleName, index) => {
                             return (
                                 <>
-                                    <div className="d-flex align-items-center">
-                                        <img src="" alt="pfp" className="me-4 shadow-sm" />
+                                    <div className="notificationDiv d-flex align-items-center">
+                                        <img src={loggedUser.link} alt="pfp" className="me-4 shadow-sm" />
                                         <p>
                                             You have successfully applied for the role {roleName}
                                         </p>
@@ -153,10 +159,10 @@ function TalentNotification() {
                         viewsNotification?.map((item) => {
                             return (
                                 <>
-                                    <div className="d-flex align-items-center">
-                                        <img src="" alt="pfp" className="me-4 shadow-sm" />
+                                    <div className="notificationDiv d-flex align-items-center">
+                                        <img src={item.img} alt="pfp" className="me-4 shadow-sm" />
                                         <p>
-                                            {item} has viewd your profile
+                                            {item.notification} has viewed your profile
                                         </p>
                                     </div>
                                     <hr />
