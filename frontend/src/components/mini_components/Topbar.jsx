@@ -324,8 +324,6 @@ const Topbar = (props) => {
     );
 
     const response = await res.json();
-    console.log(response)
-
     setJobsTalent(response)
     getJobRolesTalent(response)
   }
@@ -340,7 +338,6 @@ const Topbar = (props) => {
           if (res !== null) {
             setViewUsers(oldUsers => [...oldUsers, res.data])
           }
-          // console.log(res.data)
         })
         .catch((err) => {
           console.log(err);
@@ -432,23 +429,21 @@ const Topbar = (props) => {
 
   }, [])
 
-    if (rolesNotification.length <= 2 && viewsNotification.length <= 2) {
-      auth.setNotificationCount(rolesNotification.length + viewsNotification.length)
-    }
-    else {
-      auth.setNotificationCount(4)
-    }
-  console.log("Talentcount", auth.notificationCount)
+  if (rolesNotification.length <= 2 && viewsNotification.length <= 2) {
+    auth.setNotificationCount(rolesNotification.length + viewsNotification.length)
+  }
+  else {
+    auth.setNotificationCount(4)
+  }
 
 
-    if (projects.length <= 2 && userProjectMap.length <= 2) {
-      auth.setNotificationCountSeeker(projects.length + userProjectMap.length)
-    }
-    else {
-      auth.setNotificationCountSeeker(4)
-    }
-  console.log("Seekercount", auth.notificationCountSeeker)
-  
+  if (projects.length <= 2 && userProjectMap.length <= 2) {
+    auth.setNotificationCountSeeker(projects.length + userProjectMap.length)
+  }
+  else {
+    auth.setNotificationCountSeeker(4)
+  }
+
 
 
   return (
@@ -606,11 +601,11 @@ const Topbar = (props) => {
           {/*
                         <Link to="/projectcreation"> */}
           <span
-          className={
-                  active === "notification"
-                    ? `topbar-icons-container n_icon bubbleDiv bubbleColorChange`
-                    : "topbar-icons-container n_icon  bubbleDiv"
-                }
+            className={
+              active === "notification"
+                ? `topbar-icons-container n_icon bubbleDiv bubbleColorChange`
+                : "topbar-icons-container n_icon  bubbleDiv"
+            }
             onClick={() => { toggleNotifOption(); auth.setActive("notification") }}
           >
             {active === "notification" ? (
@@ -627,9 +622,9 @@ const Topbar = (props) => {
                 :
 
                 auth.notificationCountSeeker !== 0 ?
-            <h6>
-              {auth.notificationCountSeeker}</h6> : ""
-              
+                  <h6>
+                    {auth.notificationCountSeeker}</h6> : ""
+
             }
             {/* {auth.notificationCount !== 0 ? <h6>{auth.notificationCount}</h6> : ""} */}
 
@@ -663,9 +658,9 @@ const Topbar = (props) => {
                     );
                   })
                   }
-                  
+
                 </div>
-                
+
                 :
                 <div>
                   {projects?.slice(0, 2).map((project, index) => {
@@ -695,14 +690,14 @@ const Topbar = (props) => {
                     );
                   })
                   }
-                  
+
                 </div>
               }
               <div className="d-flex justify-content-center align-items-center view_all">
-                    <NavLink to="/notification" onClick={() => auth.setNotificationCount(0)} >
-                      <p>View All</p>
-                    </NavLink>
-                  </div>
+                <NavLink to="/notification" onClick={() => auth.setNotificationCount(0)} >
+                  <p>View All</p>
+                </NavLink>
+              </div>
             </div>
           </span>
 
@@ -713,14 +708,14 @@ const Topbar = (props) => {
             <span className="topbar-icons-container">
 
               {
-                (loggedUser.link)?<img
-                className="topbar-icons topbar-profile p-0"
-                src={loggedUser.link}
-                alt=""
+                (loggedUser.link) ? <img
+                  className="topbar-icons topbar-profile p-0"
+                  src={loggedUser.link}
+                  alt=""
 
-              />:(
-                <RiAccountCircleFill style={{fontSize:"2rem"}} />
-              )
+                /> : (
+                  <RiAccountCircleFill style={{ fontSize: "2rem" }} />
+                )
               }
             </span>
             <span className="top-profile-name">{user.username}</span>
@@ -743,6 +738,13 @@ const Topbar = (props) => {
                       <></>
                     )
                 }
+
+                <li>
+                  <NavLink to="/skills" exect >Skills</NavLink>
+                </li>
+                <li>
+                  <NavLink to="/adminroles">Roles</NavLink>
+                </li>
 
                 <li>
                   <NavLink state={loggedUser} to="/setting" exect >Account Settings</NavLink>

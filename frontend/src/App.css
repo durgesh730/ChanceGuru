@@ -1,68 +1,130 @@
 .App {
-    text-align: center;
+  text-align: center;
 }
 
-.d-none{
-    display: none;
+.d-none {
+  display: none;
 }
 
-.prevNext{
-    display: flex;
-    justify-content: space-around;
-    margin-top: 50px !important;
+.prevNext {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 50px !important;
 }
 
 .prevNext button {
-    border: none;
-    background: aqua;
-    padding: 5px 20px;
-    border-radius: 15px;
-    font-weight: bold;
+  border: none;
+  border: 2px solid #8443e5;
+  background: transparent;
+  padding: 5px 20px;
+  border-radius: .5rem;
+  font-weight: bold;
+  color: #8443e5;
 }
 
-.prevNext > td {
-    height: 0;
-    border: none;
+.prevNext>td {
+  height: 0;
+  border: none;
 }
 
 #snackbar {
-    visibility: hidden;
-    min-width: 250px;
-    margin-left: -125px;
-    background-color:#8443e5;
-    color: #fff;
-    text-align: center;
-    border-radius: 2px;
-    padding: 16px;
-    position: fixed;
-    z-index: 1;
-    left: 50%;
+  visibility: hidden;
+  min-width: 250px;
+  margin-left: -125px;
+  background-color: #8443e5;
+  color: #fff;
+  text-align: center;
+  border-radius: 2px;
+  padding: 16px;
+  position: fixed;
+  z-index: 1;
+  left: 50%;
+  bottom: 30px;
+  font-size: 17px;
+}
+
+#snackbar.show {
+  visibility: visible;
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@-webkit-keyframes fadein {
+  from {
+    bottom: 0;
+    opacity: 0;
+  }
+
+  to {
     bottom: 30px;
-    font-size: 17px;
+    opacity: 1;
   }
-  
-  #snackbar.show {
-    visibility: visible;
-    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
-    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@keyframes fadein {
+  from {
+    bottom: 0;
+    opacity: 0;
   }
-  
-  @-webkit-keyframes fadein {
-    from {bottom: 0; opacity: 0;} 
-    to {bottom: 30px; opacity: 1;}
+
+  to {
+    bottom: 30px;
+    opacity: 1;
   }
-  
-  @keyframes fadein {
-    from {bottom: 0; opacity: 0;}
-    to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+  from {
+    bottom: 30px;
+    opacity: 1;
   }
-  
-  @-webkit-keyframes fadeout {
-    from {bottom: 30px; opacity: 1;} 
-    to {bottom: 0; opacity: 0;}
+
+  to {
+    bottom: 0;
+    opacity: 0;
   }
-  
-  @keyframes fadeout {
-    from {bottom: 30px; opacity: 1;}
-    to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+  from {
+    bottom: 30px;
+    opacity: 1;
   }
+
+  to {
+    bottom: 0;
+    opacity: 0;
+  }
+}
+
+/* ==================================== */
+.roles {
+  margin: auto;
+  padding-top: 2rem;
+}
+
+.roles table {
+  margin: auto;
+  width: 100%;
+}
+
+.roles-btn {
+  background-color: #8443e5;
+  color: white;
+  padding: .5rem 1rem;
+}
+
+.roles-btn:hover {
+  background-color: #8443e5;
+  color: white;
+}
+
+.rolestable tr th {
+  color: #8443e5;
+  border: none;
+}
+
+.rolestable tr td {
+  border: none;
+}
+

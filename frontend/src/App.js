@@ -39,6 +39,8 @@ import "./components/responsive.css"
 import Myapplication from "./components/Myapplication";
 
 import io from "socket.io-client";
+import SkillsAdmin from "./components/SkillsAdmin";
+import RolesAdmin from "./components/RolesAdmin";
 const ENDPOINT = {server};
 
 function App() {
@@ -117,6 +119,8 @@ function App() {
           <Route path="/roles" element={<Roles />} />
           <Route path="/applicantdetails" element={<ApplicantDetails />} />
           <Route path="/myapplication" element={<Myapplication />} />
+          <Route path="/skills" element={<SkillsAdmin/>}/>
+          <Route path="/adminroles" element={<RolesAdmin/>}/>
           <Route
             path="/chat"
             element={

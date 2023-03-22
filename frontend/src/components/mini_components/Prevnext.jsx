@@ -6,7 +6,6 @@ const Prevnext = (data ) => {
     const card = data.card ;
     const index = data.index ;
     const d = data.d ;
-    console.log(card);
     return (
         <>
         <div className='prevNext'>

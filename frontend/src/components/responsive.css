@@ -345,3 +345,21 @@
     padding: 10px !important;
   }
 }
+
+/* ============ editProfile ======== */
+
+.editProfile{
+   border: 1px solid #8443e5;
+   color: #8443e5;
+   opacity: 1;
+   font-weight: 600;
+   font-size: .8rem;
+   border-radius: .2rem;
+   padding: .3rem .8rem;
+}
+
+.editProfile:hover{
+    color: #8443e5;
+}
+
+

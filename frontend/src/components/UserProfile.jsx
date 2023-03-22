@@ -366,6 +366,7 @@ const UserProfile = () => {
                             to="/profiledetails"
                             state={{ user: userData }}
                             exact
+                            className="editProfile"
                           >
                             Edit Profile
                           </NavLink>
