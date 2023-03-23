@@ -364,6 +364,7 @@ const Topbar = (props) => {
   }
 
   const [count, setCount] = useState([]);
+  var arr = [];
 
   // =============== getreq count ========================
 
@@ -378,8 +379,12 @@ const Topbar = (props) => {
       }
     );
     const response = await res.json();
-    setCount(response)
+      setCount((prev)=>[...prev, response])
+    arr.push({ res: response })
+    console.log(arr, "arrrr")
   };
+
+  console.log(count, "fdsadfghj")
 
 
   const getReqToApp = () => {
@@ -610,7 +615,7 @@ const Topbar = (props) => {
                 ) : (
                   <img className="topbar-icons" src={requests} alt="" />
                 )}
-                
+
                 <h6>{count?.isMarked === false || count?.isMarked === null ? (count.length === undefined) ? 1 : count.length : 0}</h6>
               </span>
             </Link>

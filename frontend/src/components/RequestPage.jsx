@@ -28,15 +28,17 @@ const RequestPage = () => {
 
   const [marked, setMarked] = useState(true);
 
-  const handleMarked = async (id) => {
-    const data = await fetch(`${server}/auth/markedAsread/${id}`, {
+  const handleMarked = async () => {
+    const data = await fetch(`${server}/auth/markedAsread`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
-      body:JSON.stringify({marked})
+      body: JSON.stringify({ marked })
     })
     const res = await data.json();
+    console.log(res, "response")
   }
 
   const getAllRequests = () => {
@@ -118,7 +120,7 @@ const RequestPage = () => {
                                 <button>View Projects</button>
                               </NavLink>
                             </td>
-                            <td className="btn-marked"><span onClick={()=>{handleMarked(item.seekerId)}} > Marked as Read</span></td>
+                            <td className="btn-marked"><span onClick={handleMarked} > Marked as Read</span></td>
                           </tr>
                         )
                       })
