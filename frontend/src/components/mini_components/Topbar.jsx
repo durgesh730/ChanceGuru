@@ -363,10 +363,27 @@ const Topbar = (props) => {
     })
   }
 
+  const [count, setCount] = useState([]);
+
+  // =============== getreq count ========================
+  const getreqcount = async () => {
+    const res = await fetch(`${server}/auth/reqcount`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    const response = await res.json();
+    setCount(response)
+  };
+
+
   const getReqToApp = () => {
     axios.get(`${server}/profile/reqToApp/${user._id}`)
       .then((res) => {
-        console.log(res.data)
         setViews(res.data)
         getUsersTalent(res.data)
 
@@ -399,7 +416,6 @@ const Topbar = (props) => {
   useEffect(() => {
     let roles = new Set()
     viewUsers?.map((view) => {
-      console.log(view)
       view?.map((item) => {
         roles.add({ "notification": item.username, "img": item.link })
       })
@@ -427,6 +443,7 @@ const Topbar = (props) => {
       getunreadonTopbar.current++
     }
 
+    getreqcount();
   }, [])
 
   if (rolesNotification.length <= 2 && viewsNotification.length <= 2) {
@@ -592,7 +609,8 @@ const Topbar = (props) => {
                 ) : (
                   <img className="topbar-icons" src={requests} alt="" />
                 )}
-                <h6>4</h6>
+
+                <h6>{count?.isMarked === false ? 1 : 0}</h6>
               </span>
             </Link>
           }

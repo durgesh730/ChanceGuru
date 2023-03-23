@@ -15,6 +15,8 @@ const BrowseProfile = () => {
   const [select, setSelect] = useState("");
   const [searchData, setsearchData] = useState([]);
   const location = useLocation();
+  const [skills, setSkills] = useState();
+  const [roles, setRoles] = useState();
 
   const setGet = (e) => {
     const { name, value } = e.target;
@@ -63,6 +65,32 @@ const BrowseProfile = () => {
   }, [query])
 
 
+  const getuserData = () => {
+    axios
+      .get(`${server}/admin/roles`)
+      .then((res) => {
+        if (res !== null) {
+          setRoles(res.data)
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  }
+
+  const getuserSkills = () => {
+    axios
+      .get(`${server}/admin/skills`)
+      .then((res) => {
+        if (res !== null) {
+          setSkills(res.data)
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  }
+
   const GetProfiledata = async () => {
     const data = await fetch("${server}/profile/profileData", {
       method: "GET",
@@ -85,6 +113,8 @@ const BrowseProfile = () => {
 
   useEffect(() => {
     GetProfiledata();
+    getuserData();
+    getuserSkills();
   }, []);
 
   function viewProfileClicked(item) {
@@ -153,9 +183,21 @@ const BrowseProfile = () => {
             onChange={setGet}
           >
             <option selected>Filter</option>
-            <option>Main Role Hero</option>
-            <option>Supporting Actor</option>
-            <option>Main Role Villan</option>
+            {
+              roles?.map((item) => {
+                return (
+                  <option>{item.role}</option>
+                )
+              })
+            }
+
+            {
+              skills?.map((item) => {
+                return (
+                  <option>{item.skill}</option>
+                )
+              })
+            }
           </select>
         </div>
 
@@ -176,8 +218,7 @@ const BrowseProfile = () => {
                     return (
                       <tr key={index}>
                         <td className="d-flex justify-content-start align-items-center">
-                          <Images item = {item} />
-                          {/* <img src={item.photos[0]?.link ? item.photos[0]?.link : profile} /> */}
+                          <Images item={item} />
                           <p>{item.basicInfo.fullname}</p>
                         </td>
                         <td>

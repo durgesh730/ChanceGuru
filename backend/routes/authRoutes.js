@@ -6,10 +6,11 @@ const User = require("../db/User");
 const jwtAuth = require("../lib/jwtAuth");
 const router = express.Router();
 const bcrypt = require("bcrypt");
+const RequestToApply = require("../db/RequestToApply")
 
 //To get the user deatils with the help of email.
-router.get("/getuserwithemail/:email" , (req , res) => {
-  User.findOne({email : req.params.email})
+router.get("/getuserwithemail/:email", (req, res) => {
+  User.findOne({ email: req.params.email })
     .then((data) => {
       console.log(data)
       res.json(data);
@@ -20,19 +21,19 @@ router.get("/getuserwithemail/:email" , (req , res) => {
 })
 
 //To reset the password of user
-router.put("/resetPassword/" , (req, res) => {
-  const data = req.body ;
+router.put("/resetPassword/", (req, res) => {
+  const data = req.body;
   bcrypt.hash(data.password, 10, (err, hash) => {
     if (err) {
       console.log(err);
     }
-    User.findOneAndUpdate({email : data.email} ,{ $set : {password : hash}})
-    .then((user) => {
-      res.json({msg : "Password has been reset successfully"});
-    })
-    .catch((err) => {
-      res.status(400).json(err);
-    })
+    User.findOneAndUpdate({ email: data.email }, { $set: { password: hash } })
+      .then((user) => {
+        res.json({ msg: "Password has been reset successfully" });
+      })
+      .catch((err) => {
+        res.status(400).json(err);
+      })
   });
 })
 
@@ -74,7 +75,7 @@ router.post("/login", (req, res, next) => {
         return next(err);
       }
       if (!user) {
-       
+
         res.status(401).json(info);
         return;
       }
@@ -115,6 +116,35 @@ router.put("/ResetLoggedUserData/:id", jwtAuth, async (req, res) => {
 })
 
 
+router.put("/markedAsread/:id", async (req, res) => {
+  try {
+    const newData = {}
+    if (req.body.marked) {
+      newData.isMarked = req.body.marked
+    }
+    const save = await RequestToApply.findByIdAndUpdate({ _id:req.params.id },
+      { $set: {isMarked: newData} }, { new: true })
+    res.status(201).json({ status: 201, save });
+    console.log(save)
+  } catch (error) {
+    res.status(400).json(error);
+  }
+})
+
+// ============= API for count on request page on topbar = ======
+
+router.get("/reqcount", jwtAuth, (req, res) => {
+  const user = req.user;
+  RequestToApply.findOne({talentId: user._id})
+    .then((data) => {
+      res.json(data);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    })
+})
+
+
 router.get("/", jwtAuth, (req, res) => {
   const user = req.user;
   User.findOne({ _id: user._id })
@@ -125,21 +155,23 @@ router.get("/", jwtAuth, (req, res) => {
       res.status(400).json(err);
     })
 })
-router.get("/seeker/:userId", (req , res) => {
+
+
+router.get("/seeker/:userId", (req, res) => {
   const userId = req.params.userId;
-  User.findOne({_id : userId})
-  .then((data) => {
-    res.json(data);
-  })
-  .catch((err) => {
-    res.status(400).json(err);
-  })
+  User.findOne({ _id: userId })
+    .then((data) => {
+      res.json(data);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    })
 })
 
 
 // To get Job applications using seekerId for notification
 router.get("/UserImageFromUserTable/:id", (req, res) => {
-  User.find({ _id:req.params.id })
+  User.find({ _id: req.params.id })
     .then((response) => {
       res.json(response);
     })
@@ -147,5 +179,20 @@ router.get("/UserImageFromUserTable/:id", (req, res) => {
       res.status(400).json(err);
     });
 });
+
+
+router.get("/allseekerName", async (req, res) => {
+  try {
+    const note = await User.aggregate([
+      {
+        $match: { type: "seeker" }
+      }
+    ])
+    res.json(note)
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Some error occured")
+  }
+})
 
 module.exports = router;

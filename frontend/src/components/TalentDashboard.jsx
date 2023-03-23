@@ -9,6 +9,7 @@ import AuthContext from "./AuthContext";
 import { BsChevronDown, BsPhone } from "react-icons/bs";
 import { useLocation } from "react-router-dom";
 import server from "./server";
+import PageNotFound from "./PageNotFound";
 
 const TalentDashboard = () => {
     const auth = useContext(AuthContext);
@@ -16,19 +17,56 @@ const TalentDashboard = () => {
     const [userImg, setuserImg] = useState();
     const [query, setQuery] = useState("");
     const location = useLocation()
+    const [select, setSelect] = useState("");
+    const [Seeker, setSeeker] = useState();
 
+    const setGet = (e) => {
+        const { name, value } = e.target;
 
-    const handleSearch = async () => {
-        const data = await fetch(`${server}/profile/searchData?name=${query}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
+        setSelect(() => {
+            return {
+                ...select,
+                [name]: value,
+            };
         });
-        const res = await data.json();
-        if (res) {
-            setcards(res);
-        }
+    };
+
+    var arr = []
+    const handleSelect = () => {
+           arr.forEach((element)=>{
+              if(element.name === select.select){
+                   axios.get(`${server}/project/getOnlySeekersProject/${element.id}`)
+                .then(async (res) => {
+                    setcards(res.data);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+              }
+           })
+    }
+
+    const getuserData = () => {
+        axios
+            .get(`${server}/auth/allseekerName`)
+            .then((res) => {
+                if (res !== null) {
+                    setSeeker(res.data)
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+    }
+
+    const handleSearch = () => {
+        axios.get(`${server}/project/getOnlySeekersProject/${location.state.seekerId}`)
+            .then(async (res) => {
+                setcards(res.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     };
 
     const [profileStrength, setProfileStrength] = useState({
@@ -131,6 +169,7 @@ const TalentDashboard = () => {
 
     useEffect(() => {
         handleShow();
+        getuserData();
     }, []);
 
     return (
@@ -148,16 +187,42 @@ const TalentDashboard = () => {
                                 style={auth.clicked ? { gridArea: "1/1/2/4" } : { gridArea: "1/1/2/5" }}
                             >
                                 <div className="">Suggestions</div>
-                                <div className="filter d-flex justify-content-between align-item-center">
-                                    <button className="bg-light p-2 border-0">
-                                        Filter
-                                        <BsChevronDown className="mx-1" />
-                                    </button>
+
+                                <div className="filter d-flex justify-content-between align-item-center  ">
+                                    <select
+                                        value={select.select}
+                                        name="select"
+                                        className="bg-light p-1 border-0"
+                                        onClick={handleSelect}
+                                        onChange={setGet}
+
+                                    >
+                                        <option selected>Filter</option>
+                                        {
+                                            Seeker?.map((item, index) => {
+                                                    arr.push({id:item._id, name:item.username})
+                                                return (
+                                                    <option  >{item.username}</option>
+                                                )
+                                            })
+                                        }
+                                    </select>
                                 </div>
+
                             </div>
-                            {cards?.map((card) => (
-                                <Card card={card} profile={profileStrength} UserProfileDeatils={userImg} setClicked={auth.setClicked} />
-                            ))}{" "}
+
+                            {
+                                (cards?.length === 0 || cards === undefined) ?
+                                   <div className="text-center mx-auto " >
+                                       <PageNotFound />
+                                   </div>
+                                    :
+                                    cards?.map((card) => (
+                                        <Card card={card} profile={profileStrength} UserProfileDeatils={userImg} setClicked={auth.setClicked} />
+                                    ))
+                            }
+
+
                             <li className="side_div" style={auth.clicked ? {} : { display: "none" }}>
                                 <div className="sd_1">
                                     <div className="sd_upper d-flex justify-content-center align-items-center flex-column mb-3">

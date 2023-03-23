@@ -11,7 +11,6 @@ const RequestPage = () => {
   const user = JSON.parse(localStorage.getItem("login"))
 
   function getUsers(applyReqs) {
-
     applyReqs?.map((item, index) => {
       axios
         .get(`${server}/auth/seeker/${item.seekerId}`)
@@ -19,7 +18,6 @@ const RequestPage = () => {
           if (res !== null) {
             setReqUsers(oldUsers => [...oldUsers, res.data])
           }
-          console.log(res.data)
         })
         .catch((err) => {
           console.log(err);
@@ -28,10 +26,22 @@ const RequestPage = () => {
     })
   }
 
+  const [marked, setMarked] = useState(true);
+
+  const handleMarked = async (id) => {
+    const data = await fetch(`${server}/auth/markedAsread/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body:JSON.stringify({marked})
+    })
+    const res = await data.json();
+  }
+
   const getAllRequests = () => {
     axios.get(`${server}/profile/getRequests/${user._id}`)
       .then((res) => {
-        console.log(res.data)
         if (res.data.length != 0) {
           setRequests(res.data)
           getUsers(res.data)
@@ -59,7 +69,7 @@ const RequestPage = () => {
       let mapObj = {
         seeker: seekerName,
         requestTime: requestTime,
-        seekerId:seekerId
+        seekerId: seekerId
       }
       arr.push(mapObj)
 
@@ -75,8 +85,6 @@ const RequestPage = () => {
   useEffect(() => {
     getAllRequests()
   }, [])
-
-  console.log(reqUserMap)
 
   return (
     <>
@@ -95,21 +103,25 @@ const RequestPage = () => {
                 </thead>
                 <tbody>
                   {
-                    reqUserMap?.map((item, index) => {
-                      return (
-
-                        <tr>
-                          <td>{index + 1}</td>
-                          <td>{item.seeker}</td>
-                          <td>{item.requestTime}</td>
-                          <td>
-                            <NavLink to={`/talentdashboard`} state={{seekerId:item.seekerId}} exact>
-                              <button>View Projects</button>
-                            </NavLink>
-                          </td>
-                        </tr>
-                      )
-                    })
+                    (reqUserMap.length === 0 || reqUserMap === undefined) ?
+                      <div class="loader"></div>
+                      :
+                      reqUserMap?.map((item, index) => {
+                        console.log(item, "idd")
+                        return (
+                          <tr>
+                            <td>{index + 1}</td>
+                            <td>{item.seeker}</td>
+                            <td>{item.requestTime}</td>
+                            <td>
+                              <NavLink to={`/talentdashboard`} state={{ seekerId: item.seekerId }} exact>
+                                <button>View Projects</button>
+                              </NavLink>
+                            </td>
+                            <td className="btn-marked"><span onClick={()=>{handleMarked(item.seekerId)}} > Marked as Read</span></td>
+                          </tr>
+                        )
+                      })
                   }
                 </tbody>
               </table>

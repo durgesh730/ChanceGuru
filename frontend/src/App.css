@@ -128,3 +128,16 @@
   border: none;
 }
 
+.notfound img {
+  margin: auto;
+  width: 40rem;
+}
+
+.btn-marked span{
+  background-color: #8443e5;
+  text-align: center;
+  padding: .7rem .8rem;
+  border-radius: .3rem;
+  cursor: pointer;
+  color: white;
+}

@@ -16,6 +16,10 @@ let schema = new mongoose.Schema(
         isRequested: {
             type: Boolean,
             default:false,
+        },
+        isMarked: {
+            type: Boolean,
+            default:false,
         }
     }
 );
