@@ -8,6 +8,7 @@ const RolesAdmin = () => {
 
     const [roles, setRoles] = useState();
     var modal = document.getElementById("myModal");
+    var modaltwo = document.getElementById("myModal2");
     const [input, setInput] = useState(true);
     const [id, setId] = useState();
 
@@ -36,6 +37,10 @@ const RolesAdmin = () => {
 
     function closeModal() {
         modal.style.display = "none";
+    }
+
+    function closeModaltwo() {
+        modaltwo.style.display = "none";
     }
 
     function edithandle(item) {
@@ -82,6 +87,27 @@ const RolesAdmin = () => {
             })
     }
 
+    const handleAddRoles = () => {
+        modaltwo.style.display = "block";
+    }
+
+    const [addNew, setNew] = useState({ newRoles: "" })
+
+    const handleAddRolesAndSave = async () => {
+        const {newRoles} =  addNew;
+        const res = await fetch(`${server}/admin/addroles`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({newRoles})
+        });
+        const response = await res.json();
+        console.log(response)
+        modaltwo.style.display = "none";
+    }
+
+
     useEffect(() => {
         getuserData();
     }, [])
@@ -90,7 +116,7 @@ const RolesAdmin = () => {
         <>
             <Topbar />
             <div className='container'>
-                <div className="roles">
+                <div className="roles d-flex">
                     <table className='rolestable' >
                         <tr>
                             <th>S.no</th>
@@ -111,6 +137,10 @@ const RolesAdmin = () => {
                             )
                         })}
                     </table>
+
+                    <div>
+                        <button className='btn roles-btn' onClick={handleAddRoles} >Add new Roles </button>
+                    </div>
                 </div>
 
 
@@ -135,6 +165,24 @@ const RolesAdmin = () => {
                                     <span className='btn roles-btn mx-4 my-1' onClick={handleSave} >Save</span>
                             }
                         </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div id="myModal2" className="modal text-center">
+                <div className="modal-content my-4 ">
+                    <div className='my-4' >
+                        <input aria-describedby="inputGroup-sizing-sm"
+                            onChange={(event) => {
+                                setNew((prev) => ({ ...prev, newRoles: event.target.value }));
+                            }}
+                            name='dataInput' />
+                    </div>
+                    <div className='my-4' >
+                        <span onClick={closeModaltwo} className='btn roles-btn mx-4'>Close</span>
+
+                        <span className='btn roles-btn mx-4 my-1' onClick={handleAddRolesAndSave} >Save</span>
                     </div>
                 </div>
             </div>

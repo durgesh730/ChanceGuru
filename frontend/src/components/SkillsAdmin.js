@@ -9,7 +9,7 @@ const SkillsAdmin = () => {
     const [skills, setSkills] = useState();
     var modal = document.getElementById("myModal");
     const [input, setInput] = useState(true);
-
+    var modaltwo = document.getElementById("myModal2");
     const [id, setId] = useState();
 
     function handleOpenmodal(id) {
@@ -37,6 +37,14 @@ const SkillsAdmin = () => {
 
     function closeModal() {
         modal.style.display = "none";
+    }
+
+    function closeModaltwo() {
+        modaltwo.style.display = "none";
+    }
+
+    const handleAddRoles = () => {
+        modaltwo.style.display = "block";
     }
 
     function edithandle(item) {
@@ -83,6 +91,24 @@ const SkillsAdmin = () => {
             })
     }
 
+
+    const [addNew, setNew] = useState({ newRoles: "" })
+
+    const handleAddSkillAndSave = async () => {
+        const { newRoles } = addNew;
+        const res = await fetch(`${server}/admin/addskill`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ newRoles })
+        });
+        const response = await res.json();
+        console.log(response)
+        console.log("hgfds")
+        modaltwo.style.display = "none";
+    }
+
     useEffect(() => {
         getuserData();
     }, [])
@@ -91,8 +117,8 @@ const SkillsAdmin = () => {
         <>
             <Topbar />
             <div className='container'>
-                <div className="roles">
-                    <table className='rolestable' >
+                <div className="roles d-flex ">
+                    <table className='rolestable'>
                         <tr>
                             <th>S.no</th>
                             <th>Skills</th>
@@ -112,6 +138,9 @@ const SkillsAdmin = () => {
                             )
                         })}
                     </table>
+                    <div>
+                        <button className='btn roles-btn' onClick={handleAddRoles} >Add new Skill </button>
+                    </div>
                 </div>
 
 
@@ -136,6 +165,24 @@ const SkillsAdmin = () => {
                                     <span className='btn roles-btn mx-4 my-1' onClick={handleSave} >Save</span>
                             }
                         </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div id="myModal2" className="modal text-center">
+                <div className="modal-content my-4 ">
+                    <div className='my-4' >
+                        <input aria-describedby="inputGroup-sizing-sm"
+                            onChange={(event) => {
+                                setNew((prev) => ({ ...prev, newRoles: event.target.value }));
+                            }}
+                            name='dataInput' />
+                    </div>
+                    <div className='my-4' >
+                        <span onClick={closeModaltwo} className='btn roles-btn mx-4'>Close</span>
+
+                        <span className='btn roles-btn mx-4 my-1' onClick={handleAddSkillAndSave} >Save</span>
                     </div>
                 </div>
             </div>

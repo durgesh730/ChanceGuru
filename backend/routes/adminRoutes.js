@@ -88,8 +88,8 @@ router.put("/savedRole/:id", async (req, res) => {
     const { role } = req.body;
     try {
         const edit = {};
-        if(role){edit.role = role};
-        const data = await RolePref.findByIdAndUpdate({ _id: req.params.id }, { $set:edit }, { new: true });
+        if (role) { edit.role = role };
+        const data = await RolePref.findByIdAndUpdate({ _id: req.params.id }, { $set: edit }, { new: true });
         res.status(201).send({ data });
     } catch (error) {
         res.status(404).send({ msg: "some error occured" })
@@ -101,11 +101,36 @@ router.put("/savedSkills/:id", async (req, res) => {
     const { skill } = req.body;
     try {
         const edit = {};
-        if(skill){edit.skill = skill};
-        const data = await Skill.findByIdAndUpdate({ _id: req.params.id }, { $set:edit}, { new: true });
+        if (skill) { edit.skill = skill };
+        const data = await Skill.findByIdAndUpdate({ _id: req.params.id }, { $set: edit }, { new: true });
         res.status(201).send({ data });
     } catch (error) {
         res.status(404).send({ msg: "some error occured" })
+    }
+})
+
+
+router.post('/addroles',  async (req, res) => {
+    const {newRoles} = req.body;
+    try {
+        const note = new RolePref({role:newRoles })
+        const saved = await note.save()
+        res.status(201).json({ status: 201, saved })
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Some error occured")
+    }
+})
+
+router.post('/addskill',  async (req, res) => {
+    const {newRoles} = req.body;
+    try {
+        const note = new Skill({skill:newRoles })
+        const saved = await note.save()
+        res.status(201).json({ status: 201, saved })
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Some error occured")
     }
 })
 
