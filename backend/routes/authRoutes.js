@@ -118,16 +118,13 @@ router.put("/ResetLoggedUserData/:id", jwtAuth, async (req, res) => {
 
 router.put("/markedAsread", jwtAuth, async (req, res) => {
   const user = req.user;
-  console.log(user)
   try {
     const newData = {}
     if (req.body.marked) {
       newData.isMarked = req.body.marked
     }
-    console.log(newData)
     const save = await RequestToApply.findOneAndUpdate({ talentId: user._id }, { $set:{isMarked: newData.isMarked} }, { new: true })
     res.status(201).json({ status: 201, save });
-    console.log(save)
   } catch (error) {
     res.status(400).json(error);
   }

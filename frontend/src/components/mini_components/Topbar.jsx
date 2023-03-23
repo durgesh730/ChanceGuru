@@ -379,12 +379,11 @@ const Topbar = (props) => {
       }
     );
     const response = await res.json();
-      setCount((prev)=>[...prev, response])
+    setCount((prev) => [...prev, response])
     arr.push({ res: response })
-    console.log(arr, "arrrr")
   };
 
-  console.log(count, "fdsadfghj")
+  console.log(count.length, "fdsadfghj")
 
 
   const getReqToApp = () => {
@@ -616,7 +615,13 @@ const Topbar = (props) => {
                   <img className="topbar-icons" src={requests} alt="" />
                 )}
 
-                <h6>{count?.isMarked === false || count?.isMarked === null ? (count.length === undefined) ? 1 : count.length : 0}</h6>
+                {
+                  count?.map((item) => {
+                    return (
+                      item.isMarked === false ? <h6>{count.length}</h6> : <h6>0</h6>
+                    )
+                  })
+                }
               </span>
             </Link>
           }

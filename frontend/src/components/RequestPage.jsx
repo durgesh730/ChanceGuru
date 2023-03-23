@@ -38,7 +38,6 @@ const RequestPage = () => {
       body: JSON.stringify({ marked })
     })
     const res = await data.json();
-    console.log(res, "response")
   }
 
   const getAllRequests = () => {
