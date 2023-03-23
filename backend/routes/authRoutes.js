@@ -123,7 +123,7 @@ router.put("/markedAsread", jwtAuth, async (req, res) => {
     if (req.body.marked) {
       newData.isMarked = req.body.marked
     }
-    const save = await RequestToApply.findOneAndUpdate({ talentId: user._id }, { $set:{isMarked: newData.isMarked} }, { new: true })
+    const save = await RequestToApply.findOneAndUpdate({ talentId: user._id }, { $set: { isMarked: newData.isMarked } }, { new: true })
     res.status(201).json({ status: 201, save });
   } catch (error) {
     res.status(400).json(error);
@@ -137,6 +137,19 @@ router.get("/reqcount", jwtAuth, (req, res) => {
   RequestToApply.findOne({ talentId: user._id })
     .then((data) => {
       res.json(data);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    })
+})
+
+router.get("/reqcountAtseekerside", jwtAuth, (req, res) => {
+  const user = req.user;
+  console.log(user)
+  RequestToApply.find({seekerId: user._id })
+    .then((data) => {
+      res.json(data);
+      console.log(data)
     })
     .catch((err) => {
       res.status(400).json(err);

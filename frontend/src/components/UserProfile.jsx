@@ -189,7 +189,7 @@ const UserProfile = () => {
   }
 
   console.log("d", d);
-  
+
   const handleStatus = () => {
     setall();
     if (card[index]?.status === "selected") {
@@ -203,6 +203,21 @@ const UserProfile = () => {
     }
   }
 
+  const [count, setCount] = useState([]);
+  const getreqcount = async () => {
+    const res = await fetch(`${server}/auth/reqcountAtseekerside`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    const response = await res.json();
+    setCount(response)
+  };
+
   if (index !== ischange) {
     handleStatus();
     setischange(index);
@@ -211,6 +226,7 @@ const UserProfile = () => {
   useEffect(() => {
     handleStatus();
     GetDatetime();
+    getreqcount();
   }, [])
 
   const displayVideo = (index) => {
@@ -221,11 +237,7 @@ const UserProfile = () => {
     setMedia("img")
     setfirst(index)
   }
-  console.log("images", userData.photos)
 
-  console.log("videos", userData.videos)
-
-  console.log(firstV)
   return (
     <>
       <div className={modal ? `dim` : ""}>
@@ -239,7 +251,7 @@ const UserProfile = () => {
 
                 <figure className=" userImage_main">
                   {(media === "img") ?
-                  
+
                     userData?.photos.map((item, index) => {
                       return (
                         <>
@@ -247,9 +259,9 @@ const UserProfile = () => {
                         </>
                       )
                     })
-                  
-                  :
-                  
+
+                    :
+
                     userData?.videos.map((item, index) => {
                       return (
                         <>
@@ -259,24 +271,24 @@ const UserProfile = () => {
                         </>
                       )
                     })
-                  
+
                   }
 
 
                   {(media === "img") ?
-                  
-                  <div className="imageUser">
-                    <BsChevronLeft onClick={handlePre} />
 
-                    <BsChevronRight onClick={handleNext} />
-                  </div>
-                  :
+                    <div className="imageUser">
+                      <BsChevronLeft onClick={handlePre} />
 
-                  <div className="imageUser">
-                    <BsChevronLeft onClick={handlePreV} />
+                      <BsChevronRight onClick={handleNext} />
+                    </div>
+                    :
 
-                    <BsChevronRight onClick={handleNextV} />
-                  </div>
+                    <div className="imageUser">
+                      <BsChevronLeft onClick={handlePreV} />
+
+                      <BsChevronRight onClick={handleNextV} />
+                    </div>
                   }
 
                 </figure>
@@ -287,7 +299,7 @@ const UserProfile = () => {
                       userData?.photos?.map((img, i) => {
                         return (
                           (i >= 0) ? <img src={img.link} className="m-1" alt=""
-                          onClick={() => displayImage(i)} /> : ("")
+                            onClick={() => displayImage(i)} /> : ("")
                         )
                       })
                     }
@@ -372,7 +384,14 @@ const UserProfile = () => {
                           </NavLink>
                         ) :
                           (<button onClick={() => { setModal(true); setmodalData({ msg: " send a Request to ", btn: "Send", num: 4 }) }}>
-                            Send Request
+                            { 
+                               count?.map((item)=>{
+                                // console.log(item, "items")
+                                   return(
+                                     item?.isRequested === true ?  "Send Request" : "Requested"
+                                   )
+                               })
+                            }
                           </button>)
                         :
                         <>

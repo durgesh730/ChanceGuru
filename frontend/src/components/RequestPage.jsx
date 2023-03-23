@@ -38,7 +38,24 @@ const RequestPage = () => {
       body: JSON.stringify({ marked })
     })
     const res = await data.json();
+    window.location.reload();
   }
+
+  const [count, setCount] = useState([]);
+
+  const getreqcount = async () => {
+    const res = await fetch(`${server}/auth/reqcount`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    const response = await res.json();
+    setCount((prev) => [...prev, response])
+  };
 
   const getAllRequests = () => {
     axios.get(`${server}/profile/getRequests/${user._id}`)
@@ -85,6 +102,7 @@ const RequestPage = () => {
 
   useEffect(() => {
     getAllRequests()
+    getreqcount()
   }, [])
 
   return (
@@ -119,7 +137,13 @@ const RequestPage = () => {
                                 <button>View Projects</button>
                               </NavLink>
                             </td>
-                            <td className="btn-marked"><span onClick={handleMarked} > Marked as Read</span></td>
+                            <td className="btn-marked"><span onClick={handleMarked}>
+                              {count?.map((item) => {
+                                return (
+                                  item.isMarked ? "Read" : "Marked as Read"
+                                )
+                              })}
+                            </span></td>
                           </tr>
                         )
                       })

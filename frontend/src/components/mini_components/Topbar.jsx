@@ -383,8 +383,6 @@ const Topbar = (props) => {
     arr.push({ res: response })
   };
 
-  console.log(count.length, "fdsadfghj")
-
 
   const getReqToApp = () => {
     axios.get(`${server}/profile/reqToApp/${user._id}`)
@@ -618,7 +616,7 @@ const Topbar = (props) => {
                 {
                   count?.map((item) => {
                     return (
-                      item.isMarked === false ? <h6>{count.length}</h6> : <h6>0</h6>
+                      item?.isMarked === false ? <h6>{count.length}</h6> : <h6>0</h6>
                     )
                   })
                 }

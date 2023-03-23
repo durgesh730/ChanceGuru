@@ -45,6 +45,8 @@ const BrowseProfile = () => {
     }
   };
 
+ 
+
   const handleSearch = async () => {
     const data = await fetch(
       `${server}/profile/ProData?fullname=${query}`,
