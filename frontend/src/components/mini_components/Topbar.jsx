@@ -610,9 +610,8 @@ const Topbar = (props) => {
                 ) : (
                   <img className="topbar-icons" src={requests} alt="" />
                 )}
-
-                {console.log(count.length, "klebbf")}
-                <h6>{count?.isMarked === false || count?.isMarked === null ? (count.length === undefined)? 1: count.length  : 0}</h6>
+                
+                <h6>{count?.isMarked === false || count?.isMarked === null ? (count.length === undefined) ? 1 : count.length : 0}</h6>
               </span>
             </Link>
           }
