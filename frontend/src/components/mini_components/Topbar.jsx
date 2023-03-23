@@ -366,6 +366,7 @@ const Topbar = (props) => {
   const [count, setCount] = useState([]);
 
   // =============== getreq count ========================
+
   const getreqcount = async () => {
     const res = await fetch(`${server}/auth/reqcount`,
       {
@@ -610,14 +611,15 @@ const Topbar = (props) => {
                   <img className="topbar-icons" src={requests} alt="" />
                 )}
 
-                <h6>{count?.isMarked === false ? 1 : 0}</h6>
+                {console.log(count.length, "klebbf")}
+                <h6>{count?.isMarked === false || count?.isMarked === null ? (count.length === undefined)? 1: count.length  : 0}</h6>
               </span>
             </Link>
           }
 
 
-          {/*
-                        <Link to="/projectcreation"> */}
+          {/* <Link to="/projectcreation"> */}
+
           <span
             className={
               active === "notification"
